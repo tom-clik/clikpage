@@ -1,0 +1,20 @@
+{
+	"scripts": [
+		{
+			"min": "https://code.jquery.com/jquery-1.12.4.js",
+			"name": "jquery"
+		},
+		{
+			"min": "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
+			"name": "jqueryui"
+		},
+		{
+			"min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
+			"name": "validate"
+		},
+		{
+			"min": "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js",
+			"name": "datatables"
+		}
+	]
+}
