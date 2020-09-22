@@ -1,24 +1,28 @@
 {
-	"scripts": [
-		{
-			"min": "/clikdesign/_common/css/reset_v2.css",
-			"name": "reset"
-		},
-		{
-			"min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
-			"name": "select2"
-		},
-		{
-			"min": "https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css",
-			"name": "jqueryui"
-		},
-		{
-			"min": "https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css",
-			"name": "datatables"
-		},
-		{
-			"min": "/assets/font-awesome/4.5.0/css/font-awesome.min.css",
-			"name": "fontawesome"
-		}
-	]
+    "scripts": [
+        {
+            "min": "/_common/_styles/reset_v2.css",
+            "name": "reset"
+        },
+        {
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
+            "name": "select2"
+        },
+        {
+            "min": "https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css",
+            "name": "jqueryui"
+        },
+        {
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css",
+            "name": "chosen"
+        },
+        {
+            "min": "https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css",
+            "name": "datatables"
+        },
+        {
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css",
+            "name": "fontawesome"
+        }
+    ]
 }

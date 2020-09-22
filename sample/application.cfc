@@ -42,10 +42,16 @@ component{
 	public void function startApp(){
 		try {
 			application.pageObj = createObject("component", "clikpage.pageObj").init();
-			application.pageObj.title = "Test app";
-
+			application.pageObj.content.title = "Test app";
+			application.pageObj.content.static_css["fontawesome"] =1;
+			application.pageObj.content.static_css["reset"] =1;
+			// typically you use the static defs for standard libraries that get reused across
+			// projects and use the _files fields for site-specific stuff
+			// that isn't a hard and fast rule: you may prefer to use the static files for everything
+			ArrayAppend(application.pageObj.content.css_files,"styles/clikpage_sample.css");
 		}
 		catch (Any e) {
+			writeOutput("error loading application");
 			writeDump(e);
 			abort;
 		}
@@ -53,7 +59,8 @@ component{
 		
 	// request start
 	public void function onRequestStart( string targetPage ){
-		
+		//TODO: take out
+		startApp();
 		request.rc = StructNew();
 		request.prc = StructNew();
 
@@ -61,7 +68,7 @@ component{
 		StructAppend(request.rc,form,true);
 
 		param name="request.reload" default="0" type="boolean";
-		
+
 		request.prc.content = application.pageObj.getContent();
 	}
 
@@ -71,9 +78,9 @@ component{
 		// not use the standard output at all and ensure everything appends
 		// to content.body
 		savecontent variable="request.prc.content.body" {
-			include template="#arguments.targetPage#";
+			cfinclude(template=arguments.targetPage);
 		}
-		
+
 	}
 
 	public void function onRequestEnd(){
