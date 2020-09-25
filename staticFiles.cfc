@@ -81,7 +81,7 @@ component {
 		return this;
 	}	
 
-	/** Set the options to the defauls for css */
+	/** Set the options to the defaults for css */
 	public void function setCss() {
 		variables.prefix="#chr(9)#<link rel=""stylesheet"" href=""";
 		variables.suffix=""">#chr(13)##chr(10)#";
@@ -93,7 +93,8 @@ component {
 		local.packagesIncluded = {};
 		local.ret = "";
 
-		/* check if any packages in script def */
+		/* check if any packages in script def 
+		 */
 		for (local.script in arguments.scripts) {
 			if (StructKeyExists(variables.packageCache, local.script)) {
 				local.packagesIncluded[local.script] = 1;

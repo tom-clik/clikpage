@@ -45,6 +45,8 @@ component{
 			application.pageObj.content.title = "Test app";
 			application.pageObj.content.static_css["fontawesome"] =1;
 			application.pageObj.content.static_css["reset"] =1;
+			application.pageObj.content.static_css["forms"] =1;
+			application.pageObj.content.static_css["colors"] =1;
 			// typically you use the static defs for standard libraries that get reused across
 			// projects and use the _files fields for site-specific stuff
 			// that isn't a hard and fast rule: you may prefer to use the static files for everything
@@ -85,7 +87,7 @@ component{
 
 	public void function onRequestEnd(){
 		// you can do things like this. Typically you would have a "layout" defined at this stage
-		request.prc.content.body = "<h1>#request.prc.content.title#</h2>" & request.prc.content.body;
+		request.prc.content.body = "<div class=""outer""><h1>#request.prc.content.title#</h2>" & request.prc.content.body & "</div>";
 		writeOutput(application.pageObj.buildPage(request.prc.content));
 	}
 
