@@ -14,16 +14,24 @@ Every component on a page (e.g. a menu) adds required javascript and css either 
 
 E.g.
 
+You create the page content in onRequestStart:
+
+    request.prc.content = application.pageObj.getContent();
+
 A photo gallery component would require a static Jquery library ("mygallery"), and some inline javascript to go into the onready:
+     
+     request.prc.content.static_js["mygallery"] = 1;
+     request.prc.content.onready &= "$(""##gallery"").mygallery({speed:2000})";
 
-     request.prc.content.$("#gallery").mygallery({speed:2000});
-
-The gallery might also set the page title 
+The gallery might also set the page title:
 
     request.prc.content.title = "Gallery " & mygallery.gallery_name;
 
 A page is typically rendered in the onRequestEnd method.
 
     WriteOutput(application.clikpage.html(request.prc.content));
+
+
+
 
 

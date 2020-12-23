@@ -1,0 +1,7 @@
+{
+    "web":{
+        "aliases":{
+            "/_common":"C:\\clik\\clikpic\\wwwroot\\_common"
+        }
+    }
+}

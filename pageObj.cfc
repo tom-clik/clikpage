@@ -36,7 +36,7 @@ component {
 			}
 			local.jsDef = loadDefFile(arguments.jsdef);
 			variables.hasStaticJS = true;
-			this.jsStaticFiles =  CreateObject("component", "publishing.staticFiles").init(local.jsDef);	
+			this.jsStaticFiles =  CreateObject("component", "clikpage.staticFiles").init(local.jsDef);	
 		}
 		else {
 			variables.hasStaticJS = false;
@@ -47,7 +47,7 @@ component {
 				arguments.cssdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticCSS.json";
 			}
 			local.cssDef = loadDefFile(arguments.cssdef);
-			this.cssStaticFiles =  CreateObject("component", "publishing.staticFiles").init(local.cssDef);
+			this.cssStaticFiles =  CreateObject("component", "clikpage.staticFiles").init(local.cssDef);
 			this.cssStaticFiles.setCss();
 			variables.hasStaticCSS = true;
 		}
@@ -60,7 +60,7 @@ component {
 		return this;
 		
 	}
-
+	
 	public struct function getContent() {
 
 		return Duplicate(this.content);
@@ -97,7 +97,7 @@ component {
 		if (arguments.content.css != "") {
 			page &= "	<style>#arguments.content.css#</style>#cr#";
 		}
-
+		
 		local.bodyClass = 
 		page &= "</head>#cr#";
 		page &= "<body class='#arguments.content.layout#'>#cr#";

@@ -1,7 +1,7 @@
 {
     "scripts": [
         {
-            "min": "/_common/_styles/reset_v2.css",
+            "min": "http://local.clikpic.com/_common/_styles/reset_v2.css",
             "name": "reset"
         },
         {

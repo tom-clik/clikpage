@@ -1,11 +1,18 @@
 <!---
 
-# test_api
+# test_staticFiles
 
 Test pad for testing api
 
+## Usage
+
+Configure a test file and staticDefTest and run. It will show the html from getLinks
+
 --->
+
 <cfscript>
+staticDefTest = {"jquery":true};
+
 defFile = ExpandPath("test_js.json");
 local.tempData = fileRead(defFile);
 try {
@@ -17,6 +24,6 @@ catch (Any e) {
 
 staticFilesObj = createObject("component", "publishing.staticFiles").init(staticDef=local.jsonData);
 writeOutput("<pre>");
-writeOutput(htmlEditFormat(staticFilesObj.getLinks({"jquery":true})));
+writeOutput(htmlEditFormat(staticFilesObj.getLinks(scripts=staticDefTest)));
 writeOutput("</pre>");
 </cfscript>

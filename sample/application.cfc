@@ -23,6 +23,7 @@ component{
 	this.sessionTimeout = createTimeSpan(0,0,30,0);
 	this.setClientCookies = true;
 	this.sessioncookie.secure = true;
+	this.componentpaths=[ExpandPath("../..")];
 
 	// Java Integration
 	// this.javaSettings = { 
