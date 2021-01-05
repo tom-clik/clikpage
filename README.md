@@ -31,6 +31,9 @@ A page is typically rendered in the onRequestEnd method.
 
     WriteOutput(application.clikpage.html(request.prc.content));
 
+## Static File Definitions
+
+
 
 
 

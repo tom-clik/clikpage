@@ -159,5 +159,25 @@ component {
 		}
 	}
 
+	/**
+	 * @hint      Load a definition file from disk.
+	 *
+	 * @defFile  Full path to definition file
+	 *
+	 */
+	public struct function loadDefFile(defFile) {
+		if (NOT fileExists(arguments.defFile)) {
+			throw("Static files definition file #arguments.defFile# not found");
+		}
+		local.tempData = fileRead(arguments.defFile);
+		try {
+			local.jsonData = deserializeJSON(local.tempData);
+		}
+		catch (Any e) {
+			throw("Unable to parse static files definition file #arguments.defFile#");	
+		}
+
+		return local.jsonData;
+	}
 
 }
