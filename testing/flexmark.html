@@ -1,0 +1,656 @@
+<h1><a href="#logo" id="logo" class="anyclass" data-testdata="Anything"><img src="assets/images/flexmark-icon-logo.png" alt="Flexmark Icon Logo" /> flexmark-java</a></h1>
+<p><strong>flexmark-java</strong> is a Java implementation of <strong><a href="https://spec.commonmark.org/0.28">CommonMark (spec 0.28)</a></strong> parser using the
+blocks first, inlines after Markdown parsing architecture.</p>
+<p>Its strengths are speed, flexibility, Markdown source element based AST with details of the
+source position down to individual characters of lexemes that make up the element and
+extensibility.</p>
+<p>The API allows granular control of the parsing process and is optimized for parsing with a large
+number of installed extensions. The parser and extensions come with plenty of options for parser
+behavior and HTML rendering variations. The end goal is to have the parser and renderer be able
+to mimic other parsers with great degree of accuracy. This is now partially complete with the
+implementation of <a href="#markdown-processor-emulation">Markdown Processor Emulation</a></p>
+<p>Motivation for this project was the need to replace <a href="http://pegdown.org">pegdown</a> parser in my <a href="http://vladsch.com/product/markdown-navigator">Markdown Navigator</a>
+plugin for JetBrains IDEs. <a href="http://pegdown.org">pegdown</a> has a great feature set but its speed in general is less
+than ideal and for pathological input either hangs or practically hangs during parsing.</p>
+<p><img src="/img/warning.png" alt="emoji places:warning" height="20" width="20" align="absmiddle" /> <strong>Version 0.60.0</strong> has breaking changes due to re-organization, renaming, clean up and
+optimization of implementation classes. Changes are detailed in
+<a href="../../wiki/Version-0.60.0-Changes">Version-0.60.0-Changes</a>.</p>
+<h3><a href="#master-build-status" id="master-build-status">master <a href="https://travis-ci.org/vsch/flexmark-java"><img src="https://travis-ci.org/vsch/flexmark-java.svg?branch=master" alt="Build status" /></a></a></h3>
+<h3><a href="#latest-maven-central-status-build-status-javadocs" id="latest-maven-central-status-build-status-javadocs">latest <a href="https://search.maven.org/search?q=g:com.vladsch.flexmark"><img src="https://img.shields.io/maven-central/v/com.vladsch.flexmark/flexmark.svg" alt="Maven Central status" /></a><!-- @IGNORE PREVIOUS: link --> <a href="https://travis-ci.org/vsch/flexmark-java"><img src="https://travis-ci.org/vsch/flexmark-java.svg?branch=0.62.2" alt="Build status" /></a> <a href="https://www.javadoc.io/doc/com.vladsch.flexmark/flexmark"><img src="https://www.javadoc.io/badge/com.vladsch.flexmark/flexmark.svg" alt="Javadocs" /></a></a></h3>
+<!-- [![codecov](https://codecov.io/gh/vsch/flexmark-java/branch/master/graph/badge.svg)](https://codecov.io/gh/vsch/flexmark-java) -->
+<p><a href="https://gitq.com/vsch/flexmark-java"><img src="https://gitq.com/badge.svg" alt="GitQ" /></a></p>
+<p><img src="/img/information_source.png" alt="emoji symbols:information_source" height="20" width="20" align="absmiddle" /> Thanks to <a href="mailto:javadiagrams@gmail.com">Alex Karezin</a> for setting up
+<a href="https://sourcespy.com/github/flexmark/">Flexmark Architecture and Dependencies Diagrams</a> and
+<a href="https://sourcespy.com">https://sourcespy.com</a>. You can now get an overview of module dependencies with ability to
+drill down to packages and classes, updated from the repository sources. <img src="/img/thumbsup.png" alt="emoji people:thumbsup" height="20" width="20" align="absmiddle" /></p>
+<h3><a href="#requirements" id="requirements">Requirements</a></h3>
+<ul>
+<li>
+<p>Java 8 or above, Java 9+ compatible</p>
+</li>
+<li>
+<p>Android compatibility to be added</p>
+</li>
+<li>
+<p>The project is on Maven: <code>com.vladsch.flexmark</code></p>
+</li>
+<li>
+<p>The core has no dependencies other than <code>org.jetbrains:annotations:15.0</code>. For extensions, see
+extension description below.</p>
+<p>The API is still evolving to accommodate new extensions and functionality.</p>
+</li>
+</ul>
+<h3><a href="#quick-start" id="quick-start">Quick Start</a></h3>
+<p>For Maven, add <code>flexmark-all</code> as a dependency which includes core and all modules to the
+following sample:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.vladsch.flexmark&lt;/groupId&gt;
+    &lt;artifactId&gt;flexmark-all&lt;/artifactId&gt;
+    &lt;version&gt;0.62.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Source:
+<a href="flexmark-java-samples/src/com/vladsch/flexmark/java/samples/BasicSample.java">BasicSample.java</a></p>
+<pre><code class="language-java">package com.vladsch.flexmark.samples;
+
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.MutableDataSet;
+
+public class BasicSample {
+    public static void main(String[] args) {
+        MutableDataSet options = new MutableDataSet();
+
+        // uncomment to set optional extensions
+        //options.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), StrikethroughExtension.create()));
+
+        // uncomment to convert soft-breaks to hard breaks
+        //options.set(HtmlRenderer.SOFT_BREAK, &quot;&lt;br /&gt;\n&quot;);
+
+        Parser parser = Parser.builder(options).build();
+        HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+
+        // You can re-use parser and renderer instances
+        Node document = parser.parse(&quot;This is *Sparta*&quot;);
+        String html = renderer.render(document);  // &quot;&lt;p&gt;This is &lt;em&gt;Sparta&lt;/em&gt;&lt;/p&gt;\n&quot;
+        System.out.println(html);
+    }
+}
+</code></pre>
+<h4><a href="#building-via-gradle" id="building-via-gradle">Building via Gradle</a></h4>
+<pre><code class="language-shell">compile 'com.vladsch.flexmark:flexmark-all:0.62.2'
+</code></pre>
+<h4><a href="#building-with-android-studio" id="building-with-android-studio">Building with Android Studio</a></h4>
+<p>Additional settings due to duplicate files:</p>
+<pre><code>packagingOptions {
+    exclude 'META-INF/LICENSE-LGPL-2.1.txt'
+    exclude 'META-INF/LICENSE-LGPL-3.txt'
+    exclude 'META-INF/LICENSE-W3C-TEST'
+    exclude 'META-INF/DEPENDENCIES'
+}
+</code></pre>
+<p>More information can be found in the documentation:<br />
+<a href="../../wiki">Wiki Home</a>     <a href="../../wiki/Usage">Usage Examples</a>
+    <a href="../../wiki/Extensions">Extension Details</a>
+    <a href="../../wiki/Writing-Extensions">Writing Extensions</a></p>
+<h3><a href="#pegdown-migration-helper" id="pegdown-migration-helper">Pegdown Migration Helper</a></h3>
+<p><code>PegdownOptionsAdapter</code> class converts pegdown <code>Extensions.*</code> flags to flexmark options and
+extensions list. Pegdown <code>Extensions.java</code> is included for convenience and new options not found
+in pegdown 1.6.0. These are located in <code>flexmark-profile-pegdown</code> module but you can grab the
+source from this repo: <a href="flexmark-profile-pegdown/src/main/java/com/vladsch/flexmark/profile/pegdown/PegdownOptionsAdapter.java">PegdownOptionsAdapter.java</a>, <a href="flexmark-profile-pegdown/src/main/java/com/vladsch/flexmark/profile/pegdown/Extensions.java">Extensions.java</a> and make your own
+version, modified to your project's needs.</p>
+<p>You can pass your extension flags to static <code>PegdownOptionsAdapter.flexmarkOptions(int)</code> or you
+can instantiate <code>PegdownOptionsAdapter</code> and use convenience methods to set, add and remove
+extension flags. <code>PegdownOptionsAdapter.getFlexmarkOptions()</code> will return a fresh copy of
+<code>DataHolder</code> every time with the options reflecting pegdown extension flags.</p>
+<pre><code class="language-java">import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.profile.pegdown.Extensions;
+import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.data.DataHolder;
+
+public class PegdownOptions {
+     final private static DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
+            Extensions.ALL
+    );
+
+    static final Parser PARSER = Parser.builder(OPTIONS).build();
+    static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
+
+    // use the PARSER to parse and RENDERER to render with pegdown compatibility
+}
+</code></pre>
+<p>Default flexmark-java pegdown emulation uses less strict HTML block parsing which interrupts an
+HTML block on a blank line. Pegdown only interrupts an HTML block on a blank line if all tags in
+the HTML block are closed.</p>
+<p>To get closer to original pegdown HTML block parsing behavior use the method which takes a
+<code>boolean strictHtml</code> argument:</p>
+<pre><code class="language-java">import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.profile.pegdown.Extensions;
+import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.data.DataHolder;
+
+public class PegdownOptions {
+     final private static DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(true,
+            Extensions.ALL
+    );
+
+    static final Parser PARSER = Parser.builder(OPTIONS).build();
+    static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
+
+    // use the PARSER to parse and RENDERER to render with pegdown compatibility
+}
+</code></pre>
+<p>A sample with a
+<a href="flexmark-java-samples/src/com/vladsch/flexmark/java/samples/PegdownCustomLinkResolverOptions.java">custom link resolver</a>
+is also available, which includes link resolver for changing URLs or attributes of links and a
+custom node renderer if you need to override the generated link HTML.</p>
+<p><img src="/img/information_source.png" alt="emoji symbols:information_source" height="20" width="20" align="absmiddle" /> <a href="https://github.com/vsch/flexmark-java">flexmark-java</a> has many more extensions and configuration options than
+<a href="http://pegdown.org">pegdown</a> in addition to extensions available in pegdown 1.6.0.
+<a href="../../wiki/Pegdown-Migration#available-extensions-via-pegdownoptionsadapter">Available Extensions via PegdownOptionsAdapter</a></p>
+<h3><a href="#latest-additions-and-changes" id="latest-additions-and-changes">Latest Additions and Changes</a></h3>
+<ul>
+<li>
+<p>Major reorganization and code cleanup of implementation in version 0.60.0, see
+<a href="../../wiki/Version-0.60.0-Changes">Version-0.60.0-Changes</a></p>
+</li>
+<li>
+<p><a href="https://sourcespy.com/github/flexmark/">Flexmark Architecture and Dependencies Diagrams</a>
+thanks to great work by <a href="mailto:javadiagrams@gmail.com">Alex Karezin</a> you can get an overview
+of module dependencies with ability to drill down to packages and classes.</p>
+</li>
+<li>
+<p><a href="../../wiki/Markdown-Merge-API">Merge API</a> to merge multiple markdown documents into a single
+document.</p>
+</li>
+<li>
+<p><a href="../../wiki/Docx-Renderer-Extension#limited-attributes-node-handling">Docx Renderer Extension: Limited Attributes Node Handling</a></p>
+</li>
+<li>
+<p>Extensible HTML to Markdown Converter module:
+<a href="flexmark-html2md-converter">flexmark-html2md-converter</a>.
+Sample: <a href="flexmark-java-samples/src/com/vladsch/flexmark/java/samples/HtmlToMarkdownCustomizedSample.java">HtmlToMarkdownCustomizedSample.java</a></p>
+</li>
+<li>
+<p>Java9+ module compatibility</p>
+</li>
+<li>
+<p>Compound Enumerated References
+<a href="../../wiki/Enumerated-References-Extension">Enumerated References Extension</a> for creating
+legal numbering for elements and headings.</p>
+</li>
+<li>
+<p><a href="../../wiki/Macros-Extension">Macros Extension</a> to allow arbitrary markdown content to be
+inserted as block or inline elements, allowing block elements to be used where only inline
+elements are allowed by syntax.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#gitlab-flavoured-markdown">Extensions: Gitlab Flavoured Markdown</a> for
+parsing and rendering GitLab markdown extensions.</p>
+</li>
+<li>
+<p>OSGi module courtesy Dan Klco (GitHub <a href="https://github.com/klcodanr">@klcodanr</a>)</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#media-tags">Extensions: Media Tags</a> Media link transformer extension
+courtesy Cornelia Schultz (GitHub <a href="https://github.com/CorneliaXaos">@CorneliaXaos</a>) transforms
+links using custom prefixes to Audio, Embed, Picture, and Video HTML5 tags.</p>
+</li>
+<li>
+<p><a href="../../wiki/Translation-Helper-API">Translation Helper API</a> to make translating markdown
+documents easier.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#admonition">Admonition Extension</a> To
+create block-styled side content. For complete documentation please see the
+<a href="https://squidfunk.github.io/mkdocs-material/extensions/admonition/">Admonition Extension, Material for MkDocs</a> documentation.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#enumerated-reference">Enumerated Reference</a>
+to create enumerated references for figures, tables and other markdown elements.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#attributes">Attributes Extension</a> to
+parse attributes of the form <code>{name name=value name='value' name=&quot;value&quot; #id .class-name}</code>
+attributes.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#youtube-embedded-link-transformer">YouTube Embedded Link Transformer</a>
+thanks to Vyacheslav N. Boyko (GitHub @bvn13) transforms simple links to youtube videos to
+embedded video iframe HTML.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#docx-converter">Docx Converter Module</a>
+using the <a href="https://www.docx4java.org/trac/docx4j">docx4j</a> library. How to use: <a href="flexmark-java-samples/src/com/vladsch/flexmark/java/samples/DocxConverterCommonMark.java">DocxConverter Sample</a>, how to customize:
+<a href="../../wiki/Customizing-Docx-Rendering">Customizing Docx Rendering</a></p>
+<p>Development of this module was sponsored by
+<a href="https://www.johner-institut.de">Johner Institut GmbH</a>.</p>
+</li>
+<li>
+<p>Update library to be <a href="https://spec.commonmark.org/0.28">CommonMark (spec 0.28)</a> compliant and add
+<code>ParserEmulationProfile.COMMONMARK_0_27</code> and <code>ParserEmulationProfile.COMMONMARK_0_28</code> to allow
+selecting a specific spec version options.</p>
+</li>
+<li>
+<p>Custom node rendering API with ability to invoke standard rendering for an overridden node,
+allowing custom node renders that only handle special cases and let the rest be rendered as
+usual.
+<a href="flexmark-java-samples/src/com/vladsch/flexmark/java/samples/PegdownCustomLinkResolverOptions.java">PegdownCustomLinkResolverOptions</a></p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#gfm-issues">Gfm Issues</a> and
+<a href="../../wiki/Extensions#gfm-users">Gfm Users</a> extensions for
+parsing and rendering <code>#123</code> and <code>@user-name</code> respectively.</p>
+</li>
+<li>
+<p>Deep HTML block parsing option for better handling of raw text tags that come after other tags
+and for <a href="http://pegdown.org">pegdown</a> HTML block parsing compatibility.</p>
+</li>
+<li>
+<p><code>flexmark-all</code> module that includes: core, all extensions, formatter, JIRA and YouTrack
+converters, pegdown profile module and HTML to Markdown conversion.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#pdf-output-module">PDF converter module</a>
+<a href="../../wiki/Usage#pdf-output">Usage: PDF Output</a> using
+<a href="https://github.com/danfickle/openhtmltopdf">Open HTML To PDF</a></p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#typographic">Typographic Extension Module</a>
+implemented</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#xwiki-macro-extension">XWiki Macros Extension Module</a></p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#jekyll-tags">Jekyll tags Extension Module</a></p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#html-to-markdown">HTML to Markdown Converter Module</a></p>
+</li>
+<li>
+<p><a href="https://github.com/vsch/markdown-page-generator-plugin">Maven Markdown Page Generator Plugin</a></p>
+</li>
+<li>
+<p><a href="../../wiki/Markdown-Formatter">Markdown Formatter</a> module to
+output AST as markdown with formatting options.</p>
+</li>
+<li>
+<p><a href="../../wiki/Extensions#tables">Table Extension</a> for
+<a href="../../wiki/Markdown-Formatter">Markdown Formatter</a> with
+column width and alignment of markdown tables:</p>
+<table>
+    <thead> <tr><th>Input</th> <th>Output</th> </tr> </thead>
+    <tr><td>
+    <pre><code class="language-markdown">day|time|spent
+:---|:---:|--:
+nov. 2. tue|10:00|4h 40m
+nov. 3. thu|11:00|4h
+nov. 7. mon|10:20|4h 20m
+total:|| 13h</code></pre>
+    </td><td>
+    <pre><code class="language-markdown">| day         | time  |   spent |
+|:------------|:-----:|--------:|
+| nov. 2. tue | 10:00 |  4h 40m |
+| nov. 3. thu | 11:00 |      4h |
+| nov. 7. mon | 10:20 |  4h 20m |
+| total:             ||     13h |</code></pre>
+    </td></tr>
+</table>
+</li>
+</ul>
+<h3><a href="#releases-bug-fixes-enhancements-and-support" id="releases-bug-fixes-enhancements-and-support">Releases, Bug Fixes, Enhancements and Support</a></h3>
+<p>I use flexmark-java as the parser for <a href="http://vladsch.com/product/markdown-navigator">Markdown Navigator</a> plugin for JetBrains IDEs. I tend to
+use the latest, unreleased version to fix bugs or get improvements. So if you find a bug that is
+a show stopper for your project or see a bug in <a href="../../issues">github issues page</a> marked <code>fixed for next release</code> that is affecting your project then please let me know and I may be able to promptly
+make a new release to address your issue. Otherwise, I will let bug fixes and enhancements
+accumulate thinking no one is affected by what is already fixed.</p>
+<h4><a href="#extension-points-in-the-api-are-many-and-numerous" id="extension-points-in-the-api-are-many-and-numerous">Extension points in the API are many and numerous</a></h4>
+<p>There are many extension options in the API with their intended use. A good soft-start is the
+<a href="flexmark-java-samples"><code>flexmark-java-samples</code></a>
+module which has simple samples for asked for extensions. The next best place is the source of
+an existing extension that has similar syntax to what you want to add.</p>
+<p>If your extension lines up with the right API, the task is usually very short and sweet. If your
+extension uses the API in an unintended fashion or does not follow expected housekeeping
+protocols, you may find it an uphill battle with a rat's nest of if/else condition handling and
+fixing one bug only leading to creating another one.</p>
+<p>Generally, if it takes more than a few dozen lines to add a simple extension, then either you
+are going about it wrong or the API is missing an extension point. If you look at all the
+implemented extensions you will see that most are a few lines of code other than boiler plate
+dictated by the API. That is the goal for this library: provide an extensible core that makes
+writing extensions a breeze.</p>
+<p>The larger extensions are <code>flexmark-ext-tables</code> and <code>flexmark-ext-spec-example</code>, the meat of
+both is around 200 lines of code. You can use them as a guide post for size estimating your
+extension.</p>
+<p>My own experience adding extensions shows that sometimes a new type of extension is best
+addressed with an API enhancement to make its implementation seamless, or by fixing a bug that
+was not visible before the extension stressed the API in just the right way. Your intended
+extension may just be the one requiring such an approach.</p>
+<h4><a href="#dont-hesitate-to-open-an-issue-if-you-cant-find-the-answer" id="dont-hesitate-to-open-an-issue-if-you-cant-find-the-answer">Don't hesitate to open an issue if you can't find the answer</a></h4>
+<p>The takeaway is: if you want to implement an extension or a feature please don't hesitate to
+open an issue and I will give you pointers on the best way to go about it. It may save you a lot
+of time by letting me improve the API to address your extension's needs before you put a lot of
+fruitless effort into it.</p>
+<p>I do ask that you realize that I am chief cook and bottle washer on this project, without an
+iota of Vulcan Mind Melding skills. I do ask that you describe what you want to implement
+because I can't read your mind. Please do some reconnaissance background work around the source
+code and documentation because I cannot transfer what I know to you, without your willing
+effort.</p>
+<h4><a href="#consulting-is-available" id="consulting-is-available">Consulting is available</a></h4>
+<p>If you have a commercial application and don't want to write the extension(s) yourself or want
+to reduce the time and effort of implementing extensions and integrating flexmark-java, feel
+free to contact me. I am available on a consulting/contracting basis, <a href="https://vladsch.com/about">All about me</a>.</p>
+<h3><a href="#markdown-processor-emulation" id="markdown-processor-emulation">Markdown Processor Emulation</a></h3>
+<p>Despite its name, commonmark is neither a superset nor a subset of other markdown flavors.
+Rather, it proposes a standard, unambiguous syntax specification for the original, &quot;core&quot;
+Markdown, thus effectively introducing yet another flavor. While flexmark is by default
+commonmark compliant, its parser can be tweaked in various ways. The sets of tweaks required to
+emulate the most commonly used markdown parsers around are available in flexmark as
+<code>ParserEmulationProfiles</code>.</p>
+<p>As the name <code>ParserEmulationProfile</code> implies, it's only the parser that is adjusted to the
+specific markdown flavor. Applying the profile does not add features beyond those available in
+commonmark. If you want to use flexmark to fully emulate another markdown processor's behavior,
+you have to adjust the parser and configure the flexmark extensions that provide the additional
+features available in the parser that you want to emulate.</p>
+<p>A rewrite of the list parser to better control emulation of other markdown processors as per
+<a href="MarkdownProcessorsEmulation.md">Markdown Processors Emulation</a> is complete. Addition of
+processor presets to emulate specific markdown processing behaviour of these parsers is on a
+short to do list.</p>
+<p>Some emulation families do a better better job of emulating their target than others. Most of
+the effort was directed at emulating how these processors parse standard Markdown and list
+related parsing specifically. For processors that extend original Markdown, you will need to add
+those extensions that are already implemented in flexmark-java to the Parser/Renderer builder
+options.</p>
+<p>Extensions will be modified to include their own presets for specific processor emulation, if
+that processor has an equivalent extension implemented.</p>
+<p>If you find a discrepancy please open an issue so it can be addressed.</p>
+<p>Major processor families are implemented and some family members also:</p>
+<ul>
+<li>[ ] <a href="https://jekyllrb.com">Jekyll</a></li>
+<li><a href="https://commonmark.org">CommonMark</a> for latest implemented spec, currently <a href="https://spec.commonmark.org/0.28">CommonMark (spec 0.28)</a>
+<ul>
+<li>[ ] <a href="https://github.com/thephpleague/commonmark">League/CommonMark</a></li>
+<li><a href="https://spec.commonmark.org/0.27">CommonMark (spec 0.27)</a> for specific version compatibility</li>
+<li><a href="https://spec.commonmark.org/0.28">CommonMark (spec 0.28)</a> for specific version compatibility</li>
+<li><a href="https://github.com/vsch/laravel-translation-manager">GitHub</a> Comments</li>
+</ul>
+</li>
+<li><a href="https://daringfireball.net/projects/markdown/">Markdown.pl</a>
+<ul>
+<li>[ ] <a href="https://michelf.ca/projects/php-markdown/extra/#abbr">Php Markdown Extra</a></li>
+<li><a href="https://github.com/vsch/laravel-translation-manager">GitHub</a> Docs (old GitHub markdown parser)</li>
+</ul>
+</li>
+<li><a href="https://kramdown.gettalong.org">Kramdown</a></li>
+<li>FixedIndent
+<ul>
+<li><a href="https://fletcherpenney.net/multimarkdown">MultiMarkdown</a></li>
+<li><a href="http://pegdown.org">Pegdown</a></li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/information_source.png" alt="emoji symbols:information_source" height="20" width="20" align="absmiddle" /> profiles to encapsulate configuration details for variants within the
+family were added in 0.11.0:</p>
+<ul>
+<li>CommonMark (default for family): <code>ParserEmulationProfile.COMMONMARK</code></li>
+<li>FixedIndent (default for family): <code>ParserEmulationProfile.FIXED_INDENT</code></li>
+<li>GitHub Comments (just CommonMark): <code>ParserEmulationProfile.COMMONMARK</code></li>
+<li>Old GitHub Docs: <code>ParserEmulationProfile.GITHUB_DOC</code></li>
+<li>Kramdown (default for family): <code>ParserEmulationProfile.KRAMDOWN</code></li>
+<li>Markdown.pl (default for family): <code>ParserEmulationProfile.MARKDOWN</code></li>
+<li>MultiMarkdown: <code>ParserEmulationProfile.MULTI_MARKDOWN</code></li>
+<li>Pegdown, with pegdown extensions use <code>PegdownOptionsAdapter</code> in <code>flexmark-profile-pegdown</code></li>
+<li>Pegdown, without pegdown extensions <code>ParserEmulationProfile.PEGDOWN</code></li>
+<li>Pegdown HTML block parsing rules, without pegdown extensions
+<code>ParserEmulationProfile.PEGDOWN_STRICT</code></li>
+</ul>
+<h3><a href="#history-and-motivation" id="history-and-motivation">History and Motivation</a></h3>
+<p><strong>flexmark-java</strong> is a fork of <a href="https://github.com/atlassian/commonmark-java">commonmark-java</a> project, modified to generate an AST which
+reflects all the elements in the original source, full source position tracking for all elements
+in the AST and easier JetBrains Open API PsiTree generation.</p>
+<p>The API was changed to allow more granular control of the parsing process and optimized for
+parsing with a large number of installed extensions. The parser and extensions come with many
+tweaking options for parser behavior and HTML rendering variations. The end goal is to have the
+parser and renderer be able to mimic other parsers with great degree of accuracy.</p>
+<p>Motivation for this was the need to replace <a href="http://pegdown.org">pegdown</a> parser in <a href="http://vladsch.com/product/markdown-navigator">Markdown Navigator</a> plugin.
+<a href="http://pegdown.org">pegdown</a> has a great feature set but its speed in general is less than ideal and for
+pathological input either hangs or practically hangs during parsing.</p>
+<p><a href="https://github.com/atlassian/commonmark-java">commonmark-java</a> has an excellent parsing architecture that is easy to understand and extend.
+The goal was to ensure that adding source position tracking in the AST would not change the ease
+of parsing and generating the AST more than absolutely necessary.</p>
+<p>Reasons for choosing <a href="https://github.com/atlassian/commonmark-java">commonmark-java</a> as the parser are: speed, ease of understanding, ease of
+extending and speed. More detailed description in
+<a href="http://vladsch.com/blog/15">Pegdown - Achilles heel of the Markdown Navigator plugin</a>. Now that I have reworked the core
+and added a few extensions I am extremely satisfied with my choice.</p>
+<p>Another goal was to improve the ability of extensions to modify parser behavior so that any
+dialect of markdown could be implemented through the extension mechanism. An extensible options
+API was added to allow setting of all options in one place. Parser, renderer and extensions use
+these options for configuration, including disabling some core block parsers.</p>
+<p>This is a work in progress with many API changes. No attempt is made to keep backward API
+compatibility to the original project and until the feature set is mostly complete, not even to
+earlier versions of this project.</p>
+<h3><a href="#feature-comparison" id="feature-comparison">Feature Comparison</a></h3>
+<table>
+<thead>
+<tr><th align="left">Feature</th><th align="left">flexmark-java</th><th align="left">commonmark-java</th><th align="left">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">Relative parse time (less is better)</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /> 1x <a href="#1">(1)</a></td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /> 0.6x to 0.7x <a href="#2">(2)</a></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> 25x average, 20,000x to ∞ for pathological input <a href="#3">(3)</a></td></tr>
+<tr><td align="left">All source elements in the AST</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td></tr>
+<tr><td align="left">AST elements with source position</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /> with some errors and idiosyncrasies</td></tr>
+<tr><td align="left">AST can be easily manipulated</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /> AST post processing is an extension mechanism</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /> AST post processing is an extension mechanism</td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> not an option. No node's parent information, children as List&lt;&gt;.</td></tr>
+<tr><td align="left">AST elements have detailed source position for all parts</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> only node start/end</td></tr>
+<tr><td align="left">Can disable core parsing features</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /></td></tr>
+<tr><td align="left">Core parser implemented via the extension API</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> <code>instanceOf</code> tests for specific block parser and node classes</td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> core exposes few extension points</td></tr>
+<tr><td align="left">Easy to understand and modify parser implementation</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> one PEG parser with complex interactions <a href="#3">(3)</a></td></tr>
+<tr><td align="left">Parsing of block elements is independent from each other</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> everything in one PEG grammar</td></tr>
+<tr><td align="left">Uniform configuration across: parser, renderer and all extensions</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> none beyond extension list</td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> <code>int</code> bit flags for core, none for extensions</td></tr>
+<tr><td align="left">Parsing performance optimized for use with extensions</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> parsing performance for core, extensions do what they can</td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> performance is not a feature</td></tr>
+<tr><td align="left">Feature rich with many configuration options and extensions out of the box</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> limited extensions, no options</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td></tr>
+<tr><td align="left">Dependency definitions for processors to guarantee the right order of processing</td><td align="left"><img src="/img/heavy_check_mark.png" alt="emoji symbols:heavy_check_mark" height="20" width="20" align="absmiddle" /></td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> order specified by extension list ordering, error prone</td><td align="left"><img src="/img/x.png" alt="emoji symbols:x" height="20" width="20" align="absmiddle" /> not applicable, core defines where extension processing is added</td></tr>
+</tbody>
+</table>
+<!--
+|  | :x: | :x: | :x: |
+|  | :x: | :x: | :x: |
+|  | :x: | :x: | :x: |
+|  | :x: | :x: | :x: |
+|  | :x: | :x: | :x: |
+|--|:----|:----|:----|
+|  | :x: | :x: | :x: |
+-->
+<h6><a href="#1" id="1">(1)</a></h6>
+<p>flexmark-java pathological input of 100,000 <code>[</code> parses in 68ms, 100,000 <code>]</code> in 57ms, 100,000
+nested <code>[</code> <code>]</code> parse in 55ms</p>
+<h6><a href="#2" id="2">(2)</a></h6>
+<p>commonmark-java pathological input of 100,000 <code>[</code> parses in 30ms, 100,000 <code>]</code> in 30ms, 100,000
+nested <code>[</code> <code>]</code> parse in 43ms</p>
+<h6><a href="#3" id="3">(3)</a></h6>
+<p>pegdown pathological input of 17 <code>[</code> parses in 650ms, 18 <code>[</code> in 1300ms</p>
+<h2><a href="#progress" id="progress">Progress</a></h2>
+<ul>
+<li>Parser options, items marked as a task item are to be implemented the rest are complete:
+<ul>
+<li>Typographic
+<ul>
+<li>Quotes</li>
+<li>Smarts</li>
+</ul>
+</li>
+<li>GitHub Extensions
+<ul>
+<li>Fenced code blocks</li>
+<li>Anchor links for headers with auto id generation</li>
+<li>Table Spans option to be implemented for tables extension</li>
+<li>Wiki Links with GitHub and Creole syntax</li>
+<li>Emoji Shortcuts with use GitHub emoji URL option</li>
+</ul>
+</li>
+<li>GitHub Syntax
+<ul>
+<li>Strikethrough</li>
+<li>Task Lists</li>
+<li>No Atx Header Space</li>
+<li>No Header indents</li>
+<li>Hard Wraps (achieved with SOFT_BREAK option changed to <code>&quot;&lt;br /&gt;&quot;</code>)</li>
+<li>Relaxed HR Rules Option</li>
+<li>Wiki links</li>
+</ul>
+</li>
+<li>Publishing
+<ul>
+<li>Abbreviations</li>
+<li>Footnotes</li>
+<li>Definitions</li>
+<li>Table of Contents</li>
+</ul>
+</li>
+<li>Suppress
+<ul>
+<li>inline HTML: all, non-comments, comments</li>
+<li>HTML blocks: all, non-comments, comments</li>
+</ul>
+</li>
+<li>Processor Extensions
+<ul>
+<li>Jekyll front matter</li>
+<li>Jekyll tag elements, with support for <code>{% include file %}</code>,
+<a href="../../wiki/Usage#include-markdown-and-html-file-content">Include Markdown and HTML File Content</a></li>
+<li>GitBook link URL encoding. Not applicable</li>
+<li>HTML comment nodes: Block and Inline</li>
+<li>Multi-line Image URLs</li>
+<li>Spec Example Element</li>
+</ul>
+</li>
+<li>Commonmark Syntax suppression
+<ul>
+<li>Manual loose lists</li>
+<li>Numbered lists always start with 1.</li>
+<li>Fixed list item indent, items must be indented by at least 4 spaces</li>
+<li>Relaxed list start option, allow lists to start when not preceded by a blank line.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>I am very pleased with the decision to switch to <a href="https://github.com/atlassian/commonmark-java">commonmark-java</a> based parser for my own
+projects. Even though I had to do major surgery on its innards to get full source position
+tracking and AST that matches source elements, it is a pleasure to work with and is now a
+pleasure to extend. If you don't need source level element AST or the rest of what flexmark-java
+added and <a href="https://commonmark.org">CommonMark</a> is your target markdown parser then I encourage you to use
+<a href="https://github.com/atlassian/commonmark-java">commonmark-java</a> as it is an excellent choice for your needs and its performance does not
+suffer for the overhead of features that you will not use.</p>
+<h2><a href="#benchmarks" id="benchmarks">Benchmarks</a></h2>
+<p>Latest, Jan 28, 2017 flexmark-java 0.13.1, intellij-markdown from CE EAP 2017, commonmark-java
+0.8.0:</p>
+<table>
+<thead>
+<tr><th align="left">File</th><th align="right">commonmark-java</th><th align="right">flexmark-java</th><th align="right">intellij-markdown</th><th align="right">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">README-SLOW</td><td align="right">0.420ms</td><td align="right">0.812ms</td><td align="right">2.027ms</td><td align="right">15.483ms</td></tr>
+<tr><td align="left">VERSION</td><td align="right">0.743ms</td><td align="right">1.425ms</td><td align="right">4.057ms</td><td align="right">42.936ms</td></tr>
+<tr><td align="left">commonMarkSpec</td><td align="right">31.025ms</td><td align="right">44.465ms</td><td align="right">600.654ms</td><td align="right">575.131ms</td></tr>
+<tr><td align="left">markdown_example</td><td align="right">8.490ms</td><td align="right">10.502ms</td><td align="right">223.593ms</td><td align="right">983.640ms</td></tr>
+<tr><td align="left">spec</td><td align="right">4.719ms</td><td align="right">6.249ms</td><td align="right">35.883ms</td><td align="right">307.176ms</td></tr>
+<tr><td align="left">table</td><td align="right">0.229ms</td><td align="right">0.623ms</td><td align="right">0.800ms</td><td align="right">3.642ms</td></tr>
+<tr><td align="left">table-format</td><td align="right">1.385ms</td><td align="right">2.881ms</td><td align="right">4.150ms</td><td align="right">23.592ms</td></tr>
+<tr><td align="left">wrap</td><td align="right">3.804ms</td><td align="right">4.589ms</td><td align="right">16.609ms</td><td align="right">86.383ms</td></tr>
+</tbody>
+</table>
+<p>Ratios of above:</p>
+<table>
+<thead>
+<tr><th align="left">File</th><th align="right">commonmark-java</th><th align="right">flexmark-java</th><th align="right">intellij-markdown</th><th align="right">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">README-SLOW</td><td align="right">1.00</td><td align="right">1.93</td><td align="right">4.83</td><td align="right">36.88</td></tr>
+<tr><td align="left">VERSION</td><td align="right">1.00</td><td align="right">1.92</td><td align="right">5.46</td><td align="right">57.78</td></tr>
+<tr><td align="left">commonMarkSpec</td><td align="right">1.00</td><td align="right">1.43</td><td align="right">19.36</td><td align="right">18.54</td></tr>
+<tr><td align="left">markdown_example</td><td align="right">1.00</td><td align="right">1.24</td><td align="right">26.34</td><td align="right">115.86</td></tr>
+<tr><td align="left">spec</td><td align="right">1.00</td><td align="right">1.32</td><td align="right">7.60</td><td align="right">65.09</td></tr>
+<tr><td align="left">table</td><td align="right">1.00</td><td align="right">2.72</td><td align="right">3.49</td><td align="right">15.90</td></tr>
+<tr><td align="left">table-format</td><td align="right">1.00</td><td align="right">2.08</td><td align="right">3.00</td><td align="right">17.03</td></tr>
+<tr><td align="left">wrap</td><td align="right">1.00</td><td align="right">1.21</td><td align="right">4.37</td><td align="right">22.71</td></tr>
+<tr><td align="left"><strong>overall</strong></td><td align="right"><strong>1.00</strong></td><td align="right"><strong>1.41</strong></td><td align="right"><strong>17.47</strong></td><td align="right"><strong>40.11</strong></td></tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th align="left">File</th><th align="right">commonmark-java</th><th align="right">flexmark-java</th><th align="right">intellij-markdown</th><th align="right">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">README-SLOW</td><td align="right">0.52</td><td align="right">1.00</td><td align="right">2.50</td><td align="right">19.07</td></tr>
+<tr><td align="left">VERSION</td><td align="right">0.52</td><td align="right">1.00</td><td align="right">2.85</td><td align="right">30.12</td></tr>
+<tr><td align="left">commonMarkSpec</td><td align="right">0.70</td><td align="right">1.00</td><td align="right">13.51</td><td align="right">12.93</td></tr>
+<tr><td align="left">markdown_example</td><td align="right">0.81</td><td align="right">1.00</td><td align="right">21.29</td><td align="right">93.66</td></tr>
+<tr><td align="left">spec</td><td align="right">0.76</td><td align="right">1.00</td><td align="right">5.74</td><td align="right">49.15</td></tr>
+<tr><td align="left">table</td><td align="right">0.37</td><td align="right">1.00</td><td align="right">1.28</td><td align="right">5.85</td></tr>
+<tr><td align="left">table-format</td><td align="right">0.48</td><td align="right">1.00</td><td align="right">1.44</td><td align="right">8.19</td></tr>
+<tr><td align="left">wrap</td><td align="right">0.83</td><td align="right">1.00</td><td align="right">3.62</td><td align="right">18.83</td></tr>
+<tr><td align="left"><strong>overall</strong></td><td align="right"><strong>0.71</strong></td><td align="right"><strong>1.00</strong></td><td align="right"><strong>12.41</strong></td><td align="right"><strong>28.48</strong></td></tr>
+</tbody>
+</table>
+<hr />
+<p>Because these two files represent the pathological input for pegdown, I no longer run them as
+part of the benchmark to prevent skewing of the results. The results are here for posterity.</p>
+<table>
+<thead>
+<tr><th align="left">File</th><th align="right">commonmark-java</th><th align="right">flexmark-java</th><th align="right">intellij-markdown</th><th align="right">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">hang-pegdown</td><td align="right">0.082ms</td><td align="right">0.326ms</td><td align="right">0.342ms</td><td align="right">659.138ms</td></tr>
+<tr><td align="left">hang-pegdown2</td><td align="right">0.048ms</td><td align="right">0.235ms</td><td align="right">0.198ms</td><td align="right">1312.944ms</td></tr>
+</tbody>
+</table>
+<p>Ratios of above:</p>
+<table>
+<thead>
+<tr><th align="left">File</th><th align="right">commonmark-java</th><th align="right">flexmark-java</th><th align="right">intellij-markdown</th><th align="right">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">hang-pegdown</td><td align="right">1.00</td><td align="right">3.98</td><td align="right">4.17</td><td align="right">8048.38</td></tr>
+<tr><td align="left">hang-pegdown2</td><td align="right">1.00</td><td align="right">4.86</td><td align="right">4.10</td><td align="right">27207.32</td></tr>
+<tr><td align="left"><strong>overall</strong></td><td align="right"><strong>1.00</strong></td><td align="right"><strong>4.30</strong></td><td align="right"><strong>4.15</strong></td><td align="right"><strong>15151.91</strong></td></tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th align="left">File</th><th align="right">commonmark-java</th><th align="right">flexmark-java</th><th align="right">intellij-markdown</th><th align="right">pegdown</th></tr>
+</thead>
+<tbody>
+<tr><td align="left">hang-pegdown</td><td align="right">0.25</td><td align="right">1.00</td><td align="right">1.05</td><td align="right">2024.27</td></tr>
+<tr><td align="left">hang-pegdown2</td><td align="right">0.21</td><td align="right">1.00</td><td align="right">0.84</td><td align="right">5594.73</td></tr>
+<tr><td align="left"><strong>overall</strong></td><td align="right"><strong>0.23</strong></td><td align="right"><strong>1.00</strong></td><td align="right"><strong>0.96</strong></td><td align="right"><strong>3519.73</strong></td></tr>
+</tbody>
+</table>
+<ul>
+<li><a href="https://github.com/vsch/idea-multimarkdown/blob/master/test/data/performance/VERSION.md">VERSION.md</a> is the version log file I use for Markdown Navigator</li>
+<li><a href="https://github.com/vsch/idea-multimarkdown/blob/master/test/data/performance/commonMarkSpec.md">commonMarkSpec.md</a> is a 33k line file used in <a href="https://github.com/valich/intellij-markdown">intellij-markdown</a> test suite for performance
+evaluation.</li>
+<li><a href="https://github.com/vsch/idea-multimarkdown/blob/master/test/data/performance/spec.md">spec.txt</a> commonmark spec markdown file in the <a href="https://github.com/atlassian/commonmark-java">commonmark-java</a> project</li>
+<li><a href="https://github.com/vsch/idea-multimarkdown/blob/master/test/data/performance/hang-pegdown.md">hang-pegdown.md</a> is a file containing a single line of 17 characters <code>[[[[[[[[[[[[[[[[[</code>
+which causes pegdown to go into a hyper-exponential parse time.</li>
+<li><a href="https://github.com/vsch/idea-multimarkdown/blob/master/test/data/performance/hang-pegdown2.md">hang-pegdown2.md</a> a file containing a single line of 18 characters <code>[[[[[[[[[[[[[[[[[[</code> which
+causes pegdown to go into a hyper-exponential parse time.</li>
+<li><a href="https://github.com/vsch/idea-multimarkdown/blob/master/test/data/performance/wrap.md">wrap.md</a> is a file I was using to test wrap on typing performance only to discover that it
+has nothing to do with the wrap on typing code when 0.1 seconds is taken by pegdown to parse
+the file. In the plugin the parsing may happen more than once: syntax highlighter pass, psi
+tree building pass, external annotator.</li>
+<li>markdown_example.md a file with 10,000+ lines containing 500kB+ of text.</li>
+</ul>
+<h2><a href="#contributing" id="contributing">Contributing</a></h2>
+<p>Pull requests, issues and comments welcome <img src="/img/smile.png" alt="emoji people:smile" height="20" width="20" align="absmiddle" />. For pull requests:</p>
+<ul>
+<li>Add tests for new features and bug fixes, preferably in the
+<a href="flexmark-core-test/src/test/resources/ast_spec.md">ast_spec.md</a> format</li>
+<li>Follow the existing style to make merging easier, as much as possible: 4 space indent,
+trailing spaces trimmed.</li>
+</ul>
+<hr />
+<h2><a href="#license" id="license">License</a></h2>
+<p>Copyright (c) 2015-2016 Atlassian and others.</p>
+<p>Copyright (c) 2016-2020, Vladimir Schneider,</p>
+<p>BSD (2-clause) licensed, see <a href="LICENSE.txt">LICENSE.txt</a> file.</p>
