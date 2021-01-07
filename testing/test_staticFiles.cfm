@@ -2,19 +2,19 @@
 
 # test_staticFiles
 
-Test pad for testing api
+Test pad for testing staticFiles component
 
 ## Usage
 
-Configure a test file and staticDefTest and run. It will show the html from getLinks
+Create a staticfiles object and Use test_js.json as the definition file.
+
+Create a page struct and then output the links for debug mode and live mode.
 
 --->
 
 <cfscript>
-staticDefTest = {"jquery":true};
-
 defFile = ExpandPath("test_js.json");
-local.tempData = fileRead(defFile);
+local.tempData = FileRead(defFile);
 try {
 	local.jsonData = deserializeJSON(local.tempData);
 }
@@ -23,7 +23,15 @@ catch (Any e) {
 }
 
 staticFilesObj = createObject("component", "publishing.staticFiles").init(staticDef=local.jsonData);
+
+// js = {"testpackage":true,"main":true,"notdefined":1};
+js = {"fuzzy":true};
+writeOutput("<h3>Debug</h3>");
 writeOutput("<pre>");
-writeOutput(htmlEditFormat(staticFilesObj.getLinks(scripts=staticDefTest)));
+writeOutput(htmlEditFormat(staticFilesObj.getLinks(js,true)));
+writeOutput("</pre>");
+writeOutput("<h3>Live</h3>");
+writeOutput("<pre>");
+writeOutput(htmlEditFormat(staticFilesObj.getLinks(js,false)));
 writeOutput("</pre>");
 </cfscript>

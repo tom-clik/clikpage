@@ -1,44 +1,80 @@
 {
     "scripts": [
         {
-            "min": "http://local.clikpic.com/_common/_styles/reset_v2.css",
+            "debug": "/_shared/_assets/css/reset.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/reset.css",
             "name": "reset"
         },
         {
+            "debug": "/_shared/_assets/css/breadcrumb.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/breadcrumb.css",
+            "name": "breadcrumb"
+        },
+        {
+            "debug": "/_shared/_assets/css/footnotes.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/footnotes.css",
+            "name": "footnotes"
+        },
+        {
+            "debug": "/_shared/_assets/css/menus.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/menus.css",
+            "name": "menus"
+        },
+        {
+            "debug": "/_shared/_assets/css/navbuttons.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/navbuttons.css",
+            "name": "navbuttons"
+        },
+        {
+            "debug": "/_shared/_assets/css/images.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/images.css",
+            "name": "images"
+        },
+        {
+            "debug": "/_shared/_assets/css/definitions.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/definitions.css",
+            "name": "definitions"
+        },
+        {
+        	"debug": "/_shared/_assets/css/select2.min.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
             "name": "select2"
         },
         {
+        	"debug": "/_shared/_assets/css/jquery-ui.css",
             "min": "https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css",
             "name": "jqueryui"
         },
         {
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css",
-            "name": "chosen"
-        },
-        {
+            "debug": "/_shared/_assets/css/jquery.dataTables.min.css",
             "min": "https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css",
             "name": "datatables"
         },
         {
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css",
-            "name": "fontawesome"
-        }        ,
-        {
-            "min": "styles/_partials/_colors.css",
-            "name": "colors"
+            "min": "/_shared/metadata/assets/css/forms.css",
+            "name": "forms"
         },
         {
-            "min": "styles/_partials/_forms.css",
-            "name": "forms"
+            "debug": "/_shared/_assets/css/elegant_font/css/style.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/elegant_font/css/style.css",
+            "name": "elegant_font"
+        },
+        {
+        	"note": "For fonts, you can install the font locally and use a local font declaration",
+        	"debug": "/_shared/_assets/css/fonts/open_sans_local.css",
+            "min": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800",
+            "name": "fonts"
+        },
+        {
+            "debug": "/_shared/_assets/css/styles.css",
+            "min": "https://www.coldlight.net/_shared/_assets/css/styles.css",
+            "name": "styles",
+            "requires": "reset,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
+        },
+        {
+        	"debug": "/_shared/_assets/css/font-awesome/4.5.0/css/font-awesome.min.css",
+        	"min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
+            "name": "fontawesome"
         }
-    ],
-    "packagesNOTRIGHT": [
-    	{
-    		"site": {
-    			"scripts":["reset","colors","forms"]
-    		}
-    	}
     ]
-
 }
