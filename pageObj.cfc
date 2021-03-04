@@ -38,7 +38,8 @@ component {
 			"onready"="",
 			"meta"=[],
 			"links"=[],
-			"layout"=""
+			"layout"="",
+			"gtag"=""
 		};
 		
 		if (arguments.jsdef != "") {
@@ -152,6 +153,10 @@ component {
 		}
 
 		local.bodyClass = arguments.content.bodyClass;
+
+		if (arguments.content.gtag != "") {
+			page &=  gtagScript(arguments.content.gtag);
+		}
 		
 		// legacy functionality
 		if (arguments.content.layout != "") {
@@ -229,6 +234,16 @@ component {
 		return local.jsonData;
 	}
 
-
+	/** Add Google Analytics 4 script */
+	public string function gtagScript(required string gtag) {
+		local.tag = "	<script async src=""https://www.googletagmanager.com/gtag/js?id=#arguments.gtag#""></script>";
+		local.tag &= "	<script>";
+		local.tag &= "	  window.dataLayer = window.dataLayer || [];";
+		local.tag &= "	  function gtag(){dataLayer.push(arguments);}";
+		local.tag &= "	  gtag('js', new Date());";
+		local.tag &= "	  gtag('config', '#arguments.gtag#');";
+		local.tag &= "	</script>";
+		return local.tag;
+	}
 
 }
