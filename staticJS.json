@@ -16,61 +16,74 @@
     ],
     "scripts": [
         {
-            "debug": "/_shared/_assets/js/jquery-3.4.1.js",
+            "debug": "/_assets/js/jquery-3.4.1.js",
             "min": "https://code.jquery.com/jquery-3.4.1.min.js",
             "name": "jquery",
             "packageExclude": 1
         },
         {
-            "debug": "/_shared/metadata/assets/js/query-ui.min.js",
+            "debug": "/_assets/js/query-ui.min.js",
             "min": "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
             "name": "jqueryui",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-            "debug": "/_shared/metadata/assets/js/jquery.validate.js",
+            "debug": "/_assets/js/jquery.validate.js",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
             "name": "validate",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-            "min": "https://www.coldlight.net/_assets/js/fts_fuzzy_match.js",
-            "debug": "/coldlight/_assets/js/fts_fuzzy_match.js",
+            "min": "/_assets/js/fts_fuzzy_match.js",
+            "debug": "/_assets/js/fts_fuzzy_match.js",
             "name": "fuzzy",
             "requires": "jquery"
         },
         {
-            "min": "https://www.coldlight.net/_assets/js/search.js",
-            "debug": "/coldlight/_assets/js/search.js",
+            "min": "/_assets/js/search.js",
+            "debug": "/_assets/js/search.js",
             "name": "search",
             "requires": "jquery"
         },
         {
-            "min": "/_shared/metadata/assets/js/metaForms.js",
-            "name": "metaforms",
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_shared/_assets/js/jquery.dataTables.min.js",
+            "debug": "/_assets/js/jquery.dataTables.min.js",
             "min": "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js",
             "name": "datatables",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-            "debug": "/_shared/_assets/js/select2.min.js",
+            "debug": "/_assets/js/select2.min.js",
             "min": "https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js",
             "name": "select2",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-        	"debug": "/coldlight/_assets/js/menuScroll.js",
-            "min": "https://www.coldlight.net/_assets/js/menuScroll.js",
+        	"debug": "/_assets/js/menuScroll.js",
+            "min": "/_assets/js/menuScroll.js",
             "name": "menuScroll",
             "requires": "jquery"
+        },
+        {
+            "debug": "/_assets/js/jquery.menu.js",
+            "min": "/_assets/js/jquery.menu.js",
+            "name": "menus",
+            "requires": "jquery"
+        },
+        {
+            "debug": "/_assets/js/imagesloaded.pkgd.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
+            "name": "imagesloaded",
+            "requires": "jquery"
+        },
+        {
+            "debug": "/_assets/js/masonry.pkgd.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+            "name": "masonry",
+            "requires": "imagesloaded,jquery"
         }
     ]
 }

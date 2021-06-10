@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stylesheet>
+
+	<colors>
+		<color name="text" title="Main text color" value="#333333">
+			<description></description>
+		</color>
+		<color name="myfav" title="My favourtie colour" value="#ff0000">
+			<description></description>
+		</color>
+	</colors>
+
+	<media>
+		<medium name="main" />
+		<medium name="mid" max="800" />
+		<medium name="mobile" max="600" />
+	</media>
+
+	<layouts>
+		<testlayout>
+			<sitewidth>1400px</sitewidth>
+		</testlayout>
+		<testlayout3>
+			<subcolwidth>20%</subcolwidth>
+			<xcolwidth>0%</xcolwidth>
+		</testlayout3>
+		
+	</layouts>
+
+	<content>
+
+		<mainmenu>
+			<main>
+				<orientation>vertical</orientation>
+				<menucolor>#ff0000</menucolor>
+				<menuhicolor>#00ff00</menuhicolor>
+			</main>
+			<mid>
+
+			</mid>
+
+		</mainmenu>
+		<footermenu>
+			<main>
+				<flex>true</flex>
+			</main>
+			<mid>
+
+			</mid>
+			
+		</footermenu>
+
+		<imagegrid>
+			<main>
+				<masonry>true</masonry>
+				<max-width>260px</max-width>
+			</main>
+			<mid>
+
+			</mid>
+		</imagegrid>
+
+	</content>
+
+</stylesheet>
+
+
+

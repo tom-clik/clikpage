@@ -19,7 +19,8 @@
             "scripts": [
                 "metaforms",
                 "datatables",
-                "select2"
+                "select2",
+                "fuzzy"
             ]
         }
     ],
@@ -67,6 +68,12 @@
             "min": "https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js",
             "name": "select2",
             "packageExclude": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/_assets/js/menus.js",
+            "min": "/_assets/js/menus.js",
+            "name": "menus",
             "requires": "jquery"
         }
     ]

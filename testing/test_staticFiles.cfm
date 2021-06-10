@@ -22,10 +22,11 @@ catch (Any e) {
 	throw("Unable to parse static files definition file #arguments.defFile#");	
 }
 
-staticFilesObj = createObject("component", "publishing.staticFiles").init(staticDef=local.jsonData);
+staticFilesObj = createObject("component", "clikpage.staticFiles").init(staticDef=local.jsonData);
 
 // js = {"testpackage":true,"main":true,"notdefined":1};
-js = {"fuzzy":true};
+// js = {"fuzzy":true};
+js = {"menus":true};
 writeOutput("<h3>Debug</h3>");
 writeOutput("<pre>");
 writeOutput(htmlEditFormat(staticFilesObj.getLinks(js,true)));

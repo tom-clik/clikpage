@@ -1,52 +1,64 @@
 {
     "scripts": [
         {
-            "debug": "/_shared/_assets/css/reset.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/reset.css",
+            "debug": "/_assets/css/reset.css",
+            "min": "/_assets/css/reset.css",
             "name": "reset"
         },
         {
-            "debug": "/_shared/_assets/css/breadcrumb.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/breadcrumb.css",
+            "debug": "/_assets/css/columns.css",
+            "min": "/_assets/css/columns.css",
+            "name": "columns",
+            "requires": "reset"
+        },
+        {
+            "debug": "/_assets/css/items.css",
+            "min": "/_assets/css/items.css",
+            "name": "items",
+            "requires": "reset"
+        },
+        {
+            "debug": "/_assets/css/breadcrumb.css",
+            "min": "/_assets/css/breadcrumb.css",
             "name": "breadcrumb"
         },
         {
-            "debug": "/_shared/_assets/css/footnotes.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/footnotes.css",
+            "debug": "/_assets/css/footnotes.css",
+            "min": "/_assets/css/footnotes.css",
             "name": "footnotes"
         },
         {
-            "debug": "/_shared/_assets/css/menus.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/menus.css",
+            "debug": "/_assets/css/menus.css",
+            "min": "/_assets/css/menus.css",
             "name": "menus"
         },
         {
-            "debug": "/_shared/_assets/css/navbuttons.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/navbuttons.css",
+            "debug": "/_assets/css/navbuttons.css",
+            "min": "/_assets/css/navbuttons.css",
             "name": "navbuttons"
         },
         {
-            "debug": "/_shared/_assets/css/images.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/images.css",
+            "debug": "/_assets/css/images.css",
+            "min": "/_assets/css/images.css",
             "name": "images"
         },
         {
-            "debug": "/_shared/_assets/css/definitions.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/definitions.css",
+            "debug": "/_assets/css/definitions.css",
+            "min": "/_assets/css/definitions.css",
             "name": "definitions"
         },
         {
-        	"debug": "/_shared/_assets/css/select2.min.css",
+        	"debug": "/_assets/css/select2.min.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
             "name": "select2"
         },
         {
-        	"debug": "/_shared/_assets/css/jquery-ui.css",
+        	"debug": "/_assets/css/jquery-ui.css",
             "min": "https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css",
             "name": "jqueryui"
         },
         {
-            "debug": "/_shared/_assets/css/jquery.dataTables.min.css",
+            "debug": "/_assets/css/jquery.dataTables.min.css",
             "min": "https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css",
             "name": "datatables"
         },
@@ -55,23 +67,23 @@
             "name": "forms"
         },
         {
-        	"debug": "/_shared/_assets/css/fonts/open_sans_local.css",
+        	"debug": "/_assets/css/fonts/open_sans_local.css",
             "min": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800",
             "name": "fonts"
         },
         {
-            "debug": "/_shared/_assets/css/elegant_font/css/style.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/elegant_font/css/style.css",
+            "debug": "/_assets/css/elegant_font/css/style.css",
+            "min": "/_assets/css/elegant_font/css/style.css",
             "name": "elegant_font"
         },
         {
-            "debug": "/_shared/_assets/css/styles.css",
-            "min": "https://www.coldlight.net/_shared/_assets/css/styles.css",
+            "debug": "/_assets/css/styles.css",
+            "min": "/_assets/css/styles.css",
             "name": "styles",
-            "requires": "reset,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
+            "requires": "reset,items,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
         },
         {
-        	"debug": "/_shared/_assets/css/font-awesome/4.5.0/css/font-awesome.min.css",
+        	"debug": "/_assets/css/font-awesome/4.5.0/css/font-awesome.min.css",
         	"min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
             "name": "fontawesome"
         }

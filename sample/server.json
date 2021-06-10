@@ -1,7 +1,17 @@
 {
+    "app":{
+        "cfengine":"lucee@5",
+        "libDirs":"D:\\apps\\commandbox\\java"
+    },
+    "profile":"development",
     "web":{
+        "http":{
+            "port":"8086"
+        },
         "aliases":{
-            "/_common":"C:\\clik\\clikpic\\wwwroot\\_common"
+            "/customtags":"D:\\git\\clikpic\\CustomTags",
+            "/_common":"D:\\git\\clikpic\\wwwroot\\_common",
+            "/_assets":"D:\\git\\coldlight\\_assets"
         }
     }
 }

@@ -7,34 +7,87 @@
  * 
  * ### Configuration
  * 
- * Configure a definition along the lines of the sample
+ * Configure a definition along the lines of the sample. See Scripts and Packages below for details
  * 
- * The script array is the order in which the scripts must appear
- * 
- * Each script entry must have a name and a min entry.
- * 
- * name   Idenitifier
- * min    Minimised version
- * debug  Debug version
- * package Package idenitifier. The pakcage will be used in live mode
- * 
+ * The script array is the order in which the scripts must appear.
+
  * ### Use
+ *
+ * NB this can be used on its own but is designed for use the the pageObject component.
+ *
+ * If you do want to just use this, you can instantiate the component in a permanent scope and initialise with the definition and your required prefix/suffix
  * 
- * Instantiate the component in a permanent scope and initialise with the definition and your required prefix/suffix
+ * To add files of packages, add to a "set" (a struct with a redundant key), e.g.
  * 
- * On requestStart, create a struct in the request scope. Use the request.prc scope 
- * 
- * You can combine this with a string for the onready method, e.g.
- * 
- *     request.prc.js = {static={},onready=""}
- * 
- * To add files of packages, add the struct with a redundant key
- * 
- *     request.prc.js.static["myscript"] = 1
+ *     js_static["myscript"] = 1
  *     
- * To get the list of scripts for the page, use the `getLinks()` method, e.g.
+ * To get the list of script/style tags for an HTML page, use the `getLinks()` method, e.g.
  * 
- *     writeOutput(application.staticFiles.getLinks(request.prc.js.static));
+ *     getLinks(js_static);
+ *
+ * To use the "debug" versions (if specified) call the method with  getLinks(js_static,true);
+ *
+ * #### Scripts
+ *
+ * Scripts (meaning css or js files) are defined as an array of objects with the following keys
+ *
+ * :name
+ *    The name by which the script is referenced
+ * :min
+ * 	  src of the production version of the script (usually minimised or such). Can only be omitted if the script is in a bundled package.
+ * :debug
+ *    The debug version of the script. Can be omitted if a min version is specified. In debug mode, scripts are always included seperately even if in a bundled package
+ * :requires
+ *     List or array of required scripts. Always include all required scripts even if it's something as common as jquery
+ * :packageExclude (boolean)
+ *     Always show separate file even if in a package that is bundled. Typically the "min" script will be served from a CDN
+ *
+ * Note the order of the array is the order the scripts appear in the page.
+ * 
+ * Sample script entry
+ *
+ * ```
+{
+    "debug": "/_assets/js/jquery.validate.js",
+    "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
+    "name": "validate",
+    "packageExclude": 1,
+    "requires": "jquery"
+}
+```
+ *
+ * #### Packages
+ *
+ * Groups of scripts can be defined in packages. These are added in the same way as normal scripts, e.g. for the package defined below:
+ *
+ * js_static["main"] = 1
+ *  
+ * These can include scripts like jquery that won't be "bundled". For any given script definition, the packageExclude
+ * field can be set to true to ensure the individual script is always used, usually from a CDN.
+ *
+ * A package can also be set to not to be packed. Otherwise an "min" attribute must be set for the packaged files (the src). Even if all scripts are marked packageExclude you must still supply either pack:false or a "min" src.
+ * 
+ * The static object can make attempts at packaging using legacy java components but this is
+ * off-piste. Gulp or other systems can also be used.
+ *  
+ * ```
+ * packages": [
+        {
+            "scripts": [
+                "jquery",
+                "jqueryui",
+                "validate",
+                "fuzzy",
+                "metaforms",
+                "datatables",
+                "select2"
+            ],
+            "pack":false,
+            "name":"main"
+        }
+    ]
+    ```
+ * 
  *    
  */
 
@@ -70,11 +123,30 @@ component {
 		variables.packageCache = {};
 
 		for (local.script in variables.scripts) {
+			// defaults
+			StructAppend(local.script, {"packageExclude":0}, false);
 			variables.scriptCache[local.script.name] = local.script;
+			if (! StructKeyExists(local.script,"name")) {
+				throw("No name defined for script in json definition");
+			}
+			if (local.script.packageExclude && !StructKeyExists(local.script,"min")) {
+				throw("No min (the src) defined for script in json definition");
+			}
+			else if (!local.script.packageExclude && !StructKeyExists(local.script,"min") && !StructKeyExists(local.script,"debug")) {
+				throw("No min or debug defined for script in json definition");
+			}
 		}
 
 		for (local.script in variables.packages) {
+			StructAppend(local.script, {"pack":true}, false);
+			if (! StructKeyExists(local.script,"name")) {
+				throw("No name defined for package in json definition");
+			}
+			if (local.script.pack && !StructKeyExists(local.script,"min")) {
+				throw("No min (the src) defined for package in json definition");
+			}
 			variables.packageCache[local.script.name] = local.script;
+
 		}
 		
 
@@ -89,60 +161,69 @@ component {
 
 	public string function getLinks(required struct scripts, boolean debug=false) {
 
-		local.packagesRequired = {};
+		
 		local.packagesIncluded = {};
+		local.scriptsInPackage = {};
 		local.ret = "";
 
 		/* check if any packages in script def 
 		 */
-		for (local.script in arguments.scripts) {
-			if (StructKeyExists(variables.packageCache, local.script)) {
-				local.packagesIncluded[local.script] = 1;
+		for (local.scriptname in arguments.scripts) {
+			if (StructKeyExists(variables.packageCache, local.scriptname)) {
+				local.packagesIncluded[local.scriptname] = 1;
+				/* add all scripts from package to list. They may have dependencies */
+				local.package = variables.packageCache[local.scriptname];
+				for (local.script2 in local.package.scripts) {
+					if (StructKeyExists(variables.scriptCache, local.script2)) {
+						local.script = variables.scriptCache[local.script2];
+						arguments.scripts[local.script2] = 1;	
+						if (local.package.pack && !local.script.packageExclude) {
+							local.scriptsInPackage[local.script2] = 1;
+						}
+					}
+				}
 			}
 		}
 
-		/* add all scripts from package to list. They may have dependencies */
-		for (local.script in variables.scripts) {
-			if (structKeyExists(variables.scriptCache, local.script.name) AND 
-				structKeyExists(variables.scriptCache[local.script.name], "package") AND
-				structKeyExists(local.packagesIncluded,variables.scriptCache[local.script.name]["package"])) {	
-				arguments.scripts[local.script.name] = 1;
-			}
-		}
+		
 
 		/* add required scripts and also note if a script is a package */
 		for (local.script in arguments.scripts) {
-			if (structKeyExists(variables.scriptCache, local.script) AND
-				structKeyExists(variables.scriptCache[local.script], "requires")) {
+			if (StructKeyExists(variables.scriptCache, local.script) AND
+				StructKeyExists(variables.scriptCache[local.script], "requires")) {
 				addRequired(arguments.scripts,variables.scriptCache[local.script].requires);
 			}
 		}
 
+		
+		
 		for (local.script in variables.scripts) {
 			//writeDump(local.script);
-			if (structKeyExists(arguments.scripts, local.script.name)) {
-				if (arguments.debug AND structKeyExists(variables.scriptCache[local.script.name], "debug")) {
-					local.ret &= variables.prefix & variables.scriptCache[local.script.name]["debug"] & variables.suffix;
+			if (StructKeyExists(arguments.scripts, local.script.name)) {
+				
+				if (arguments.debug) {
+					local.scriptSrc = StructKeyExists(variables.scriptCache[local.script.name], "debug") ? variables.scriptCache[local.script.name]["debug"] : variables.scriptCache[local.script.name]["min"];
+					local.ret &= variables.prefix &local.scriptSrc  & variables.suffix;
 				}
-				else if (structKeyExists(variables.scriptCache[local.script.name], "package")) {
-					local.packagesRequired[variables.scriptCache[local.script.name].package] = 1;
-				}
-				else {
+				else if (! StructKeyExists(local.scriptsInPackage, local.script.name) || local.script.packageExclude) {
 					local.ret &= variables.prefix & variables.scriptCache[local.script.name]["min"] & variables.suffix;
 				}
+				else if (arguments.debug) {
+					local.ret &= "<!--#local.script.name#  not found -->";
+				}
 			}
-			else {
-				//writeOutput("#local.script.name#  not found");
-			}
+			
 		}
-
-		//writeOutput(local.ret);
 
 		for (local.script in variables.packages) {
-			if (structKeyExists(local.packagesRequired, local.script.name)) {
-				local.ret &= variables.prefix & variables.packageCache[local.script.name].min & variables.suffix;
+			if (StructKeyExists(arguments.scripts, local.script.name)) {
+				if (!arguments.debug  && StructKeyExists(local.packagesIncluded,local.script.name) && variables.packageCache[local.script.name].pack) {
+					local.ret &= variables.prefix & variables.packageCache[local.script.name]["min"] & variables.suffix;
+				}
 			}
 		}
+
+
 
 		return local.ret;
 
