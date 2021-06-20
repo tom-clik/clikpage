@@ -10,6 +10,7 @@
 		return this;
 	}
 
+	/** Load an XML settings definition */
 	public struct function loadStyleSheet(required string filename) {
 
 		if (!FileExists(arguments.filename)) {
@@ -23,8 +24,8 @@
 
 	}
 
-
-	public string function getLayoutCss(required struct settings) {
+	/** get CSS for general page layout */
+	public string function getLayoutCss(required struct settings, boolean debug=this.debug) {
 
 		local.css = "";
 
@@ -41,7 +42,7 @@
 			}
 		}
 
-		if (this.debug) {
+		if (arguments.debug) {
 			local.css = replace(local.css, "\n", this.cr,"all");
 			local.css = replace(local.css, "\t", chr(9),"all");
 		}

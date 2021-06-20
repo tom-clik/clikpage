@@ -19,11 +19,6 @@ component {
 	 */
 	public pageObj function init(string cssdef="local",string jsdef="local", boolean debug=false) {
 		
-		this.site = {
-			"title"="Page Object demo",
-			"copyright"="&copy; Tom Peer 1999-2020"
-		};
-		
 		this.content = {
 			"title"="Page object",
 			"charset"="UTF-8",
@@ -44,11 +39,11 @@ component {
 		
 		if (arguments.jsdef != "") {
 			if (arguments.jsdef == "local") {
-				arguments.jsdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticJS.json";
+				arguments.jsdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticFiles\staticJS.json";
 			}
 			local.jsDef = loadDefFile(arguments.jsdef);
 			variables.hasStaticJS = true;
-			this.jsStaticFiles =  CreateObject("component", "clikpage.staticFiles").init(local.jsDef);	
+			this.jsStaticFiles =  CreateObject("component", "clikpage.staticFiles.staticFiles").init(local.jsDef);	
 		}
 		else {
 			variables.hasStaticJS = false;
@@ -56,10 +51,10 @@ component {
 		
 		if (arguments.cssdef != "") {
 			if (arguments.cssdef == "local") {
-				arguments.cssdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticCSS.json";
+				arguments.cssdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticFiles\staticCSS.json";
 			}
 			local.cssDef = loadDefFile(arguments.cssdef);
-			this.cssStaticFiles =  CreateObject("component", "clikpage.staticFiles").init(local.cssDef);
+			this.cssStaticFiles =  CreateObject("component", "clikpage.staticFiles.staticFiles").init(local.cssDef);
 			this.cssStaticFiles.setCss();
 			variables.hasStaticCSS = true;
 		}
@@ -82,7 +77,21 @@ component {
 		return Duplicate(this.content);
 	}
 
-
+	/**
+	 * @hint   add meta tag data to the content
+	 *
+	 * E.g. to add
+	 *
+	 * <meta property="og:title" content="Open graph title">
+	 *
+	 * Use addMeta(content=request.rc.content, name="og:title",value="Open graph title", type="property")
+	 * 
+	 * @content Page content struct
+	 * @name value of name attribute (see also "type"). Must be defined in variables.metaTypes
+	 * @value meta content
+	 * @type  meta tag type  to e.g. "property".
+	 * 
+	 */
 	public string function addMeta(required struct content, required string name, required string value, string type="name") {
 		if (! StructKeyExists(variables.metaTypes, arguments.type)) {
 			throw("Invalid meta property #arguments.name#");
@@ -92,13 +101,15 @@ component {
 	/**
 	 * @hint      Add an html link tag
 	 *
+	 * E.g. <link rel="icon" href="/favicon.ico" type="image/x-icon">
+	 *
 	 * @content  The page content struct
 	 * @rel      Relationship e.g. "stylesheet"
 	 * @href     href
 	 * @type     Type to add to link tag e.g. "image/x-icon"
-	 * @crossorigin     Type to add to link tag e.g. "image/x-icon"
+	 * @crossorigin   Allow crossorigin
+	 * @hreflang   hreflang attribute to add to tag
 	 *
-	 * @return     { description_of_the_return_value }
 	 */
 
 	public string function addLink(required struct content, required string rel, required string href, string type="", boolean crossorigin=0,string hreflang="") {

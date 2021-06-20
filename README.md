@@ -12,7 +12,7 @@ Designed as a singleton pattern module for instantiation in the application scop
 
 Every component on a page (e.g. a menu) adds required javascript and css either by reference (e.g. "jquery"), by filename, or with inline code.
 
-E.g.
+### Example Usage
 
 You create the page content in onRequestStart:
 

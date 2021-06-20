@@ -23,8 +23,8 @@ jsoup = createObject( "java", "org.jsoup.Jsoup" );
 for (test in tests) {
 	
 	myrenderer = createObject( "java", "Flexmark" ).init("#test#");
-	mytext = FileRead(ExpandPath("markdown/#test#.md"),"utf-8");
-	myresult = jsoup.parse(trim(FileRead(ExpandPath("markdown/#test#.html"),"utf-8"))).body().html();
+	mytext = FileRead(ExpandPath("#test#.md"),"utf-8");
+	myresult = jsoup.parse(trim(FileRead(ExpandPath("#test#.html"),"utf-8"))).body().html();
 	start = getTickCount();
 	raw = myrenderer.render(mytext);
 	outhtml = jsoup.parse(trim(raw)).body().html();

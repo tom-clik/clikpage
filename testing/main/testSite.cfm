@@ -11,7 +11,7 @@ StructAppend(request.rc,url,false);
 param name="request.rc.section" default="home";
 
 contentObj = createObject("component", "clikpage.contentObj").init();
-layoutObj = createObject("component", "clikpage.layouts.layouts").init(getDirectoryFromPath(getCurrentTemplatePath()));
+layoutObj = createObject("component", "clikpage.layouts.layouts").init(ExpandPath("../layouts"));
 pageObj = createObject("component", "clikpage.pageObj").init(debug=1);
 settingsObj = createObject("component", "clikpage.settingsObj").init(debug=1);
 siteObj = createObject("component", "clikpage.site.siteObj").init(debug = true);
