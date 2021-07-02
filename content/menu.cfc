@@ -12,11 +12,21 @@ component extends="contentSection" {
 		// static css definitions
 		variables.static_css = {"menus"=1};
 		variables.static_js ={"menus"=1};
+		variables.settings = {
+			"menu" = {
+				"orientation" 	= "horizontal",
+				"flex" = false
+			}
+		};
 		
+		variables.panels = [
+			{"name":"item", "selector": " li"}
+		];
+
 		return this;
 
 	}
-	/** TODO: remove and valdate properly somewhere */
+	/** TODO: remove and validate properly somewhere */
 	private array function getFakeData(boolean submenu=false) {
 		
 		local.data = [];
@@ -72,53 +82,54 @@ component extends="contentSection" {
 
 	}
 
-	
-	function settings(required struct content) {
-		
-		if (! StructKeyExists(arguments.content,"settings")) {
-			arguments.content["settings"] = {
-				"main" = {}
-			};
-		}
 
-		StructAppend(arguments.content["settings"], {"main" = {}}, false);
 
-		StructAppend(arguments.content["settings"]["main"],  
-			{
-			"orientation" 	= "horizontal",
-			"flex" = false
-			}
-			,false);
-		
-
-		return arguments.content.settings;
-
-	}
-
-	public string function css(required struct content, string selector, string media="main") {
+	public string function css(required struct settings, required string selector) {
 			
 		var ret = "";
-		var settings = settings(arguments.content);
+		var t = "";
+
+		local.settings = arguments.settings.menu;
 
 		ret &= arguments.selector  & " ul {\n";
-		
-		if (settings[arguments.media].orientation eq "vertical") {
+
+		if (StructKeyExists(local.settings,"min-height")) {
+			ret &= "\tmin-height: #local.settings["min-height"]#;\n";
+		}
+
+		if (local.settings.orientation eq "vertical") {
+			ret &= "\tdisplay: grid;\n";
 			ret &= "\tgrid-template-columns: 1fr;\n";
 		}
 		else {
-			if (settings[arguments.media].flex) {
+			if (local.settings.flex) {
 				ret &= "\tdisplay: flex;\n";
 				ret &= "\tflex-wrap: wrap;\n";
 				ret &= "\tflex-direction: row;\n";
+				if (StructKeyExists(local.settings,"align")) {
+					switch(local.settings.align) {
+						case "left":
+							ret &= "\tjustify-content: flex-start;\n";
+							break;
+						case "right":
+							ret &= "\tjustify-content: flex-end;\n";
+							break;
+						case "spaced":
+							ret &= "\tjustify-content: space-evenly;\n";
+							break;
+					}
+					
+				}
 			}
 			else {
+				ret &= "\tdisplay: grid;\n";
 				ret &= "\tgrid-template-columns: repeat(auto-fill, minmax(100px,1fr));\n";
 			}
 		}
 
 		for (local.setting in ["menucolor","menuhicolor","menubordercolor","menuactivecolor","menugap","menucolumngap","menuitempadding"]) {
-			if (StructKeyExists(settings[arguments.media],local.setting)) {
-				ret &= "\t--#local.setting#:" & settings[arguments.media]["#local.setting#"] & ";\n";
+			if (StructKeyExists(local.settings,local.setting)) {
+				ret &= "\t--#local.setting#:" & local.settings["#local.setting#"] & ";\n";
 			}
 		}
 

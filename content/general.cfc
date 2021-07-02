@@ -12,6 +12,14 @@ component extends="contentSection" {
 		};
 		
 		variables.static_css = {"items":1, "images":1};
+		variables.settings = {
+			"heading_position" = "top",
+			"mobile_heading_position" = "top",
+			"align" = "none",
+			"imagewidth" = "",
+			"titletag" = "h3",
+			"showtitle" = true
+		};
 
 		return this;
 	}
@@ -36,24 +44,10 @@ component extends="contentSection" {
 		return cs;
 	}
 	
-	// scratch pad settings functionality.
-	function settings(required struct content) {
-		if (! StructKeyExists(arguments.content,"settings")) {
-			arguments.content["settings"] = {};
-			arguments.content.settings["heading_position"] = "top";
-			arguments.content.settings["mobile_heading_position"] = "top";
-			arguments.content.settings["align"] = "none";
-			arguments.content.settings["imagewidth"] = "";
-			arguments.content.settings["titletag"] = "h3";
-			arguments.content.settings["showtitle"] = true;
-		}
-		return arguments.content.settings;
 
-	}
-
-	public string function html(required struct content) {
+	public string function html(required struct content, struct settings) {
 		
-		var cssettings = settings(arguments.content);
+		var cssettings = structKeyExists(arguments,"settings") ? arguments.settings.main : arguments.content.settings.main;
 		arguments.content.class["item"] = 1;
 		if (cssettings.heading_position == "top") {
 			arguments.content.class["htop"] = 1;
@@ -90,19 +84,17 @@ component extends="contentSection" {
 	}
 
 
-	public string function css(required struct content, string selector) {
+	public string function css(required struct settings, required string selector) {
 		
-		local.select = StructKeyExists(arguments,"selector") ? arguments.selector : "###arguments.content.id#";
-		var settings = settings(arguments.content);
 		var css = "";
-		if (arguments.content.settings.imagewidth != "") {
-			css = "#local.select# {\n";
-			css &= "\t--imagewidth: #arguments.content.settings.imagewidth#;\n";
+		if (arguments.settings.imagewidth != "") {
+			css = "#arguments.selector# {\n";
+			css &= "\t--imagewidth: #arguments.settings.imagewidth#;\n";
 			css &= "}\n\n";
-			css &= "#local.select#.wide.right {\n";
+			css &= "#arguments.selector#.wide.right {\n";
 			css &= "\tgrid-template-columns: auto var(--imagewidth);\n";
 			css &= "}\n\n";
-			css &= "#local.select#.wide.left {\n";
+			css &= "#arguments.selector#.wide.left {\n";
 			css &= "\tgrid-template-columns: var(--imagewidth) auto;\n";
 			css &= "}\n\n";
 		}

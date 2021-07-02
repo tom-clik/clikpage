@@ -1,3 +1,20 @@
+/**
+ * Singleton component for defining layouts
+ *
+ * An actual layout has the following keys
+ *
+ * layout    Jsoup document of parsed html
+ * title     Title of the layout
+ * meta      Struct of meta data with key and value. NB this is for information and documentation of the layouts and is unlreated to html meta data
+ * columns   column layout for standard column grid.
+ *
+ * 
+
+			
+			
+ * 
+ * 
+ */
 component name="layouts" {
 
 	layouts function init(string layoutBase, string charset="utf-8") {	
@@ -19,6 +36,7 @@ component name="layouts" {
 		}
 		
 		variables.layouts = {};
+		variables.html = {};
 
 		return this;
 	}
@@ -63,8 +81,13 @@ component name="layouts" {
 				if (StructKeyExists(local.body.data,"extends")) {
 					extendLayout(local.layoutObj, local.body.data.extends);		
 				}
+				if (StructKeyExists(local.body.data,"columns")) {
+					local.layoutObj["columns"] = local.body.data.columns;		
+				}
 			}
 			
+			// local.layoutObj["layout"].select("div[id]").addClass("container");
+
 			parseContentSections(local.layoutObj);
 
 			variables.layouts[arguments.layout] = local.layoutObj;
@@ -73,9 +96,17 @@ component name="layouts" {
 
 		return variables.layouts[arguments.layout];
 
+	}
+
+	public string function getHTML(required layoutObj) {
+
+		addInners(arguments.layoutObj);
+
+		return arguments.layoutObj.body().html();
 
 	}
 
+	/** Extend layout with values from "parent" */
 	private void function extendLayout(required layout, required string extends) {
 		local.extends = getLayout(arguments.extends);
 		local.parentlayout = local.extends.layout;
@@ -83,11 +114,15 @@ component name="layouts" {
 			local.div =  this.coldsoup.XMLNode2Struct(local.node);
 			local.parentlayout.select("##" & local.div.id).html(local.node.html());
 		}
+		if (StructKeyExists(local.extends,"columns") && ! StructKeyExists(arguments.layout,"columns")) {
+			arguments.layout.columns = local.extends.columns;
+		}
+		
 		arguments.layout.layout = local.parentlayout;
 
 	}
 
-	/** parse any content tags into structs of data
+	/** @hint parse any content tags into structs of data
 
 	Every tag or attribute is added as a struck key. Data attributes are added to a data struct.
 	
@@ -106,20 +141,35 @@ component name="layouts" {
 				if (! StructKeyExists(local.cs,"id")) {
 					throw("ID not found for cs #local.contentObj.html()#");
 				}
-				// /** remove non html attributes */
-				// for (local.attr in local.cs) {
-				// 	if (! StructKeyExists(variables.htmlAttrs,local.attr)) {
-				// 		local.contentObj.removeAttr(local.attr);
-				// 	}
-				// }
 				
+				// // convert class attribute to struct
+				// if (StructKeyExists(local.cs, "class")) {
+				// 	local.tmpClass = {};
+				// 	for (local.className in ListToArray(local.cs.class," ")) {
+				// 		local.tmpClass[local.className] = 1;
+				// 	}
+				// 	local.cs.class = local.tmpClass;
+				// }
+
 				arguments.layout["content"][local.cs.id] = local.cs;
 
 			}
 		}
 
-
 	}
 
+	/** inner divs applied to children of uberContainer */
+	private void function addInners(required layoutObj) {
+		// inner divs applied to children of uberContainer
+		// if you don't want this, don't use uberContainer...
+		local.test = arguments.layoutObj.select("##uberContainer > div");
+		for (local.temp in local.test) {
+			local.temp.html("<div class='inner'>" & local.temp.html() & "</div>");
+			// writeDump(local.test2.outerHtml());
+			// writeOutput(htmlEditFormat(local.temp.outerHtml()));
+			//wrap("<div class='inner'></div>")
+		}
+			
+	}
 
 }

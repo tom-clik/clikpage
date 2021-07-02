@@ -1,26 +1,34 @@
 component {
+	/** Pseudo constructor 
 
-	public contentObj function init(string types="general,title,menu,text,image,imagegrid,articlelist") {
+	@types list of content section types to load
+	*/
+	public contentObj function init(string types="general,title,menu,text,image,imagegrid,articlelist", required settingsObj) {
 		this.cr = chr(13) & chr(10);
 		this.contentSections = {};
 		this.debug = false;
 		for (local.type in ListToArray(arguments.types)) {
 			load(local.type);
 		}
-		
+		variables.defaultMedia = [{"name"="main"}];
+		this.settingsObj = arguments.settingsObj;
+		this.utils = CreateObject("component", "utils.utilsold");
+
 		return this;
 	}
 
-	public void function load(required string type) {
+	/** Load a content section type */
+	private void function load(required string type) {
 		this.contentSections[arguments.type] = createObject("component", "clikpage.content.#type#").init(this);
 	}
 
+	/** Create a new content section */
 	public struct function new(required string id, string type="general", string class, string title, string content,string image, string caption, string link) {
 		if (!StructKeyExists(this.contentSections,arguments.type)) {
 			throw(message="type #arguments.type# is not a valid content sections type");
 		}
+
 		local.cs =this.contentSections[arguments.type].new(argumentCollection=arguments);
-		this.contentSections[arguments.type].settings(local.cs);
 
 		return local.cs;
 	}
@@ -36,8 +44,9 @@ component {
 		return ret;
 		
 	}
-	/* 
-	@hint Wrap html in div with required atteibutes for clik system 
+
+	/** 
+	@hint Wrap html in div with required attributes for clik system 
 	
 	There is duplication here as when we use a jsoup layout, we don't use this function as there isn't an easy
 	way to replace node. Any functionality here needs to be duplicated in the functionality that places html into
@@ -61,44 +70,78 @@ component {
 	}
 
 	/* get individual css for a content section */
-	public string function css(required struct content) {
+	public string function css(required struct content, required array media) {
 		
-		var css = this.contentSections[arguments.content.type].css(arguments.content, "##" & arguments.content.id);
+		var css = "";
 
-		if (this.debug) {
-			css = "/* css for #arguments.content.id# [#arguments.content.type#] */\n" & css;
-			css = replace(css, "\n", this.cr,"all");
-			css = replace(css, "\t", chr(9),"all");
+		if (! StructKeyExists(arguments.content, "settings")) {
+			return "/* Settings not defined for cs */";
 		}
-		else {
-			/** to do: rewrite with java regex to avoid cf bugs */
-			css = replace(css, "\t", "","all");
-			css = replace(css, "\n", "","all");
-			css = REReplace(css,"\/\*.*?\*\/","","all");
-		}
+
 		
+
+		for (local.mediaQuery in arguments.media) {
+
+			local.medium = local.mediaQuery.name;
+
+			if (StructKeyExists(arguments.content.settings, local.medium)) {
+				
+				if (local.medium != "main") {
+					css &="@media.#local.medium# {\n";
+				}
+				
+				css &= "##" & arguments.content.id & " {\n";
+				css &= this.settingsObj.css(settings=arguments.content.settings[local.medium]);
+				css &= "}\n";
+				css &= this.contentSections[arguments.content.type].css(settings=arguments.content.settings[local.medium], selector="##" & arguments.content.id);
+				
+				css &= this.contentSections[arguments.content.type].panelCss(settings=arguments.content.settings[local.medium], selector="##" & arguments.content.id);
+
+				if (local.medium != "main") {
+					css &= "}\n";
+				}
+			}
+		}
+
 		return css;
 	}
 
-	/* get individual css for a content section */
-	public string function css(required struct content) {
-		
-		var css = this.contentSections[arguments.content.type].css(arguments.content, "##" & arguments.content.id);
 
-		if (this.debug) {
-			css = "/* css for #arguments.content.id# [#arguments.content.type#] */\n" & css;
-			css = replace(css, "\n", this.cr,"all");
-			css = replace(css, "\t", chr(9),"all");
+
+	/**
+	 * @hint Update settings for a content section
+	 * 
+	 * 
+	 */
+	public struct function settings(required struct content, required struct styles ) {
+		
+		if (StructKeyExists(arguments.styles.content, arguments.content.id)) {
+			// to do: inheritance
+			arguments.content.settings = Duplicate(arguments.styles.content[arguments.content.id]);
 		}
 		else {
-			/** to do: rewrite with java regex to avoid cf bugs */
-			css = replace(css, "\t", "","all");
-			css = replace(css, "\n", "","all");
-			css = REReplace(css,"\/\*.*?\*\/","","all");
+			arguments.content.settings =  {};
 		}
+
+		if (StructKeyExists(arguments.content,"class")) {
+			// to do: some sort of sort order for this.
+			for (local.class in arguments.content.class) {
+				if (StructKeyExists(arguments.styles.content, local.class)) {
+					fnDeepStructAppend(arguments.content.settings,arguments.styles.content[local.class]);
+				}
+				
+			}
+		}
+			
+
 		
-		return css;
-	}
+		
+		this.contentSections[arguments.content.type].settings(arguments.content, arguments.styles.media);
+
+		return arguments.content.settings;
+
+	}	
+
 
 	/**
 	 * @hint Get struct of page content
@@ -108,9 +151,9 @@ component {
 	Individual cs page content can be appended to an existing pageContent struct with the methd addPageContent
 
 	@content content section
-	@get inline css. Usually this will have been saved to a separate file
+	
 	*/
-	public struct function getPageContent(required struct content, boolean css = false) {
+	public struct function getPageContent(required struct content) {
 		
 		var pageContent = {};
 		
@@ -118,25 +161,32 @@ component {
 		pageContent["static_js"] = getStaticJS(arguments.content);
 		pageContent["onready"] = getOnready(arguments.content);
 		
-		if (arguments.css) {
-			pageContent["css"] = this.css(arguments.content);
-		}	
-		
 		return pageContent;
 
 	}
 
+	/**
+	 * @hint Add page content elements for a content section to a main page struct
+	 *
+	 * Each content section has content like static file references. As part of the page build
+	 * process, these need amalgamating. Some are struct appended, some text appeneded.
+	 *
+	 * @pageContent Main page content
+	 * @content     content sections
+	 */
 	public void function addPageContent(required struct pageContent, required struct content) {
 		
 		for (local.key in ['static_css','static_js','onready','css']) {
-			switch (local.key) {
-				case "static_css": case "static_js": 
-					StructAppend(arguments.pageContent[local.key],arguments.content[local.key]);
-				break;
-				case "onready": case "css": 
-					arguments.pageContent[local.key] &= arguments.content[local.key];
-				break;
-				default:
+			if (StructKeyExists(arguments.content,local.key)) {
+				switch (local.key) {
+					case "static_css": case "static_js": 
+						StructAppend(arguments.pageContent[local.key],arguments.content[local.key]);
+					break;
+					case "onready": case "css": 
+						arguments.pageContent[local.key] &= arguments.content[local.key];
+					break;
+					default:
+				}
 			}
 		}
 		
@@ -168,6 +218,22 @@ component {
 		return js;
 	}
 
+	/**
+	 * Appends the second struct to the first.
+	 */
+	void function fnDeepStructAppend(struct struct1, struct struct2, overwrite="true") output=false {
+		
+		for(local.key IN arguments.struct2){
+			if(StructKeyExists(arguments.struct1,local.key) AND 
+				IsStruct(arguments.struct2[local.key]) AND 
+				IsStruct(arguments.struct1[local.key])){
+				fnDeepStructAppend(arguments.struct1[local.key],arguments.struct2[local.key],arguments.overwrite);
+			}
+			else if (arguments.overwrite OR NOT StructKeyExists(arguments.struct1,local.key)){
+				arguments.struct1[local.key] = Duplicate(arguments.struct2[local.key]);
+			}
+		}
+	}
 
 
 }

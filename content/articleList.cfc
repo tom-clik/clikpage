@@ -23,7 +23,7 @@ component extends="general" {
 		
 		for (local.item in arguments.content.data) {
 			cshtml &= "<div class='item left htop'>";
-			cshtml &= super.html(local.item);
+			cshtml &= super.html(local.item, arguments.content.settings);
 			cshtml &= "</div>";
 		}
 
@@ -34,14 +34,12 @@ component extends="general" {
 	}
 
 
-	public string function css(required struct content, string selector) {
+	public string function css(required struct settings, required string selector) {
 		
-		local.select = StructKeyExists(arguments,"selector") ? arguments.selector : "###arguments.content.id#";
-		var settings = settings(arguments.content);
 		var css = "";
-		if (arguments.content.settings.imagewidth != "") {
+		if (arguments.settings.imagewidth != "") {
 			css = "#local.select# {\n";
-			css &= "\t--imagewidth: #arguments.content.settings.imagewidth#;\n";
+			css &= "\t--imagewidth: #arguments.settings.imagewidth#;\n";
 			css &= "}\n\n";
 			css &= "#local.select#.wide.right {\n";
 			css &= "\tgrid-template-columns: auto var(--imagewidth);\n";

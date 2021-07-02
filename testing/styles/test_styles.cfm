@@ -1,16 +1,25 @@
 <cfscript>
-contentObj = CreateObject("component", "clikpage.contentObj").init();
 
 settingsObj = CreateObject("component", "clikpage.settingsObj").init(debug=1);
+contentObj = CreateObject("component", "clikpage.contentObj").init(settingsObj=settingsObj);
 
 contentObj.debug = true;
 
 styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
 
+writeDump(styles);
+
 css = "";
+css &= settingsObj.fontVariablesCSS(styles);
+css &= settingsObj.layoutCss(styles);
+css &= settingsObj.containerCss(styles,"body","body");
 
-css &= settingsObj.getLayoutCss(styles);
+css &= "@media.mobile {\n ";
+css &= settingsObj.containerCss(styles,"body","body","mobile");
+css &= settingsObj.containerCss(styles,"header","##header .inner","mobile");
+css &=  "\n}\n";
 
-WriteOutput("<pre>" & HtmlEditFormat(css) & "</pre>");
+WriteOutput("<pre>" & HtmlEditFormat(settingsObj.outputFormat(css,styles)) & "</pre>");
+
 
 </cfscript>

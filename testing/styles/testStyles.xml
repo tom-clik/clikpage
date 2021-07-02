@@ -2,12 +2,25 @@
 <stylesheet>
 
 	<colors>
-		<color name="text" title="Main text color" value="#333333">
+		<color name="textcolor" title="Main text color" value="#333333">
 			<description></description>
 		</color>
-		<color name="myfav" title="My favourtie colour" value="#ff0000">
+		<color name="myfavcolor" title="My favourtie colour" value="#ff0000">
 			<description></description>
 		</color>
+		<color name="panel-bg" title="Darker panel bg" value="#01798a">
+			<description></description>
+		</color>
+		<color name="accent" title="Accent colour" value="#38bbcd">
+			<description></description>
+		</color>
+		<color name="panel-text" title="Panel text" value="#ffffff">
+			<description>To stand out against darker panel or accent</description>
+		</color>
+		<color name="light-panel-bg" title="Light panel packground" value="#eaeaea">
+			<description></description>
+		</color>
+		
 	</colors>
 
 	<media>
@@ -16,10 +29,18 @@
 		<medium name="mobile" max="600" />
 	</media>
 
+	<fonts>
+		<font name="titlefont" value="Lato" />
+		<font name="bodyfont" value="Open Sans" />
+		<font name="test" face="broken" />
+	</fonts>
+
 	<layouts>
+
 		<testlayout>
 			<sitewidth>1400px</sitewidth>
 		</testlayout>
+		
 		<testlayout3>
 			<subcolwidth>20%</subcolwidth>
 			<xcolwidth>0%</xcolwidth>
@@ -29,38 +50,201 @@
 
 	<content>
 
-		<mainmenu>
+		<body>
 			<main>
-				<orientation>vertical</orientation>
-				<menucolor>#ff0000</menucolor>
-				<menuhicolor>#00ff00</menuhicolor>
+				<color>textcolor</color>
+				<font-family>bodyfont</font-family>
+				<font-size>80%</font-size>
+				<padding>0</padding>
 			</main>
-			<mid>
+		</body>
 
-			</mid>
+		<sitetitle>
+			<main>
+				<color>panel-text</color>		
+				<margin>12 0 12 12</margin>
+				<font-size>200%</font-size>
+			</main>
+		</sitetitle>
+
+		<header>
+			<main>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+				<background>
+					<color>panel-bg</color>
+				</background>
+				<grid>
+					<gap>0</gap>
+					<grid-template-columns>max-content auto</grid-template-columns>
+				</grid>
+			</main>
+			<mobile>
+				<grid>
+					<grid>0</grid>
+				</grid>
+			</mobile>
+		</header>
+
+		<mainmenu>
+
+			<main>
+				<menu>
+					<orientation>vertical</orientation>
+				</menu>
+			</main>	
 
 		</mainmenu>
-		<footermenu>
+
+		<topmenu>
 			<main>
-				<flex>true</flex>
+				<menu>
+					<flex>true</flex>
+					<align>right</align>
+					<min-height>100%</min-height>
+				</menu>
+				
+				<height>100%</height>
+
+				<item>
+					<font-size>120%</font-size>
+					<text-transform>uppercase</text-transform>
+					<color>panel-text</color>
+					<hover>
+						<background><color>accent</color></background>
+					</hover>
+					<hi>
+						<background><color>accent</color></background>
+					</hi>
+					<padding>0 20</padding>
+
+				</item>
 			</main>
 			<mid>
-
+				<menu>
+					<align>left</align>
+					<height>auto</height>
+				</menu>
+				<height>auto</height>
 			</mid>
+
+			<mobile>
+				<show>0</show>
+			</mobile>			
+		</topmenu>
+
+		<footer>
+			<main>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</main>
+			<mobile>
+				<grid>
+					<grid>0</grid>
+				</grid>
+			</mobile>
+		</footer>
+
+		<topnav>
+			<main>
+				<background>
+					<color>light-panel-bg</color>
+				</background>
+				<padding>8 0</padding>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</main>
+		</topnav>
+
+		<footermenu>
+			<main>
+				<menu>
+					<flex>true</flex>
+				</menu>
+				<border>
+					<width>1</width>
+					<color>myfavcolor</color>
+				</border>
+				<padding>2</padding>
+
+			</main>
 			
+			<mobile>
+				<menu>
+					<orientation>vertical</orientation>
+				</menu>
+			</mobile>
+
 		</footermenu>
 
 		<imagegrid>
 			<main>
 				<masonry>true</masonry>
-				<max-width>260px</max-width>
+				<imagegrid>
+					<max-width>160px</max-width>
+				</imagegrid>
 			</main>
 			<mid>
-
+				<masonry>false</masonry>
+				<imagegrid>
+					<max-width>220px</max-width>
+				</imagegrid>
 			</mid>
+			<mobile>
+				<masonry>false</masonry>
+				<imagegrid>
+					<max-width>260px</max-width>
+				</imagegrid>
+			</mobile>
 		</imagegrid>
 
+		<content>
+
+			<main>
+				<padding>8 0</padding>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</main>
+
+		</content>
+
+		<sectiontitle>
+			<main>
+				<margin>0 0 1em 0</margin>
+			</main>
+		</sectiontitle>
+		<scheme-title>
+			
+			<main>
+				<color>accent</color>
+				<font-family>bodyfont</font-family>
+				<font-size>2.4em</font-size>
+				<font-weight>300</font-weight>
+			</main>
+
+		</scheme-title>
+
+		<scheme-intros>
+			
+			<main>
+				<font-weight>bold</font-weight>
+				<font-style>italic</font-style>
+				<margin>0 0 1em 0</margin>
+			</main>
+
+		</scheme-intros>
+
 	</content>
+
+
 
 </stylesheet>
 

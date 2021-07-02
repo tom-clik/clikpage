@@ -1,4 +1,23 @@
 {
+    "packages": [
+        {
+            "scripts": [
+                "reset",
+                "columns",
+                "items",
+                "images",
+                "definitions",
+                "forms",
+                "title",
+                "breadcrumb",
+                "footnotes",
+                "menus",
+                "navbuttons"
+            ],
+            "name":"content",
+            "pack":false
+        }
+    ],
     "scripts": [
         {
             "debug": "/_assets/css/reset.css",
@@ -48,6 +67,11 @@
             "name": "definitions"
         },
         {
+            "debug": "/_assets/css/title.css",
+            "min": "/_assets/css/title.css",
+            "name": "title"
+        },
+        {
         	"debug": "/_assets/css/select2.min.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
             "name": "select2"
@@ -63,18 +87,9 @@
             "name": "datatables"
         },
         {
-            "min": "/_shared/metadata/assets/css/forms.css",
-            "name": "forms"
-        },
-        {
-        	"debug": "/_assets/css/fonts/open_sans_local.css",
-            "min": "https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800",
+        	"debug": "/_assets/css/fonts/fonts_local.css",
+            "min": "/_assets/css/fonts/fonts.css",
             "name": "fonts"
-        },
-        {
-            "debug": "/_assets/css/elegant_font/css/style.css",
-            "min": "/_assets/css/elegant_font/css/style.css",
-            "name": "elegant_font"
         },
         {
             "debug": "/_assets/css/styles.css",

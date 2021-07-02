@@ -175,7 +175,7 @@ component {
 		}
 
 		page &= "</head>#cr#";
-		page &= "<body class='#local.bodyClass#'>#cr#";
+		page &= "<body class='#local.bodyClass#' id='body'>#cr#";
 		page &= arguments.content.body & cr;
 		
 		if (variables.hasStaticJS) {

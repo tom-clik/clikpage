@@ -6,20 +6,20 @@
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-extends="testlayout1/testlayout1">
+<body data-extends="testlayout1/testlayout1" columns="SM">
 		
 	<div id="maincol">
 
 		<div id="maincol_top">
 
-			<content id="sectiontitle" type="title" data-notes="Notes here">
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
 				<title>Section title</title>
 				<content>
 				{{section.title}}
 				</content>
 			</content>
 
-			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here">
+			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here" class="scheme-intros">
 				<title>Section intro</title>
 				<content>
 				{{section.intro}}

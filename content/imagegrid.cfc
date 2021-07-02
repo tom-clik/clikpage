@@ -66,14 +66,19 @@ component extends="contentSection" {
 		
 	}
 
-	public string function css(required struct content, string selector, string media="main") {
+	public string function css(required struct settings, required string selector) {
 			
 		var ret = arguments.selector & " {\n";
-		local.settings = this.settings(arguments.content);
-		
-		for (local.setting in ["max-width","max-height"]) {
-			if (StructKeyExists(local.settings[arguments.media],local.setting)) {
-				ret &= "\t--#local.setting#:" & settings[arguments.media][local.setting] & ";\n";
+		// bit of a hack here. Not sure where to place these settings. Can't use root
+		// or "grid" as they will have unintended consequecnes. Feel like we shold have a generic
+		// key for placing main settings e.g. "content".
+		// Same thing sort of applies to image grid 
+		// THP
+		if (structKeyExists(arguments.settings, "imagegrid")) {
+			for (local.setting in ["max-width","max-height"]) {
+				if (StructKeyExists(arguments.settings.imagegrid,local.setting)) {
+					ret &= "\t--#local.setting#:" & arguments.settings.imagegrid[local.setting] & ";\n";
+				}
 			}
 		}
 

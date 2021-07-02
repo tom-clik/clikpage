@@ -6,7 +6,7 @@
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-test="1">
+<body data-test="1" data-columns="SM">
 
 	<div id="uberContainer">
 
@@ -14,24 +14,43 @@
 			<content type="title" id="sitetitle">
 				{{site.title}}	
 			</content>
+			<content id="topmenu" type="menu"></content>
 		</div>
+
+		<div id="topnav">
+			<content type="text" id="breadcrumb">
+				You are here: {{section.location}}	
+			</content>
+		</div> 
+		
 
 		<div id="content">
 
-			<div id="subcol">
-				<content id="mainmenu" type="menu"></content>
+			<div id="contentheader">
+				
 			</div>
 			
-			<div id="maincol">
-				<content id="welcome" data-notes="Notes here">
-					<title>{{section.title}}</title>
-					<content>
-					{{section.copy}}
+			<div id="contentwrap">
+
+				<div id="subcol">
+					<content id="mainmenu" type="menu"></content>
+				</div>
+				
+				<div id="maincol">
+					<content id="welcome" data-notes="Notes here">
+						<title>{{section.title}}</title>
+						<content>
+						{{section.copy}}
+						</content>
 					</content>
-				</content>
+				</div>
+
+				<div id="xcol">
+				</div>
 			</div>
 
-			<div id="xcol">
+			<div id="contentfooter">
+				
 			</div>
 
 		</div>

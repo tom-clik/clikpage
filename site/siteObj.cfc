@@ -27,6 +27,7 @@ component {
 
 	}
 
+	/** Convert XML pasred array into struct keyed by code and append to an array list to keep a record of the order  */
 	private void function parseSections(required struct site) {
 		
 		local.sectionStr = {};
@@ -34,8 +35,10 @@ component {
 		local.sectionArray = [];
 
 		for (local.section in arguments.site.sections) {
+			
 			local.sectionStr[local.section.code] = local.section; 
 			ArrayAppend(local.sectionArray,local.section.code);
+
 		}
 
 		arguments.site["sections"] = local.sectionStr;
@@ -140,6 +143,17 @@ component {
 
 		return arguments.html;
 
+	}
+
+	public string function sectionLocation(required struct site, required string section) {
+
+		local.sectionStr = arguments.site.sections[arguments.section];
+		local.homeSectionStr = arguments.site.sections["home"];
+
+		var html = "<a href='index.cfm?section=home'>" & local.homeSectionStr.title & "</a> &gt; ";
+		html &= "<a href='index.cfm?section=#arguments.section#''>" & local.sectionStr.title & "</a>";
+
+		return html;
 	}
 
 }

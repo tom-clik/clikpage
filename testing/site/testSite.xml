@@ -34,7 +34,7 @@
 			<title>About</title>
 			<layout>testlayout4</layout>
 			<intro>
-				<![CDATA[All about us]]>
+				<![CDATA[This is the section introduction. It's a separate field]]>
 			</intro>
 			<copy>
 				<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>

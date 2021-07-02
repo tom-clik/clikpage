@@ -1,27 +1,32 @@
 <cfscript>
-contentObj = createObject("component", "clikpage.contentObj").init();
-
-settingsObj = createObject("component", "clikpage.settingsObj").init();
+settingsObj = CreateObject("component", "clikpage.settingsObj").init(debug=1);
+contentObj = CreateObject("component", "clikpage.contentObj").init(settingsObj=settingsObj);
 
 contentObj.debug = true;
 
 styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
 
+menu = contentObj.new(id="topmenu",title="Menu",type="menu");
 
+contentObj.settings(menu,styles);
 
+writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu,styles.media),styles,contentObj.debug) & "</pre>");
 
-menu = contentObj.new(id="menu",title="Menu",type="menu");
-writeDump(menu);
+styles.content.topmenu.main.flex = "true";
 
-writeOutput("<pre>" & htmlEditFormat(contentObj.css(menu)) & "</pre>");
+contentObj.settings(menu,styles);
 
-menu.settings.main.flex = "true";
-writeOutput("<pre>" & htmlEditFormat(contentObj.css(menu)) & "</pre>");
+writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu,styles.media),styles,contentObj.debug) & "</pre>");
 
-menu.settings.main.orientation = "vertical";
-menu.settings.main["menugap"] = "12px";
-menu.settings.main["menucolor"] = "##ff00ff";
-menu.settings.main["menuhicolor"] = "##ffff00";
-writeOutput("<pre>" & htmlEditFormat(contentObj.css(menu)) & "</pre>");
+styles.content.topmenu.mobile.orientation = "vertical";
+styles.content.topmenu.main["menugap"] = "12px";
+styles.content.topmenu.main["menucolor"] = "##ff00ff";
+styles.content.topmenu.main["menuhicolor"] = "##ffff00";
+
+styles.content.topmenu.mobile["menugap"] = "12px";
+
+contentObj.settings(menu,styles);
+
+writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu,styles.media),styles,contentObj.debug) & "</pre>");
 
 </cfscript>
