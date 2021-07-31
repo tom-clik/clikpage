@@ -1,4 +1,4 @@
-# Layouts
+# Styling Layouts { #styling-layouts}
 
 Styling can be applied to a layout as a whole. These are applied via a class attached to the body, e.g.
 

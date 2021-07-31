@@ -7,7 +7,7 @@ All styling in Clikpage needs to be in a "medium" of some description. The mediu
 Other media queries can be defined with a minimum and or maximum width.
 
 Typical definitions are "mobile" and "mid". You might also define "wide". The definition would be so:
-
+ 
     <media>
         <medium name="main" />
         <medium name="wide" min="1200" />

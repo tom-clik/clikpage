@@ -2,7 +2,7 @@
 
 Clikpage is a code-free site publishing suite built with CFML. It's a CMS, template, and design tool rolled into one. It can be used in a live application or to generate static HTML sites.
 
-It's component architecture allows it to be easily extended,
+Its component architecture allows it to be easily extended,
 
 
 There are three key parts to it 

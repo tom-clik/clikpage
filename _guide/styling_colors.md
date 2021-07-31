@@ -1,8 +1,8 @@
 # Colors
 
-CSS variables have greatly improved CSS's handling of colors, and we use them to properly abstract color references in the system.
+Another big failing of CSS before variables was that values like colors had to be repeated where used. Color values should never be applied directly, only defined colors names should be used.
 
-Colors are applied directly, only variable substitutions are used.
+Sample color definition:
 
     <colors>
         <color name="textcolor" title="Main text color" value="#333333">
@@ -12,11 +12,11 @@ Colors are applied directly, only variable substitutions are used.
 
 Whenever this color is applied elsewhere in the stylesheet, it is referenced as `textcolor`.
 
-In the CSS, it appears as `var(--textcolor)`;
+In the CSS, it appears as `var(--textcolor);`.
 
 ## Color Abstractions
 
-When preparing Clikpage templates for re-use or sale, colours can be abstracted even when they are the same as another color. This is typically done to create color schemes, e.g.
+When preparing Clikpage templates for re-use or sale, colors can be abstracted even when they are the same as another color. This is typically done to create color schemes, e.g.
 
     <colors>
         <color name="headercolor" title="Header text color" value="#ffffff">
