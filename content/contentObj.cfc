@@ -3,7 +3,7 @@ component {
 
 	@types list of content section types to load
 	*/
-	public contentObj function init(string types="general,title,menu,text,image,imagegrid,articlelist", required settingsObj) {
+	public contentObj function init(string types="general,title,menu,text,image,imagegrid,articlelist,button", required settingsObj) {
 		this.cr = chr(13) & chr(10);
 		this.contentSections = {};
 		this.debug = false;
@@ -12,7 +12,7 @@ component {
 		}
 		variables.defaultMedia = [{"name"="main"}];
 		this.settingsObj = arguments.settingsObj;
-		this.utils = CreateObject("component", "utils.utilsold");
+		this.utils = CreateObject("component", "clikpage.utils.utilsold");
 
 		return this;
 	}
@@ -162,7 +162,7 @@ component {
 		pageContent["onready"] = getOnready(arguments.content);
 		
 		return pageContent;
-
+		
 	}
 
 	/**
@@ -234,6 +234,50 @@ component {
 			}
 		}
 	}
+	/**
+	 * @hint Utitlty to load XML file for shape definitions
+	 *
+	 * Usually these are defined in a stylesheet, but this utility can be used for testing etc
+	 *
+	 * It loads a separate XML file and calls the addShapes method of the button component
+	 * 
+	 * @filename Filename of definition file
+	 */
+	void function loadButtonDefFile(required string filename) {
+		
+		try {
+			if (!StructKeyExists(this.contentSections,"button")) {
+				throw("buttons content section not defined");
+			}
+			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
+			local.buttons = this.utils.xml2data(local.xmlData);
+			
+			this.contentSections["button"].addShapes(local.buttons);
+			
+		}
+		catch (Any e) {
+			throw(message="Unable to load button definition file", detail=e.message & e.detail);
+		}
+		
+
+	}
+
+	/** Documentation function to  list the available types */
+	public string function listTypes() {
+		var html = "";
+		for (local.type in this.contentSections) {
+			local.cs = this.contentSections[local.type].getDetails();
+			html &= "<div class'type'>";
+			html &= "<h3>#local.cs.title# [#local.type#]</h3>";
+			html &= "<div class='description'>#local.cs.description#</div>";
+			html &= "<div class='links'><a href='testContent_#local.type#.cfm'>test</a></div>";
+			html &= "</div>";
+		}
+
+		return html;
+	}
+	 
+
 
 
 }

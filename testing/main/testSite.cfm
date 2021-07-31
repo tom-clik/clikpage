@@ -9,25 +9,30 @@ to do: move into different folder.
 request.rc =Duplicate(form);
 StructAppend(request.rc,url,false);
 
-param name="request.rc.section" default="home";
+param name="request.rc.section" default="index";
+param name="request.rc.action" default="index";
+param name="request.rc.id" default="";
 
-settingsObj = CreateObject("component", "clikpage.settingsObj").init(debug=1);
-contentObj = CreateObject("component", "clikpage.contentObj").init(settingsObj=settingsObj);
+settingsObj = CreateObject("component", "clikpage.settings.settingsObj").init(debug=1);
+contentObj = CreateObject("component", "clikpage.content.contentObj").init(settingsObj=settingsObj);
 layoutObj = createObject("component", "clikpage.layouts.layouts").init(ExpandPath("../layouts"));
 pageObj = createObject("component", "clikpage.pageObj").init(debug=1);
 siteObj = createObject("component", "clikpage.site.siteObj").init(debug = true);
-
+siteObj.setdebug(true);
+siteObj.setpreviewurl("testSite.cfm");
 site = siteObj.loadSite(ExpandPath("../site/testSite.xml"));
+contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+
 
 if (!StructKeyExists(site.sections,request.rc.section)) {
 	throw("Section not found");
 }
-sectionLayout = site.sections[request.rc.section];
 
-site.sections[request.rc.section].location = siteObj.sectionLocation(site,request.rc.section);
+request.prc.section = siteObj.getSection(site=site,section=request.rc.section);
 
-layoutname = StructKeyExists(site.sections[request.rc.section],"layout") ? site.sections[request.rc.section]["layout"] : "testlayout1";
+site.sections[request.rc.section].location = siteObj.sectionLocation(site=site,section=request.rc.section);
 
+layoutname = siteObj.getLayoutName(section=request.prc.section,action=request.rc.action);
 
 mylayout = layoutObj.getLayout("testlayout1/#layoutname#");
 
@@ -58,18 +63,21 @@ for (medium in styles.media) {
 	pageContent.css  &= settingsObj.containerCss(styles=styles,name="content", media=medium.name);
 	pageContent.css  &= settingsObj.containerCss(styles=styles,name="footer", media=medium.name);
 	pageContent.css  &= settingsObj.containerCss(styles=styles,name="topnav", media=medium.name);
+	pageContent.css  &= settingsObj.containerCss(styles=styles,name="contentfooter", media=medium.name);
+	pageContent.css  &= settingsObj.containerCss(styles=styles,name="navbuttons", media=medium.name);
+
 	if (medium.name != "main") {
 			pageContent.css &= "}\n";
 	}
-}
-
+} 
 cs = {};
 pageLayout = mylayout.layout.clone();
+request.prc.record = {};
 
 for (content in mylayout.content) {
 	try {
 		csdata = mylayout.content[content];
-		// by defaul any cs with a title will be a general cs
+		// by default any cs with a title will be a general cs
 		if (! StructKeyExists(csdata, "type")) {
 			if (StructKeyExists(csdata, "title")) {
 				csdata["type"] = "general";
@@ -78,7 +86,13 @@ for (content in mylayout.content) {
 				csdata["type"] = "text";
 			}
 		}
-		
+
+		// link tags defined ashref as link can't be used in html definition
+		// to do: make decisions on this
+		if (StructKeyExists(csdata, "href")) {
+			csdata["link"] = csdata.href;
+		}
+
 		//writeDump(csdata);
 		cs[content] = contentObj.new(argumentCollection=csdata);
 		//writeDump(cs[content]);
@@ -94,18 +108,25 @@ for (content in mylayout.content) {
 		}
 
 		// first stab at dataset functionality. 
-		if (StructKeyExists(csdata,"dataset")) {
-			if (! StructKeyExists(csdata.dataset,"tag")) {
+		if (StructKeyExists(request.prc.section,"dataset")) {
+			if (! StructKeyExists(request.prc.section.dataset,"tag")) {
 				throw("tag must be defined for datset at this time");
 			}
-			cs[content]["data"] = siteObj.getData(site=site,tag=csdata.dataset.tag);
+			request.prc.section["data"] = siteObj.getDataSet(site=site,tag=request.prc.section.dataset.tag);
 		}
+
+		// hardwired for list types at the minute. what to do???
+		if (cs[content].type == "articlelist") {
+			cs[content]["data"] = Duplicate(request.prc.section["data"]);
+			siteObj.addLinks(dataSet=cs[content]["data"],site=site,section=request.rc.section);
+		}
+
 
 		pageContent.css &= contentObj.css(cs[content], styles.media);
 
 		local.tag=pageLayout.select("###content#").first();
 		local.tag.tagName("div");
-		local.tag.attr("class",contentObj.getClassList(cs[content]));
+		
 		// shouldn't be needed
 		//local.tag.removeAttr("type");
 		try {
@@ -118,6 +139,7 @@ for (content in mylayout.content) {
 			writeDump(cs[content]);
 			abort;
 		}
+		local.tag.attr("class",contentObj.getClassList(cs[content]));
 		
 		contentObj.addPageContent(pageContent,contentObj.getPageContent(cs[content],true));
 		
@@ -129,6 +151,16 @@ for (content in mylayout.content) {
 	}
 }
 
+
+// first stab at data functionality. 
+if (request.rc.id != "") {
+	if (! StructKeyExists(request.prc.section,"data")) {
+		throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
+	}
+	request.prc.record = siteObj.getData(site=site,id=request.rc.id,section=request.rc.section,dataSet=request.prc.section.data);
+}
+
+
 // writeDump(cs);
 // abort;
 //writeDump(mylayout);
@@ -138,9 +170,16 @@ pageContent.css = settingsObj.outputFormat(css=pageContent.css,styles=styles);
 
 pageContent.body = layoutObj.getHTML(pageLayout);
 
-pageContent.body = siteObj.dataReplace(site=site, html=pageContent.body, sectioncode=request.rc.section, page=pageContent);
+pageContent.body = siteObj.dataReplace(site=site, html=pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
 
 writeOutput(pageObj.buildPage(pageContent));
 
 
 </cfscript>
+
+
+
+
+
+
+

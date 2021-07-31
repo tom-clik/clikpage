@@ -5,7 +5,7 @@
 		<color name="textcolor" title="Main text color" value="#333333">
 			<description></description>
 		</color>
-		<color name="myfavcolor" title="My favourtie colour" value="#ff0000">
+		<color name="myfavcolor" title="My favourite colour" value="#ff0000">
 			<description></description>
 		</color>
 		<color name="panel-bg" title="Darker panel bg" value="#01798a">
@@ -18,6 +18,9 @@
 			<description>To stand out against darker panel or accent</description>
 		</color>
 		<color name="light-panel-bg" title="Light panel packground" value="#eaeaea">
+			<description></description>
+		</color>
+		<color name="linkcolor" title="Link color" value="#38bbcd">
 			<description></description>
 		</color>
 		
@@ -47,6 +50,10 @@
 		</testlayout3>
 		
 	</layouts>
+
+	<images>
+		
+	</images>
 
 	<content>
 
@@ -104,8 +111,11 @@
 					<flex>true</flex>
 					<align>right</align>
 					<min-height>100%</min-height>
+					<menucolor>panel-text</menucolor>
+					<menuhicolor>panel-text</menuhicolor>
+					<menuhovercolor>panel-text</menuhovercolor>
 				</menu>
-				
+
 				<height>100%</height>
 
 				<item>
@@ -149,6 +159,25 @@
 			</mobile>
 		</footer>
 
+		<contentfooter>
+			<main>
+				<grid>
+					<grid>1</grid>
+					<columns>3</columns>
+				</grid>
+			</main>
+			<mid>
+				<grid>
+					<columns>2</columns>
+				</grid>
+			</mid>
+			<mobile>
+				<grid>
+					<grid>0</grid>
+				</grid>
+			</mobile>
+		</contentfooter>
+
 		<topnav>
 			<main>
 				<background>
@@ -185,21 +214,23 @@
 
 		<imagegrid>
 			<main>
-				<masonry>true</masonry>
 				<imagegrid>
-					<max-width>160px</max-width>
+					<masonry>true</masonry>
+					<popup>true</popup>
+					<max-width>24%</max-width>
 				</imagegrid>
 			</main>
 			<mid>
-				<masonry>false</masonry>
+				
 				<imagegrid>
-					<max-width>220px</max-width>
+					<masonry>false</masonry>
+					<max-width>33%</max-width>
 				</imagegrid>
 			</mid>
 			<mobile>
-				<masonry>false</masonry>
 				<imagegrid>
-					<max-width>260px</max-width>
+					<masonry>false</masonry>
+					<max-width>49%</max-width>
 				</imagegrid>
 			</mobile>
 		</imagegrid>
@@ -221,6 +252,39 @@
 				<margin>0 0 1em 0</margin>
 			</main>
 		</sectiontitle>
+
+		<sectionlist>
+			<main>
+				<item>
+					<padding>12px</padding>
+					<background>
+						<color>light-panel-bg</color>
+					</background>
+					<align>left</align>
+					<imagewidth>33%</imagewidth>
+					<margin>0 0 12px 0</margin>
+					<hover>
+						<color>panel-text</color>
+						<background>
+							<color>panel-bg</color>
+						</background>
+					</hover>
+				</item>
+				<title>
+					<text-transform>uppercase</text-transform>
+				</title>
+				<image>
+					<padding>4px</padding>
+					<hover>
+						<padding>2px</padding>
+						<border>
+							<width>2px</width>
+							<color>panel-text</color>
+						</border>
+					</hover>
+				</image>
+			</main>
+		</sectionlist>
 		<scheme-title>
 			
 			<main>
@@ -241,6 +305,40 @@
 			</main>
 
 		</scheme-intros>
+
+		<navbuttons>
+			<main>
+				<grid>
+					<columns>2</columns>
+				</grid>
+			</main>
+		</navbuttons>
+
+		<scheme-button>
+			<main>
+				<icon>
+					<padding>4</padding>
+					<background>
+						<color>light-panel-bg</color>
+					</background>
+					<hover>
+						<background>
+							<color>panel-bg</color>
+						</background>
+					</hover>
+				</icon>
+			</main>
+		</scheme-button>
+
+		<navnext>
+			<main>
+				<button>
+					<align>right</align>
+					<shape>right_arrow</shape>
+				</button>
+				
+			</main>
+		</navnext>
 
 	</content>
 

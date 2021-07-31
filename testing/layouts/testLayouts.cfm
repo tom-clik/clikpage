@@ -1,9 +1,9 @@
 <cfscript>
 layoutObj = createObject("component", "clikpage.layouts.layouts").init(getDirectoryFromPath(getCurrentTemplatePath()));
 
-mylayout = layoutObj.getLayout("testlayout1/testlayout2");
+mylayout = layoutObj.getLayout("testlayout1/testlayout6");
 
 WriteDump(mylayout);
 
-WriteOutput("<pre>" & HtmlEditFormat(layoutObj.getHTML("testlayout1/testlayout2")) & "</pre>");
+WriteOutput("<pre>" & HtmlEditFormat(layoutObj.getHTML(mylayout.layout)) & "</pre>");
 </cfscript>

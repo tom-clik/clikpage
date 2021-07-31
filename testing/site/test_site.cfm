@@ -1,6 +1,7 @@
 <cfscript>
 siteObj = createObject("component", "clikpage.site.siteObj").init();
 
+
 siteObj.debug = true;
 
 site = siteObj.loadSite(ExpandPath("./testSite.xml"));

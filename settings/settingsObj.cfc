@@ -3,7 +3,7 @@
 	public settingsObj function init(debug=false) {
 
 		this.cr = chr(13) & chr(10);
-		this.utils = CreateObject("component", "utils.utilsold");	
+		this.utils = CreateObject("component", "clikpage.utils.utilsold");	
 		this.debug = arguments.debug;
 
 		return this;
@@ -152,18 +152,25 @@
 				local.css &= "}\n";
 				
 				local.inner = "";
+				local.gridcss = "";
 
 				if (StructKeyExists(arguments.styles.content[arguments.name][arguments.media], "inner")) {
 					local.inner &= this.css(settings=arguments.styles.content[arguments.name][arguments.media]["inner"]);
 				}
 
 				if (StructKeyExists(arguments.styles.content[arguments.name][arguments.media],"grid")) {
-					local.inner &= grid(arguments.styles.content[arguments.name][arguments.media]["grid"]);
+					local.gridcss &= grid(arguments.styles.content[arguments.name][arguments.media]["grid"]);
 				}
 
 				if (local.inner != "") {
 					local.css &= "#arguments.selector# .inner {\n";
-					local.css &= local.inner;
+					local.css &= local.inner & local.gridcss;
+					local.css &= "}\n";
+				}
+				else {
+					// could do better here? Repeated selector.
+					local.css &= "#arguments.selector# {\n";
+					local.css &= local.gridcss;
 					local.css &= "}\n";
 				}
 				

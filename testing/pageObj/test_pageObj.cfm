@@ -3,7 +3,7 @@
 
 # test_pageObject
 
-Sratchpad test for pageObject
+Scratchpad test for pageObject
 
 */
 

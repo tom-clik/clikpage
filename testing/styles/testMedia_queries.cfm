@@ -1,6 +1,6 @@
 <cfscript>
 
-settingsObj = createObject("component", "clikpage.settingsObj").init();
+settingsObj = createObject("component", "settingsTestObj").init();
 styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
 
 for (medium in styles.media) {

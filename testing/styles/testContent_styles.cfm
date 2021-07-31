@@ -1,6 +1,6 @@
 <cfscript>
-settingsObj = CreateObject("component", "clikpage.settingsObj").init(debug=1);
-contentObj = CreateObject("component", "clikpage.contentObj").init(settingsObj=settingsObj);
+settingsObj = CreateObject("component", "clikpage.settings.settingsObj").init(debug=1);
+contentObj = CreateObject("component", "clikpage.content.contentObj").init(settingsObj=settingsObj);
 
 contentObj.debug = true;
 
