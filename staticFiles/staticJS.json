@@ -84,6 +84,12 @@
             "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
             "name": "masonry",
             "requires": "imagesloaded,jquery"
+        },
+        {
+            "debug": "/_assets/js/jquery.colorbox.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js",
+            "name": "colorbox",
+            "requires": "jquery"
         }
     ]
 }

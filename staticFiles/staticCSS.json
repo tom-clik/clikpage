@@ -92,13 +92,18 @@
             "name": "fonts"
         },
         {
+            "debug": "/_assets/css/colorbox/colorbox.css",
+            "min": "/_assets/css/colorbox/colorbox.css",
+            "name": "colorbox"
+        },
+        {
             "debug": "/_assets/css/styles.css",
             "min": "/_assets/css/styles.css",
             "name": "styles",
             "requires": "reset,items,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
         },
         {
-        	"debug": "/_assets/css/font-awesome/4.5.0/css/font-awesome.min.css",
+        	"debug": "/_assets/css/fonts/font-awesome-local.css",
         	"min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
             "name": "fontawesome"
         }
