@@ -25,7 +25,7 @@ component name="layouts" {
 		variables.layoutBase = arguments.layoutBase;
 		variables.layoutBase =ReReplace(variables.layoutBase,"[\\\/]$","");
 		if (! DirectoryExists(variables.layoutBase)) {
-			throw("base path for dlayouts not found");
+			throw("base path for layouts not found");
 		}
 
 		variables.htmlAttrs = {
@@ -85,7 +85,7 @@ component name="layouts" {
 					local.layoutObj["columns"] = local.body.data.columns;		
 				}
 			}
-			
+
 			// local.layoutObj["layout"].select("div[id]").addClass("container");
 
 			parseContentSections(local.layoutObj);
@@ -158,7 +158,13 @@ component name="layouts" {
 
 	}
 
-	/** inner divs applied to children of uberContainer */
+	/** inner divs applied to children of uberContainer 
+	
+	TO DO: biggest outstanding question is what to do about inners
+	Do we only add them if they are spanning? If so how o we know whether to apply e.g. grid settings
+	to the inners
+
+	*/
 	private void function addInners(required layoutObj) {
 		// inner divs applied to children of uberContainer
 		// if you don't want this, don't use uberContainer...

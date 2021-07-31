@@ -3,11 +3,11 @@ component extends="contentSection" {
 		
 		super.init(arguments.contentObj);
 		variables.type = "menu";
-		variables.title = "Menu content section";
-		variables.description = "Menu list";
+		variables.title = "Menu";
+		variables.description = "CSS list with styling and interactive options";
 		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
+			"title"="Untitled Menu",
+			"content"="Undefined menu",
 		};
 		// static css definitions
 		variables.static_css = {"menus"=1};
@@ -83,7 +83,7 @@ component extends="contentSection" {
 	}
 
 
-
+	
 	public string function css(required struct settings, required string selector) {
 			
 		var ret = "";

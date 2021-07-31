@@ -22,7 +22,9 @@ component {
 		};
 		variables.static_css = {};
 		variables.static_js = {};
-		variables.settings = {};
+		variables.settings = {
+
+		};
 
 		variables.panels = [];
 
@@ -32,6 +34,13 @@ component {
 			];
 
 		return this;
+	}
+
+	public struct function getDetails() {
+		return {
+			"title"=variables.title,
+			"description"=variables.description
+		};
 	}
 
 	/** Create a new content section */
@@ -75,7 +84,7 @@ component {
 		var css = "";
 		
 		for (local.panel in variables.panels) {
-
+			
 			if (StructKeyExists(arguments.settings,local.panel.name)) {
 				css &= arguments.selector & local.panel.selector & "{\n";
 				css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name]);
@@ -95,7 +104,63 @@ component {
 
 		return css;
 	}
-	
+
+	/**
+	 * Return standard html for an item with a title, text, and image
+	 *
+	 * This can be used on its own (general) or as part of a listing
+	 * 
+	 * @content  Content section
+	 * @content  item settings
+	 * @classes  Pass in struct by reference to retrun required classes for the wrapping div.
+	 */
+	public string function itemHtml(required struct content, struct settings, struct classes) {
+		
+		local.hasLink = StructKeyExists(arguments.content,"link");
+
+		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
+		var linkEnd = (local.hasLink) ? "</a>" : "";
+
+		arguments.classes["item"] = 1;
+		if (arguments.settings.heading_position == "top") {
+			arguments.classes["htop"] = 1;
+		}
+		if (arguments.settings.mobile_heading_position != "top") {
+			arguments.classes["munder"] = 1;
+
+		}
+		if (!arguments.settings.showtitle) {
+			arguments.classes["notitle"] = 1;
+
+		}
+		switch (arguments.settings.align) {
+			case "left": case "right":
+			arguments.classes[arguments.settings.align] = 1;
+		}
+		var cshtml = "";
+
+		cshtml &= "\t<" & arguments.settings.titletag & " class='title'>" & linkStart & arguments.content.title & linkEnd &  "</" & arguments.settings.titletag & ">\n";
+		cshtml &= "\t<div class='imageWrap'>\n";
+		if (StructKeyExists(arguments.content,"image")) {
+			cshtml &= "\t\t<img src='" & arguments.content.image & "'>\n";
+			if (StructKeyExists(arguments.content,"caption")) {
+				cshtml &= "\t\t<div class='caption'>" & arguments.content.caption & "</div>\n";
+			}
+		}
+			cshtml &= "\t</div>\n";
+
+		cshtml &= "\t<div class='textWrap'>";
+		cshtml &= arguments.content.content;
+		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
+			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
+		}
+		cshtml &= "</div>";
+
+		return cshtml;
+
+	}
+
+
 
 	/**
 	 * @hint Update settings with required values

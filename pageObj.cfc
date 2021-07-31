@@ -2,7 +2,7 @@ component {
 
 	// allowable types of meta tage
 	variables.metaTypes = {"name"=1,"property"=1,"http-qeuiv"=1};
-
+		
 	/**
 	 * @hint Pseudo initialiser
 	 * 

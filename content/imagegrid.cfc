@@ -4,7 +4,7 @@ component extends="contentSection" {
 		
 		super.init(arguments.contentObj);
 		variables.type = "imagegrid";
-		variables.title = "Image grid content section";
+		variables.title = "Image grid";
 		variables.description = "Images in grid";
 		variables.defaults = {
 			"title"="Untitled",
@@ -12,34 +12,35 @@ component extends="contentSection" {
 		};
 
 		// static css definitions
-		variables.static_css = {"images"=1};
-		variables.static_js = {"masonry"=1};
-		
+		variables.static_css = {"images"=1,"colorbox"=1};
+		// to do: only require if there
+		variables.static_js = {"masonry"=1,"colorbox"=1};
+		variables.settings = {
+			"imagegrid" = {
+				"masonry"=0,"popup"=0
+			}
+		}
 		return this;
 	}
 
 	/** TODO: remove and valdate properly somewhere */
 	private array function getFakeData(boolean submenu=false) {
 		
-		local.folder = "D:\unsplash\random\out";
-		local.files = directoryList(path=local.folder,type="file",ListInfo="name",filter="*_thumb.jpg");
-		local.path = "http://localpreview.clikpic.com/sampleimages/";
+		local.folder = "D:\git\clikpage\testing\images";
+		local.dataList = [];
 
+		local.dataFiles = directoryList(path=local.folder,filter="*.json");
 		local.data = [];
-
-		for (local.i = 1; local.i <= 5 ; local.i++) {
-			for (local.src in local.files) {
-				local.caption = Left("Lorem ipsum dolor sit amet",randRange(12,20));
-				local.image = {"src"=local.path  & local.src,"caption"=local.caption};
-				
-				ArrayAppend(local.data,local.image);
-			}
+		for (local.filename in local.dataFiles) {
+			local.data = fileRead(local.filename);
+			local.image = deserializeJSON(local.data);
+			ArrayAppend(local.dataList, {"src":"/images/#local.image.thumb.src#","caption"=local.image.caption,"link"="/images/"&local.image.main.src});
 		}
 
-		return local.data;
+		return local.dataList;
 	}
 
-
+	
 
 	public string function html(required struct content) {
 		
@@ -51,15 +52,27 @@ component extends="contentSection" {
 
 		for (local.image in arguments.content.data) {
 		
-			local.html &= "<figure><img src='#local.image.src#'>";
+			local.html &= "<figure>";
+			if (StructKeyExists(local.image, "link")) {
+				local.html &= "<a href='#local.image.link#'>";
+			}
+			local.html &= "<img src='#local.image.src#'>";
 			if (StructKeyExists(local.image, "caption")) {
 				local.html &= "<figcaption>#local.image.caption#</figcaption>";
 			}
+			if (StructKeyExists(local.image, "link")) {
+				local.html &= "</a>";
+			}
+
 			local.html &= "</figure>";
 
 		}		
 		
 		local.html &= "</div>";
+
+		if (arguments.content.settings.main.imagegrid.masonry) {
+			arguments.content.class["masonry"] = 1;
+		}
 
 
 		return local.html;
@@ -88,23 +101,32 @@ component extends="contentSection" {
 	}
 
 
-
 	public string function onready(required struct content) {
 		var js = "";
 
+		
+		if (arguments.content.settings.main.imagegrid.masonry) {
+			js &= "$#arguments.content.id#Grid = $('###arguments.content.id# .grid').masonry({\n";
+			js &= "\t/* options*/\n";
+			// js &= "\titemSelector: 'figure',\n";
+			js &= "\tcolumnWidth: '###arguments.content.id# figure',\n";
+			js &= "\tinitLayout: false,\n";
+			js &= "\tpercentPosition: true\n";
+			if (StructKeyExists(arguments.content.settings.main.imagegrid,"gridgap")) {
+				js &= "\tgutter: #arguments.content.settings.main.imagegrid.gridgap#\n";
+			}
+			js &= "});\n";
 
-		js &= "$grid = $('.cs-imagegrid.masonry .grid').masonry({\n";
-		js &= "\t/* options*/\n";
-		js &= "\titemSelector: 'figure',\n";
-		js &= "\tcolumnWidth: '.cs-imagegrid figure',\n";
-		js &= "\tinitLayout: false,\n";
-		js &= "\tpercentPosition: true\n";
-		js &= "});\n";
+			js &= "/* layout Masonry after each image loads*/\n";
+			js &= "$#arguments.content.id#Grid.imagesLoaded().progress( function() {\n";
+			js &= "\t$#arguments.content.id#Grid.masonry('layout');\n";
+			js &= "});\n";
+		}
 
-		js &= "/* layout Masonry after each image loads*/\n";
-		js &= "$grid.imagesLoaded().progress( function() {\n";
-		js &= "\t$grid.masonry('layout');\n";
-		js &= "});\n";
+		if (arguments.content.settings.main.imagegrid.popup) {
+
+			js &= "$(""###arguments.content.id# figure a"").colorbox({rel:'group#arguments.content.id#'});";
+		}
 
 
 		return js;

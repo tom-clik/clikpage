@@ -4,7 +4,7 @@ component extends="contentSection" {
 		
 		super.init(arguments.contentObj);
 		variables.type = "image";
-		variables.title = "Image content section";
+		variables.title = "Image";
 		variables.description = "Simple image with option for rollover";
 		variables.defaults = {
 			"title"="Untitled",
