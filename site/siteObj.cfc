@@ -43,7 +43,7 @@ component  accessors="true" {
 	public struct function loadSite(required string filename) {
 
 		if (!FileExists(arguments.filename)) {
-			throw("Stylesheet #arguments.filename# not found");
+			throw("Site definition #arguments.filename# not found");
 		}
 
 		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
@@ -360,7 +360,7 @@ component  accessors="true" {
 			}
 			if (local.layoutName =="") {
 				if (local.defaultLayout == "") {
-					throw(message="No layout defined for action #arguments.action#",detail="Either deifne a layout for all actions or define a default layotu for the section");
+					throw(message="No layout defined for action #arguments.action#",detail="Either define a layout for all actions or define a default layotu for the section");
 				}
 				else {
 					local.layoutName = local.defaultLayout;
@@ -370,6 +370,13 @@ component  accessors="true" {
 
 		return local.layoutName;
 		
+	}
+
+	public string function bodyClass(required struct layout) {
+		
+		local.columnLayout = StructKeyExists(arguments.layout,"columns") ? arguments.layout.columns : "SMX";
+		local.spanning = true? " spanning": "";
+		return "layout-testlayout layout-#arguments.layout.id# col-#local.columnLayout#" & local.spanning;
 	}
 
 }
