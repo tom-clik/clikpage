@@ -3,7 +3,11 @@
 
 # test_pageObject
 
-Scratchpad test for pageObject
+The pageObject can just be used on its own (requires static files)
+
+The body content is just set as a text string.
+
+
 
 */
 
