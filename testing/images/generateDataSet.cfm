@@ -1,6 +1,5 @@
 <cfscript>
 
-
 /* Use the json data from downloaded files to generate a data set for testing
 
 Provided strictly on an as-is basis
@@ -21,7 +20,7 @@ for (filename in dataFiles) {
 	arrayAppend(dataList, {"src":"/images/#image.thumb.src#","caption"=image.caption,"link"=image.main.src});
 }
 
-writeDump(dataList);
+WriteDump(dataList);
 
 
 
