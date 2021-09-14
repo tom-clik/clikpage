@@ -1,10 +1,11 @@
 <cfscript>
 
-/** has sort of turned into the main test page
+/** 
+ *
+ * Deprecated. Use sample app
+ */
 
-to do: move into different folder.
-
-*/
+throw("Are you sure you want to be here? Surely use the sample app");
 
 request.rc =Duplicate(form);
 StructAppend(request.rc,url,false);
@@ -23,6 +24,7 @@ siteObj.setpreviewurl("testSite.cfm");
 site = siteObj.loadSite(ExpandPath("../site/testSite.xml"));
 contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 
+styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 
 if (!StructKeyExists(site.sections,request.rc.section)) {
 	throw("Section not found");
@@ -36,8 +38,6 @@ layoutname = siteObj.getLayoutName(section=request.prc.section,action=request.rc
 
 mylayout = layoutObj.getLayout("testlayout1/#layoutname#");
 
-styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
-
 pageContent = pageObj.getContent();
 // writeDump(pageContent);
 // abort;
@@ -45,12 +45,12 @@ pageContent = pageObj.getContent();
 pageContent.static_css["columns"] = 1;
 pageContent.static_css["fonts"] = 1;
 
+// to do: body class as method of layout object
 local.columnLayout = StructKeyExists(mylayout,"columns") ? mylayout.columns : "SMX";
 
-pageContent.bodyClass = "layout-testlayout layout-#layoutname# col-#local.columnLayout# spanning";
+pageContent.bodyClass = "col-SM";
 
 pageContent.css &= settingsObj.layoutCss(styles);
-
 pageContent.css &= settingsObj.fontVariablesCSS(styles);
 pageContent.css &= settingsObj.colorVariablesCSS(styles);
 
@@ -58,41 +58,29 @@ for (medium in styles.media) {
 	if (medium.name != "main") {
 		pageContent.css  &= "@media.#medium.name# {\n";
 	}
+
 	pageContent.css  &= settingsObj.containerCss(styles=styles,name="body",selector="body", media=medium.name);
-	pageContent.css  &= settingsObj.containerCss(styles=styles,name="header", media=medium.name);
-	pageContent.css  &= settingsObj.containerCss(styles=styles,name="content", media=medium.name);
-	pageContent.css  &= settingsObj.containerCss(styles=styles,name="footer", media=medium.name);
-	pageContent.css  &= settingsObj.containerCss(styles=styles,name="topnav", media=medium.name);
-	pageContent.css  &= settingsObj.containerCss(styles=styles,name="contentfooter", media=medium.name);
-	pageContent.css  &= settingsObj.containerCss(styles=styles,name="navbuttons", media=medium.name);
+
+	for (container in  mylayout.containers) {
+		pageContent.css  &= "/* generating stylings for #container# [#medium.name#] */\n";
+		pageContent.css  &= settingsObj.containerCss(styles=styles,name=container, media=medium.name);	
+	}
 
 	if (medium.name != "main") {
 			pageContent.css &= "}\n";
 	}
-} 
+}
+
 cs = {};
+
+// to do: add as method of layout object
 pageLayout = mylayout.layout.clone();
 request.prc.record = {};
 
 for (content in mylayout.content) {
 	try {
 		csdata = mylayout.content[content];
-		// by default any cs with a title will be a general cs
-		if (! StructKeyExists(csdata, "type")) {
-			if (StructKeyExists(csdata, "title")) {
-				csdata["type"] = "general";
-			}
-			else {
-				csdata["type"] = "text";
-			}
-		}
-
-		// link tags defined ashref as link can't be used in html definition
-		// to do: make decisions on this
-		if (StructKeyExists(csdata, "href")) {
-			csdata["link"] = csdata.href;
-		}
-
+		
 		//writeDump(csdata);
 		cs[content] = contentObj.new(argumentCollection=csdata);
 		//writeDump(cs[content]);
@@ -121,7 +109,6 @@ for (content in mylayout.content) {
 			siteObj.addLinks(dataSet=cs[content]["data"],site=site,section=request.rc.section);
 		}
 
-
 		pageContent.css &= contentObj.css(cs[content], styles.media);
 
 		local.tag=pageLayout.select("###content#").first();
@@ -143,14 +130,14 @@ for (content in mylayout.content) {
 		
 		contentObj.addPageContent(pageContent,contentObj.getPageContent(cs[content],true));
 		
-
 	}
+
 	catch (Any e) {
 		writeOutput("<h2>issue with #content#</h2>");
 		writeDump(e);
 	}
-}
 
+}
 
 // first stab at data functionality. 
 if (request.rc.id != "") {
@@ -163,8 +150,8 @@ if (request.rc.id != "") {
 
 // writeDump(cs);
 // abort;
-//writeDump(mylayout);
-//
+// writeDump(mylayout);
+
 
 pageContent.css = settingsObj.outputFormat(css=pageContent.css,styles=styles);
 

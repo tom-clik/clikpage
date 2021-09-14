@@ -6,7 +6,7 @@ Data can be defined at three levels:
 2. Sections
 3. Data sets
 
-Site and Sections are actually a data set themselves, but their definition is mainly fixed they integral to the Clik system.
+Site and Sections are actually a data set themselves, but their definition is mainly fixed as they're integral to the Clik system.
 
 ## Basic data sets
 

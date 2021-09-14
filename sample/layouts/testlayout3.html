@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test layout 3</title>
+	<meta name="description" content="A test layout to extend another">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="testlayout1" data-columns="M">
+	
+	
+	<div id="maincol">
+
+		<div id="maincol_top">
+
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+				<title>Section title</title>
+				<content>
+				{{section.title}}
+				</content>
+			</content>
+
+			<content id="imagegrid" data-notes="Notes here" type="imagegrid" class="fill scheme-overlay">
+				
+			</content>
+		</div>	
+
+
+		<div id="maincol_bottom">
+			<!-- flex-start flex-end flex-between flex-center flex-around] -->
+			
+		</div>	
+
+	</div>
+
+
+</body>
+</html>

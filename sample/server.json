@@ -1,6 +1,6 @@
 {
     "app":{
-        "cfengine":"lucee@5",
+        "cfengine":"lucee@5.3.8+201",
         "libDirs":"D:\\apps\\commandbox\\java"
     },
     "profile":"development",

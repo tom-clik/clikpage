@@ -1,10 +1,6 @@
 # Media Queries
 
-Media queries are defined as variables like colors and fonts, but are written out in the CSS in full each time.
-
-All styling in Clikpage needs to be in a "medium" of some description. The medium "main" applies no media query.
-
-Other media queries can be defined with a minimum and or maximum width.
+All styling in Clikpage needs to be in a "medium" of some description. The medium "main" applies no media query. The others can be defined with a minimum and/or a maximum width.
 
 Typical definitions are "mobile" and "mid". You might also define "wide". The definition would be so:
  
@@ -17,7 +13,7 @@ Typical definitions are "mobile" and "mid". You might also define "wide". The de
 
 Note the order is important. Main styles would override mobile styles if they came after. CSS doesn't apply specificity on the basis of media.
 
-The "main" definition is optional and it will always be applied to the start.
+The "main" definition is optional but will always be available.
 
 All styling applied to content needs to be in a medium, e.g.
 

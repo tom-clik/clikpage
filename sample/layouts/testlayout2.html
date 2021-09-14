@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test layout 2</title>
+	<meta name="description" content="A test layout to extend another">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="testlayout1">
+		
+	<div id="maincol">
+
+		<div id="maincol_top">
+
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+				<title>Section title</title>
+				<content>
+				{{section.title}}
+				</content>
+			</content>
+		</div>	
+
+		<div id="maincol_right">
+
+			<content id="yeahbaby" data-notes="Notes here">
+				<title>Yeah baby</title>
+				<content>
+				This main col should be different
+				</content>
+			</content>
+
+		</div>
+
+		<div id="maincol_left">	
+			<content id="image" type="image" class="scheme-box">
+				<title>Image tests</title>
+				<field-image>http://localpreview.clikpic.com/sampleimages/nate-johnston-cK_1Q_e5FfU-unsplash.jpg</field-image>
+				<field-caption>My test caption</field-caption>
+			</content>
+		</div>
+
+		<div id="maincol_bottom">
+
+			<content id="sectionfoot" data-notes="Notes here">
+				<content>
+				Should be plain text
+				</content>
+			</content>
+		</div>	
+
+	</div>
+
+		
+	<div id="footer">
+		<content id="copyright">{{site.meta.copyright}} Should just have this copyright</content>
+	</div>
+
+
+</body>
+</html>
