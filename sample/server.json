@@ -11,7 +11,8 @@
         "aliases":{
             "/customtags":"D:\\git\\clikpic\\CustomTags",
             "/_common":"D:\\git\\clikpic\\wwwroot\\_common",
-            "/_assets":"D:\\git\\coldlight\\_assets"
+            "/_assets":"D:\\git\\coldlight\\_assets",
+            "/images":"D:\\git\\clikpage\\testing\\images"
         }
     }
 }

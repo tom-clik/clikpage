@@ -7,14 +7,19 @@ Provided strictly on an as-is basis
 
 ## Usage
 
-Create list of unspash ids and run.
+1. Configure formats as required.
+2. Change outputFolder if needed
+3. Create list of unspash ids
+4. Run.
+
+This will generate an an image for each format and a json file. See generateDataSet.cfm for using these
 
 */
 
-// DKWjcMHF54E,jSqrSrtjB80,wlNh84JRb2M,Z89kRdt8wFE,OAzh2bBN110,Y1OUQTZRqMo,p70S-sgZtVI,t03o51DDV8Q,NiOAwBuV8f4
+// bgacbJ4DQq8,HMhRTbuSEhY,DKWjcMHF54E,jSqrSrtjB80,wlNh84JRb2M,Z89kRdt8wFE,OAzh2bBN110,Y1OUQTZRqMo,p70S-sgZtVI,t03o51DDV8Q,NiOAwBuV8f4
 
-idslist = ListToArray('bgacbJ4DQq8,HMhRTbuSEhY');
-outputFolder = getDirectoryFromPath(getCurrentTemplatePath());
+idslist = ListToArray('T_aDfsi8uYQ');
+outputFolder = GetDirectoryFromPath(getCurrentTemplatePath());
 formats = [{"name":"main","width":1200,"ext":""},{"name":"thumb","width":600,"ext":"_thumb"}];
 outputData = {};
 
@@ -29,24 +34,10 @@ for (photo in idslist) {
 		
 		local.ext = "." & ListLast(local.filename,".");
 		
-		source = imageNew(download.filecontent);
-				
-
+		source = ImageNew(download.filecontent);
+		
 		for (format in formats) {
 
-		
-			// write(local.filename);
-			// try {
-			// 	cffile( action="move",source=outputFolder & "temp.jpg");
-			// 	local.info[format.name] = {"src"=local.filename};
-			// }
-			// catch (Any e) {
-			// 	writeDump(outputFolder & "temp.jpg");
-			// 	writeDump(outputFolder & local.filename);
-			// 	writeDump(e);
-			// }
-
-			
 			source.scaleToFit(format.width, format.width,"lanczos");
 			local.outputFile = Replace(local.filename, local.ext,format.ext & local.ext);
 			cfimage(action="info", source="#source#",structName="info");
@@ -60,16 +51,16 @@ for (photo in idslist) {
 	else {
 		 writep("Unable to download photo");
 	}
-	writeOutput(serializeJSON(local.info));
+	WriteOutput(serializeJSON(local.info));
 
-	FileWrite(outputFolder&photo&".json", serializeJSON(local.info));
-	// writeDump(download);
+	FileWrite(outputFolder&photo&".json", SerializeJSON(local.info));
 }
 
 
+FileDelete(outputFolder & "/" & "temp.jpg");
 
 function writep(html) {
-	writeOutput("<p>" & html & "</p>");
+	WriteOutput("<p>" & html & "</p>");
 }
 
 </cfscript>
