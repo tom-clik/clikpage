@@ -23,9 +23,61 @@
 
 	}
 
+	/**
+	 * Generate css for global level variables
+	 * 
+	 */
+	public string function siteCSS(required struct styles, boolean debug=this.debug) {
+
+		local.css = layoutCss(arguments.styles);
+		local.css &= fontVariablesCSS(arguments.styles);
+		local.css &= colorVariablesCSS(arguments.styles);
+
+		return local.css;
+
+	}
+
+	/**
+	 * @hint Generate css for containers
+	 *
+	 * 
+	 */
+	public string function containersCSS(required struct styles, required struct layout, boolean debug=this.debug) {
+
+		local.css = "";
+
+		for (var medium in arguments.styles.media) {
+			if (medium.name != "main") {
+				local.css  &= "@media.#medium.name# {\n";
+			}
+
+			local.css  &= containerCss(styles=arguments.styles,name="body",selector="body", media=medium.name);
+			
+			for (var container in  arguments.layout.containers) {
+				local.css  &= "/* generating stylings for #container# [#medium.name#] */\n";
+				local.css  &= containerCss(styles=arguments.styles,name=container, media=medium.name);	
+			}
+
+			if (medium.name != "main") {
+				local.css &= "}\n";
+			}
+		}
+
+		return local.css;
+	}
+
 	/** @hint get CSS for layouts
 	
 	At this time still up for debate about how much will go into here.
+
+	Currently it's a sort of modern incarnation of the old 1998 vintage column layout mechanism.
+
+	If we do preserve that, surely it wants to use a standard grid?? There's always been a problem
+	with the old system in that you can't change the flow for mobile etc.
+
+	If not, this is better. It just outputs css variables for the column widths etc.
+
+	The static css is in columns.css.
 
 	*/
 	public string function layoutCss(required struct settings, boolean debug=this.debug) {
@@ -350,7 +402,7 @@
 	
 	public string function outputFormat(required string css, required struct styles, boolean debug=this.debug) {
 
-
+		
 		for (local.medium in arguments.styles.media) {
 			arguments.css = replaceNoCase(arguments.css, "@media.#local.medium.name#", mediaQuery(local.medium.name, arguments.styles),"all");
 		}
