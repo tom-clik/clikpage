@@ -1,62 +1,88 @@
 /**
  * Singleton component for defining layouts
  *
+ * ## Layout definition
+ *
+ * Layouts are defined as html files. They can inherit from other files (tbc logic)
+ *
+ * ## Layout struct
+ * 
  * An actual layout has the following keys
  *
  * layout    Jsoup document of parsed html
  * title     Title of the layout
- * meta      Struct of meta data with key and value. NB this is for information and documentation of the layouts and is unlreated to html meta data
+ * meta      Struct of meta data with key and value. NB this is for information and documentation of the layouts and is unrelated to html meta data
  * columns   column layout for standard column grid.
- *
+ * content   struct of content items keyed by id
+ * containers   struct of containers
  * 
-
-			
-			
+ *  ## Cache
+ *
  * 
  * 
  */
+
 component name="layouts" {
 
-	layouts function init(string layoutBase, string charset="utf-8") {	
+	/**
+	 * Pseudo contstructor 
+	 * @layoutBase   Path to folder container layouts
+	 * @charset      Charset to text files
+	 */
+	layouts function init(required string layoutBase, string charset="utf-8") {	
 
 		variables.charset = arguments.charset
 
-		this.coldsoup = createObject( "component", "coldsoup.coldSoup" ).init();
+		try {
+			this.coldsoup = new coldsoup.coldSoup();
+		}
+		catch (Any e) {
+			throw(message="Unable to create coldSoup component. Please refer to set up guide to install and test coldsoup and jsoup.",detail="#e.message#<br><br>#e.detail#")
+		}
+
 		variables.layoutBase = arguments.layoutBase;
 		variables.layoutBase =ReReplace(variables.layoutBase,"[\\\/]$","");
+		
 		if (! DirectoryExists(variables.layoutBase)) {
-			throw("base path for layouts not found");
+			throw("base path for layouts [#variables.layoutBase#] not found");
 		}
 
-		variables.htmlAttrs = {
-			"class" = 1,
-			"id" = 1,
-			"data" = 1,
-			"title" = 1
-		}
+		// "set" of html attributes to parse from layout.
+		// variables.htmlAttrs = {
+		// 	"class" = 1,
+		// 	"id" = 1,
+		// 	"data" = 1,
+		// 	"title" = 1
+		// }
 		
-		variables.layouts = {};
-		variables.html = {};
+		variables.cache = {};
+		variables.cache.layouts = {};
+		variables.cache.html = {};
 
 		return this;
+
 	}
 
-	public struct function getLayout(required string layout) {
+	/**
+	 * @hint return layout struct
+	 *
+	 * 
+	 * @id    ID of layout to load (relative path of layout without file extension)
+	 *
+	 * 
+	 */
+	public struct function getLayout(required string id) {
 
-		if (! StructKeyExists(variables.layouts, arguments.layout)) {
-			local.filename = variables.layoutBase & "\" & arguments.layout &".html";
-			try {
-				local.html = FileRead(local.filename,variables.charset);
+		if (! StructKeyExists(variables.cache.layouts, arguments.id)) {
+			local.filename = variables.layoutBase & "\" & arguments.id &".html";
+			
+			if (!FileExists(local.filename)) {
+				throw("Layout #arguments.id# not found [#local.filename#,#variables.layoutBase#,#arguments.id#]");
 			}
-			catch (Any e) {
-				if (!FileExists(local.filename)) {
-					throw("Layout #arguments.layout# not found [#local.filename#]");
-				}
-				else {
-					throw(object=e);
-				}
-			}
-			local.layoutObj = {};
+
+			local.html = FileRead(local.filename,variables.charset);
+			
+			local.layoutObj = {"id"=arguments.id};
 
 			local.layoutObj["layout"] = this.coldsoup.parse(local.html);
 
@@ -82,19 +108,20 @@ component name="layouts" {
 					extendLayout(local.layoutObj, local.body.data.extends);		
 				}
 				if (StructKeyExists(local.body.data,"columns")) {
-					local.layoutObj["columns"] = local.body.data.columns;		
+					local.layoutObj["columns"] = local.body.data.columns;	
+					local.layoutObj.layout.body().removeAttr("data-columns")	;
 				}
 			}
 
 			// local.layoutObj["layout"].select("div[id]").addClass("container");
-
+			parseContainers(local.layoutObj);
 			parseContentSections(local.layoutObj);
 
-			variables.layouts[arguments.layout] = local.layoutObj;
+			variables.cache.layouts[arguments.id] = local.layoutObj;
 
 		}
 
-		return variables.layouts[arguments.layout];
+		return variables.cache.layouts[arguments.id];
 
 	}
 
@@ -110,17 +137,64 @@ component name="layouts" {
 	private void function extendLayout(required layout, required string extends) {
 		local.extends = getLayout(arguments.extends);
 		local.parentlayout = local.extends.layout;
+		local.newLayout = local.extends.layout.clone();
+
+		local.newLayout.title(arguments.layout.layout.title());
+
+		// update meta data in parent layout.
+		local.metaData = {};
+		for (local.meta in arguments.layout.layout.select("meta")) {
+			local.metaData[local.meta.attr("name")] = local.meta.attr("content");
+		}
+
+		for (local.meta in local.newLayout.select("meta")) {
+			if (StructKeyExists(local.metaData,local.meta.attr("name"))) {
+				local.meta.attr("content",local.metaData[local.meta.attr("name")]);
+				StructDelete(local.metaData,local.meta.attr("name"));
+			}
+		}
+		for (local.meta in local.metaData) {
+			doc.head().appendElement("meta").attr("name",local.meta).attr("content",local.metaData[local.meta]);
+		}
+
+		// Extand all nodes 
 		for (local.node in arguments.layout.layout.select("div")) {
 			local.div =  this.coldsoup.XMLNode2Struct(local.node);
-			local.parentlayout.select("##" & local.div.id).html(local.node.html());
+			local.newLayout.select("##" & local.div.id).html(local.node.html());
 		}
+
+		// other data
 		if (StructKeyExists(local.extends,"columns") && ! StructKeyExists(arguments.layout,"columns")) {
-			arguments.layout.columns = local.extends.columns;
+			arguments.layout["columns"] = local.extends.columns;
 		}
 		
-		arguments.layout.layout = local.parentlayout;
+		arguments.layout.layout = local.newLayout;
 
 	}
+
+	/** @hint parse any content tags into structs of data
+
+	Every tag or attribute is added as a struck key. Data attributes are added to a data struct.
+	
+	*/
+	private void function parseContainers(required struct layout) {
+		
+		if (! StructKeyExists(arguments.layout,"containers")) {
+			arguments.layout["containers"] = {};
+		}
+		local.containers = arguments.layout.layout.select("div[id]");
+		
+		if (IsDefined("local.containers")) {
+			for (local.containerObj in local.containers) {
+				local.cs = this.coldsoup.getAttributes(local.containerObj);
+				
+				arguments.layout["containers"][local.cs.id] = local.cs;
+
+			}
+		}
+
+	}
+
 
 	/** @hint parse any content tags into structs of data
 
@@ -141,7 +215,22 @@ component name="layouts" {
 				if (! StructKeyExists(local.cs,"id")) {
 					throw("ID not found for cs #local.contentObj.html()#");
 				}
+				// by default any cs with a title will be a general cs
+				if (! StructKeyExists(local.cs, "type")) {
+					if (StructKeyExists(local.cs, "title")) {
+						local.cs["type"] = "general";
+					}
+					else {
+						local.cs["type"] = "text";
+					}
+				}
 				
+				// link tags defined as href as link can't be used in html definition (jsoup mangles it)
+				// to do: make decision on this. convert everything to href?
+				if (StructKeyExists(local.cs, "href")) {
+					local.cs["link"] = local.cs.href;
+				}
+
 				// // convert class attribute to struct
 				// if (StructKeyExists(local.cs, "class")) {
 				// 	local.tmpClass = {};
