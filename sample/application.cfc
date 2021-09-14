@@ -40,7 +40,9 @@ component  extends="clikpage.clikpageApplication" {
 	}
 
 	public void function onRequestStart(targetPage)	 {
-		startApp(layoutsFolder=ExpandPath("layouts"),siteDef=ExpandPath("sampleSite.xml"),styledef=ExpandPath("styles/sample_style.xml"));
+		
+		// TO DO: remove
+		// startApp(layoutsFolder=ExpandPath("layouts"),siteDef=ExpandPath("sampleSite.xml"),styledef=ExpandPath("styles/sample_style.xml"));
 		
 		requestStart();
 	}
