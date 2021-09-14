@@ -1,0 +1,28 @@
+body.layout-testlayout {
+	--sitewidth: 1400px;
+}
+body.layout-testlayout3 {
+	--subcolwidth: 20%;
+	--xcolwidth: 0%;
+}
+:root {
+	--titlefont: Lato;
+	--bodyfont: Open Sans;
+	/* font incorrectly configured {"face":"broken","name":"test"} */
+}
+:root {
+	/*  Main text color */
+	--textcolor: #333333;
+	/*  My favourite colour */
+	--myfavcolor: #ff0000;
+	/*  Darker panel bg */
+	--panel-bg: #01798a;
+	/*  Accent colour */
+	--accent: #38bbcd;
+	/*  Panel text */
+	--panel-text: #ffffff;
+	/*  Light panel packground */
+	--light-panel-bg: #eaeaea;
+	/*  Link color */
+	--linkcolor: #38bbcd;
+}

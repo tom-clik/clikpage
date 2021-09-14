@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Basic layout</title>
+	<meta name="description" content="A test layout">
+	<meta name="author" content="Tom peer">
+	
+</head>
+
+<body data-test="1" data-columns="SM">
+
+	<div id="uberContainer">
+
+		<div id="header" class="border">
+			<content type="title" id="sitetitle">
+				Header
+			</content>
+		</div>
+
+		<div id="content">
+			
+			<div id="contentwrap">
+
+				<div id="subcol" class="border">
+					Subcol
+				</div>
+				
+				<div id="maincol" class="border">
+					<div id="maincol_top">
+						{{maincol}}
+					</div>
+				</div>
+
+				<div id="xcol" class="border">
+					Xcol
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="footer" class="border">
+			Footer
+		</div>
+
+	</div>
+
+</body>
+</html>

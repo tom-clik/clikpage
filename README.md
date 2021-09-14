@@ -12,16 +12,16 @@ Designed as a singleton pattern module for instantiation in the application scop
 
 Every component on a page (e.g. a menu) adds required javascript and css either by reference (e.g. "jquery"), by filename, or with inline code.
 
-E.g.
+### Example Usage
 
 You create the page content in onRequestStart:
 
     request.prc.content = application.pageObj.getContent();
 
-A photo gallery component would require a static Jquery library ("mygallery"), and some inline javascript to go into the onready:
+A photo gallery component would require a static Jquery library ("megagallery"), and some inline javascript to go into the onready:
      
-     request.prc.content.static_js["mygallery"] = 1;
-     request.prc.content.onready &= "$(""##gallery"").mygallery({speed:2000})";
+     request.prc.content.static_js["megagallery"] = 1;
+     request.prc.content.onready &= "$(""##gallery"").megagallery({speed:2000})";
 
 The gallery might also set the page title:
 
@@ -33,6 +33,15 @@ A page is typically rendered in the onRequestEnd method.
 
 ## Static File Definitions
 
+To reference css or js by name you create static file definitions in json. 
+
+"scripts": [
+        {
+            "debug": "/_assets/js/jquery-3.4.1.js",
+            "min": "https://code.jquery.com/jquery-3.4.1.min.js",
+            "name": "jquery",
+            "packageExclude": 1
+        },
 
 
 
