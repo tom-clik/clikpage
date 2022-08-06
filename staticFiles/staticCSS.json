@@ -15,70 +15,60 @@
                 "navbuttons"
             ],
             "name":"content",
-            "pack":false
+            "min":"/_assets/css/_min/mainpackage.0.3.min.css"
         }
     ],
     "scripts": [
         {
-            "debug": "/_assets/css/reset.css",
             "min": "/_assets/css/reset.css",
             "name": "reset"
         },
         {
-            "debug": "/_assets/css/columns.css",
             "min": "/_assets/css/columns.css",
             "name": "columns",
             "requires": "reset"
         },
         {
-            "debug": "/_assets/css/items.css",
-            "min": "/_assets/css/items.css",
-            "name": "items",
+            "min": "/_assets/css/panels.css",
+            "name": "panels",
             "requires": "reset"
         },
         {
-            "debug": "/_assets/css/breadcrumb.css",
             "min": "/_assets/css/breadcrumb.css",
             "name": "breadcrumb"
         },
         {
-            "debug": "/_assets/css/footnotes.css",
             "min": "/_assets/css/footnotes.css",
             "name": "footnotes"
         },
         {
-            "debug": "/_assets/css/menus.css",
             "min": "/_assets/css/menus.css",
             "name": "menus"
         },
         {
-            "debug": "/_assets/css/navbuttons.css",
             "min": "/_assets/css/navbuttons.css",
             "name": "navbuttons"
         },
         {
-            "debug": "/_assets/css/images.css",
             "min": "/_assets/css/images.css",
             "name": "images"
         },
         {
-            "debug": "/_assets/css/definitions.css",
             "min": "/_assets/css/definitions.css",
             "name": "definitions"
         },
         {
-            "debug": "/_assets/css/title.css",
             "min": "/_assets/css/title.css",
             "name": "title"
         },
         {
         	"debug": "/_assets/css/select2.min.css",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css",
             "name": "select2"
         },
         {
         	"debug": "/_assets/css/jquery-ui.css",
-            "min": "https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css",
             "name": "jqueryui"
         },
         {
@@ -92,15 +82,13 @@
             "name": "fonts"
         },
         {
-            "debug": "/_assets/css/colorbox/colorbox.css",
             "min": "/_assets/css/colorbox/colorbox.css",
             "name": "colorbox"
         },
         {
-            "debug": "/_assets/css/styles.css",
             "min": "/_assets/css/styles.css",
             "name": "styles",
-            "requires": "reset,items,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
+            "requires": "reset,panels,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
         },
         {
         	"debug": "/_assets/css/fonts/font-awesome-local.css",

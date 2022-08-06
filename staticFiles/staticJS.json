@@ -6,34 +6,46 @@
                 "jqueryui",
                 "validate",
                 "fuzzy",
-                "metaforms",
-                "datatables",
                 "select2"
             ],
             "pack":false,
             "name":"main"
+        },
+        {
+            "scripts": [
+                "fuzzy",
+                "search",
+                "menuScroll",
+                "menus"
+            ],
+             "min":"/_assets/js/_min/coldlightpackage.0.1.min.js",
+            "name":"coldlight"
         }
     ],
     "scripts": [
         {
+
             "debug": "/_assets/js/jquery-3.4.1.js",
-            "min": "https://code.jquery.com/jquery-3.4.1.min.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
             "name": "jquery",
-            "packageExclude": 1
+            "packageExclude": 1,
+            "hash":"sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
         },
         {
             "debug": "/_assets/js/query-ui.min.js",
-            "min": "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
             "name": "jqueryui",
             "packageExclude": 1,
-            "requires": "jquery"
+            "requires": "jquery",
+            "hash": "sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
         },
         {
             "debug": "/_assets/js/jquery.validate.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js",
             "name": "validate",
             "packageExclude": 1,
-            "requires": "jquery"
+            "requires": "jquery",
+            "hash": "sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
         },
         {
             "min": "/_assets/js/fts_fuzzy_match.js",
@@ -56,10 +68,11 @@
         },
         {
             "debug": "/_assets/js/select2.min.js",
-            "min": "https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js",
             "name": "select2",
             "packageExclude": 1,
-            "requires": "jquery"
+            "requires": "jquery",
+            "hash": "sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
         },
         {
         	"debug": "/_assets/js/menuScroll.js",
@@ -77,12 +90,14 @@
             "debug": "/_assets/js/imagesloaded.pkgd.js",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
             "name": "imagesloaded",
+            "packageExclude": 1,
             "requires": "jquery"
         },
         {
             "debug": "/_assets/js/masonry.pkgd.js",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
             "name": "masonry",
+            "packageExclude": 1,
             "requires": "imagesloaded,jquery"
         },
         {

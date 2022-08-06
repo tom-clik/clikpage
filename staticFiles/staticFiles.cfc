@@ -1,102 +1,98 @@
 /**
- * # StaticFiles component
- * 
- * Allows for easy inclusion of static files (js,css) in a web page
- * 
- * ## Usage
- * 
- * ### Configuration
- * 
- * Configure a definition along the lines of the sample. See Scripts and Packages below for details
- * 
- * The script array is the order in which the scripts must appear.
+# StaticFiles component
 
- * ### Use
- *
- * NB this can be used on its own but is designed for use the the pageObject component.
- *
- * If you do want to just use this, you can instantiate the component in a permanent scope and initialise with the definition and your required prefix/suffix
- * 
- * To add files of packages, add to a "set" (a struct with a redundant key), e.g.
- * 
- *     js_static["myscript"] = 1
- *     
- * To get the list of script/style tags for an HTML page, use the `getLinks()` method, e.g.
- * 
- *     getLinks(js_static);
- *
- * To use the "debug" versions (if specified) call the method with  getLinks(js_static,true);
- *
- * #### Scripts
- *
- * Scripts (meaning css or js files) are defined as an array of objects with the following keys
- *
- * :name
- *    The name by which the script is referenced
- * :min
- * 	  src of the production version of the script (usually minimised or such). Can only be omitted if the script is in a bundled package.
- * :debug
- *    The debug version of the script. Can be omitted if a min version is specified. In debug mode, scripts are always included seperately even if in a bundled package
- * :requires
- *     List or array of required scripts. Always include all required scripts even if it's something as common as jquery
- * :packageExclude (boolean)
- *     Always show separate file even if in a package that is bundled. Typically the "min" script will be served from a CDN
- *
- * Note the order of the array is the order the scripts appear in the page.
- * 
- * Sample script entry
- *
- * ```
+Allows for easy inclusion of static files (js,css) in a web page
+
+## Usage
+
+### Configuration
+
+Configure a definition along the lines of the sample. See Scripts and Packages below for details
+
+The script array is the order in which the scripts must appear.
+
+### Use
+
+NB this can be used on its own but is designed for use the the pageObject component.
+
+If you do want to just use this, you can instantiate the component in a permanent scope and initialise with the definition and your required prefix/suffix
+
+To add files of packages, add to a "set" (a struct with a redundant key), e.g.
+
+  js_static["myscript"] = 1
+  
+To get the list of script/style tags for an HTML page, use the `getLinks()` method, e.g.
+
+  getLinks(js_static);
+
+To use the "debug" versions (if specified) call the method with  getLinks(js_static,true);
+
+#### Scripts
+
+Scripts (meaning css or js files) are defined as an array of objects with the following keys
+
+:name
+	The name by which the script is referenced
+:min
+	src of the production version of the script (usually minimised or such). Can be omitted if the script is in a bundled package.
+:debug
+	The debug version of the script. In debug mode, scripts are always included seperately even if in a bundled package. Typically local versions of all scripts are used including libraries.
+:requires
+	List or array of required scripts. Always include all required scripts even if it's something as common as jquery
+:packageExclude (boolean)
+	Always show separate file even if in a package that is bundled. Typically the "min" script will be served from a CDN
+
+Note the order of the array is the order the scripts appear in the page.
+
+Sample script entry
+
+```
 {
-    "debug": "/_assets/js/jquery.validate.js",
-    "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
-    "name": "validate",
-    "packageExclude": 1,
-    "requires": "jquery"
+	"debug": "/_assets/js/jquery.validate.js",
+	"min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
+	"name": "validate",
+	"packageExclude": 1,
+	"requires": "jquery"
 }
 ```
- *
- * #### Packages
- *
- * Groups of scripts can be defined in packages. These are added in the same way as normal scripts, e.g. for the package defined below:
- *
- * js_static["main"] = 1
- *  
- * These can include scripts like jquery that won't be "bundled". For any given script definition, the packageExclude
- * field can be set to true to ensure the individual script is always used, usually from a CDN.
- *
- * A package can also be set to not to be packed. Otherwise an "min" attribute must be set for the packaged files (the src). Even if all scripts are marked packageExclude you must still supply either pack:false or a "min" src.
- * 
- * The static object can make attempts at packaging using legacy java components but this is
- * off-piste. Gulp or other systems can also be used.
- *  
- * ```
- * packages": [
-        {
-            "scripts": [
-                "jquery",
-                "jqueryui",
-                "validate",
-                "fuzzy",
-                "metaforms",
-                "datatables",
-                "select2"
-            ],
-            "pack":false,
-            "name":"main"
-        }
-    ]
-    ```
- * 
- *    
- */
+#### Packages
+
+Groups of scripts can be defined in packages. These are added in the same way as normal scripts, e.g. for the package defined below:
+
+js_static["main"] = 1
+ 
+These can include scripts like jquery that won't be "bundled". For any given script definition, the packageExclude
+field can be set to true to ensure the individual script is always used, usually from a CDN.
+
+A package can also be set to not to be bundled. Otherwise an "min" attribute must be set for the packaged files (the src). Even if all scripts are marked packageExclude you must still supply either pack:false or a "min" src.
+
+The static object can make attempts at packaging using third party APIs. These work well as long as the APIs are available.
+
+```
+packages": [
+    {
+        "scripts": [
+            "jquery",
+            "jqueryui",
+            "validate",
+            "fuzzy",
+            "metaforms",
+            "datatables",
+            "select2"
+        ],
+        "pack":false,
+        "name":"main"
+    }
+]
+```    
+*/
 
 component {
 	/**
 	 * Constructor
 	 *
 	 * @staticDef  Struct of static file definitions     
-	 * @prefix     The prefix for each item. Change according to whther this is css or js
+	 * @prefix     The prefix for each item. Change according to whther this is css or js. See setCSS() rather than set these
 	 * @suffix     The suffix for each item. See prefix
 	 *
 	 */
@@ -116,6 +112,14 @@ component {
 		else {
 			variables.packages = [];
 		}
+
+		variables.patternObj = CreateObject( "java", "java.util.regex.Pattern" );
+		// generic debug pattern will remove anything between #DEBUG AND /#DEBUG
+		// it leaves the comment tags in for the minimiser to deal with.
+		variables.debugpattern = variables.patternObj.compile("\##DEBUG.*?\/\##DEBUG",variables.patternObj.MULTILINE + variables.patternObj.UNIX_LINES + variables.patternObj.DOTALL);
+		// JS console pattern removes all logging type entries. Use warn or error to leave stuff in
+		variables.consolepattern = variables.patternObj.compile("^\s*console\.(log|group.*?|table|time|trace)\(.*?\)\s*;\s*$",variables.patternObj.MULTILINE + variables.patternObj.UNIX_LINES);
+	
 
 		/* create lookup caches keyed by name for scripts and packages */
 
@@ -149,7 +153,6 @@ component {
 
 		}
 		
-
 		return this;
 	}	
 
@@ -259,6 +262,115 @@ component {
 		}
 
 		return local.jsonData;
+	}
+
+	/**
+	 * @hint        Compress packages. Currently using toptal API (see callCompressAPI())
+	 * @type        css|javascript
+	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF
+	 * @return      Array of results (result.name, result.saved [won't save if pack=false or 
+	 *              all scripts excluded from package], result.filename)
+	 */
+	public array function compressPackage(type="css",boolean overwrite=false) {
+		
+		local.results = [];
+		
+		for (local.package in variables.packages) {
+			
+			local.res = {"name": local.package.name,"saved": false};
+			
+			if (local.package.pack) {
+				
+				local.outputFile = ExpandPath(local.package.min);
+				local.res["filename"] = local.outputFile;
+				if (FileExists(local.outputFile) AND NOT arguments.overwrite) {
+					ArrayAppend(local.results, local.res);
+					continue;
+				}
+				local.res.files=[];
+				local.res["raw"] = 0;// sum total size of raw packages
+				// TO DO: check package scripts are in order. Use them if they are
+				local.out = "";
+				for (local.script in variables.scripts) {
+					//writeDump(local.script);
+					if (ArrayFind(local.package.scripts, local.script.name)) {
+						if (!local.script.packageExclude) {
+							local.filename = ExpandPath(local.script.min);
+							if (!FileExists(local.filename)) {
+								Throw(message="File #local.filename# not found for script #local.script.name#");
+							}
+							local.res.raw += getFileInfo(local.filename).size;
+							local.out &= FileRead(local.filename,"utf-8");
+							ArrayAppend(local.res.files, local.filename);
+						}
+					}
+				}
+				if (local.out != "") {
+					
+					local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
+					local.compressed = local.out;	
+					if (arguments.type == "css") {
+						local.compressed = minifiyCSS(local.out);
+					}
+					else {
+						local.compressed = minifiyJS(local.out);
+					}
+					try {
+						FileWrite(local.outputFile, local.compressed, "utf-8");
+					}
+					catch (any e) {
+						local.extendedinfo = {"tagcontext"=e.tagcontext};
+						throw(
+							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Unable to save file #local.outputFile#:" & e.message, 
+							detail       = e.detail,
+							errorcode    = "compressPackage.1"		
+						);
+					}
+					
+					local.res["compressed"] = getFileInfo(local.outputFile).size;;
+					local.res["saved"] = true;
+				}
+			}
+
+			ArrayAppend(local.results, local.res);
+			
+		}
+
+		return local.results;
+	}
+
+	public string function minifiyCSS(required string css) {
+		
+		return callCompressAPI(input=arguments.css, apiendpoint="https://www.toptal.com/developers/cssminifier/api/raw");
+	}
+
+	public string function minifiyJS(required string js) {
+		arguments.js =	variables.consolepattern.matcher(arguments.js).replaceAll("");
+		return callCompressAPI(input=arguments.js, apiendpoint="https://www.toptal.com/developers/javascript-minifier/api/raw");
+	}
+
+	private string function callCompressAPI(required string input, required string apiendpoint) {
+		local.httpService = new http(method = "POST", charset = "utf-8", url = arguments.apiendpoint,multipart="false");
+		local.httpService.addParam(type = "formfield",name="input", value = arguments.input);
+		local.httpService.addParam(type = "header", name='content-type', value='application/x-www-form-urlencoded');
+	  
+		try {
+			local.result = httpService.send().getPrefix();
+		}
+		catch (e) {
+			throw(message="unable to connect to compression API",detail=e.message);
+		}
+
+		if ((! (StructKeyExists(local.result,"text") && local.result.text)) OR !StructKeyExists(local.result,"filecontent") OR NOT local.result.status_code eq 200)  {
+			StructAppend(local.result,{"errordetail":"Unknown error"},false);
+			throw(message="Compression API return an error",detail=local.result.errordetail);
+		}
+
+				
+
+		return local.result.filecontent;
+		
 	}
 
 }

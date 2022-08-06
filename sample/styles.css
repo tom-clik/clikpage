@@ -1,5 +1,5 @@
 body.layout-testlayout {
-	--sitewidth: 1400px;
+	--inner-width: 1200px;
 }
 body.layout-testlayout3 {
 	--subcolwidth: 20%;
