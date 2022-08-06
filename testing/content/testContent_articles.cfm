@@ -1,7 +1,7 @@
 <cfscript>
 cfinclude(template="testContent_include.cfm");
 
-siteObj = createObject("component", "clikpage.site.siteObj").init();
+siteObj = new clikpage.site.siteObj();
 
 siteObj.debug = true;
 

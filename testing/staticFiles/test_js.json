@@ -14,64 +14,57 @@
             ]
         },
         {
-            "min": "testpackage_0.9.1.js",
+            "min": "//_assets/js/_min/testpackage_0.9.1.js",
             "name": "testpackage",
             "scripts": [
-                "metaforms",
                 "datatables",
                 "select2",
-                "fuzzy"
+                "fuzzy",
+                "menus"
             ]
         }
     ],
     "scripts": [
         {
-            "debug": "/_shared/_assets/js/jquery-3.4.1.js",
+            "debug": "/_assets/js/jquery-3.4.1.js",
             "min": "https://code.jquery.com/jquery-3.4.1.min.js",
             "name": "jquery",
             "packageExclude": 1
         },
         {
-            "debug": "/_shared/_assets/js/jquery-ui.min.js",
+            "debug": "/_assets/js/jquery-ui.min.js",
             "min": "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
             "name": "jqueryui",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-            "debug": "/_shared/_assets/js/jquery.validate.js",
+            "debug": "/_assets/js/jquery.validate.js",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
             "name": "validate",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-        	"min": "https://www.coldlight.net/_assets/js/fts_fuzzy_match.js",
-            "debug": "/_shared/_assets/js/fts_fuzzy_match.js",
+        	"min": "/_assets/js/fts_fuzzy_match.js",
             "name": "fuzzy",
             "requires": "jquery"
         },
         {
-            "min": "/_shared/metadata/assets/js/metaForms.js",
-            "name": "metaforms",
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_shared/_assets/js/jquery.dataTables.min.js",
+            "debug": "/_assets/js/jquery.dataTables.min.js",
             "min": "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js",
             "name": "datatables",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-            "debug": "/_shared/_assets/js/select2.min.js",
+            "debug": "/_assets/js/select2.min.js",
             "min": "https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js",
             "name": "select2",
             "packageExclude": 1,
             "requires": "jquery"
         },
         {
-            "debug": "/_assets/js/menus.js",
             "min": "/_assets/js/menus.js",
             "name": "menus",
             "requires": "jquery"

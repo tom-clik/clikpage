@@ -1,5 +1,5 @@
 <cfscript>
-layoutObj = createObject("component", "clikpage.layouts.layouts").init(getDirectoryFromPath(getCurrentTemplatePath()));
+layoutObj = new clikpage.layouts.layouts(getDirectoryFromPath(getCurrentTemplatePath()));
 
 mylayout = layoutObj.getLayout("testlayout1/testlayout6");
 

@@ -1,13 +1,15 @@
 <cfscript>
-settingsObj = CreateObject("component", "clikpage.settings.settingsObj").init(debug=1);
-contentObj = CreateObject("component", "clikpage.content.contentObj").init(settingsObj=settingsObj);
+settingsObj = new clikpage.settings.settingsObj(debug=1);
+contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
+
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 contentObj.debug = 1;
-
 
 function testCS(required struct cs) {
 	
 	contentObj.settings(arguments.cs,styles);
+
+	writeDump(arguments.cs.settings);
 
 	displayCSS(arguments.cs);
 
