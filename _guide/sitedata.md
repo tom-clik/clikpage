@@ -10,7 +10,7 @@ Site and Sections are actually a data set themselves, but their definition is ma
 
 ## Basic data sets
 
-A basic data set can be defined with a tag(s) and a data type. A menu might have a data aset defined as "main menu", all sections defined
+A basic data set can be defined with a tag(s) and a data type. A menu might have a data set defined as "main menu", all sections defined
 
 ## Articles
 
@@ -18,7 +18,7 @@ Another standard data type is defined in the Clik system, articles.
 
 ## Other data types
 
-Other data types can be defined and then used by custom content sections. These might be products or entires in a reference library.
+Other data types can be defined and then used by custom content sections. These might be products or entries in a reference library.
 
 
 

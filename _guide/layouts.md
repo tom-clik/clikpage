@@ -16,8 +16,8 @@ All content items should use data for their content. For a simple text item it m
 
 For more complicated items like menus, article lists, photo galleries, data _has_ to be used. Data sets can be global, or they can be defined in a section, allowing layouts to be easily reused.
 
-A typical glocal data set would be a list of sections for the main menu. This would usually be all sections tagged "main menu".
+A typical global data set would be a list of sections for the main menu. This would usually be all sections tagged "main menu".
 
-A section dataset might be a list of articles or products. Content sections that show "detail" of content often require a dataset to be defined and to contain the record being shown. Navigtion buttons can then be linked to the content section to show next and previous buttons.
+A section dataset might be a list of articles or products. Content sections that show "detail" of content require a dataset to be defined and to contain the record being shown. Navigation buttons can then be linked to the content section to show next and previous buttons.
 
 

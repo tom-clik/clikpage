@@ -7,16 +7,15 @@ Its component architecture allows it to be easily extended,
 
 There are three key parts to it 
 
-1. Site data
+1. [Site data](sitedata.md)
     A simple site data model allows sites to be defined using XML or SQL stores. 
 
-    No pages are edited directly
-
-2. Layouts
+2. [Layouts](layouts.md)
     Every site or app is built using a set of layouts. These are more than just templates, they are contructed from modular components and offer huge flexibility for styling and configuration.
 
-3. Styling
-    XML based styles allow for complete control over interactivity without need to code JavaScript.
+3. [Styling](styling.md)
+    XML based styles allow for complete control over styles and interactivity without the need to code JavaScript.
+
 
 
 

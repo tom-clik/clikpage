@@ -33,8 +33,9 @@ A page is typically rendered in the onRequestEnd method.
 
 ## Static File Definitions
 
-To reference css or js by name you create static file definitions in json. 
+To reference css or js by name you create static file definitions in json. A shortened example is below. See the staticFiles object for full details
 
+```
 "scripts": [
         {
             "debug": "/_assets/js/jquery-3.4.1.js",
@@ -42,7 +43,7 @@ To reference css or js by name you create static file definitions in json.
             "name": "jquery",
             "packageExclude": 1
         },
-
+```
 
 
 
