@@ -41,7 +41,7 @@
 	<layouts>
 
 		<testlayout>
-			<sitewidth>1400px</sitewidth>
+			<inner-width>1200px</inner-width>
 		</testlayout>
 		
 		<testlayout3>
@@ -100,6 +100,7 @@
 			<main>
 				<menu>
 					<orientation>vertical</orientation>
+					<align>left</align>
 				</menu>
 			</main>	
 
@@ -111,9 +112,9 @@
 					<flex>true</flex>
 					<align>right</align>
 					<min-height>100%</min-height>
-					<menucolor>panel-text</menucolor>
-					<menuhicolor>panel-text</menuhicolor>
-					<menuhovercolor>panel-text</menuhovercolor>
+					<link-color>panel-text</link-color>
+					<hi><link-color>panel-text</link-color></hi>
+					<hover><link-color>panel-text</link-color></hover>
 				</menu>
 
 				<height>100%</height>
@@ -224,16 +225,39 @@
 				
 				<imagegrid>
 					<masonry>false</masonry>
-					<max-width>33%</max-width>
+					<max-width>48%</max-width>
 				</imagegrid>
 			</mid>
 			<mobile>
 				<imagegrid>
 					<masonry>false</masonry>
-					<max-width>49%</max-width>
+					<max-width>100%</max-width>
 				</imagegrid>
 			</mobile>
 		</imagegrid>
+
+		<imagegrid2>
+			<main>
+				<imagegrid>
+					<grid-mode>auto</grid-mode>
+					<max-width>220px</max-width>
+				</imagegrid>
+			</main>
+			<mid>
+				
+				<imagegrid>
+					<grid-mode>auto</grid-mode>
+					<max-width>180px</max-width>
+				</imagegrid>
+			</mid>
+			<mobile>
+				<imagegrid>
+					<grid-mode>none</grid-mode>
+					<max-width>100%</max-width>
+				</imagegrid>
+			</mobile>
+		</imagegrid2>
+		
 
 		<content>
 
