@@ -1,0 +1,22 @@
+:root {
+	--font: 1em "verdana";
+	--text-transform: none;
+	--text-align:left;
+	--titlefont: var(--font);
+	--headingfont: var(--font);
+}
+
+h1, h2, h3, h4, h5, h6, p, figcaption {
+	text-align: var(--text-align);
+	text-transform: var(--text-transform);
+}
+
+figcaption {
+	font: var(--titlefont);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font: var(--headingfont);
+}
+
+

@@ -1,0 +1,119 @@
+/*
+
+# Table styling
+
+We can't use border collapse to do any sort of sensible table styling
+
+We need to do it the usual way of adjusting border widths for rows and columns
+
+NB Note that if you want to adjust the border widths for td/th you do it by just adjuting the
+vars for that scope e.g.
+
+```css
+table.info td, table.info th {
+	--table-border-color:#c3c3c3;
+}
+```
+
+## Adjusting columns
+
+table.info tr td:nth-of-type(3) {
+	--table-font-weight:bold;
+	--table-text-align:left;	
+}
+
+## To do
+
+Better mechanism for first and last column paddings? (not pa priority).
+
+
+
+*/
+
+:root {
+	
+	--table-border-width:0px;
+	--table-border-style:solid;
+	--table-border-color:initial;
+	--table-margin:0;
+	--table-cell-padding:0;
+	--table-font-weight:inherit;
+	--table-text-align:inherit;
+	--table-stripe-bg: transparent;
+}
+
+th {
+	--table-font-weight:bold;
+	--table-text-align:center;
+}
+
+table {
+	border-width: var(--table-border-width);
+	border-style: var(--table-border-style);
+	border-color: var(--table-border-color);
+	margin: var(--table-margin);
+	border-collapse: separate;
+}
+
+th, td  {
+	border-width: var(--table-border-width);
+	border-style: var(--table-border-style);
+	border-color: var(--table-border-color);
+	text-align: var(--table-text-align);
+	font-weight: var(--table-font-weight);
+	background-color: var(--table-bg);
+	color: var(--table-text);
+	padding: var(--table-cell-padding);
+}
+
+table tbody tr:nth-of-type(2n) {
+	background-color: var(--table-stripe-bg);
+}
+
+
+/* Plcae th in tfoot tags to apply border */
+body thead tr th {
+	border-top-width: 0;
+}
+
+body tfoot  th {
+	border-bottom-width: 0;
+}
+/* tables have to have body for effective styling */
+body tbody  tr {
+	border-top-width: 0;
+}
+
+td, th {
+	border-left-width: 0px;
+}
+
+td {
+	border-top-width: 0px;
+}
+
+tr td:last-of-type, tr th:last-of-type {
+	border-right-width:0;
+}
+
+body tbody  tr:last-of-type td {
+	border-bottom-width: 0;
+}
+
+
+
+
+table.info {
+	--table-border-width: 1px;
+	--table-cell-padding: 2px;
+	--table-margin:0 0 1em 0;
+}
+
+table.info td, table.info th {
+	--table-border-width: 1px;
+}
+
+
+
+
+

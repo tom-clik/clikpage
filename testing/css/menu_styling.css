@@ -1,0 +1,179 @@
+#menu {
+	/* no style for orientation */
+	--link-color: Brown;
+	/* no style for menu-border-color */
+	--menu-background: Bisque;
+	--menu-gap: 6px;
+	--menu-item-padding: 8px;
+	--menu-item-border: 0 0 4px 0;
+	/* no style for menu-text-align */
+	/* no style for menu-anim-time */
+	/* no style for menu-label-display */
+	--menu-icon-display: none;
+}
+#menu li a:hover {
+	/* no style for orientation */
+	--link-color: DarkCyan;
+	--menu-border-color: pink;
+	--menu-background: DarkKhaki;
+	/* no style for menu-gap */
+	/* no style for menu-item-padding */
+	/* no style for menu-item-border */
+	/* no style for menu-text-align */
+	/* no style for menu-anim-time */
+	/* no style for menu-label-display */
+	/* no style for menu-icon-display */
+}
+#menu li.hi a {
+	/* no style for orientation */
+	--link-color: Cornsilk;
+	/* no style for menu-border-color */
+	--menu-background: darkslategray;
+	/* no style for menu-gap */
+	/* no style for menu-item-padding */
+	/* no style for menu-item-border */
+	/* no style for menu-text-align */
+	/* no style for menu-anim-time */
+	/* no style for menu-label-display */
+	/* no style for menu-icon-display */
+}
+#menu {
+	--menu-text-align: center;
+}
+#menu > ul {
+	/* no orientation  */
+	justify-content: center;
+	/* flex */
+	display: grid;
+}
+#menu > ul > li > a {
+	border-width:var(--menu-item-border);
+}
+#menu > ul > li:last-of-type > a {
+	border-width:var(--menu-item-border);
+}
+#menu ul.submenu {
+	/* submenu styling */
+	position: absolute;
+}
+#menu ul.submenu ul.submenu {
+	/* subsubmenu styling */
+	position: absolute;left:100%;top:0;
+}
+@media screen AND (min-width: 1200px) {
+#menu {
+	/* no style for orientation */
+	/* no style for link-color */
+	/* no style for menu-border-color */
+	/* no style for menu-background */
+	--menu-gap: 0;
+	--menu-item-padding: 4px 12px;
+	--menu-item-border: 1px;
+	/* no style for menu-text-align */
+	/* no style for menu-anim-time */
+	/* no style for menu-label-display */
+	--menu-icon-display: inline-block;
+}
+#menu {
+	--menu-text-align: right;
+}
+#menu > ul {
+	/* no orientation  */
+	justify-content: flex-end;
+	/* flex */
+	display: flex;
+}
+#menu > ul > li > a {
+	border-width:var(--menu-item-border);
+	border-right-width:0;
+}
+#menu > ul > li:last-of-type > a {
+	border-right-width:var(--menu-item-border);
+}
+#menu ul.submenu {
+	/* submenu styling */
+	position: absolute;
+}
+#menu ul.submenu ul.submenu {
+	/* subsubmenu styling */
+	position: absolute;left:100%;top:0;
+}
+}
+@media screen AND (max-width: 800px) {
+#menu {
+	--orientation: vertical;
+	/* no style for link-color */
+	/* no style for menu-border-color */
+	/* no style for menu-background */
+	--menu-gap: 0;
+	/* no style for menu-item-padding */
+	--menu-item-border: 1px;
+	/* no style for menu-text-align */
+	/* no style for menu-anim-time */
+	/* no style for menu-label-display */
+	--menu-icon-display: inline-block;
+}
+#menu {
+	--menu-text-align: left;
+}
+#menu > ul {
+	/* orientation: vertical  */
+	grid-template-columns: 1fr;
+	/* flex */
+	display: grid;
+}
+#menu > ul > li > a {
+	border-width:0;
+	border-bottom-width:var(--menu-item-border);
+}
+#menu > ul > li:last-of-type > a {
+	border-width:0;
+}
+#menu ul.submenu {
+	/* submenu styling */
+	position: static;
+}
+#menu ul.submenu ul.submenu {
+	/* subsubmenu styling */
+	position: static;left:100%;top:0;
+}
+}
+@media screen AND (max-width: 630px) {
+#menu {
+	--orientation: vertical;
+	/* no style for link-color */
+	/* no style for menu-border-color */
+	/* no style for menu-background */
+	--menu-gap: 0;
+	/* no style for menu-item-padding */
+	--menu-item-border: 0px;
+	/* no style for menu-text-align */
+	/* no style for menu-anim-time */
+	--menu-label-display: none;
+	/* no style for menu-icon-display */
+}
+#menu {
+	--menu-text-align: left;
+}
+#menu > ul {
+	/* orientation: vertical  */
+	grid-template-columns: 1fr;
+	/* flex */
+	display: grid;
+}
+#menu > ul > li > a {
+	border-width:0;
+	border-bottom-width:var(--menu-item-border);
+}
+#menu > ul > li:last-of-type > a {
+	border-width:0;
+}
+#menu ul.submenu {
+	/* submenu styling */
+	position: static;
+}
+#menu ul.submenu ul.submenu {
+	/* subsubmenu styling */
+	position: static;left:100%;top:0;
+}
+}

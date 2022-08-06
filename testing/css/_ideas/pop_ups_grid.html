@@ -1,0 +1,72 @@
+<!--- 
+
+# Pure CSS pop up
+
+so close here to getting pure css centered pop up.
+
+Just can't line up the caption or appy a border if we do this.
+
+## Usage
+
+Preview
+
+--->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pop up tests</title>
+	<link rel="stylesheet" href="../reset.css">
+	<style>
+	
+	.popup {
+		top:0;
+		left:0;
+		display:block;
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(33,33,33,.6);
+		padding:12px 12px 120px 12px;
+	}
+
+	.popup .close {
+		position: absolute;
+		top:0;
+		right:0;
+		width:auto;
+		border:1px solid white;
+		padding:4px;
+	}
+
+	.popup img {
+	  /* Full width and height */
+	  display: block;
+	  width: 100%;
+	  height: 100%;
+	  object-fit: scale-down;	  
+	}
+
+	.caption {
+		color: white;
+		position: relative;
+	}
+	
+	</style>
+</head>
+<body>
+
+	<div class="popup" id="mypopup">
+
+		<!-- <img src="../_images/portrait_test_1.jpg"> -->
+		<img src="../_images/01_building4.jpg">
+
+		<div class="caption">Loremillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum. Loremillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.Loremillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.Loremillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.Loremillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+	
+		<div class="close"><a href="#close">Close</a></div> 
+
+	</div>
+
+
+</body>
+</html>

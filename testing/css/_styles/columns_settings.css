@@ -1,0 +1,138 @@
+/* 
+
+TO BE AUTO GENERATED.
+
+See THP
+
+Having converted this to a cf function we now want to autogenerate it to use on static sites
+
+Need to iterate over all possible combos and write out. Means permutations for each layout
+in each medium.
+
+*/
+
+body.col-SM, body.col-M, body.col-MS {
+	--xcol-display:none;
+}
+
+body.col-SM {
+	--content-grid-template-areas: "subcol maincol";
+	--content-grid-template-columns: var(--subcolwidth) auto;
+}
+
+body.col-MS {
+	--content-grid-template-areas: "maincol subcol";
+	--content-grid-template-columns: auto  var(--subcolwidth);
+}
+
+
+body.col-MX, body.col-XM {
+	--subcol-display:none;
+}
+
+body.col-XM {
+	--content-grid-template-areas: "xcol maincol";
+	--content-grid-template-columns: var(--xcolwidth) auto;
+}
+
+body.col-MX {
+	--content-grid-template-areas: "maincol xcol";
+	--content-grid-template-columns: auto  var(--xcolwidth);
+}
+
+body.col-XMS {
+	--content-grid-template-areas: "xcol maincol subcol";
+	--content-grid-template-columns:var(--xcolwidth) auto  var(--subcolwidth);
+}
+body.col-SXM {
+	--content-grid-template-areas: "subcol xcol maincol ";
+	--content-grid-template-columns: var(--subwidth) var(--xcolwidth) auto ;
+}
+
+body.col-XSM {
+	--content-grid-template-areas: "xcol  subcol maincol";
+	--content-grid-template-columns:var(--xcolwidth)   var(--subcolwidth) auto;
+}
+
+
+
+@media screen and (max-width: 800px) {
+
+	body.col-XMS {
+		--content-grid-template-areas: "maincol subcol" "xcol subcol";
+		--content-grid-template-columns:auto  var(--subcolwidth);
+	}
+
+	body.col-SXM {
+		--content-grid-template-areas: "subcol maincol" "subcol xcol";
+		--content-grid-template-columns: var(--subcolwidth) auto;
+	}
+
+	body.col-XSM {
+		--content-grid-template-areas: "subcol maincol" "subcol xcol ";
+		--content-grid-template-columns: var(--subcolwidth) auto;
+	}
+
+	body.mid-XMS {
+		--content-grid-template-areas: "xcol subcol" "maincol subcol";
+		--content-grid-template-columns:auto  var(--subcolwidth);
+	}
+	
+	body.mid-SXM {
+		--content-grid-template-areas: "subcol xcol" "subcol maincol";
+		--content-grid-template-columns: var(--subcolwidth) auto;
+	}
+
+	body.mid-XSM {
+		--content-grid-template-areas: "subcol maincol" "subcol xcol ";
+		--content-grid-template-columns: var(--subcolwidth) auto;
+	}
+
+
+}
+
+
+
+@media screen and (max-width:630px) {
+	
+	body.col-MS {
+		--content-grid-template-areas: "maincol" "subcol";
+	}
+
+
+	body.col-XM {
+		--content-grid-template-areas: "xcol" "maincol";
+	}
+
+	body.col-MX {
+		--content-grid-template-areas: "maincol" "xcol";
+	}
+
+	body[class^=col] {
+		--content-grid-template-columns: 1fr;
+	}
+
+	body.col-XMS, body.mob-XMS  {
+		--content-grid-template-areas:"xcol"  "maincol" "subcol";
+	}
+
+	body.col-XSM, body.mob-XSM {
+		--content-grid-template-areas:"xcol" "subcol"  "maincol" ;
+	}
+
+	body.col-SXM, body.mob-SXM {
+		--content-grid-template-areas: "subcol" "xcol" "maincol" ;
+	}
+
+
+	body.mob-MSX  {
+		--content-grid-template-areas: "maincol" "subcol" "xcol" ;
+	}
+
+	body.mob-MXS  {
+		--content-grid-template-areas: "maincol"  "xcol" "subcol";
+	}
+
+	
+	
+}

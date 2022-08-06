@@ -1,0 +1,29 @@
+#panel {
+	position: fixed;
+	top:20px;
+	left:20px;
+	border:1px solid #3c3c3c;
+	background-color: #e5e5e5;
+	padding:8px;
+	min-width:200px;
+	min-height: 260px;
+	z-index: 500;
+}
+
+fieldset {
+	display: grid;
+	grid-template-columns: 40% auto;
+	grid-gap: 4px;
+}
+
+input, select {
+	padding:2px;
+	width: auto;
+	min-width: 0;
+}
+
+.checklist {
+	display: grid;
+	grid-template-columns: min-content auto;
+	grid-gap: 4px;
+}

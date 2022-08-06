@@ -1,0 +1,32 @@
+/* WIP as we test var styling. Next stage is to apply all these settings just to IDs */
+
+:root {
+	--titlefont: 110%  "Open Sans";
+}
+
+
+.scheme-framed div.frame {
+	border:1px 1px 0px 0px solid #cfcfcf;
+	padding:2px;
+}
+.scheme-framed img {
+	border:1px solid #ff00ff;
+}
+
+.scheme-framed figcaption {
+	border:1px solid transparent;
+	--text-transform: uppercase;
+	--font: var(--titlefont);
+}
+
+
+.scheme-framed div.frame {
+	display: flex;
+	align-items: center;
+    justify-content: center; 
+}
+
+.scheme-hover {
+	--caption-display:none;
+	--caption-hover-display: block;
+
