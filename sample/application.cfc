@@ -6,7 +6,9 @@ Skeleton application showing usage of singleton component to render pages
 
 ## Usage
 
+## Notes
 
+Why is there redefinition of functions??? THP
 
 ## History
 
@@ -16,13 +18,9 @@ Skeleton application showing usage of singleton component to render pages
 */
 
 
-component  extends="clikpage.clikpageApplication" {
+component   extends="clikpage.clikpageApplication" { //
 	// Application properties
 	this.name = "clikpagesample";
-	this.sessionManagement = true;
-	this.sessionTimeout = createTimeSpan(0,0,30,0);
-	this.setClientCookies = true;
-	this.sessioncookie.secure = true;
 	this.componentpaths=[ExpandPath("../..")];
 
 	// Java Integration
@@ -34,28 +32,17 @@ component  extends="clikpage.clikpageApplication" {
 
 	// application start
 	this.debug = 1;
-	public boolean function onApplicationStart(){
-		startApp(layoutsFolder=ExpandPath("layouts"),siteDef=ExpandPath("sampleSite.xml"),styledef=ExpandPath("styles/sample_style.xml"));
+
+	public boolean function startApp(){
+		application.config = {
+			layoutsFolder=ExpandPath("layouts"),
+			siteDef=ExpandPath("sampleSite.xml"),
+			styledef=ExpandPath("styles/sample_style.xml")
+		};
+
 		return true;
+
 	}
-
-	public void function onRequestStart(targetPage)	 {
-		
-		// TO DO: remove
-		// startApp(layoutsFolder=ExpandPath("layouts"),siteDef=ExpandPath("sampleSite.xml"),styledef=ExpandPath("styles/sample_style.xml"));
-		
-		requestStart();
-	}
-
-
-	public void function onSessionStart(){
-		
-	}
-
-	public void function onSessionEnd( struct sessionScope, struct appScope ){
-		
-	}
-
 
 	
 

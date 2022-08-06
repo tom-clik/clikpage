@@ -6,7 +6,7 @@ component {
 	/**
 	 * @hint Pseudo initialiser
 	 * 
-	 * The "local" values for cssdef and jsdef will load the files in this
+	 * The "local" values for cssdef and jsdef will load the files in the static files folder
 	 * folder. To not use static defs, set these to blank
 	 * 
 	 * As a user of pageObj you would probably edit these files for your
@@ -54,7 +54,7 @@ component {
 				arguments.cssdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticFiles\staticCSS.json";
 			}
 			local.cssDef = loadDefFile(arguments.cssdef);
-			this.cssStaticFiles =  CreateObject("component", "clikpage.staticFiles.staticFiles").init(local.cssDef);
+			this.cssStaticFiles =  new clikpage.staticFiles.staticFiles(local.cssDef);
 			this.cssStaticFiles.setCss();
 			variables.hasStaticCSS = true;
 		}

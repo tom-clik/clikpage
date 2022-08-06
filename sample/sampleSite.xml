@@ -12,7 +12,7 @@
 	</meta>
 
 	<stylesheet></stylesheet>
-	<layout>testlayout1</layout>
+	<layout>main</layout>
 
 	<sections>
 		<section code="index">
@@ -24,17 +24,22 @@
 		
 		<section code="photo">
 			<title>Photo</title>
-			<layout>testlayout2</layout>
+			<layout>photolayout</layout>
 		</section>
 
 		<section code="gallery">
 			<title>Gallery</title>
-			<layout>testlayout3</layout>
+			<layout>gallery</layout>
+		</section>
+
+		<section code="gallery2">
+			<title>Gallery 2</title>
+			<layout>gallerylayout2</layout>
 		</section>
 
 		<section code="about">
 			<title>About</title>
-			<layout>testlayout4</layout>
+			<layout>single</layout>
 			<intro>
 				<![CDATA[This is the section introduction. It's a separate field]]>
 			</intro>
@@ -48,14 +53,14 @@
 		</section>
 		<section code="contact">
 			<title>Contact us</title>
-			<layout>testlayout4</layout>
+			<layout>single</layout>
 			<intro>
 				<![CDATA[This form can be used to contact us]]>
 			</intro>
 		</section>
 		<section code="privacy">
 			<title>Privacy</title>
-			<layout>testlayout4</layout>
+			<layout>single</layout>
 			<copy>
 				<![CDATA[Your privacy statement must accurately reflect your site's data collection and use. Your privacy statement should be clear, direct and easy to understand. Keep technical jargon and legal terminology to a minimum. If you decide to modify how you use personal information, you must inform your users.]]>
 			</copy>
@@ -63,8 +68,8 @@
 		
 		<section code="news">
 			<title>News</title>
-			<layout>testlayout5</layout>
-			<layout action="view">testlayout6</layout>
+			<layout>articlelist</layout>
+			<layout action="view">articledetail</layout>
 			<dataset tag="test" sort="pubdate desc"></dataset>
 		</section>
 

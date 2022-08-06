@@ -157,8 +157,8 @@ component name="layouts" {
 			doc.head().appendElement("meta").attr("name",local.meta).attr("content",local.metaData[local.meta]);
 		}
 
-		// Extand all nodes 
-		for (local.node in arguments.layout.layout.select("div")) {
+		// Extend all nodes 
+		for (local.node in arguments.layout.layout.select("div:not(.inner)")) {
 			local.div =  this.coldsoup.XMLNode2Struct(local.node);
 			local.newLayout.select("##" & local.div.id).html(local.node.html());
 		}
