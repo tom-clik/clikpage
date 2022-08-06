@@ -48,10 +48,10 @@ component extends="contentSection" {
 	
 	public string function html(required struct content, struct settings) {
 		
-		var cssettings = structKeyExists(arguments,"settings") ? arguments.settings.main.item : arguments.content.settings.main.item;
+		// var cssettings = structKeyExists(arguments,"settings") ? arguments.settings.main.item : arguments.content.settings.main.item;
 		var classes= {};
 		
-		cshtml = itemHtml(content=arguments.content, settings = cssettings, classes= classes);
+		cshtml = variables.contentObj.itemHtml(content=arguments.content);
 		StructAppend(arguments.content.class,classes);
 		
 		return cshtml;
@@ -59,7 +59,7 @@ component extends="contentSection" {
 	}
 
 
-	public string function css(required struct settings, required string selector) {
+	public string function css_settings(required string selector,required struct settings) {
 		
 		var css = "";
 		if (arguments.settings.item.imagewidth != "") {

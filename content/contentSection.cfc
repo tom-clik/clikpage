@@ -22,9 +22,6 @@ component {
 		};
 		variables.static_css = {};
 		variables.static_js = {};
-		variables.settings = {
-
-		};
 
 		variables.panels = [];
 
@@ -32,6 +29,21 @@ component {
 			{"name":"hover","selector":":hover"},
 			{"name":"hi","selector":".hi"}
 			];
+
+		this.selectors = [
+			{"name"="main", "selector"=""}
+		];
+
+		this.states = [
+			{"state"="main", "selector"="","name":"Main","description":"The main state"}
+		];
+
+		this.styleDefs = [
+						
+		];
+
+		// see e.g. menu.cfc for formal settings definition
+		this.settings = [=];
 
 		return this;
 	}
@@ -44,8 +56,18 @@ component {
 	}
 
 	/** Create a new content section */
-	public struct function new(required string id, string type=variables.type, string class, string title, string content,string image, string caption, string link) {
-		var cs = {"id"=arguments.id,"type"=arguments.type, "class"={}};
+	public struct function new(
+		required string id, 
+				 string class, 
+				 string title, 
+				 string content,
+				 string image, 
+				 string caption, 
+				 string link
+				 ) {
+
+		var cs = {"id"=arguments.id, "type"=variables.type, "class"={}};
+		
 		if (StructKeyExists(arguments,"content")) {
 			cs["content"] = arguments.content;
 		}
@@ -69,6 +91,7 @@ component {
 		
 		StructAppend(cs,variables.defaults,false);
 		cs.class["cs-#variables.type#"] = 1;
+
 		return cs;
 	}
 
@@ -76,10 +99,189 @@ component {
 		return arguments.content.content;
 	}
 
-	public string function css(required struct settings, required string selector) {
-		return "/* #variables.type# css no custom css */\n";
+	
+	/**
+	 * @hint Get CSS for complex settings
+     *
+	 * Some components have settings that don't translate exactly to css
+	 * properties e.g. menu direction is vertical | horizontal which is translated into grid functions
+	 * 
+	 * The css often needs applying to sub selectors. These are be defined in this.selectors which provides 
+	 * a shorthand when we are building the css.
+     *
+     * More complex components will override this function and provide a range of settings.
+	 */
+	private string function css_settings(required string selector, required struct styles) {
+		// To do this the styling often has to be applied to sub elements scuh as <ul> for menus
+		// We therefore maintain a structkeyed by the "name" of the selector as defined in 
+		// this.selectors.
+		var ret = getSelectorStruct();
+
+		// As we build the CSS we append to the different struct keys
+		// here "main" is nothing to do with media. See this.selectors.
+		// a menu function might do ret.ul &= "display:flex;\n"
+		ret.main &= "/-- Main CSS goes here --/\n";
+
+		// Once we've built this struct we write it out as a string using this function
+		return selectorQualifiedCSS(selector=arguments.selector, css_data=ret);
 	}
 
+	/**
+	 * @hint Get CSS vars for simple settings
+	 *
+	 * Any simple property that translated directly into a css property is applied as a var here
+	 *
+	 * Some content sections have "states" such as rollover or hi (highlighted state)
+	 *
+	 * These often need applying to a css pseduo class or sub element.
+	 *
+	 * The details of each state are in this.states
+	 *
+	 * Note the "main" state has the settings in the root of the struct while other states are
+	 * keys of main, e.g.
+	 *
+	 * {
+	 *    "link-color": "darkcolor",
+	 *    "hi": {
+	 *    	"link-color": accentcolor"
+	 *    },
+	 *    "hover": {
+	 *    	"link-color": "lightcolor""
+	 *    }   
+	 * }
+	 *
+	 * 
+	 * @selector    Base CSS selector string e.g. #csid 
+	 * @styles      styles for the specific content section and medium 
+	 * @return      
+	 */
+	private string function css_styles(required string selector, required struct styles) {
+		
+		var ret = "";
+
+		for (local.state in this.states) {
+			// main has no sub key. Other states dumped into setting struct
+			if ( local.state.state eq "main") {
+				local.state_styles = arguments.styles;
+			}
+			else {
+				if (NOT StructKeyExists(arguments.styles,local.state.state)) {
+					continue;
+				}
+				local.state_styles = arguments.styles[local.state.state];
+			}
+
+			ret &= arguments.selector & local.state.selector & " {\n";
+			for (local.stylecode in this.styleDefs) {
+				if (StructKeyExists(local.state_styles,local.stylecode)) {
+					local.styledef = this.styleDefs[local.stylecode];
+					switch (local.styledef.type)  {
+						case "color":
+								local.val =  "var(--" & local.state_styles[local.stylecode] & ")";
+								break;
+						default:
+								local.val =  local.state_styles[local.stylecode];
+					}
+					ret &= "\t--#local.stylecode#: " & local.val  & ";\n";
+				}
+				else {
+					ret &= "\t/-- no style for #local.stylecode# --/\n";	
+				}
+			}
+			ret &= "}\n";
+		}
+		return ret;
+	}
+	
+	
+	/**
+	Pending a formal settings definition this is a placeholder to give use inheritance
+	on the settings that need it. See this.settings  in e.g. menu.cfc */
+	public void function checkInheritance(required struct complete_styles) {
+		
+		local.inheritedSettings = {};
+		local.media = variables.contentObj.getMedia(arguments.complete_styles);
+		
+		for (local.mediumname in local.media) {
+			
+			if (StructKeyExists(arguments.complete_styles, local.mediumname)) {
+				
+				for (local.settingname in this.settings) {
+					local.setting = this.settings[local.settingname];
+					if (StructKeyExists(arguments.complete_styles[local.mediumname], local.settingname)
+						AND local.setting.inherit) {
+						local.inheritedSettings[local.settingname] = Duplicate(arguments.complete_styles[local.mediumname][local.settingname]);
+					}
+				}
+
+				StructAppend(arguments.complete_styles[local.mediumname], local.inheritedSettings, false);
+			}
+		}
+
+	}
+
+
+	/**
+	 * Generate CSS for the content section
+	 * 
+	 * @settings  Settings struct with keys for each media size
+	 */
+	public string function css(required string selector, required struct styles, boolean debug) {
+		
+		if (NOT structKeyExists(arguments,"debug")) {arguments.debug = variables.contentObj.debug}
+		var css_str = "";
+		
+		checkInheritance(arguments.styles);
+		
+		local.media = variables.contentObj.getMedia(arguments.styles);
+		
+		for (local.mediumname in local.media) {
+			local.medium = local.media[local.mediumname];
+			if (StructKeyExists(arguments.styles,local.mediumname)) {
+				css_str &= "/* medium #local.mediumname# */\n";
+
+				local.css_section = "";
+				/* content specific stuff */
+				if (StructKeyExists(arguments.styles[local.mediumname], variables.type)) {
+					local.css_section = css_styles(selector = arguments.selector, styles=arguments.styles[local.mediumname][variables.type]);
+					local.css_section &= css_settings(selector = arguments.selector, styles=arguments.styles[local.mediumname][variables.type]);
+				}
+				/* generic panel styling */
+				local.css_section &= arguments.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname]) & "}\n";
+				
+				for (local.panel in this.panels) {
+					if (StructKeyExists(arguments.styles[local.mediumname], local.panel.name)) {
+							local.css_section &= arguments.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname]) & "}\n";
+					}
+				}
+
+				local.screenSize=[];
+				if (local.css_section != "") {
+					if (StructKeyExists(local.medium,"min")) {
+						ArrayAppend(local.screenSize,"min-width: #local.medium.min#px")
+					};
+					if (StructKeyExists(local.medium,"max")) {
+						ArrayAppend(local.screenSize,"max-width: #local.medium.max#px")
+					};
+					if (ArrayLen(local.screenSize)) {
+						local.css_section = "@media screen AND (" & ArrayToList(local.screenSize," AND ") & ") {\n" & local.css_section & "}\n";
+					}
+					css_str &= local.css_section;
+				}
+			}
+
+		}
+		
+		return variables.contentObj.processText(css_str,arguments.debug);
+
+	}
+
+
+	/**
+	 * Get general css (see settingsObj.css()) for all panls
+	 * @settings content section settings struct
+	 * @selector Css selector for main item (usually #id)
+	 */
 	public string function panelCss(required struct settings, required string selector) {
 		var css = "";
 		
@@ -99,68 +301,56 @@ component {
 				}			
 			}
 
-
 		}
 
 		return css;
 	}
 
-	/**
-	 * Return standard html for an item with a title, text, and image
-	 *
-	 * This can be used on its own (general) or as part of a listing
-	 * 
-	 * @content  Content section
-	 * @content  item settings
-	 * @classes  Pass in struct by reference to retrun required classes for the wrapping div.
-	 */
-	public string function itemHtml(required struct content, struct settings, struct classes) {
-		
-		local.hasLink = StructKeyExists(arguments.content,"link");
-
-		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
-		var linkEnd = (local.hasLink) ? "</a>" : "";
-
-		arguments.classes["item"] = 1;
-		if (arguments.settings.heading_position == "top") {
-			arguments.classes["htop"] = 1;
+	/* return a struct of blank strings with one key for each selector
+	*/
+	private struct function getSelectorStruct() {
+		var ret = {};
+		for (local.selector in this.selectors) {
+			ret[local.selector.name] = "";
 		}
-		if (arguments.settings.mobile_heading_position != "top") {
-			arguments.classes["munder"] = 1;
-
-		}
-		if (!arguments.settings.showtitle) {
-			arguments.classes["notitle"] = 1;
-
-		}
-		switch (arguments.settings.align) {
-			case "left": case "right":
-			arguments.classes[arguments.settings.align] = 1;
-		}
-		var cshtml = "";
-
-		cshtml &= "\t<" & arguments.settings.titletag & " class='title'>" & linkStart & arguments.content.title & linkEnd &  "</" & arguments.settings.titletag & ">\n";
-		cshtml &= "\t<div class='imageWrap'>\n";
-		if (StructKeyExists(arguments.content,"image")) {
-			cshtml &= "\t\t<img src='" & arguments.content.image & "'>\n";
-			if (StructKeyExists(arguments.content,"caption")) {
-				cshtml &= "\t\t<div class='caption'>" & arguments.content.caption & "</div>\n";
-			}
-		}
-			cshtml &= "\t</div>\n";
-
-		cshtml &= "\t<div class='textWrap'>";
-		cshtml &= arguments.content.content;
-		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
-			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
-		}
-		cshtml &= "</div>";
-
-		return cshtml;
-
+		return ret;
 	}
 
+	/**
+	 * @hint Combine css settings struct (keyed by sub selector name) into a single text string
+	 * 
+	 * helper function for css_settings()
+	 *
+	 * A content item e.g. a menu will have a main selector e.g. #menu
+	 *
+	 * Depending on the content type it might have a range of sub selectors like ul > li > a
+	 * to which styling is applied. These are defined in the component as an array (this.selectors), a typical entry 
+	 * is {"name"="a", "selector"=" > ul > li > a"}
+	 *
+	 * As we define the css, we create a struct keyed by the selector name e.g. "a" for the above
+	 *
+	 * This function combines all the entries into a single text string e.g.
+	 *
+	 * #menu  {styling...}
+	 * #menu  > ul > li > a {styling...}
+	 * 
+	 * @selector  The main selector e.g. #mainmenu or .scheme-flex
+	 * @css_data  css style entries keyed by sub selector code (see this.selectors)
+	 * @return    the complete CSS
+	 */
+	private string function selectorQualifiedCSS(required string selector,required struct css_data) {
+		var ret = "";
+		for (local.selector in this.selectors) {
 
+			if (StructKeyExists(arguments.css_data, local.selector.name) AND arguments.css_data[local.selector.name] neq "") {
+				ret &= arguments.selector & local.selector.selector & " " & "{\n";
+				ret &= variables.contentObj.indent(arguments.css_data[local.selector.name],1);
+				ret &= "}\n";
+
+			}
+		}
+		return ret;
+	}
 
 	/**
 	 * @hint Update settings with required values
@@ -182,22 +372,49 @@ component {
 			};	
 		}
 		else {
-			fnDeepStructAppend(arguments.content["settings"], {"main" = {}}, false);
+			variables.contentObj.fnDeepStructAppend(arguments.content["settings"], {"main" = {}}, false);
 		}
 
 		var currentSettings = Duplicate(variables.settings);
 
 		for (local.medium in arguments.media) {
 			if (StructKeyExists(arguments.content["settings"],local.medium.name)) {
-				fnDeepStructAppend(arguments.content["settings"][local.medium.name],currentSettings,false);
+				variables.contentObj.fnDeepStructAppend(arguments.content["settings"][local.medium.name],currentSettings,false);
 				/** if a value is defined in the styling, use it for this and subsequent media */
-				fnDeepStructUpdate(currentSettings,arguments.content["settings"][local.medium.name]);
+				variables.contentObj.fnDeepStructUpdate(currentSettings,arguments.content["settings"][local.medium.name]);
 				
 			}
 		}
 
 		return arguments.content["settings"];
 	}
+
+	/**
+	Pending a formal settings definition this is a placeholder to give use inheritance
+	on the settings that need it. See this.settings  in e.g. menu.cfc */
+	public void function checkInheritance(required struct complete_styles) {
+		
+		local.inheritedSettings = {};
+		local.media = variables.contentObj.getMedia(arguments.complete_styles);
+		
+		for (local.mediumname in local.media) {
+			
+			if (StructKeyExists(arguments.complete_styles, local.mediumname)) {
+				
+				for (local.settingname in this.settings) {
+					local.setting = this.settings[local.settingname];
+					if (StructKeyExists(arguments.complete_styles[local.mediumname], local.settingname)
+						AND local.setting.inherit) {
+						local.inheritedSettings[local.settingname] = Duplicate(arguments.complete_styles[local.mediumname][local.settingname]);
+					}
+				}
+
+				StructAppend(arguments.complete_styles[local.mediumname], local.inheritedSettings, false);
+			}
+		}
+
+	}
+
 	
 	public struct function getStaticCss() {
 		return variables.static_css;
@@ -212,40 +429,5 @@ component {
 
 		return js;
 	}
-
-	/**
-	 * Appends the second struct to the first.
-	 */
-	void function fnDeepStructAppend(struct struct1, struct struct2, overwrite="true") output=false {
-		
-		for(local.key IN arguments.struct2){
-			if(StructKeyExists(arguments.struct1,local.key) AND 
-				IsStruct(arguments.struct2[local.key]) AND 
-				IsStruct(arguments.struct1[local.key])){
-				fnDeepStructAppend(arguments.struct1[local.key],arguments.struct2[local.key],arguments.overwrite);
-			}
-			else if (arguments.overwrite OR NOT StructKeyExists(arguments.struct1,local.key)){
-				arguments.struct1[local.key] = Duplicate(arguments.struct2[local.key]);
-			}
-		}
-	}
-
-	/**
-	 * Updates a struct with values from second struct
-	 */
-	void function fnDeepStructUpdate(struct struct1, struct struct2) output=false {
-		
-		for(local.key IN arguments.struct1){
-			if(StructKeyExists(arguments.struct2,local.key)) {
-				if (IsStruct(arguments.struct1[local.key])) {
-					fnDeepStructUpdate(arguments.struct1[local.key],arguments.struct2[local.key]);
-				}
-			}
-			else {
-				arguments.struct1[local.key] = Duplicate(arguments.struct2[local.key]);
-			}
-		}
-	}
-
 
 }

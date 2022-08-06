@@ -176,7 +176,7 @@ component  accessors="true" {
 	/**
 	 * Get data record
 	 * 
-	 * @site         Site struct
+	 * @site   Site struct
 	 * @id     tag
 	 */
 	public struct function getData(required struct site, required string id, required array dataSet, required string section) {
@@ -360,7 +360,7 @@ component  accessors="true" {
 			}
 			if (local.layoutName =="") {
 				if (local.defaultLayout == "") {
-					throw(message="No layout defined for action #arguments.action#",detail="Either define a layout for all actions or define a default layotu for the section");
+					throw(message="No layout defined for action #arguments.action#",detail="Either define a layout for all actions or define a default layout for the section");
 				}
 				else {
 					local.layoutName = local.defaultLayout;
@@ -372,11 +372,17 @@ component  accessors="true" {
 		
 	}
 
+	/**
+	 * @hint Generate css class name for body
+	 *
+	 * 
+	 */
 	public string function bodyClass(required struct layout) {
 		
-		local.columnLayout = StructKeyExists(arguments.layout,"columns") ? arguments.layout.columns : "SMX";
+		local.columnLayout = StructKeyExists(arguments.layout,"columns") ? arguments.layout.columns : "col-S-M-X mid-S-MX mob-SMX ";
 		local.spanning = true? " spanning": "";
-		return "layout-testlayout layout-#arguments.layout.id# col-#local.columnLayout#" & local.spanning;
+		// TO DO: MUST DO: inheritance of layout names isn't done!
+		return "layout-testlayout layout-#arguments.layout.id# #local.columnLayout#" & local.spanning;
 	}
 
 }

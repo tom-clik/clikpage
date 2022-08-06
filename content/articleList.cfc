@@ -39,7 +39,7 @@ component extends="general" {
 
 		for (local.item in arguments.content.data) {
 			classes = {};
-			local.tmpHTML = itemHtml(content=local.item, settings = arguments.content.settings.main.item  , classes= classes);
+			local.tmpHTML = variables.contentObj.itemHtml(content=local.item);
 			local.class = StructKeyList(classes," ");
 			cshtml &= "<div class='#local.class#'>";
 			cshtml &= local.tmpHTML;

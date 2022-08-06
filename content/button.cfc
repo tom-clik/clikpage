@@ -8,8 +8,8 @@
  *
  * 1. An id must be applied to the actual svg definition you want to use, e.g.
  * 
- * <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 197.4 197.4" preserveAspectRatio="none" xml:space="preserve" ><g id="left_arrow"><polygon points="146.88 197.4 45.26 98.7 146.88 0 152.15 5.42 56.11 98.7 152.15 191.98"/></g></svg>
+ * <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+	 viewBox="0 0 197.4 197.4"><g id="left_arrow"><polygon points="146.88 197.4 45.26 98.7 146.88 0 152.15 5.42 56.11 98.7 152.15 191.98"/></g></svg>
  *
  * 2.You reference this ID in the HTML as an anchor on the href attribute for <use>, e.g.
  *  

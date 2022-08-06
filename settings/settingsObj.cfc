@@ -155,7 +155,7 @@
 	}
 
 	body {
-		color:: var(--textcolor);
+		color: var(--textcolor);
 	}
 	
 	*/
@@ -234,9 +234,7 @@
 		else if (arguments.debug) {
 			local.css &= "/* no styles found for name */\n";
 		}
-
 		
-
 		return local.css;
 
 	}
