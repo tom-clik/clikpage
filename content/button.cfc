@@ -110,12 +110,11 @@ component extends="contentSection" {
 		local.shape = StructKeyExists(arguments.content.settings.main.button,"shape") ? arguments.content.settings.main.button.shape : "left_arrow";
 		cshtml &= "<div class='icon'>" & displayShape(local.shape) & "</div>";
 
-		if (arguments.content.settings.main.button.showLabel && arguments.content.content !="") {
+		if (arguments.content.content !="") {
 			cshtml &= "<label>#arguments.content.content#</label>";
 		}
 
-		arguments.content.class["demo"] = 1;
-		arguments.content.class[arguments.content.settings.main.button.align] = 1;
+		
 
 		cshtml &= linkEnd;
 

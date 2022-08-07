@@ -95,7 +95,7 @@ component {
 			return "/* Settings not defined for cs */";
 		}
 		// general CSS: to resurrect in the individual items
-		//css &= this.settingsObj.css(settings=arguments.content.settings[local.medium]);
+	//css &= this.settingsObj.css(settings=arguments.content.settings[local.medium]);
 		
 		//css &= this.contentSections[arguments.content.type].panelCss(settings=arguments.content.settings[local.medium], selector="##" & arguments.content.id);
 

@@ -249,9 +249,14 @@ component {
 				/* generic panel styling */
 				local.css_section &= arguments.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname]) & "}\n";
 				
-				for (local.panel in this.panels) {
+				for (local.panel in variables.panels) {
 					if (StructKeyExists(arguments.styles[local.mediumname], local.panel.name)) {
-							local.css_section &= arguments.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname]) & "}\n";
+							local.css_section &= arguments.selector & local.panel.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname][local.panel.name]) & "}\n";
+						for (local.subpanel in variables.subpanels) {	
+							if (StructKeyExists(arguments.styles[local.mediumname][local.panel.name],local.subpanel.name)) {
+								local.css_section &= arguments.selector & local.panel.selector & local.subpanel.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname][local.panel.name][local.subpanel.name]) & "}\n";	
+							}
+						}
 					}
 				}
 

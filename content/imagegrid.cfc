@@ -37,23 +37,6 @@ component extends="contentSection" {
 		return this;
 	}
 
-	/** TODO: remove and valdate properly somewhere */
-	private array function getFakeData(boolean submenu=false) {
-		
-		local.folder = "D:\git\clikpage\testing\images";
-		local.dataList = [];
-
-		local.dataFiles = directoryList(path=local.folder,filter="*.json");
-		local.data = [];
-		for (local.filename in local.dataFiles) {
-			local.data = fileRead(local.filename);
-			local.image = deserializeJSON(local.data);
-			ArrayAppend(local.dataList, {"src":"/images/#local.image.thumb.src#","caption"=local.image.caption,"link"="/images/"&local.image.main.src});
-		}
-
-		return local.dataList;
-	}
-
 	private string function css_settings(required string selector, required struct styles) {
 		
 		local.mode = StructKeyExists(arguments.styles, "grid-mode") ?  arguments.styles["grid-mode"] : "none" ;
@@ -106,7 +89,12 @@ component extends="contentSection" {
 	public string function html(required struct content) {
 		
 		if (! StructKeyExists(arguments.content,"data")) {
-			arguments.content.data = getFakeData();
+			local.extendedinfo = {"content"=arguments.content};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "No data defined for content section",
+				errorcode    = "content.imagegrid.1"		
+			);
 		}
 
 		local.html = "<div class='grid'>";
