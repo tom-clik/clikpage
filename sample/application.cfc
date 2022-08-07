@@ -36,7 +36,7 @@ component   extends="clikpage.clikpageApplication" { //
 	public boolean function startApp(){
 		application.config = {
 			layoutsFolder=ExpandPath("layouts"),
-			siteDef=ExpandPath("sampleSite.xml"),
+			siteDef=ExpandPath("_data/sampleSite.xml"),
 			styledef=ExpandPath("styles/sample_style.xml")
 		};
 
