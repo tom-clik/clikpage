@@ -6,21 +6,69 @@ Provided strictly on an as-is basis
 
 ## Usage
 
-Use unsplash.cfm and then run this.
+Use unsplash.cfm to download images and generate the json files and then run this.
 
 */
 
-outputFolder = getDirectoryFromPath(getCurrentTemplatePath());
-
-dataFiles = directoryList(path=outputFolder,filter="*.json");
-dataList = [];
-for (filename in dataFiles) {
-	data = fileRead(filename);
-	image = deserializeJSON(data);
-	arrayAppend(dataList, {"src":"/images/#image.thumb.src#","caption"=image.caption,"link"=image.main.src});
+// processes all files in folder
+imageFolder = GetDirectoryFromPath(getCurrentTemplatePath());
+// tags for data (use list for multiple) - must be defined, leave blank if none
+tags = "gallery";
+dataFile = imageFolder & "photos3.xml";
+identity = 1; // identity seed
+if (FileExists(dataFile)) {
+	FileDelete(dataFile);
 }
+fileHandle = FileOpen(file=dataFile, mode="write", charset="UTF-8");
 
-WriteDump(dataList);
+try { 	 
+
+	FileWriteLine(fileHandle, "<?xml version=""1.0"" encoding=""UTF-8""?>");
+	FileWriteLine(fileHandle,"<images>");
+
+	dataFiles = DirectoryList(path=imageFolder,filter="*.json");
+	dataList = [];
+	for (filename in dataFiles) {
+		data = FileRead(filename);
+		image = DeserializeJSON(data);
+		FileWriteLine(fileHandle,"  <image id='#identity#'>");
+		FileWriteLine(fileHandle,"    <image_thumbnail>#image.thumb.src#</image_thumbnail>");
+		FileWriteLine(fileHandle,"    <image>#image.main.src#</image>");		
+		FileWriteLine(fileHandle,"    <caption>#image.caption#</caption>");	
+		if (tags != "") {
+			FileWriteLine(fileHandle,"    <tags>#tags#</tags>");	
+		}
+		FileWriteLine(fileHandle,"  </image>");
+		identity++;
+	}
+
+	FileWriteLine(fileHandle,"</images>");
+	
+	WriteOutput("File written to #dataFile#");
+}
+catch (any e) {
+	local.extendedinfo = {"tagcontext"=e.tagcontext};
+	throw(
+		extendedinfo = SerializeJSON(local.extendedinfo),
+		message      = "Unable to save data:" & e.message, 
+		detail       = e.detail,
+		errorcode    = "generateDataSet.1"		
+	);
+}
+finally {
+	try {
+		FileClose(fileHandle);
+	}
+	catch (any e) {
+		local.extendedinfo = {"tagcontext"=e.tagcontext};
+		throw(
+			extendedinfo = SerializeJSON(local.extendedinfo),
+			message      = "Unable to close file:" & e.message, 
+			detail       = e.detail,
+			errorcode    = "generateDataSet.2"		
+		);
+	}
+}
 
 
 

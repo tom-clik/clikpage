@@ -2,8 +2,10 @@
 /**
  * Legacy page for resizing downloaded files.
  * 
+ * Deprecated. Please use unsplash.cfm to download sample images
  * 
  */
+
 setting requesttimeout=3000;
 local.inputFolder = "D:\unsplash\random";
 local.files = DirectoryList(path=local.inputFolder,type="file");
