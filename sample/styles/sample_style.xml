@@ -69,8 +69,8 @@
 		<sitetitle>
 			<main>
 				<color>panel-text</color>		
-				<margin>12 0 12 12</margin>
-				<font-size>200%</font-size>
+				<margin>12 12 12 0</margin>
+				<font-size>220%</font-size>
 			</main>
 		</sitetitle>
 
@@ -129,7 +129,7 @@
 					<hi>
 						<background><color>accent</color></background>
 					</hi>
-					<padding>0 20</padding>
+					<padding>20</padding>
 
 				</item>
 			</main>
@@ -148,6 +148,9 @@
 
 		<footer>
 			<main>
+				<background>
+					<color>panel-bg</color>
+				</background>
 				<inner>
 					<max-width>1200</max-width>
 					<align>center</align>
@@ -351,6 +354,9 @@
 						</background>
 					</hover>
 				</icon>
+				<button>
+					<shape>left_arrow</shape>
+				</button>
 			</main>
 		</scheme-button>
 

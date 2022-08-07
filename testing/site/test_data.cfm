@@ -1,21 +1,27 @@
 <cfscript>
-siteObj = createObject("component", "clikpage.site.siteObj").init();
+siteObj = new clikpage.site.siteObj();
 
 siteObj.debug = true;
 
 param name="request.rc.section" default="index";
 
-site = siteObj.loadSite(ExpandPath("./testSite.xml"));
+site = siteObj.loadSite(ExpandPath("../../sample/_data/sampleSite.xml"));
 
-dataset1 =siteObj.getDataSet(site=site,tag="test"); 
+dataset1 = siteObj.getDataSet(site=site,tag="test");
+
 WriteDump(dataset1);
+data = siteObj.getData(site=site,dataset="dataset1");
+WriteDump(data);
 
-
-dataset2 =siteObj.getDataSet(site=site,tag="test2"); 
+dataset2 =siteObj.getDataSet(site=site,tag="gallery",type="images"); 
 WriteDump(dataset2);
+data = siteObj.getData(site=site,dataset="dataset2",type="images");
+WriteDump(data);
 
-request.rc.id = dataset2[1].id;
 
-WriteDump(siteObj.getData(site=site,id=request.rc.id,section=request.rc.section,dataSet=dataset2));
+record = siteObj.getRecord(site=site,dataset="dataset2",id = dataset2[1];,type="images");
+
+WriteDump(record);
+
 
 </cfscript>
