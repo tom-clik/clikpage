@@ -24,7 +24,7 @@ component {
 
 	public void function  onApplicationStart(){
 		
-		// startApp();
+		startApp();
 
 		try {
 			
@@ -166,15 +166,35 @@ component {
 				// first stab at dataset functionality. 
 				if (StructKeyExists(request.prc.section,"dataset")) {
 					if (! StructKeyExists(request.prc.section.dataset,"tag")) {
-						throw("tag must be defined for datset at this time");
+						throw("tag must be defined for dataset at this time");
 					}
-					request.prc.section["data"] = application.siteObj.getDataSet(site=application.site,tag=request.prc.section.dataset.tag);
+					local.type = request.prc.section.dataset.type ? : "articles";
+					request.prc.section["data"] = application.siteObj.getDataSet(site=application.site,tag=request.prc.section.dataset.tag, type=local.type);
+					// first stab at data functionality. 
+					if (request.rc.id != "") {
+						request.prc.record = application.siteObj.getRecord(site=application.site,id=request.rc.id,type=local.type);
+					
+						StructAppend(request.prc.record,application.siteObj.getRecordSetInfo(site=application.site,dataset=request.prc.section["data"],id=request.rc.id,type=local.type));
+					}
+					
+
+				}
+				else if (request.rc.id != "") {
+					throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
 				}
 
 				// hardwired for list types at the minute. what to do???
-				if (cs[content].type == "articlelist") {
-					cs[content]["data"] = Duplicate(request.prc.section["data"]);
-					application.siteObj.addLinks(dataSet=cs[content]["data"],site=application.site,section=request.rc.section);
+				// reasonably easy to define data sets but waht about the links
+				switch (cs[content].type) {
+					case "articlelist":
+						cs[content]["data"] = application.siteObj.getRecords(site=application.site,dataset=request.prc.section["data"], type=local.type);
+						application.siteObj.addLinks(data=cs[content]["data"],data=cs[content]["data"],site=application.site,section=request.rc.section,action="view");
+						break;
+					case "imagegrid":
+						cs[content]["data"] = application.siteObj.getRecords(site=application.site,dataset=request.prc.section["data"], type=local.type);
+						application.siteObj.addLinks(data=cs[content]["data"],data=cs[content]["data"],site=application.site,section=request.rc.section,action="view");
+						
+						break;
 				}
 
 				request.prc.pageContent.css &= application.contentObj.css(cs[content]);
@@ -207,13 +227,7 @@ component {
 
 		}
 
-		// first stab at data functionality. 
-		if (request.rc.id != "") {
-			if (! StructKeyExists(request.prc.section,"data")) {
-				throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
-			}
-			request.prc.record = application.siteObj.getData(site=application.site,id=request.rc.id,section=request.rc.section,dataSet=request.prc.section.data);
-		}
+		
 
 	}
 

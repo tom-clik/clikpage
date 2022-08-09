@@ -22,8 +22,8 @@ component extends="test_csbase" {
 		this.styleDefs = [
 			"htop":{"type":"boolean"},
 			"image-align":{"type":"halign"},
-			"image-gap":{"type":"dimension"},
-			"image-width":{"type":"dimension"}
+			"item-gridgap":{"type":"dimension"},
+			"item-image-width":{"type":"dimension"}
 			
 		];
 		// pending formal definitions of settings,

@@ -11,7 +11,7 @@ component extends="general" {
 			"content"="Undefined content",
 		};
 		
-		variables.static_css = {"items":1, "images":1};
+		variables.static_css = {"panels":1, "images":1};
 		variables.settings = {
 			"item" = {
 				"heading_position" = "top",
@@ -28,6 +28,13 @@ component extends="general" {
 			{"name":"item","selector":" .item"},
 			{"name":"image","selector":" .imageWrap"}
 		];
+
+		this.styleDefs = [
+			"item-gridgap":{"type":"dimension"},
+			"item-image-width":{"type":"dimension"}
+		];
+		
+		
 		
 		return this;
 	}
@@ -40,8 +47,7 @@ component extends="general" {
 		for (local.item in arguments.content.data) {
 			classes = {};
 			local.tmpHTML = variables.contentObj.itemHtml(content=local.item);
-			local.class = StructKeyList(classes," ");
-			cshtml &= "<div class='#local.class#'>";
+			cshtml &= "<div class='item'>";
 			cshtml &= local.tmpHTML;
 			cshtml &= "</div>";
 		}

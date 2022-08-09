@@ -370,6 +370,29 @@
 			</main>
 		</navnext>
 
+		<welcome>
+			<main>
+				<general>
+					<image-align>left</image-align>
+				</general>
+					<padding>4px</padding>
+					<border>
+						<width>1</width>
+						<color>panel-bg</color>
+					</border>
+				
+				<title>
+					<padding>4px</padding>
+					<margin>-4px -4px 0 -4px</margin>
+					<font-size>160%</font-size>
+					<background>
+						<color>panel-bg</color>
+					</background>
+					<color>panel-text</color>	
+				</title>
+			</main>
+		</welcome>
+
 	</content>
 
 

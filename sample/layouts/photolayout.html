@@ -6,7 +6,7 @@
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-extends="main">
+<body data-extends="main"  data-columns="col-M">
 		
 	<div id="maincol">
 
@@ -20,42 +20,25 @@
 			</content>
 		</div>	
 
-		<div id="maincol_right">
-
-			<content id="yeahbaby" data-notes="Notes here">
-				<title>Yeah baby</title>
-				<content>
-				This main col should be different
-				</content>
-			</content>
-
-		</div>
-
-		<div id="maincol_left">	
-			<content id="image" type="image" class="scheme-box">
-				<title>Image tests</title>
-				<field-image>http://localpreview.clikpic.com/sampleimages/nate-johnston-cK_1Q_e5FfU-unsplash.jpg</field-image>
-				<field-caption>My test caption</field-caption>
-			</content>
-		</div>
 
 		<div id="maincol_bottom">
-
-			<content id="sectionfoot" data-notes="Notes here">
-				<content>
-				Should be plain text
+			<div id="photogrid">	
+				<content id="image" type="image" class="scheme-box">
+					<title>Image tests</title>
+					<field-image>/images/{{record.image}}</field-image>
 				</content>
-			</content>
-		</div>	
-
-	</div>
-
-		
-	<div id="footer">
-		<div class="inner">
-			<content id="copyright">{{site.meta.copyright}} Should just have this copyright</content>
+				<content id="caption" type="text">
+					<title>Photo information</title>
+					<content>{{record.caption}}</content>
+				</content>
+			</div>
 		</div>
+
+	
+
 	</div>
+
+
 
 
 </body>

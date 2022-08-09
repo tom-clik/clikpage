@@ -78,7 +78,7 @@ styles = {
 		"main" = {
 			"htop"=true,
 			"image-align":"right",
-			"image-width":"66%"
+			"item-image-width":"66%"
 		},
 		"mobile"= {
 			"image-align":"center"
@@ -87,9 +87,9 @@ styles = {
 	"test4" = {
 		"main" = {
 			"htop"=true,
-			"image-width":"66%",
+			"item-image-width":"66%",
 			"image-align":"left",
-			"image-gap": "40px"
+			"item-gridgap": "40px"
 		},
 		"mobile"= {
 			"image-align":"center"

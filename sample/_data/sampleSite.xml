@@ -22,20 +22,17 @@
 			</copy>
 		</section>
 		
-		<section code="photo">
-			<title>Photo</title>
-			<layout>photolayout</layout>
-		</section>
-
 		<section code="gallery">
 			<title>Gallery</title>
 			<layout>gallery</layout>
-			<dataset tag="test" type="images"></dataset>
+			<dataset tag="gallery" type="images"></dataset>
 		</section>
 
 		<section code="gallery2">
 			<title>Gallery 2</title>
 			<layout>gallerylayout2</layout>
+			<layout action="view">photolayout</layout>
+			<dataset tag="gallery" type="images"></dataset>
 		</section>
 
 		<section code="about">
