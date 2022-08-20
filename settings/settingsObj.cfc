@@ -9,6 +9,7 @@
 		return this;
 	}
 
+
 	/** Load an XML settings definition */
 	public struct function loadStyleSheet(required string filename) {
 
@@ -32,11 +33,11 @@
 		local.css = layoutCss(arguments.styles);
 		local.css &= fontVariablesCSS(arguments.styles);
 		local.css &= colorVariablesCSS(arguments.styles);
-
-		return local.css;
+		
+		return outputFormat(local.css,arguments.styles);
 
 	}
-
+	
 	/**
 	 * @hint Generate css for containers
 	 *
@@ -254,7 +255,6 @@
 	private string function font(required struct settings) {
 
 		local.css = "";
-
 		for (local.property in ['font-family','color']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:var(--#arguments.settings[local.property]#);\n";
@@ -399,10 +399,9 @@
 	 */
 	
 	public string function outputFormat(required string css, required struct styles, boolean debug=this.debug) {
-
-		
-		for (local.medium in arguments.styles.media) {
-			arguments.css = replaceNoCase(arguments.css, "@media.#local.medium.name#", mediaQuery(local.medium.name, arguments.styles),"all");
+		local.media  = getMedia(arguments.styles);
+		for (local.medium in local.media) {
+			arguments.css = ReplaceNoCase(arguments.css, "@media.#local.medium#", MediaQuery(local.media[local.medium]),"all");
 		}
 
 		if (arguments.debug) {
@@ -421,41 +420,64 @@
 		return arguments.css;
 	}
 
-	/* @hint wrap css in media query 
-	
-	A media query can optionally specify a max width and/or a medium (screen by default)
+	/**
+	 * @hint generate css media query for a medium
+	 *
+	 * A media query can optionally specify a max/min width and/or a medium (screen by default)
+	 *
+	 * A undefined medium or one with no specs (e.g. main) will return a blank string. You need logic to handle this
+	 */
+	private string function MediaQuery(required struct mediaQuery) {
 
-	A defined medium with neither will just return the css.
+		local.css = "";
 
-	If the medium is not defined, the medium will not be defined.
-	
-	*/
-	private string function mediaQuery(required string name, required struct settings) {
-
-		local.mediumFound = 0;
-		local.css = "";	
-		for (local.mediumq in arguments.settings.media) {
-			if (local.mediumq.name == arguments.name) {
-				local.mediaQuery = local.mediumq;
-				local.mediumFound = 1;
-				break;
-			}
-		}
-			
-		if (local.mediumFound || (StructKeyExists(local.mediaQuery,"max") || StructKeyExists(local.mediaQuery,"media"))) {
-			local.media = StructKeyExists(local.mediaQuery,"media") ? local.mediaQuery.media : "screen";
-			local.maxwidth = StructKeyExists(local.mediaQuery,"max") ?  " and (max-width: #local.mediaQuery.max#px)" : "";
-			local.css = "@media only #local.media# #local.maxwidth#";
-		}
-		else {
-			local.css = arguments.css;
+		if (StructKeyExists(arguments.mediaQuery,"max") || StructKeyExists(arguments.mediaQuery,"min") || StructKeyExists(arguments.mediaQuery,"media")) {
+			local.media = StructKeyExists(arguments.mediaQuery,"media") ? arguments.mediaQuery.media : "screen";
+			local.maxwidth = StructKeyExists(arguments.mediaQuery,"max") ?  " and (max-width: #arguments.mediaQuery.max#px)" : "";
+			local.minwidth = StructKeyExists(arguments.mediaQuery,"min") ?  " and (min-width: #local.mediaQuery.min#px)" : "";
+			local.css = "@media only #local.media##local.maxwidth##local.minwidth#";
 		}
 		
-		
-
 		return local.css;
+
 	}
 
+	/**
+	 * Return array of mediums from style struct
+	 *
+	 * TODO: actually do this
+	 * @styles    Complete style struct keyed
+	 */
+	public struct function getMedia(required struct styles) {
+		
+		StructAppend(arguments.styles,{"media":[]},false);
 
+		local.styles = [=];
+
+		StructAppend(local.styles,{"main":{"name": "Main", "description":"Applies to all screen sizes"}},true);
+
+		for (local.row in arguments.styles.media) {
+			// ensure we override any attempt to sabotage main.
+			if (StructKeyExists(local.row,"name") AND local.row.name NEQ "main") {
+				StructAppend(local.styles,{local.row.name:local.row},true);
+			}
+		}
+
+		return local.styles;
+
+	}
+
+	/**
+	 * Create a struct of styles to start playing with
+	 * probably not needed in final cut 
+	 */
+	public function newStyles() {
+		var styles = {
+			"main": {},
+			"mobile": {},
+			"mid": {},
+		}
+		return styles;
+	}
 
 }

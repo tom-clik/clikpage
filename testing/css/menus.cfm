@@ -104,11 +104,11 @@ FileWrite(ExpandPath("menu_styling.css"),menuObj.css(selector="##menu",styles=st
 <head>
 	<title>Menu test</title>
 	<link rel="stylesheet" type="text/css" href="reset.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/menus.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/schemes/menus-schemes.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/grids.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/fonts/google_icons.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/icons.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/menus-schemes.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/fonts/google_icons.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/icons.css">
 	<link rel="stylesheet" type="text/css" href="menu_styling.css">
 
 	<meta charset="UTF-8">
@@ -270,9 +270,9 @@ Menu Testing
 
 <div id="menu" class="cs-menu test1"><cfoutput>#menu#</cfoutput></div>
 
-<script src="_styles/asset_proxy.cfm?asset=js/jquery-3.4.1.js"></script>
-<script src="_styles/asset_proxy.cfm?asset=js/jquery.animateAuto.js"></script>
-<script src="_styles/asset_proxy.cfm?asset=js/jquery.menu.js"></script>
+<script src="/_assets/js/jquery-3.4.1.js"></script>
+<script src="/_assets/js/jquery.animateAuto.js"></script>
+<script src="/_assets/js/jquery.menu.js"></script>
 
 <script>
 	

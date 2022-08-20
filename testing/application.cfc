@@ -1,7 +1,15 @@
 component {
 
 	this.sessionManagement = false;
-	this.debug = true;	
+	this.debug = true;
+
+	public void function onApplicationStart() {
+		application.utils = new clikpage.utils.utilsold();
+	}
+
+	public void function onRequestStart() {
+		onApplicationStart();
+	}
 
 	public void function onError(e) {
 		

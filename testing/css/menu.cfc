@@ -55,8 +55,11 @@ component extends="test_csbase" {
 		// popup          | boolean               | height: 0   NB &.open  applies height:auto
 
 		this.settings = [
-			"orientation": {"inherit":1},
-			"border-type": {"inherit":1}
+			"orientation": 1,
+			"border-type": 1,
+			"menu-anim-time":1,
+			"menu-label-display":1
+			"menu-icon-display",1
 		];
 
 		

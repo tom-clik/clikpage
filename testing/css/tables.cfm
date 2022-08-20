@@ -15,9 +15,9 @@ Ready to be Clikicised
 
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="reset.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/tables.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/columns.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/forms.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/tables.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/columns.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
 	<style type="text/css">
 		
 	

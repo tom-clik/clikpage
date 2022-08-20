@@ -39,7 +39,7 @@ component extends="contentSection" {
 		variables.static_css = {
 			"navbuttons"=1
 		}
-		variables.settings = {
+		this.settings = {
 			"button" = {
 				"showlabel" = 1,
 				"align" = "left"
@@ -48,9 +48,9 @@ component extends="contentSection" {
 		
 		variables.shapes = {};
 
-		variables.panels = [
-			{"name":"item", "selector": " a"},
-			{"name":"icon", "selector": " .icon"}
+		this.panels = [
+			{"name":"item","panel":"item", "selector": " a"},
+			{"name":"icon","panel":"icon", "selector": " .icon"}
 		];
 
 		return this;
@@ -107,7 +107,10 @@ component extends="contentSection" {
 
 		cshtml &= linkStart;
 		
-		local.shape = StructKeyExists(arguments.content.settings.main.button,"shape") ? arguments.content.settings.main.button.shape : "left_arrow";
+		// TO DO: broken
+		local.shape = "left_arrow";
+		
+		// local.shape = StructKeyExists(arguments.content.settings.button,"shape") ? arguments.content.settings.button.shape : "left_arrow";
 		cshtml &= "<div class='icon'>" & displayShape(local.shape) & "</div>";
 
 		if (arguments.content.content !="") {

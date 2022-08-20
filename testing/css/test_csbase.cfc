@@ -2,15 +2,35 @@
 component {
 	
 	public function init() {
+
+		// See selectorQualifiedCSS. Shorthand to apply css to sub elements
 		this.selectors = [
 			{"name"="main", "selector"=""}
 		];
 
+		// some cs have hover states etc
 		this.states = [
 			{"name"="main", "selector"="","name":"Main","description":"The main state"}
 		];
 
-		// see e.g. menu.cfc placeholder for formal settings definition
+		// panels for generic css styling.
+		this.panels = [
+		];
+
+		// define all available settings for this CS
+		// Any styles not added to settings (see below) will be written our as a CSS var
+		//
+		// E.g.
+		// 	"htop":{"type":"boolean","description":"Put headline before image"},
+		//	"image-width":{"type":"dimension","description":"Put headline before image"},
+		
+		// Basically freeform at this time. Will be formalised when we 
+		// come to build the editing system!
+		// 
+		this.styleDefs = {};
+
+		// Keys of this struct are treated as special cases requiring logic to produce CSS
+		// They will not be added to the CSS. They will also inherit down the media queries.
 		this.settings = [=];
 	}
 
@@ -46,7 +66,7 @@ component {
 	 * Some components have settings that don't translate exactly to css
 	 * properties e.g. menu direction is vertical | horizontal which is translated into grid functions
 	 * 
-	 * The css often needs applying to sub selectors. These are be defined in this.selectors which provides 
+	 * The css often needs applying to sub selectors. These are defined in this.selectors which provides 
 	 * a shorthand when we are building the css.
      *
      * More complex components will override this function and provide a range of settings.
@@ -73,7 +93,7 @@ component {
 	 *
 	 * Some content sections have "states" such as rollover or hi (highlighted state)
 	 *
-	 * These often need applying to a css pseduo class or sub element.
+	 * These often need applying to a css pseudo class or sub element.
 	 *
 	 * The details of each state are in this.states
 	 *
@@ -112,23 +132,42 @@ component {
 			}
 
 			ret &= arguments.selector & local.state.selector & " {\n";
+
 			for (local.style in this.styleDefs) {
-				if (StructKeyExists(local.state_styles,local.style)) {
-					ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
-				}
-				else {
-					ret &= "\t/-- no style for #local.style# --/\n";	
+				// ignore complex settings
+				if (NOT StructKeyExists(this.settings, local.style)) {
+					if (StructKeyExists(local.state_styles,local.style)) {
+						ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
+					}
+					else {
+						ret &= "\t/-- no style for #local.style# --/\n";	
+					}
 				}
 			}
+
+			ret &= panelCSS(local.state_styles) ;
 			ret &= "}\n";
+
+			// additional panels for plain css styling
+			for (local.panel in this.panels) {
+				if (StructKeyExists(local.state_styles,local.panel.name)) {
+					ret &= arguments.selector & local.state.selector & " " & local.panel.selector & " {\n" & panelCSS(local.state_styles[local.panel.name]) & "}\n";
+				}
+			}
+
+
+			
 		}
 		return ret;
 	}
 	
-	
-	/**
-	Pending a form alsettings definition this is a placeholder to give use inheritance
-	on the settings that need it. See this.settings  in e.g. menu.cfc */
+	 /**
+	  * @hint Inherit settings for meida queries.
+
+		Where a style definition isn't a simple CSS var we need to ensure it inherits
+		across media queries.
+	  * @complete_styles  Struct with all media queries styles
+	  */
 	public void function checkInheritance(required struct complete_styles) {
 		
 		local.inheritedSettings = {};
@@ -140,8 +179,7 @@ component {
 				
 				for (local.settingname in this.settings) {
 					local.setting = this.settings[local.settingname];
-					if (StructKeyExists(arguments.complete_styles[local.mediumname], local.settingname)
-						AND local.setting.inherit) {
+					if (StructKeyExists(arguments.complete_styles[local.mediumname], local.settingname)) {
 						local.inheritedSettings[local.settingname] = Duplicate(arguments.complete_styles[local.mediumname][local.settingname]);
 					}
 				}
@@ -154,7 +192,12 @@ component {
 
 
 	/**
-	 * Generate CSS for the content section
+	 * @hint Generate CSS for the content section
+	 *
+	 * Each CS type has a combination of "styles" which are simple css vars and "settings"
+	 * which require logic to adjust a number of parameters.
+	 *
+	 * Each cs component is expected to define its own css_settings() function.
 	 * 
 	 * @settings  Settings struct with keys for each media size
 	 */
@@ -169,9 +212,11 @@ component {
 		for (local.mediumname in local.media) {
 			local.medium = local.media[local.mediumname];
 			if (StructKeyExists(arguments.styles,local.mediumname)) {
+				
 				local.css_section = css_styles(selector = arguments.selector, styles=arguments.styles[local.mediumname]);
 				local.css_section &= css_settings(selector = arguments.selector, styles=arguments.styles[local.mediumname]);
 				local.screenSize=[];
+
 				if (local.css_section != "") {
 					if (StructKeyExists(local.medium,"min")) {
 						ArrayAppend(local.screenSize,"min-width: #local.medium.min#px")
@@ -276,6 +321,29 @@ component {
 		return ret;
 	}
 
+	/**
+	 * @hint Generic CSS styling applicable to the css panels of an item. Includes padding, border, background, and margin.
+	 *
+	 * NB panels are exposed to the users who are expected to apply stylings. Selectors are an internal mechanism to achieve complex settings functionality.
+	 *
+	 * For the main panel, settings are just dumped into the root.
+	 * 
+	 */
+	
+	private string function panelCSS(required struct settings) {
+		// TODO: actually do this backgrouds want to be structs
+		// WIP basic panel settings
+		local.css = "/* adding panel settings */\n";
+		for (local.setting in ["border-width","border-color","color","margin","padding","font-family","font-size","font-style","font-weight","text-align","background-color","letter-spacing","line-height","background-color","background-image","background-repeat","background-position","background-size"]) {
+
+			if (StructKeyExists(arguments.settings, local.setting)) {
+				local.css &= local.setting & ":" & arguments.settings[local.setting] & ";\n";
+			}
+
+		}
+
+		return local.css;
+	}
 	
 
 }

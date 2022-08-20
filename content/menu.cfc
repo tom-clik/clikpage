@@ -81,19 +81,29 @@ component extends="contentSection" {
 		
 	}		
 
-	/** TODO: remove and validate properly somewhere */
+	/** TODO: remove */
 	private array function getFakeData(boolean submenu=false) {
 		
 		local.data = [];
 		for (local.i = 1; local.i <= 5; local.i++ ) {
-			local.title = Left("Lorem ipsum dolor sit amet",randRange(12,20));
-			local.menu = {"link"="link#local.i#.html","section"="link#local.i#","title"=local.title};
+			local.menu = {"link"="link#local.i#.html","section"="link#local.i#","title"="Item #local.i#"};
 			if (!arguments.submenu && local.i % 2 == 1) {
 				local.menu["submenu"] = getFakeData(submenu=true);
 			}
 			ArrayAppend(local.data,local.menu);
 
 
+		}
+
+		return local.data;
+	}
+
+	private array function sampleData(boolean submenu=false) {
+		
+		local.data = [];
+		for (local.i = 1; local.i <= 5; local.i++ ) {
+			local.menu = {"link"="link#local.i#.html","section"="link#local.i#","title"="Item #local.i#"};
+			ArrayAppend(local.data,local.menu);
 		}
 
 		return local.data;

@@ -27,18 +27,18 @@ TP is a pop-up top nav. This functionality is still embryonic. For an expanding 
 --->
 
 <cfscript>
-param name="url.style" default="fixedboth";
+param name="url.style" default="simple";
 param name="url.media" default="main";
 
 styles = sampleStyles(url.style);
 
-columnsObj = new clikpic._testing.css_tests.columns();
+columnsObj = new columns();
 
-for (setting in columnsObj.settings) {
-	if (structKeyExists(url, setting)) {
-		styles[url.media][setting] = url[setting];	
-	}
-}
+// for (setting in columnsObj.settings) {
+// 	if (structKeyExists(url, setting)) {
+// 		styles[url.media][setting] = url[setting];	
+// 	}
+// }
 
 
 </cfscript>
@@ -50,12 +50,12 @@ for (setting in columnsObj.settings) {
 		<meta name="VIEWPORT" content="width=device-width, initial-scale=1.0">
 
 		<link rel="stylesheet" type="text/css" href="reset.css">
-		<!--- <link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/grids.css"> --->
-		<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/columns.css">
-		<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/schemes/menus-schemes.css">
-		<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/menus.css">
-		<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/forms.css">
-		<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/title.css">
+		<!--- <link rel="stylesheet" type="text/css" href="/_assets/css/grids.css"> --->
+		<link rel="stylesheet" type="text/css" href="/_assets/css/columns.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/menus-schemes.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/title.css">
 		
 		<style type="text/css">
 			
@@ -67,15 +67,7 @@ for (setting in columnsObj.settings) {
 				--field-padding: 1px;
 				
 			}
-			/*#content-test {
-				position: sticky;
-				top:calc(var(--header-height) + var(--body-margin-top) + 60px);
-			}
-
-			#sub-test {
-				position: sticky;
-				top:calc(var(--header-height) + var(--body-margin-top) + 10px);
-			}*/
+			
 
 			.overlay {
 				
@@ -84,14 +76,18 @@ for (setting in columnsObj.settings) {
 
 			#topnav > .inner > div.sticky {
 				position: sticky;
-				top:calc((var(--header-fixed-height) * var(--header-fixed)) + var(--body-margin-top) + var(--overlay-margin-top) );
+				top:calc((var(--header-fixed-height) * var(--header-fixed)) + var(--body-margin-top));
+			}
+
+			#columns > div > .inner > div.sticky {
+				position: sticky;
+				top:calc((var(--header-fixed-height) * var(--header-fixed)) + var(--body-margin-top));
 			}
 
 			div:not(.inner) {
 				border:1px solid teal;
-				padding:4px;
-				margin:2px;
 				background-color: white;
+				padding:4px;
 			}
 
 
@@ -104,7 +100,10 @@ for (setting in columnsObj.settings) {
 	</head>
 
 <body>
-	
+
+	<!--- <cfdump var="#styles#">
+	<cfabort>
+	 --->
 
 	<div id="ubercontainer">
 		
@@ -117,9 +116,9 @@ for (setting in columnsObj.settings) {
 		<div id="topnav">
 			<div class="inner">
 				<div class="sticky">
-					<div id="sub-test" class="cs-menu scheme-vertical">
-						<ul class="submenu open" style="width: auto;"><li><a class="menu_sample1-2 hasmenu" href="sample1-2.html"><b></b><span>ectetur adipisi</span><i class="icon icon-next openicon"></i></a><ul class="submenu submenu"><li><a class="menu_sample1-3" href="sample1-3.html"><b></b><span>ipsum dolor </span></a></li><li><a class="menu_sample2-3" href="sample2-3.html"><b></b><span>em ipsum dolor </span></a></li><li><a class="menu_sample3-3" href="sample3-3.html"><b></b><span>r sit amet, cons</span></a></li><li><a class="menu_sample4-3" href="sample4-3.html"><b></b><span>lor sit amet, co</span></a></li><li><a class="menu_sample5-3" href="sample5-3.html"><b></b><span>amet, consecte</span></a></li></ul></li><li><a class="menu_sample2-2" href="sample2-2.html"><b></b><span>r sit amet, cons</span></a></li><li><a class="menu_sample3-2 hasmenu" href="sample3-2.html"><b></b><span>olor sit a</span><i class="icon icon-next openicon"></i></a><ul class="submenu submenu"><li><a class="menu_sample1-3" href="sample1-3.html"><b></b><span> ipsum dolor si</span></a></li><li><a class="menu_sample2-3" href="sample2-3.html"><b></b><span>dolor sit ame</span></a></li><li><a class="menu_sample3-3" href="sample3-3.html"><b></b><span>lor sit </span></a></li><li><a class="menu_sample4-3" href="sample4-3.html"><b></b><span>ipsum dolor si</span></a></li><li><a class="menu_sample5-3" href="sample5-3.html"><b></b><span>t amet, co</span></a></li></ul></li></ul>
-					</div>
+					topnavthis this supposed to be sticky in some layouts.
+
+					Shouldn't hae a class like this can't test properly.
 				</div>
 			</div>
 		</div>
@@ -135,17 +134,13 @@ for (setting in columnsObj.settings) {
 				<div id="columns">
 					<div id="subcol">
 						<div class="inner">
-							
-								<h1>Sub col</h1>
-
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-
+							<div class="sticky">	
 								
-									<h1>sub col text</h1>
-									<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
-								
+								<h1>Sub col</h1>	
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. LLoads of random text. Loads of random text. Loads of random text. </p>
+
+							</div>
 
 						</div>
 					</div>
@@ -292,13 +287,16 @@ struct function sampleStyles(name="simple") {
 			"row-layout": "HF-TC-FF",
 			"column-layout"="S-M-X",
 			"header-height": "80px",
-			"footer-height": "40px"
+			"footer-height": "40px",
+			"topnav-width":"280px"
 		},
-		"mid" = {"column-layout"="S-MX"},
+		"mid" = {"column-layout"="S-MX",
+			"topnav-width":"280px"},
 		"mobile" = {
 			"column-layout"="SMX",
 			"row-layout": "HF-T-C-F",
-			"header-height": "40px"
+			"header-height": "40px",
+			"topnav-width":"auto"
 		}
 	};
 
@@ -310,11 +308,14 @@ struct function sampleStyles(name="simple") {
 			"row-layout": "HF-TC-B-F"			
 		},
 		"mid" = {"column-layout"="S-MX",
-			"row-layout": "HF-TC-B-F"},
+			"row-layout": "HF-TC-B-F",
+			"topnav-width":"auto"
+		},
 		"mobile" = {
-			"row-layout": "H-T-C-F",
+			"row-layout": "HF-T-C-B-F",
 			"column-layout"="SMX",
-			"header-height": "40px"
+			"header-height": "40px",
+			"topnav-width":"auto"
 		}
 	};
 
@@ -322,15 +323,19 @@ struct function sampleStyles(name="simple") {
 		"main"={
 			"column-layout"="S-M-X",
 			"header-height": "80px",
-			"topnav-width":"200px",
+			"topnav-width":"240px",
 			"row-layout": "H-TC-B-F"			
 		},
-		"mid" = {"column-layout"="S-MX",
-			"row-layout": "H-TC-B-F"},
+		"mid" = {
+			"column-layout"="S-MX",
+			"row-layout": "H-TC-B-F",
+			"topnav-width":"240px"
+		},
 		"mobile" = {
 			"row-layout": "H-T-C-B-F",
 			"column-layout"="SMX",
-			"header-height": "40px"
+			"header-height": "40px",
+			"topnav-width":"auto"
 		}
 	};
 

@@ -32,7 +32,7 @@ colors = [
 		<meta name="VIEWPORT" content="width=device-width, initial-scale=1.0">
 
 		<link rel="stylesheet" type="text/css" href="reset.css">
-		<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/grids.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
 		<!--- <link rel="stylesheet" type="text/css" href="_styles/columns_settings.css"> --->
 		<style type="text/css">
 			<cfoutput>#css(colors)#</cfoutput>

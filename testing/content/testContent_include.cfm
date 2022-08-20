@@ -5,11 +5,13 @@ contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 contentObj.debug = 1;
 
-function testCS(required struct cs) {
+function testCS(required struct cs, boolean getSettings=1) {
 	
-	contentObj.settings(arguments.cs,styles);
-
-	writeDump(arguments.cs.settings);
+	if (arguments.getSettings) {
+		contentObj.settings(arguments.cs,styles);
+	}
+	
+	writeDump(var=arguments.cs.settings,label="settings");
 
 	displayCSS(arguments.cs);
 
@@ -18,14 +20,13 @@ function testCS(required struct cs) {
 	writeOutput( HTMLEditFormat(contentObj.wrapHTML(content=arguments.cs,html = local.html)));
 
 	local.content = contentObj.getPageContent(arguments.cs,true);
-	writeDump(local.content);
-	
+
+	writeDump(var=local.content,label="Page content");
 }
 
 
-
 function displayCSS(required struct cs) {
-	writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(arguments.cs,styles.media),styles=styles) & "</pre>");
+	writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(arguments.cs),styles=styles) & "</pre>");
 }
 
 </cfscript>

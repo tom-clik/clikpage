@@ -10,7 +10,7 @@ A content section is created using the new() method and passed by reference to e
 
 component {
 
-	function init(required contentObj contentObj) {
+	function init(required any contentObj) {
 		
 		variables.contentObj = arguments.contentObj;
 		variables.type = "base";
@@ -18,31 +18,42 @@ component {
 		variables.description = "The base component shouldn't be used directly.";
 		variables.defaults = {
 			"title"="Untitled",
-			"content"="Undefined base component",
+			"data"={"text":"Undefined base component"}
 		};
 		variables.static_css = {};
 		variables.static_js = {};
 
-		variables.panels = [];
-
-		variables.subpanels = [
-			{"name":"hover","selector":":hover"},
-			{"name":"hi","selector":".hi"}
-			];
-
+		// See selectorQualifiedCSS. Shorthand to apply css to sub elements
 		this.selectors = [
 			{"name"="main", "selector"=""}
 		];
 
+		// some cs have hover states etc
 		this.states = [
-			{"state"="main", "selector"="","name":"Main","description":"The main state"}
+			{"state"="main", "selector"="","name":"Main","description":"The main state"},
+			{"state"="hover", "selector"=":hover","name":"Hover","description":"Hover state"}
+
 		];
 
-		this.styleDefs = [
-						
+		// panels for generic css styling.
+		this.panels = [
 		];
 
-		// see e.g. menu.cfc for formal settings definition
+
+		// define all available settings for this CS
+		// Any styles not added to settings (see below) will be written our as a CSS var
+		//
+		// E.g.
+		// 	"htop":{"type":"boolean","description":"Put headline before image"},
+		//	"image-width":{"type":"dimension","description":"Put headline before image"},
+		
+		// Basically freeform at this time. Will be formalised when we 
+		// come to build the editing system!
+		// 
+		this.styleDefs = {};
+
+		// Keys of this struct are treated as special cases requiring logic to produce CSS
+		// They will not be added to the CSS. They will also inherit down the media queries.
 		this.settings = [=];
 
 		return this;
@@ -55,10 +66,16 @@ component {
 		};
 	}
 
-	/** Create a new content section */
+	/**
+	 * @hint Create a new content section 
+	 * 
+	 * Better to use the new method in the content obj.
+	 * 
+	 */
 	public struct function new(
 		required string id, 
-				 string class, 
+				 string class="", 
+				 string data,
 				 string title, 
 				 string content,
 				 string image, 
@@ -66,32 +83,11 @@ component {
 				 string link
 				 ) {
 
-		var cs = {"id"=arguments.id, "type"=variables.type, "class"={}};
+		var cs = {"id"=arguments.id, "type"=variables.type, "settings":{}};
 		
-		if (StructKeyExists(arguments,"content")) {
-			cs["content"] = arguments.content;
-		}
-		if (StructKeyExists(arguments,"image")) {
-			cs["image"] = arguments.image;
-		}
-		if (StructKeyExists(arguments,"caption")) {
-			cs["caption"] = arguments.caption;
-		}
-		if (StructKeyExists(arguments,"title")) {
-			cs["title"] = arguments.title;
-		}
-		if (StructKeyExists(arguments,"link")) {
-			cs["link"] = arguments.link;
-		}
-		if (StructKeyExists(arguments,"class")) {
-			for (local.className in ListToArray(arguments.class," ")) {
-				cs["class"][local.className] = 1;
-			}
-		}
+		variables.contentObj.DeepStructAppend(cs,arguments,true);
+		variables.contentObj.DeepStructAppend(cs,variables.defaults,false);
 		
-		StructAppend(cs,variables.defaults,false);
-		cs.class["cs-#variables.type#"] = 1;
-
 		return cs;
 	}
 
@@ -99,14 +95,13 @@ component {
 		return arguments.content.content;
 	}
 
-	
 	/**
 	 * @hint Get CSS for complex settings
      *
 	 * Some components have settings that don't translate exactly to css
 	 * properties e.g. menu direction is vertical | horizontal which is translated into grid functions
 	 * 
-	 * The css often needs applying to sub selectors. These are be defined in this.selectors which provides 
+	 * The css often needs applying to sub selectors. These are defined in this.selectors which provides 
 	 * a shorthand when we are building the css.
      *
      * More complex components will override this function and provide a range of settings.
@@ -126,6 +121,7 @@ component {
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=ret);
 	}
 
+
 	/**
 	 * @hint Get CSS vars for simple settings
 	 *
@@ -133,7 +129,7 @@ component {
 	 *
 	 * Some content sections have "states" such as rollover or hi (highlighted state)
 	 *
-	 * These often need applying to a css pseduo class or sub element.
+	 * These often need applying to a css pseudo class or sub element.
 	 *
 	 * The details of each state are in this.states
 	 *
@@ -143,10 +139,10 @@ component {
 	 * {
 	 *    "link-color": "darkcolor",
 	 *    "hi": {
-	 *    	"link-color": accentcolor"
+	 *    	"link-color": "accentcolor"
 	 *    },
 	 *    "hover": {
-	 *    	"link-color": "lightcolor""
+	 *    	"link-color": "lightcolor"
 	 *    }   
 	 * }
 	 *
@@ -171,113 +167,60 @@ component {
 				local.state_styles = arguments.styles[local.state.state];
 			}
 
+			ret &= "/* writing styles for state #local.state.state# */\n";
+
 			ret &= arguments.selector & local.state.selector & " {\n";
-			for (local.stylecode in this.styleDefs) {
-				if (StructKeyExists(local.state_styles,local.stylecode)) {
-					local.styledef = this.styleDefs[local.stylecode];
-					switch (local.styledef.type)  {
-						case "color":
-								local.val =  "var(--" & local.state_styles[local.stylecode] & ")";
-								break;
-						default:
-								local.val =  local.state_styles[local.stylecode];
+
+			for (local.style in this.styleDefs) {
+				// ignore complex settings
+				if (NOT StructKeyExists(this.settings, local.style)) {
+					if (StructKeyExists(local.state_styles,local.style)) {
+						ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
 					}
-					ret &= "\t--#local.stylecode#: " & local.val  & ";\n";
-				}
-				else {
-					ret &= "\t/-- no style for #local.stylecode# --/\n";	
+					else {
+						ret &= "\t/-- no style for #local.style# --/\n";	
+					}
 				}
 			}
+
+			ret &= variables.contentObj.settingsObj.css(local.state_styles);
+
 			ret &= "}\n";
+
+			// additional panels for plain css styling
+			for (local.panel in this.panels) {
+				if (StructKeyExists(local.state_styles,local.panel.panel)) {
+					ret &= arguments.selector & local.state.selector & " " & local.panel.selector & " {\n" & variables.contentObj.settingsObj.css(local.state_styles[local.panel.panel]) & "}\n";
+				}
+			}
+
+
+			
 		}
 		return ret;
 	}
 	
 	
-	/**
-	Pending a formal settings definition this is a placeholder to give use inheritance
-	on the settings that need it. See this.settings  in e.g. menu.cfc */
-	public void function checkInheritance(required struct complete_styles) {
-		
-		local.inheritedSettings = {};
-		local.media = variables.contentObj.getMedia(arguments.complete_styles);
-		
-		for (local.mediumname in local.media) {
-			
-			if (StructKeyExists(arguments.complete_styles, local.mediumname)) {
-				
-				for (local.settingname in this.settings) {
-					local.setting = this.settings[local.settingname];
-					if (StructKeyExists(arguments.complete_styles[local.mediumname], local.settingname)
-						AND local.setting.inherit) {
-						local.inheritedSettings[local.settingname] = Duplicate(arguments.complete_styles[local.mediumname][local.settingname]);
-					}
-				}
-
-				StructAppend(arguments.complete_styles[local.mediumname], local.inheritedSettings, false);
-			}
-		}
-
-	}
-
+	
 
 	/**
-	 * Generate CSS for the content section
+	 * @hint Generate CSS for the content section
+	 *
+	 * Each CS type has a combination of "styles" which are simple css vars and "settings"
+	 * which require logic to adjust a number of parameters.
+	 *
+	 * Each cs component is expected to define its own css_settings() function.
+	 *
+	 * NOTE the "styles" are often saved in the content sections as a convenience. This is a bit unofficial
 	 * 
-	 * @settings  Settings struct with keys for each media size
+	 * @styles  Content section settings struct
 	 */
-	public string function css(required string selector, required struct styles, boolean debug) {
+	public string function css(required string selector, required struct styles) {
 		
-		if (NOT structKeyExists(arguments,"debug")) {arguments.debug = variables.contentObj.debug}
-		var css_str = "";
-		
-		checkInheritance(arguments.styles);
-		
-		local.media = variables.contentObj.getMedia(arguments.styles);
-		
-		for (local.mediumname in local.media) {
-			local.medium = local.media[local.mediumname];
-			if (StructKeyExists(arguments.styles,local.mediumname)) {
-				css_str &= "/* medium #local.mediumname# */\n";
-
-				local.css_section = "";
-				/* content specific stuff */
-				if (StructKeyExists(arguments.styles[local.mediumname], variables.type)) {
-					local.css_section = css_styles(selector = arguments.selector, styles=arguments.styles[local.mediumname][variables.type]);
-					local.css_section &= css_settings(selector = arguments.selector, styles=arguments.styles[local.mediumname][variables.type]);
-				}
-				/* generic panel styling */
-				local.css_section &= arguments.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname]) & "}\n";
+		var css_str = css_styles(selector = arguments.selector, styles=arguments.styles);
+		css_str &= css_settings(selector = arguments.selector, styles=arguments.styles);
 				
-				for (local.panel in variables.panels) {
-					if (StructKeyExists(arguments.styles[local.mediumname], local.panel.name)) {
-							local.css_section &= arguments.selector & local.panel.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname][local.panel.name]) & "}\n";
-						for (local.subpanel in variables.subpanels) {	
-							if (StructKeyExists(arguments.styles[local.mediumname][local.panel.name],local.subpanel.name)) {
-								local.css_section &= arguments.selector & local.panel.selector & local.subpanel.selector & " {\n" & variables.contentObj.settingsObj.css(arguments.styles[local.mediumname][local.panel.name][local.subpanel.name]) & "}\n";	
-							}
-						}
-					}
-				}
-
-				local.screenSize=[];
-				if (local.css_section != "") {
-					if (StructKeyExists(local.medium,"min")) {
-						ArrayAppend(local.screenSize,"min-width: #local.medium.min#px")
-					};
-					if (StructKeyExists(local.medium,"max")) {
-						ArrayAppend(local.screenSize,"max-width: #local.medium.max#px")
-					};
-					if (ArrayLen(local.screenSize)) {
-						local.css_section = "@media screen AND (" & ArrayToList(local.screenSize," AND ") & ") {\n" & local.css_section & "}\n";
-					}
-					css_str &= local.css_section;
-				}
-			}
-
-		}
-		
-		return variables.contentObj.processText(css_str,arguments.debug);
+		return css_str;
 
 	}
 
@@ -286,11 +229,13 @@ component {
 	 * Get general css (see settingsObj.css()) for all panls
 	 * @settings content section settings struct
 	 * @selector Css selector for main item (usually #id)
+	 *
+	 * Think derpecated.
 	 */
 	public string function panelCss(required struct settings, required string selector) {
 		var css = "";
 		
-		for (local.panel in variables.panels) {
+		for (local.panel in this.panels) {
 			
 			if (StructKeyExists(arguments.settings,local.panel.name)) {
 				css &= arguments.selector & local.panel.selector & "{\n";
@@ -373,53 +318,26 @@ component {
 		
 		if (! StructKeyExists(arguments.content,"settings")) {
 			arguments.content["settings"] = {
-				"main" = {}
 			};	
 		}
 		else {
-			variables.contentObj.fnDeepStructAppend(arguments.content["settings"], {"main" = {}}, false);
+			variables.contentObj.DeepStructAppend(arguments.content["settings"], {}, false);
 		}
 
 		var currentSettings = Duplicate(variables.settings);
 
 		for (local.medium in arguments.media) {
+			// need to use root if main.
 			if (StructKeyExists(arguments.content["settings"],local.medium.name)) {
-				variables.contentObj.fnDeepStructAppend(arguments.content["settings"][local.medium.name],currentSettings,false);
+				variables.contentObj.DeepStructAppend(arguments.content["settings"][local.medium.name],currentSettings,false);
 				/** if a value is defined in the styling, use it for this and subsequent media */
-				variables.contentObj.fnDeepStructUpdate(currentSettings,arguments.content["settings"][local.medium.name]);
+				variables.contentObj.DeepStructUpdate(currentSettings,arguments.content["settings"][local.medium.name]);
 				
 			}
 		}
-
+		// to do: wrong. Update the value.
 		return arguments.content["settings"];
 	}
-
-	/**
-	Pending a formal settings definition this is a placeholder to give use inheritance
-	on the settings that need it. See this.settings  in e.g. menu.cfc */
-	public void function checkInheritance(required struct complete_styles) {
-		
-		local.inheritedSettings = {};
-		local.media = variables.contentObj.getMedia(arguments.complete_styles);
-		
-		for (local.mediumname in local.media) {
-			
-			if (StructKeyExists(arguments.complete_styles, local.mediumname)) {
-				
-				for (local.settingname in this.settings) {
-					local.setting = this.settings[local.settingname];
-					if (StructKeyExists(arguments.complete_styles[local.mediumname], local.settingname)
-						AND local.setting.inherit) {
-						local.inheritedSettings[local.settingname] = Duplicate(arguments.complete_styles[local.mediumname][local.settingname]);
-					}
-				}
-
-				StructAppend(arguments.complete_styles[local.mediumname], local.inheritedSettings, false);
-			}
-		}
-
-	}
-
 	
 	public struct function getStaticCss() {
 		return variables.static_css;
@@ -434,5 +352,6 @@ component {
 
 		return js;
 	}
+
 
 }

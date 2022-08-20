@@ -3,6 +3,7 @@ component extends="contentSection" {
 	function init(required contentObj contentObj) {
 		
 		super.init(arguments.contentObj);
+
 		variables.type = "general";
 		variables.title = "General content";
 		variables.description = "HTML with optional title and text";
@@ -12,28 +13,28 @@ component extends="contentSection" {
 		};
 		
 		variables.static_css = {"panels":1, "images":1};
-		variables.settings = {
-			"item" = {
-				"heading_position" = "top",
-				"mobile_heading_position" = "top",
-				"align" = "none",
-				"imagewidth" = "",
-				"titletag" = "h3",
-				"showtitle" = true
-			}
-		};
 
-		variables.panels = [
-			{"name":"title","selector":" .title"},
-			{"name":"image","selector":" .imageWrap"}
+		this.panels = [
+			{"name":"title","panel":"title","selector":" .title"},
+			{"name":"image","panel":"image","selector":" .imageWrap"},
+			{"name":"text","panel":"text","selector":" .textWrap"}
 		];
 
 		this.styleDefs = [
-			"htop":{"type":"boolean"},
+			"htop":{"type":"boolean","description":"Put headline before image"},
 			"image-align":{"type":"halign"},
-			"item-gridgap":{"type":"dimension"},
-			"item-image-width":{"type":"dimension"}
+			"image-gap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances"},
+			"image-width":{"type":"dimension"},
+			"titletag":{"type":"list","list":"h1,h2,h3,h4,h5,h6"},
+			"showtitle":{"type":"boolean"},
 		];
+
+		this.settings = {
+			"titletag":"h3",
+			"showtitle":true,
+			"htop": 1,
+			"image-align": 'left'
+		}
 
 		return this;
 	}
@@ -58,14 +59,14 @@ component extends="contentSection" {
 		return cs;
 	}
 	
-	public string function html(required struct content, struct settings) {
+	public string function html(required struct content) {
 		
-		// var cssettings = structKeyExists(arguments,"settings") ? arguments.settings.main.item : arguments.content.settings.main.item;
-		var classes= {};
-		
-		cshtml = variables.contentObj.itemHtml(content=arguments.content);
-		StructAppend(arguments.content.class,classes);
-		
+		var classes = {};
+
+		var cshtml = variables.contentObj.itemHtml(content=arguments.content, settings = arguments.content.settings, classes=classes);
+
+		ListAppend(arguments.content.class, StructKeyList(classes," ")," ");
+
 		return cshtml;
 
 	}
@@ -77,7 +78,8 @@ component extends="contentSection" {
 		local.areas = "";
 		local.widths = "";
 		local.rows = "";
-		//  horizontal|vertical   | ul Grid columns
+
+		//  htop  | adjust grid template rows to place title on top in spanning column
 		local.htop = false;
 		if (StructKeyExists(arguments.styles,"htop")) {
 			data.main &= "/-- htop: #arguments.styles.htop#  --/\n";
@@ -92,23 +94,23 @@ component extends="contentSection" {
 		}
 
 		if (StructKeyExists(arguments.styles,"image-gap")) {
-			data.main &= "\tgrid-column-gap: #arguments.styles["image-gap"]#;\n";	
+			data.main &= "\t--image-gap: #arguments.styles["image-gap"]#;\n";	
 		}
 
-		// imagealign          | left|center|right     
+		// imagealign          | left|center|right
 		local.align = "center";
 		if (StructKeyExists(arguments.styles,"image-align")) {
 			
 			switch (arguments.styles["image-align"]) {
 				case "left":
-					local.widths = "var(--item-image-width) auto";
+					local.widths = "var(--image-width) auto";
 					if (local.htop) {
 						local.areas = """title title"" ""imageWrap textWrap""";	
 					}
 					else {
 						local.areas = " ""imageWrap title"" ""imageWrap textWrap""";	
 					}
-					local.rows = "min-content auto";
+					local.rows = "min-content 1fr";
 				break;
 				case "center":
 					local.widths = "1fr";
@@ -122,8 +124,8 @@ component extends="contentSection" {
 
 				break;
 				case "right":
-					local.widths = "auto var(--item-image-width)";
-					local.rows = "min-content auto";
+					local.widths = "auto var(--image-width)";
+					local.rows = "min-content 1fr";
 					local.align = "right";
 					if (local.htop) {
 						local.areas = """title title"" ""textWrap imageWrap""";	
@@ -146,7 +148,6 @@ component extends="contentSection" {
 		}
 
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
-
 	}
 
 }

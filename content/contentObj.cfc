@@ -1,36 +1,52 @@
 component {
-	/** Constructor 
+	/** 
+	 * Constructor 
 	 *
-	 * @settingsObj  pass in reference to instalised singleton settings object
+	 * @settingsObj  pass in reference to intialised singleton settings object
 	 * @types        list of content section types to load
 	*/
 	public contentObj function init(
 		    required   any      settingsObj,
-			           string   types="general,title,menu,text,image,imagegrid,articlelist,button"
+			           string   types="item,title,menu,text,image,imagegrid,articlelist,button"
 		) {
-		this.cr = chr(13) & chr(10);
+		
 		this.contentSections = {};
 		this.debug = false;
+		
 		for (local.type in ListToArray(arguments.types)) {
 			load(local.type);
 		}
+		
 		variables.defaultMedia = [{"name"="main"}];
 		this.settingsObj = arguments.settingsObj;
+		// TO DO: strip utils down to just required sections, put in deepstruct appends
+		// and just extend it in this.
 		this.utils = CreateObject("component", "clikpage.utils.utilsold");
 
 		return this;
 	}
 
 	/** Load a content section type */
-	// #FINAL
 	private void function load(required string type) {
-		this.contentSections[arguments.type] = createObject("component", "clikpage.content.#type#").init(this);
+		try {
+			this.contentSections[arguments.type] = createObject("component", "clikpage.content." & arguments.type).init(this);
+		}
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Unable to local cs type #arguments.type#:" & e.message, 
+				detail       = e.detail,
+				errorcode    = "clikpage.contentObj.load"
+			);
+		}
+		
 	}
 
 	/** Create a new content section */
 	public struct function new(
 		required string id, 
-				 string type="general", 
+				 string type="item", 
 				 string class,
 				 string title, 
 				 string content,
@@ -47,7 +63,6 @@ component {
 
 		return local.cs;
 	}
-
 
 
 	/* generate html for a content section */
@@ -68,50 +83,110 @@ component {
 	There is duplication here as when we use a jsoup layout, we don't use this function as there isn't an easy
 	way to replace node. Any functionality here needs to be duplicated in the functionality that places html into
 	the layout.
+
+	// Really? This sounds like nonsense. THP. TODO: use element.replaceWith()
 	
 	*/
 	public string function wrapHTML(required struct content, required string html) {
 		
-		var ret = "<div id='#arguments.content.id#' class='" & getClassList(arguments.content) & "'>" &  this.cr & arguments.html & "</div>";
+		var ret = "<div id='#arguments.content.id#' class='" & getClassList(arguments.content) & "'>" &  NewLine() & arguments.html & "</div>";
 
 		return ret;
 	}
 
 	/* Get class html attribute for a content section */
 	public string function getClassList(required struct content) {
-		var classstr = "";
-		if (!StructIsEmpty(arguments.content.class)) {
-			classstr = ListAppend(classstr,StructKeyList(arguments.content.class," "), " ");
-		}
+		
+		var classstr = "cs-" & arguments.content.type;
+		
+		ListAppend(classstr,arguments.content.class, " ");
+		
 		return classstr;
 	}
 
-	/* get individual css for a content section */
-	public string function css(required struct content) {
+	/* get individual css for a content section
+
+	 */
+	/**
+	 * [css description]
+	 * @content      Content section
+	 * @format       Format result. Turn off if joining e.g. generating a stylesheet
+	 */
+	public string function css(required struct content, boolean format=true) {
 		
 		var css = "";
 
 		if (! StructKeyExists(arguments.content, "settings")) {
 			return "/* Settings not defined for cs */";
 		}
-		// general CSS: to resurrect in the individual items
-	//css &= this.settingsObj.css(settings=arguments.content.settings[local.medium]);
 		
-		//css &= this.contentSections[arguments.content.type].panelCss(settings=arguments.content.settings[local.medium], selector="##" & arguments.content.id);
+		css &= this.contentSections[arguments.content.type].css(styles=arguments.content.settings, selector="##" & arguments.content.id);
 
-		css &= this.contentSections[arguments.content.type].css(styles=arguments.content.settings, selector="##" & arguments.content.id);	
+		if (arguments.format) {
+			css = processText(css);
+		}
 
 		return css;
 	}
 
 	/**
+	 * @hint Get complete css for all content section
+	 *
+	 * Loop over all the media queries and generate stylesheet for each CSS
+	 * 
+	 * @styles    Complete stylesheet with media and content fields
+	 * @content_sections Struct of content sections
+	 * @loadsettings     Update each cs with its settings. Turn off if this has been done. See settings()
+	 */
+	public string function stylesheet(required struct styles, required struct content_sections, boolean loadsettings=1) {
+
+		var css_str = "";
+
+		local.media = this.settingsObj.getMedia(arguments.styles);
+		
+		for (local.mediumname in local.media) {
+			
+			local.medium = local.media[local.mediumname];
+
+			if (local.mediumname NEQ "main") {
+				css_str &= "@media.#local.mediumname# {" & NewLine();
+			}
+
+			for (var id in arguments.content_sections) {
+
+				var cs = arguments.content_sections[id];
+				if (arguments.update) {
+					// NB see TO DO in  settings function. No inheritance 
+					settings(cs,arguments.styles);
+				}
+				
+				if (local.mediumname EQ "main" OR StructKeyExists(cs.settings,local.mediumname)) {
+					
+					local.styles = 	local.mediumname EQ "main" ? local.cs_styles : local.cs_styles[local.mediumname];
+
+					css_str &= this.contentSections[cs.type].css(styles=local.settings, selector="##" & id);
+					
+				}
+
+			}
+
+			if (local.mediumname NEQ "main") {
+				css &= NewLine() & "}" & NewLine();
+			}
+
+		}
+	}
+
+	/**
 	 * @hint Update settings for a content section
+	 *
+	 * NB MUST put backing in the settings function at the end. Currently broken
+	 * due to change in media stuff.
 	 * 
 	 */
 	public struct function settings(required struct content, required struct styles ) {
 		
 		if (StructKeyExists(arguments.styles.content, arguments.content.id)) {
-			// to do: inheritance
 			arguments.content.settings = Duplicate(arguments.styles.content[arguments.content.id]);
 		}
 		else {
@@ -123,13 +198,15 @@ component {
 			// to do: some sort of sort order for this.
 			for (local.class in arguments.content.class) {
 				if (StructKeyExists(arguments.styles.content, local.class)) {
-					fnDeepStructAppend(arguments.content.settings,arguments.styles.content[local.class]);
+					deepStructAppend(arguments.content.settings,arguments.styles.content[local.class]);
 				}
 				
 			}
 		}
+
+		// TO DO: inhertance
 		
-		// TO DO: work out what this was doing.
+		// MUST DO: resurrect this.
 		// this.contentSections[arguments.content.type].settings(arguments.content, arguments.styles.media);
 
 		return arguments.content.settings;
@@ -141,11 +218,10 @@ component {
 	 * @hint Get struct of page content
 	 
 	For details of page content see the pageObj component.
-
-	Individual cs page content can be appended to an existing pageContent struct with the method addPageContent
-
+	
 	@content content section
 	
+	@seealso addPageContent
 	*/
 	public struct function getPageContent(required struct content) {
 		
@@ -162,13 +238,15 @@ component {
 	/**
 	 * @hint Add page content elements for a content section to a main page struct
 	 *
-	 * Each content section has content like static file references. As part of the page build
-	 * process, these need amalgamating. Some are struct appended, some text appeneded.
+	 * Note we add css if it is there. This is ok for preview. For a live site you
+	 * want to ensure the stylesheet generation is done offline.
 	 *
-	 * @pageContent Main page content
-	 * @content     content sections
+	 * See [TODO: document the stylesheet generation process]()
+	 *
+	 * @page            Main page content
+	 * @pageContent     page content for indivudal cs (See getPageContent())
 	 */
-	public void function addPageContent(required struct pageContent, required struct content) {
+	public void function addPageContent(required struct page, required struct pageContent) {
 		
 		for (local.key in ['static_css','static_js','onready','css']) {
 			if (StructKeyExists(arguments.content,local.key)) {
@@ -198,8 +276,8 @@ component {
 		var js =this.contentSections[arguments.content.type].onReady(arguments.content);
 		
 		if (this.debug) {
-			js = "console.log('onready for #arguments.content.id#');"& this.cr & js;
-			js = replace(js, "\n", this.cr,"all");
+			js = "console.log('onready for #arguments.content.id#');"& NewLine() & js;
+			js = replace(js, "\n", NewLine(),"all");
 			js = replace(js, "\t", chr(9),"all");
 		}
 		else {
@@ -218,11 +296,11 @@ component {
 	 * This can be used on its own (general) or as part of a listing
 	 * 
 	 * @content  Content section
-	 * @content  item settings
-	 * @classes  Pass in struct by reference to retrun required classes for the wrapping div.
+	 * @content  item settings. Either root settings for an individual item or item sub key from others
+	 * @classes  Pass in struct by reference to return required classes for the wrapping div.
 	 */
 	public string function itemHtml(required struct content, struct settings={}, struct classes) {
-		
+
 		local.titletag = StructKeyExists(arguments.settings,"titletag") ? arguments.settings.titletag : "h3"; 
 		local.hasLink = StructKeyExists(arguments.content,"link");
 
@@ -241,7 +319,10 @@ component {
 				cshtml &= "\t\t<div class='caption'>" & arguments.content.caption & "</div>\n";
 			}
 		}
-			cshtml &= "\t</div>\n";
+		else {
+			arguments.classes["noimage"] = 1;
+		}
+		cshtml &= "\t</div>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
 		cshtml &= arguments.content.content;
@@ -254,45 +335,16 @@ component {
 
 	}
 
-	/* Create a struct of styles to start playing with
-	probably not needed in final cut */
-	public function newStyles() {
-		var styles = {
-			"main": {},
-			"mobile": {},
-			"mid": {},
-		}
-		return styles;
-	}
-
-	/**
-	 * Return array of mediums from style struct
-	 *
-	 * TODO: actually do this
-	 * @styles    Complete style struct keyed
-	 */
-	public struct function getMedia(required struct styles) {
-		return [
-			"main": {"name": "Main", "description":"Applies to all screen sizes"},
-			"max": {"name": "Max", "description":"Only apply at full size", "min"="1200"},
-			"mid": {"name": "Mid", "description":"Apply at medium size or below", "max"="800"},
-			"mobile": {"name": "Mobile", "description":"Apply at mobile size", "max"="630"},
-		];
-
-	}
-
-
-
 	/**
 	 * Appends the second struct to the first.
 	 */
-	void function fnDeepStructAppend(struct struct1, struct struct2, overwrite="true") output=false {
+	void function deepStructAppend(struct struct1, struct struct2, overwrite="true") output=false {
 		
 		for(local.key IN arguments.struct2){
 			if(StructKeyExists(arguments.struct1,local.key) AND 
 				IsStruct(arguments.struct2[local.key]) AND 
 				IsStruct(arguments.struct1[local.key])){
-				fnDeepStructAppend(arguments.struct1[local.key],arguments.struct2[local.key],arguments.overwrite);
+				deepStructAppend(arguments.struct1[local.key],arguments.struct2[local.key],arguments.overwrite);
 			}
 			else if (arguments.overwrite OR NOT StructKeyExists(arguments.struct1,local.key)){
 				arguments.struct1[local.key] = Duplicate(arguments.struct2[local.key]);
@@ -303,12 +355,12 @@ component {
 	/**
 	 * Updates a struct with values from second struct
 	 */
-	void function fnDeepStructUpdate(struct struct1, struct struct2) output=false {
+	void function deepStructUpdate(struct struct1, struct struct2) output=false {
 		
 		for(local.key IN arguments.struct1){
 			if(StructKeyExists(arguments.struct2,local.key)) {
 				if (IsStruct(arguments.struct1[local.key])) {
-					fnDeepStructUpdate(arguments.struct1[local.key],arguments.struct2[local.key]);
+					deepStructUpdate(arguments.struct1[local.key],arguments.struct2[local.key]);
 				}
 			}
 			else {

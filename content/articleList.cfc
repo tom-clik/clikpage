@@ -1,4 +1,4 @@
-component extends="general" {
+component extends="contentSection" {
 
 	function init(required contentObj contentObj) {
 		
@@ -12,23 +12,14 @@ component extends="general" {
 		};
 		
 		variables.static_css = {"panels":1, "images":1};
-		variables.settings = {
-			"item" = {
-				"heading_position" = "top",
-				"mobile_heading_position" = "top",
-				"align" = "none",
-				"imagewidth" = "",
-				"titletag" = "h3",
-				"showtitle" = true
-			}
-		};
-
-		variables.panels = [
-			{"name":"title","selector":" .title"},
-			{"name":"item","selector":" .item"},
-			{"name":"image","selector":" .imageWrap"}
+		
+		this.panels = [
+			{"name":"Title","panel":"title","selector":" .title", "type":"item"},
+			{"name":"Item","panel":"item","selector":" .item", "type":"item"},
+			{"name":"Image","panel":"image","selector":" .imageWrap"},
+			{"name":"Text","panel":"text","selector":" .textWrap"}
 		];
-
+		
 		this.styleDefs = [
 			"item-gridgap":{"type":"dimension"},
 			"item-image-width":{"type":"dimension"}
@@ -43,7 +34,7 @@ component extends="general" {
 		
 		var cshtml = "<div class='list'>\n";
 		var classes = {};
-
+		
 		for (local.item in arguments.content.data) {
 			classes = {};
 			local.tmpHTML = variables.contentObj.itemHtml(content=local.item);

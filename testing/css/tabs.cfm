@@ -8,12 +8,12 @@ Just ideas
 <html>
 <head>
 	<title>Tabs test</title>
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/reset.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/title.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/fonts/fonts_local.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/panels.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/schemes/panels-schemes.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/tabs.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/title.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/fonts/fonts_local.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/panels.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/panels-schemes.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/tabs.css">
 
 	<meta charset="UTF-8">
 	<style>
@@ -70,8 +70,8 @@ Tab/Accordion/info panel Testing
 </cfoutput>
 <script src="/_common/_scripts/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_common/_scripts/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
-<script src="_styles/asset_proxy.cfm?asset=js/jquery.animateAuto.js"></script>	
-<script src="_styles/asset_proxy.cfm?asset=js/jquery.tabs.js"></script>	
+<script src="/_assets/js/jquery.animateAuto.js"></script>	
+<script src="/_assets/js/jquery.tabs.js"></script>	
 <script src="/_common/_scripts/jquery.throttledresize.js"></script>
 <script>
 $( document ).ready(function() {

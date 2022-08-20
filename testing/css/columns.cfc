@@ -69,7 +69,6 @@ component extends="test_csbase" {
 			if (StructKeyExists(arguments.styles,local.mediumname)) {
 				local.indent = local.mediumname eq 1 ? 1 : 2;
 				rowSettings(arguments.styles[local.mediumname]);
-
 				local.css_section = CSSSettings(styles=arguments.styles[local.mediumname],indent=local.indent);
 				local.screenSize=[];
 				if (local.css_section != "") {
@@ -272,14 +271,14 @@ component extends="test_csbase" {
 				"footer-fixed-height:":"0px",
 				"header-fixed":0,
 				"footer-fixed":0,
-				"header-display": "none",
-				"topnav-display": "none",
+				"header-display": "block",
+				"topnav-display": "block",
 				"topnav-position": "static",
 				"topnav-top": "0",
 				"bottomnav-display": "none",
 				"uber-grid-template-columns": "1fr",
-				"header-position" = "fixed",
-				"footer-position" = "fixed"
+				"header-position" = "static",
+				"footer-position" = "static"
 			}, true);
 				
 			var columns = FindNoCase("TC",arguments.styles["row-layout"]) ? 2 : 1;

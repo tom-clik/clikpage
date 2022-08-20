@@ -27,9 +27,10 @@
 	</colors>
 
 	<media>
-		<medium name="main" />
-		<medium name="mid" max="800" />
-		<medium name="mobile" max="600" />
+		<medium name="max" min="800" description="Full size only" />
+		<medium name="mid" max="800"  description="Medium width for tablets"/>
+		<medium name="mobile" max="600" description="mobile" />
+		<medium name="print" media="print" description="Print only" />
 	</media>
 
 	<fonts>
@@ -51,43 +52,34 @@
 		
 	</layouts>
 
-	<images>
-		
-	</images>
-
 	<content>
 
 		<body>
-			<main>
-				<color>textcolor</color>
-				<font-family>bodyfont</font-family>
-				<font-size>80%</font-size>
-				<padding>0</padding>
-			</main>
+			<color>textcolor</color>
+			<font-family>bodyfont</font-family>
+			<font-size>80%</font-size>
+			<padding>0</padding>
 		</body>
 
 		<sitetitle>
-			<main>
-				<color>panel-text</color>		
-				<margin>12 0 12 12</margin>
-				<font-size>200%</font-size>
-			</main>
+			<color>panel-text</color>		
+			<margin>12 0 12 12</margin>
+			<font-size>200%</font-size>
 		</sitetitle>
 
 		<header>
-			<main>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-				</inner>
-				<background>
-					<color>panel-bg</color>
-				</background>
-				<grid>
-					<gap>0</gap>
-					<grid-template-columns>max-content auto</grid-template-columns>
-				</grid>
-			</main>
+			<inner>
+				<max-width>1200</max-width>
+				<align>center</align>
+			</inner>
+			<background>
+				<color>panel-bg</color>
+			</background>
+			<grid>
+				<gap>0</gap>
+				<grid-template-columns>max-content auto</grid-template-columns>
+			</grid>
+			
 			<mobile>
 				<grid>
 					<grid>0</grid>
@@ -96,42 +88,38 @@
 		</header>
 
 		<mainmenu>
-
-			<main>
-				<menu>
-					<orientation>vertical</orientation>
-				</menu>
-			</main>	
-
+			<menu>
+				<orientation>vertical</orientation>
+			</menu>
 		</mainmenu>
 
 		<topmenu>
-			<main>
-				<menu>
-					<flex>true</flex>
-					<align>right</align>
-					<min-height>100%</min-height>
-					<link-color>panel-text</link-color>
-					<hi><link-color>panel-text</link-color></hi>
-					<hover><link-color>panel-text</link-color></hover>
-				</menu>
+			
+			<menu>
+				<flex>true</flex>
+				<align>right</align>
+				<min-height>100%</min-height>
+				<link-color>panel-text</link-color>
+				<hi><link-color>panel-text</link-color></hi>
+				<hover><link-color>panel-text</link-color></hover>
+			</menu>
 
-				<height>100%</height>
+			<height>100%</height>
 
-				<item>
-					<font-size>120%</font-size>
-					<text-transform>uppercase</text-transform>
-					<color>panel-text</color>
-					<hover>
-						<background><color>accent</color></background>
-					</hover>
-					<hi>
-						<background><color>accent</color></background>
-					</hi>
-					<padding>0 20</padding>
+			<item>
+				<font-size>120%</font-size>
+				<text-transform>uppercase</text-transform>
+				<color>panel-text</color>
+				<hover>
+					<background><color>accent</color></background>
+				</hover>
+				<hi>
+					<background><color>accent</color></background>
+				</hi>
+				<padding>0 20</padding>
 
-				</item>
-			</main>
+			</item>
+			
 			<mid>
 				<menu>
 					<align>left</align>
@@ -146,26 +134,27 @@
 		</topmenu>
 
 		<footer>
-			<main>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-				</inner>
-			</main>
+			
+			<inner>
+				<max-width>1200</max-width>
+				<align>center</align>
+			</inner>
+			
 			<mobile>
 				<grid>
 					<grid>0</grid>
 				</grid>
 			</mobile>
+
 		</footer>
 
 		<contentfooter>
-			<main>
-				<grid>
-					<grid>1</grid>
-					<columns>3</columns>
-				</grid>
-			</main>
+
+			<grid>
+				<grid>1</grid>
+				<columns>3</columns>
+			</grid>
+			
 			<mid>
 				<grid>
 					<columns>2</columns>
@@ -179,30 +168,28 @@
 		</contentfooter>
 
 		<topnav>
-			<main>
-				<background>
-					<color>light-panel-bg</color>
-				</background>
-				<padding>8 0</padding>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-				</inner>
-			</main>
+			
+			<background>
+				<color>light-panel-bg</color>
+			</background>
+			<padding>8 0</padding>
+			<inner>
+				<max-width>1200</max-width>
+				<align>center</align>
+			</inner>
+			
 		</topnav>
 
 		<footermenu>
-			<main>
-				<menu>
-					<flex>true</flex>
-				</menu>
-				<border>
-					<width>1</width>
-					<color>myfavcolor</color>
-				</border>
-				<padding>2</padding>
-
-			</main>
+			
+			<menu>
+				<flex>true</flex>
+			</menu>
+			<border>
+				<width>1</width>
+				<color>myfavcolor</color>
+			</border>
+			<padding>2</padding>
 			
 			<mobile>
 				<menu>
@@ -213,13 +200,13 @@
 		</footermenu>
 
 		<imagegrid>
-			<main>
-				<imagegrid>
-					<masonry>true</masonry>
-					<popup>true</popup>
-					<max-width>24%</max-width>
-				</imagegrid>
-			</main>
+			
+			<imagegrid>
+				<masonry>true</masonry>
+				<popup>true</popup>
+				<max-width>24%</max-width>
+			</imagegrid>
+			
 			<mid>
 				
 				<imagegrid>
@@ -237,20 +224,20 @@
 
 		<content>
 
-			<main>
+
 				<padding>8 0</padding>
 				<inner>
 					<max-width>1200</max-width>
 					<align>center</align>
 				</inner>
-			</main>
+	
 
 		</content>
 
 		<sectiontitle>
-			<main>
+	
 				<margin>0 0 1em 0</margin>
-			</main>
+	
 		</sectiontitle>
 
 		<list>
@@ -260,95 +247,80 @@
 		</list>
 
 		<sectionlist>
-			<main>
-				<item>
-					<padding>12px</padding>
+	
+			<item>
+				<padding>12px</padding>
+				<background>
+					<color>light-panel-bg</color>
+				</background>
+				<align>left</align>
+				<imagewidth>33%</imagewidth>
+				<margin>0 0 12px 0</margin>
+				<hover>
+					<color>panel-text</color>
 					<background>
-						<color>light-panel-bg</color>
+						<color>panel-bg</color>
 					</background>
-					<align>left</align>
-					<imagewidth>33%</imagewidth>
-					<margin>0 0 12px 0</margin>
-					<hover>
-						<color>panel-text</color>
-						<background>
-							<color>panel-bg</color>
-						</background>
-					</hover>
-				</item>
-				<title>
-					<text-transform>uppercase</text-transform>
-				</title>
-				<image>
-					<padding>4px</padding>
-					<hover>
+					<image>
 						<padding>2px</padding>
 						<border>
 							<width>2px</width>
 							<color>panel-text</color>
 						</border>
-					</hover>
+					</image>
+				</hover>
+				<title>
+					<text-transform>uppercase</text-transform>
+				</title>
+				<image>
+					<padding>4px</padding>
 				</image>
-			</main>
-		</sectionlist>
-		<scheme-title>
-			
-			<main>
-				<color>accent</color>
-				<font-family>bodyfont</font-family>
-				<font-size>2.4em</font-size>
-				<font-weight>300</font-weight>
-			</main>
 
+			</item>
+			
+		</sectionlist>
+		
+		<scheme-title>
+			<color>accent</color>
+			<font-family>bodyfont</font-family>
+			<font-size>2.4em</font-size>
+			<font-weight>300</font-weight>
 		</scheme-title>
 
 		<scheme-intros>
-			
-			<main>
-				<font-weight>bold</font-weight>
-				<font-style>italic</font-style>
-				<margin>0 0 1em 0</margin>
-			</main>
-
+			<font-weight>bold</font-weight>
+			<font-style>italic</font-style>
+			<margin>0 0 1em 0</margin>
 		</scheme-intros>
 
 		<navbuttons>
-			<main>
-				<grid>
-					<columns>2</columns>
-				</grid>
-			</main>
+			<grid>
+				<columns>2</columns>
+			</grid>
 		</navbuttons>
 
 		<scheme-button>
-			<main>
-				<icon>
-					<padding>4</padding>
+			<icon>
+				<padding>4</padding>
+				<background>
+					<color>light-panel-bg</color>
+				</background>
+				<hover>
 					<background>
-						<color>light-panel-bg</color>
+						<color>panel-bg</color>
 					</background>
-					<hover>
-						<background>
-							<color>panel-bg</color>
-						</background>
-					</hover>
-				</icon>
-			</main>
+				</hover>
+			</icon>
 		</scheme-button>
 
 		<navnext>
-			<main>
-				<button>
-					<align>right</align>
-					<shape>right_arrow</shape>
-				</button>
-				
-			</main>
+			<button>
+				<align>right</align>
+				<shape>right_arrow</shape>
+			</button>
 		</navnext>
 
 	</content>
-
-
 
 </stylesheet>
 

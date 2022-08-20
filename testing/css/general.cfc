@@ -1,6 +1,16 @@
 /*
 
-New panels component for var based stying.
+# General (item panel) styling
+
+## Synopsis
+
+Quite staightforward. We use grid template areas to layout the panel according to the settings.
+
+The template rows and columns are adjusted according to the layout and the "image-width".
+
+## Notes
+
+We always layout in a grid even in mobile. It's important to set the align=center for mobile options. This is necessary to place the title above ot below the image as required.
 
 */
 component extends="test_csbase" {
@@ -20,12 +30,12 @@ component extends="test_csbase" {
 		];
 
 		this.styleDefs = [
-			"htop":{"type":"boolean"},
+			"htop":{"type":"boolean","description":"Put headline before image"},
 			"image-align":{"type":"halign"},
-			"item-gridgap":{"type":"dimension"},
-			"item-image-width":{"type":"dimension"}
-			
+			"image-gap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances"},
+			"image-width":{"type":"dimension"}
 		];
+		
 		// pending formal definitions of settings,
 		// there are some settings that need to cascade, e.g. orientation
 		// 
@@ -33,12 +43,18 @@ component extends="test_csbase" {
 
 		// Name           | Type                  | Implementation
 		// ---------------|-----------------------|----------------------
-		// htop           | boolean               | put headline before image
+		// htop           | boolean               | 
 		
 		this.settings = [
 			"htop": {"inherit":1},
 			"image-align": {"inherit":1}
 		];
+
+		this.panels = [
+			{"name":"title","selector":".title"},
+			{"name":"text","selector":".textWrap"},
+			{"name":"image","selector":".imageWrap"}
+		]
 
 		
 	}
@@ -46,10 +62,12 @@ component extends="test_csbase" {
 	private string function css_settings(required string selector, required struct styles) {
 		
 		var data = getSelectorStruct();
+
 		local.areas = "";
 		local.widths = "";
 		local.rows = "";
-		//  horizontal|vertical   | ul Grid columns
+
+		//  htop  | adjust grid template rows to place title on top in spanning column
 		local.htop = false;
 		if (StructKeyExists(arguments.styles,"htop")) {
 			data.main &= "/-- htop: #arguments.styles.htop#  --/\n";
@@ -64,23 +82,23 @@ component extends="test_csbase" {
 		}
 
 		if (StructKeyExists(arguments.styles,"image-gap")) {
-			data.main &= "\tgrid-column-gap: #arguments.styles["image-gap"]#;\n";	
+			data.main &= "\t--image-gap: #arguments.styles["image-gap"]#;\n";	
 		}
 
-		// imagealign          | left|center|right     
+		// imagealign          | left|center|right
 		local.align = "center";
 		if (StructKeyExists(arguments.styles,"image-align")) {
 			
 			switch (arguments.styles["image-align"]) {
 				case "left":
-					local.widths = "var(--item-image-width) auto";
+					local.widths = "var(--image-width) auto";
 					if (local.htop) {
 						local.areas = """title title"" ""imageWrap textWrap""";	
 					}
 					else {
 						local.areas = " ""imageWrap title"" ""imageWrap textWrap""";	
 					}
-					local.rows = "min-content auto";
+					local.rows = "min-content 1fr";
 				break;
 				case "center":
 					local.widths = "1fr";
@@ -94,8 +112,8 @@ component extends="test_csbase" {
 
 				break;
 				case "right":
-					local.widths = "auto var(--item-image-width)";
-					local.rows = "min-content auto";
+					local.widths = "auto var(--image-width)";
+					local.rows = "min-content 1fr";
 					local.align = "right";
 					if (local.htop) {
 						local.areas = """title title"" ""textWrap imageWrap""";	

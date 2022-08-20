@@ -2,18 +2,18 @@
 <html>
 <head>
 	<title>Forms tests</title>
-	<link rel="stylesheet" href="_styles/asset_proxy.cfm?asset=css/reset.css">
-	<link rel="stylesheet" href="_styles/asset_proxy.cfm?asset=css/fonts/fonts_local.css">
-	<link rel="stylesheet" href="_styles/asset_proxy.cfm?asset=css/forms.css">
-	<link rel="stylesheet" href="_styles/asset_proxy.cfm?asset=css/navbuttons.css">
+	<link rel="stylesheet" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="/_assets/css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="/_assets/css/forms.css">
+	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="/_common/_styles/_min/select2-4.1.0.min.css" />
 	
-	<script src="_styles/asset_proxy.cfm?asset=js/jquery-3.4.1.js"></script>
-	<script src="_styles/asset_proxy.cfm?asset=js/jquery.validate.js"></script>
-	<script src="_styles/asset_proxy.cfm?asset=js/jquery.form.js"></script>
+	<script src="/_assets/js/jquery-3.4.1.js"></script>
+	<script src="/_assets/js/jquery.validate.js"></script>
+	<script src="/_assets/js/jquery.form.js"></script>
 	<script src="/_common/_scripts/_min/select2-4.1.0.min.js"></script>
 	<script src="/_common/_scripts/_min/jquery.elastic.1.6.11.min.js"></script>
-	<script src="_styles/asset_proxy.cfm?asset=js/jquery.clikForm.js"></script>
+	<script src="/_assets/js/jquery.clikForm.js"></script>
 
 
 	<meta charset="UTF-8">

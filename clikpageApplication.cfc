@@ -95,7 +95,7 @@ component {
 			// Possibly a site root in the siteObject?
 			local.css = application.settingsObj.siteCss(application.styles);
 
-			FileWrite(ExpandPath("styles.css"), application.settingsObj.outputFormat(local.css,application.styles));
+			FileWrite(ExpandPath("styles.css"), local.css);
 		}
 
 	}

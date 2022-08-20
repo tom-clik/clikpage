@@ -2,9 +2,10 @@
 <html>
 <head>
 	<title>Title and heading font test</title>
+
 	<link rel="stylesheet" type="text/css" href="reset.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?asset=css/text.css">
-	<link rel="stylesheet" type="text/css" href="_styles/asset_proxy.cfm?assetfonts/fonts_local.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/text.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/fonts/fonts_local.css">
 
 	
 	<meta charset="UTF-8">
@@ -36,7 +37,8 @@
 		}
 
 		.scheme-crosshead h2 {
-			--heading-font-size: 170%;	
+			--heading-font-size: 170%;
+			--heading-margin:0;	
 		}
 
 		.scheme-crosshead h3 {
@@ -125,7 +127,7 @@
 	<div class="test">
 		<div class="test-header">These headings here have additional custom styling applied via scheme-crosshead</div>
 
-		<div class="scheme-crosshead testWrap">
+		<div class="scheme-crosshead textWrap">
 			<h1>Testing h1 textWrap</h1>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 			tempor incididunt ut labore et dolore magna aliqua. </p>

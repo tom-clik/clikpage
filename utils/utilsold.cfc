@@ -6,7 +6,6 @@
 <cffunction name="init" hint="Optional pseudo constructor. You need this if you are going to use mappings or caching
 	for file paths in functions like load settings">
 	
-	<cfset var local = StructNew()>
 	<cfset variables.mappings = {}>
 	
 	<!--- where we have a mapping for customtags, add that mapping to this object --->
