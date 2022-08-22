@@ -8,8 +8,8 @@
 	--menu-item-border: 0 0 4px 0;
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
-	/* no style for menu-label-display */
 	--menu-icon-display: none;
+	/* no style for menu-label-display */
 }
 #menu li a:hover {
 	/* no style for orientation */
@@ -21,8 +21,8 @@
 	/* no style for menu-item-border */
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
-	/* no style for menu-label-display */
 	/* no style for menu-icon-display */
+	/* no style for menu-label-display */
 }
 #menu li.hi a {
 	/* no style for orientation */
@@ -34,8 +34,8 @@
 	/* no style for menu-item-border */
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
-	/* no style for menu-label-display */
 	/* no style for menu-icon-display */
+	/* no style for menu-label-display */
 }
 #menu {
 	--menu-text-align: center;
@@ -71,8 +71,8 @@
 	--menu-item-border: 1px;
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
-	/* no style for menu-label-display */
 	--menu-icon-display: inline-block;
+	/* no style for menu-label-display */
 }
 #menu {
 	--menu-text-align: right;
@@ -110,8 +110,8 @@
 	--menu-item-border: 1px;
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
-	/* no style for menu-label-display */
 	--menu-icon-display: inline-block;
+	/* no style for menu-label-display */
 }
 #menu {
 	--menu-text-align: left;
@@ -149,8 +149,8 @@
 	--menu-item-border: 0px;
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
-	--menu-label-display: none;
 	/* no style for menu-icon-display */
+	--menu-label-display: none;
 }
 #menu {
 	--menu-text-align: left;

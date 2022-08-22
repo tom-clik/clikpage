@@ -11,7 +11,7 @@ Originally I was just doing this for ColdLight. It went so well I have decided t
 
 ### Script files
 
-For each of the types, there is a static CSS file in the coldLight directory which is read into our test folder by CF script `asset_proxy.cfm`.
+For each of the types, there is a static CSS file in the coldLight directory.
 
 ### Testing files
 

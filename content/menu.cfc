@@ -15,15 +15,14 @@ component extends="contentSection" {
 		variables.static_js ={"menus"=1};
 		
 		this.panels = [
-			{"name":"item", "selector": " li a"}
+			{"panel":"item", "name":"Item", "selector": " li a"}
 		];
 
 		this.states = [
 			{"state"="main", "selector"="","name":"Main","description":"The main state"},
 			{"state"="hover", "selector"=" li a:hover","name":"Hover","description":"The hover state for menu items"},
 			{"state"="hi", "selector"=" li.hi a","name":"Hilighted","description":"The state for the currently selected menu item"}
-		]
-		
+		];		
 
 		this.selectors = [
 			{"name"="main", "selector"=""},

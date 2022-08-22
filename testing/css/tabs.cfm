@@ -1,6 +1,6 @@
 <!---
 
-Just ideas
+Different ideas for tabs. Working nicely.
 
 --->
 
