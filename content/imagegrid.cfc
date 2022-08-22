@@ -11,21 +11,17 @@ component extends="contentSection" {
 			"content"="Undefined content",
 		};
 
-		// static css definitions
 		variables.static_css = {"images"=1,"colorbox"=1};
-		// to do: only require if there
 		variables.static_js = {"masonry"=1,"colorbox"=1};
-		variables.settings = {
-			"imagegrid" = {
-				"masonry"=0,"popup"=0
-			}
-		}
+		
 		this.selectors = [
 			{"name"="main", "selector"=""},
 			{"name"="item", "selector"=" > *"}
 		];
 
 		this.styleDefs = [
+			"masonry" : {"type":"boolean","default":0},
+			"popup" : {"type":"boolean","default":0},
 			"grid-gap": {"type":"dimension"},
 			"row-gap": {"type":"dimension"},
 			"max-width": {"type":"dimension"},
@@ -33,6 +29,11 @@ component extends="contentSection" {
 			"justify-content": {"type":"valign"},
 			"align-items": {"type":"halign"}
 		];
+
+		this.settings = {
+			"masonry" :0,
+			"popup" : 0
+		};
 
 		return this;
 	}
@@ -129,9 +130,9 @@ component extends="contentSection" {
 	}
 
 	public string function onready(required struct content) {
+
 		var js = "";
 
-		
 		if (arguments.content.settings.main.imagegrid.masonry) {
 			js &= "$#arguments.content.id#Grid = $('###arguments.content.id# .grid').masonry({\n";
 			js &= "\t/* options*/\n";
@@ -155,8 +156,7 @@ component extends="contentSection" {
 
 			js &= "$(""###arguments.content.id# figure a"").colorbox({rel:'group#arguments.content.id#'});";
 		}
-
-
+		
 		return js;
 	}
 	

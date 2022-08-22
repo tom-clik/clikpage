@@ -3969,7 +3969,7 @@ public string function structToString(Struct sData) {
 	<cfargument name="xmlElement" required="yes" hint="Either XML as produced by parseXML or else an array of XML nodes (the latter should only be used when recursing)">
 	<cfargument name="addOrder" required="false" default="0" hint="Add sort_order field to nodes to preserve order">
 
-	<cfset var retVal = {}>
+	<cfset var retVal = false>
 	<cfset var child = false>
 	
 
@@ -3979,7 +3979,7 @@ public string function structToString(Struct sData) {
 			<cfset ArrayAppend(retVal,parseXMLNode(child,arguments.addOrder))>
 		</cfloop>		
 	<cfelse>
-		<cfset retVal = {}>
+		<cfset retVal = [=]>
 		<cfif arguments.addOrder>
 			<cfset var order = 0>
 		</cfif>

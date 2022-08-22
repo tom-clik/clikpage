@@ -27,7 +27,7 @@ component name="layouts" {
 	/**
 	 * Pseudo contstructor 
 	 * @layoutBase   Path to folder container layouts
-	 * @charset      Charset to text files
+	 * @charset      Charset of text files
 	 */
 	layouts function init(required string layoutBase, string charset="utf-8") {	
 
@@ -36,24 +36,26 @@ component name="layouts" {
 		try {
 			this.coldsoup = new coldsoup.coldSoup();
 		}
-		catch (Any e) {
-			throw(message="Unable to create coldSoup component. Please refer to set up guide to install and test coldsoup and jsoup.",detail="#e.message#<br><br>#e.detail#")
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Unable to create coldSoup component. Please refer to set up guide to install and test coldsoup and jsoup:" & e.message, 
+				detail       = e.detail,
+				errorcode    = "clikpage.layouts.init.1"		
+			);
 		}
 
 		variables.layoutBase = arguments.layoutBase;
-		variables.layoutBase =ReReplace(variables.layoutBase,"[\\\/]$","");
+		// remove trailing slash
+		variables.layoutBase = ReReplace(variables.layoutBase,"[\\\/]$","");
 		
 		if (! DirectoryExists(variables.layoutBase)) {
-			throw("base path for layouts [#variables.layoutBase#] not found");
+			throw(
+				message      = "base path for layouts [#variables.layoutBase#] not found", 
+				errorcode    = "clikpage.layouts.init.2"		
+			);
 		}
-
-		// "set" of html attributes to parse from layout.
-		// variables.htmlAttrs = {
-		// 	"class" = 1,
-		// 	"id" = 1,
-		// 	"data" = 1,
-		// 	"title" = 1
-		// }
 		
 		variables.cache = {};
 		variables.cache.layouts = {};
@@ -172,11 +174,11 @@ component name="layouts" {
 
 	}
 
-	/** @hint parse any content tags into structs of data
-
-	Every tag or attribute is added as a struck key. Data attributes are added to a data struct.
-	
-	*/
+	/** 
+	 * @hint parse any content tags into structs of data
+	 *
+	 * 	Every tag or attribute is added as a struck key. Data attributes are added to a data struct. 
+	 */
 	private void function parseContainers(required struct layout) {
 		
 		if (! StructKeyExists(arguments.layout,"containers")) {
@@ -196,11 +198,12 @@ component name="layouts" {
 	}
 
 
-	/** @hint parse any content tags into structs of data
-
-	Every tag or attribute is added as a struck key. Data attributes are added to a data struct.
-	
-	*/
+	/**
+	 * @hint parse any content tags into structs of data
+	 *
+	 * Every tag or attribute is added as a struck key. Data attributes are added to a data struct.
+	 *
+	 **/
 	private void function parseContentSections(required struct layout) {
 		
 		if (! StructKeyExists(arguments.layout,"content")) {

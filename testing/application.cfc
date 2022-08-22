@@ -3,11 +3,11 @@ component {
 	this.sessionManagement = false;
 	this.debug = true;
 
-	public void function onApplicationStart() {
+	public void function onApplicationStart()  output=false {
 		application.utils = new clikpage.utils.utilsold();
 	}
 
-	public void function onRequestStart() {
+	public void function onRequestStart() output=false {
 		onApplicationStart();
 	}
 

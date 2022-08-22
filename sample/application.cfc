@@ -2,14 +2,6 @@
 
 # clikpage Sample App
 
-Skeleton application showing usage of singleton component to render pages
-
-## Usage
-
-## Notes
-
-Why is there redefinition of functions??? THP
-
 ## History
 
 |-----------|------|---------------------
@@ -30,7 +22,6 @@ component   extends="clikpage.clikpageApplication" { //
 	// 	reloadOnChange= false 
 	// };
 
-	// application start
 	this.debug = 1;
 
 	public boolean function startApp(){

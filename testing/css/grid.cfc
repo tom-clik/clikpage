@@ -13,7 +13,7 @@ component extends="test_csbase" {
 	}
 
 	public struct function new(struct settings = {}) {
-		StructAppend(arguments.settings,{"grid-mode":"auto","grid-fit":"auto-fit","grid-width":"180px","grid-max-width":"1fr","grid-columns":"2","grid-gap":"10px","grid-row-gap":"","grid-template-columns":"","justify-content":"flex-start","align-items":"flex-start"},false);
+		StructAppend(arguments.settings,{"grid-mode":"auto","grid-fit":"auto-fit","grid-width":"180px","grid-max-width":"1fr","grid-columns":"2","grid-gap":"10px","grid-template-columns":"","justify-content":"flex-start","align-items":"flex-start"},false);
 		switch (arguments.settings["grid-mode"]) {
 			case "auto":
 				break;
@@ -87,11 +87,17 @@ component extends="test_csbase" {
 				break;	
 			case "fixedcols":
 				local.css &= "\tdisplay:grid;\n";
-				if (StructKeyExists(arguments.settings,"grid-template-columns") AND  arguments.settings["grid-template-columns"] neq "") {
+				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
+				if (StructKeyExists(arguments.settings,"grid-template-columns") AND arguments.settings["grid-template-columns"] neq "") {
 					local.css &= "\tgrid-template-columns: " & arguments.settings["grid-template-columns"] & ";\n";
 				}
+				// specified number of columns
+				else if (StructKeyExists(arguments.settings,"grid-columns") AND isValid("integer", arguments.settings["grid-columns"])) {
+					local.css &= "\tgrid-template-columns: repeat(" & arguments.settings["grid-columns"] & ",1fr);\n";
+				}
+				// All columns in one row -- not a very good idea.
 				else {
-					local.css &= "\tgrid-template-columns: repeat(#arguments.settings["grid-columns"]#, 1fr);\n";
+					local.css &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
 				}
 				
 				break;	

@@ -1,6 +1,6 @@
 ﻿component {
 
-	public settingsObj function init(debug=false) {
+	public settingsObj function init(debug=false)  output=false {
 
 		this.cr = chr(13) & chr(10);
 		this.utils = CreateObject("component", "clikpage.utils.utilsold");	
@@ -9,9 +9,8 @@
 		return this;
 	}
 
-
 	/** Load an XML settings definition */
-	public struct function loadStyleSheet(required string filename) {
+	public struct function loadStyleSheet(required string filename)  output=false {
 
 		if (!FileExists(arguments.filename)) {
 			throw("Stylesheet #arguments.filename# not found");
@@ -28,7 +27,7 @@
 	 * Generate css for global level variables
 	 * 
 	 */
-	public string function siteCSS(required struct styles, boolean debug=this.debug) {
+	public string function siteCSS(required struct styles, boolean debug=this.debug)  output=false {
 
 		local.css = layoutCss(arguments.styles);
 		local.css &= fontVariablesCSS(arguments.styles);
@@ -41,6 +40,8 @@
 	/**
 	 * @hint Generate css for containers
 	 *
+	 * NOT really working. Only works for one container. Being used on the fly in the current
+	 * sample site.
 	 * 
 	 */
 	public string function containersCSS(required struct styles, required struct layout, boolean debug=this.debug) {
@@ -67,66 +68,71 @@
 		return local.css;
 	}
 
-	/** @hint get CSS for layouts
-	
-	At this time still up for debate about how much will go into here.
+	/**
+	 * @hint get CSS for layouts
+	 *
+	 * WIP 
+	 *
+	 * NOT done
+	 */
+	public string function layoutCss(required struct containers, required struct media)  output=false {
 
-	Currently it's a sort of modern incarnation of the old 1998 vintage column layout mechanism.
+		var css = "";
 
-	If we do preserve that, surely it wants to use a standard grid?? There's always been a problem
-	with the old system in that you can't change the flow for mobile etc.
+		for (var medium in arguments.media ) {
+			var section_css = "";
 
-	If not, this is better. It just outputs css variables for the column widths etc.
+			//get template here
 
-	The static css is in columns.css.
+			for (var id in template.containers) {
+				var cs =  arguments.containers[id];
+				
+				//get the settings don,t do it on every loop!
 
-	*/
-	public string function layoutCss(required struct settings, boolean debug=this.debug) {
+				if ((medium EQ "main") OR (StructKeyExists(cs.settings, medium))) {
+					local.settings = medium EQ "main" ? cs.settings : cs.settings[medium];
+					section_css &= settingsObj.containerCss(settings=local.settings,selector="###id#");
+				}	
+			}
 
-		local.css = "";
-
-		if (StructKeyExists(arguments.settings, "layouts")) {
-			for (local.layoutname in arguments.settings.layouts) {
-				local.layout = arguments.settings.layouts[local.layoutname];
-				local.css &= "body.layout-#local.layoutname# {\n";
-
-				for (local.setting in local.layout) {
-					local.css &= "\t--#local.setting#: " & local.layout[local.setting] & ";\n";
+			css &= "/* CSS for #medium# */\n";
+			if (section_css NEQ "") {
+				if (medium NEQ "main") {
+					css &= "@media.#medium# {\n " & section_css & "\n}\n";
 				}
-
-				local.css &= "}\n";
+				else {
+					css &= section_css;
+				}
 			}
 		}
-
-		return local.css;
+		return css;
 
 	}
 
-	/** @hint  Generate css for assigning font variable values
-
-	All font faces are applied as variable names, allowing for esy abstraction, e.g. titlefont, bodyfont.
-
-	These are assigned to actual font faces here,
-
-	e.g.
-
-	:root {
-		--bodyfont: Open sans;
-	}
-
-	body {
-		font-family: var(--bodyfont);
-	}
-
-	The fonts faces should be defined in the static CSS.
-
-	*/
-	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug) {
+	/** 
+	 * @hint  Generate css for assigning font variable values
+     *
+     * All font faces are applied as variable names, allowing for easy abstraction, e.g. titlefont, bodyfont.
+     *
+     * These are assigned to actual font faces here,
+     *
+     * e.g.
+     *
+     * :root {
+     * 	--bodyfont: Open sans;
+     * }
+     *
+     * body {
+     * 	font-family: var(--bodyfont);
+     * }
+     *
+     * The font faces should be defined in the static CSS.
+	 */
+	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug)  output=false {
 
 		local.css = "";
 
 		if (StructKeyExists(arguments.settings,"fonts")) {
-			local.css &= ":root {\n";
 			for (local.font in arguments.settings.fonts) {
 				if (! (StructKeyExists(local.font,"name") && StructKeyExists(local.font,"value"))) {
 					local.css &= "\t/* font incorrectly configured #serializeJSON(local.font)# */\n";
@@ -136,36 +142,35 @@
 				}	
 				
 			}
-			local.css &= "}\n";
 		}
 		
 		return local.css;
 
 	}
 
-	/** @hint  Generate css for assigning color variable values
-
-	All colors are applied as variable names, allowing for easy abstraction, e.g. textcolor
-
-	These are assigned to actual colors here,
-
-	e.g.
-
-	:root {
-		--textcolor: #3f3f3f;
-	}
-
-	body {
-		color: var(--textcolor);
-	}
-	
-	*/
+	/** 
+	 * @hint  Generate css for assigning color variable values
+     * 
+     * All colors are applied as variable names, allowing for easy abstraction, e.g. textcolor
+     * 
+     * These are assigned to actual colors here,
+     * 
+     * e.g.
+     * 
+     * :root {
+     * 	 --textcolor: #3f3f3f;
+     * }
+     * 
+     * 	body {
+     * 		color: var(--textcolor);
+     * 	}
+	 * 
+	 */
 	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
 
 		local.css = "";
 
 		if (StructKeyExists(arguments.settings,"colors")) {
-			local.css &= ":root {\n";
 			for (local.color in arguments.settings.colors) {
 				if (! (StructKeyExists(local.color,"name") && StructKeyExists(local.color,"value"))) {
 					local.css &= "\t/* color incorrectly configured #serializeJSON(local.color)# */\n";
@@ -178,63 +183,46 @@
 				}	
 				
 			}
-			local.css &= "}\n";
 		}
 		
 		return local.css;
 
 	}
 	
-	/** get CSS for container */
-	public string function containerCss(required struct styles, required string name, string selector="###arguments.name#", string media="main", boolean debug=this.debug) {
+	/** 
+	 * get CSS for a container
+	 * 
+	 * @settings   medium settings for the container
+	 * @selector  css stylesheet selector e.g. #main
+	 */
+	public string function containerCss(
+			required struct  settings, 
+			required string  selector, 
+					 boolean debug=this.debug
+			) {
 
 		local.css = "";
-		if (arguments.debug) {
-			local.css &= "/* styling for #arguments.selector# */\n";
-		}
-
 		local.innerCSS = "";
-
-		if (StructKeyExists(arguments.styles.content, arguments.name)) {
-
-			if (StructKeyExists(arguments.styles.content[arguments.name],arguments.media)) {
-				
-				local.settings = arguments.styles.content[arguments.name][arguments.media];
-				local.css &= "#arguments.selector# {\n";
-				local.css &= this.css(settings=local.settings);
-				local.css &= "}\n";
-				
-				local.inner = "";
-				local.gridcss = "";
-
-				if (StructKeyExists(arguments.styles.content[arguments.name][arguments.media], "inner")) {
-					local.inner &= this.css(settings=arguments.styles.content[arguments.name][arguments.media]["inner"]);
-				}
-
-				if (StructKeyExists(arguments.styles.content[arguments.name][arguments.media],"grid")) {
-					local.gridcss &= grid(arguments.styles.content[arguments.name][arguments.media]["grid"]);
-				}
-
-				if (local.inner != "") {
-					local.css &= "#arguments.selector# .inner {\n";
-					local.css &= local.inner & local.gridcss;
-					local.css &= "}\n";
-				}
-				else {
-					// could do better here? Repeated selector.
-					local.css &= "#arguments.selector# {\n";
-					local.css &= local.gridcss;
-					local.css &= "}\n";
-				}
-				
-
-			} else if (arguments.debug) {
-				local.css &= "/* no styles found for media #arguments.media# */\n";
-			}
+		local.gridcss = "";
+		
+		local.css &= "#arguments.selector# {\n";
+		local.css &= this.dimensions(settings=arguments.settings);
+		
+		if (StructKeyExists(arguments.settings, "inner")) {
+			local.innerCSS &= this.dimensions(arguments.settings.inner);
 		}
-		else if (arguments.debug) {
-			local.css &= "/* no styles found for name */\n";
+		if (StructKeyExists(arguments.settings,"grid")) {
+			local.gridcss &= grid(arguments.settings.grid);
 		}
+
+		local.css &= "}\n";
+		
+		if (local.innerCSS NEQ "" OR local.gridcss NEQ "") {
+			local.css &= "#arguments.selector# .inner {\n";
+			local.css &= local.innerCSS & local.gridcss;
+			local.css &= "}\n";
+		}
+		
 		
 		return local.css;
 
@@ -248,7 +236,7 @@
 		local.css &= "\t/* Dimensions */\n";
 		local.css &= dimensions(arguments.settings);
 
-		return local.css;
+		return local.css;2
 
 	}
 
@@ -289,17 +277,15 @@
 					local.css &= "\tborder-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";\n";
 				}
 			}
-			// local.css &= "/* " & serializeJSON(arguments.settings.border) & "*/\n";
 		}
 
 		if (StructKeyExists(arguments.settings,"background")) {
 			local.settings = Duplicate(arguments.settings["background"]);
-			for (local.property in ['color']) {
+			for (local.property in ['color','image','repeat','position']) {
 				if (StructKeyExists(local.settings,local.property)) {
 					local.css &= "\tbackground-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";\n";
 				}
 			}
-			// local.css &= "/* " & serializeJSON(arguments.settings.background) & "*/\n";
 		}
 
 		for (local.property in ['padding','margin','width','min-width','max-width','height','min-height','max-height']) {
@@ -426,16 +412,19 @@
 	 * A media query can optionally specify a max/min width and/or a medium (screen by default)
 	 *
 	 * A undefined medium or one with no specs (e.g. main) will return a blank string. You need logic to handle this
+	 *
+	 * @mediaQuery    struct of information 
 	 */
-	private string function MediaQuery(required struct mediaQuery) {
+	private string function mediaQuery(required struct mediaQuery)  output=false {
 
 		local.css = "";
-
+		
 		if (StructKeyExists(arguments.mediaQuery,"max") || StructKeyExists(arguments.mediaQuery,"min") || StructKeyExists(arguments.mediaQuery,"media")) {
 			local.media = StructKeyExists(arguments.mediaQuery,"media") ? arguments.mediaQuery.media : "screen";
 			local.maxwidth = StructKeyExists(arguments.mediaQuery,"max") ?  " and (max-width: #arguments.mediaQuery.max#px)" : "";
-			local.minwidth = StructKeyExists(arguments.mediaQuery,"min") ?  " and (min-width: #local.mediaQuery.min#px)" : "";
+			local.minwidth = StructKeyExists(arguments.mediaQuery,"min") ?  " and (min-width: #arguments.mediaQuery.min#px)" : "";
 			local.css = "@media only #local.media##local.maxwidth##local.minwidth#";
+
 		}
 		
 		return local.css;
@@ -443,23 +432,23 @@
 	}
 
 	/**
-	 * Return array of mediums from style struct
+	 * Return struct of mediums from array defined in styles
 	 *
-	 * TODO: actually do this
-	 * @styles    Complete style struct keyed
+	 * @styles    Complete styles
 	 */
-	public struct function getMedia(required struct styles) {
+	public struct function getMedia(required struct styles)  output=false {
 		
 		StructAppend(arguments.styles,{"media":[]},false);
 
 		local.styles = [=];
 
-		StructAppend(local.styles,{"main":{"name": "Main", "description":"Applies to all screen sizes"}},true);
+		// TO DO: separate medium field, don't use main
+		StructAppend(local.styles,{"main":{"name": "main", "description":"Applies to all screen sizes"}},true);
 
 		for (local.row in arguments.styles.media) {
 			// ensure we override any attempt to sabotage main.
 			if (StructKeyExists(local.row,"name") AND local.row.name NEQ "main") {
-				StructAppend(local.styles,{local.row.name:local.row},true);
+				local.styles[local.row.name] = local.row;
 			}
 		}
 
@@ -471,7 +460,7 @@
 	 * Create a struct of styles to start playing with
 	 * probably not needed in final cut 
 	 */
-	public function newStyles() {
+	public function newStyles()  output=false {
 		var styles = {
 			"main": {},
 			"mobile": {},

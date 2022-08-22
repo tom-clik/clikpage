@@ -119,7 +119,6 @@ component {
 		  	onApplicationStart();
 		  }
 		  loadStyling(styledef=application.styleSheetFile,reload=request.rc.reload);
-		   
 		}
 
 		request.prc.pageContent = application.pageObj.getContent();
@@ -131,9 +130,6 @@ component {
 
 		request.prc.layoutname = application.siteObj.getLayoutName(section=request.prc.section,action=request.rc.action);
 		request.prc.mylayout = application.layoutObj.getLayout(request.prc.layoutname);
-
-		request.prc.pageContent.css &=  application.settingsObj.containersCSS(application.styles,request.prc.mylayout);
-
 
 		request.prc.pageContent.bodyClass =  application.siteObj.bodyClass(request.prc.mylayout);
 

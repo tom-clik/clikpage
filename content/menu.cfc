@@ -14,14 +14,7 @@ component extends="contentSection" {
 		variables.static_css = {"menus"=1};
 		variables.static_js ={"menus"=1};
 		
-		variables.settings = {
-			"menu" = {
-				"orientation" 	= "horizontal",
-				"flex" = false
-			}
-		};
-		
-		variables.panels = [
+		this.panels = [
 			{"name":"item", "selector": " li a"}
 		];
 
@@ -54,11 +47,14 @@ component extends="contentSection" {
 			"menu-text-align":{"type":"halign"},
 			"menu-anim-time":{"type":"time"},
 			"menu-label-display": {"type":"boolean","name":"Display label","description":"Show or hide the text part of the menu items","default":true},
-			"menu-icon-display": {"type":"boolean","name":"Display icon","description":"Show or hide the icon in the menu item. You will need to define the icons  (how TBC)","default":false}
+			"menu-icon-display": {"type":"boolean","name":"Display icon","description":"Show or hide the icon in the menu item. You will need to define the icons  (how TBC)","default":false},
+			"border-type": {"type":"list","name":"Border type","description":"","options":[
+				{"value":"normal"},{"value":"dividers"},{"value":"boxes"}
+			]},
+			"flex": {"type":"boolean","name":"Flex mode","description":"Flexible grid that adjusts to the size of the items","default":false},
+			"stretch": {"type":"boolean","name":"Stretch","description":"Stretch out the menu in flex mode. Equal padding will be added to the items","default":false},
+			"popup": {"type":"boolean","name":"Popup","description":"Show as popup (you will need to ensure a button is present that opens the menu","default":false}
 		];
-		// pending formal definitions of settings,
-		// there are some settings that need to cascade, e.g. orientation
-		// 
 		// ## Settings
 
 		// Name           | Type                  | Implementation
@@ -72,8 +68,12 @@ component extends="contentSection" {
 		// popup          | boolean               | height: 0   NB &.open  applies height:auto
 
 		this.settings = [
-			"orientation": {"inherit":1},
-			"border-type": {"inherit":1}
+			"orientation": "left",
+			"border-type": "none",
+			"flex":"false",
+			"stretch":"false",
+			"popup":"false",
+			"padding-adjust": true
 		];
 
 		return this;

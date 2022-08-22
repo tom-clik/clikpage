@@ -115,7 +115,7 @@ component {
 		// As we build the CSS we append to the different struct keys
 		// here "main" is nothing to do with media. See this.selectors.
 		// a menu function might do ret.ul &= "display:flex;\n"
-		ret.main &= "/-- Main CSS goes here --/\n";
+		ret.main &= "/* Main CSS goes here */\n";
 
 		// Once we've built this struct we write it out as a string using this function
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=ret);
@@ -212,6 +212,7 @@ component {
 	 * Each cs component is expected to define its own css_settings() function.
 	 *
 	 * NOTE the "styles" are often saved in the content sections as a convenience. This is a bit unofficial
+	 * and contains all the different media. Here stles need to be for the medium required.
 	 * 
 	 * @styles  Content section settings struct
 	 */
@@ -305,27 +306,28 @@ component {
 	/**
 	 * @hint Update settings with required values
 	 * 
-	 * This is one of the key functions to understand. Say for instance you have a required setting "orientation" for
-	 * a menu. This will have a default value, but this might be overridden in "main". When we want to get the value
-	 * for mobile, it should inherit from main or mid.
+	 * This is one of the key functions to understand. Say for instance you have a required 
+	 * setting "orientation" for a menu. This will have a default value, but this might be 
+	 * overridden in "main". When we want to get the value for mobile, it should inherit 
+	 * from main or mid.
 	 *
 	 * At the same time, we don't want to create settings for a medium where there are none.
 	 *
 	 * If you want a default for mobile that's different, use the styling to inherit from a base value.
 	 * 
 	 */
-	public struct function settings(required struct content, required array media ) {
+	public void function settings(required struct content, required array media ) {
 		
-		if (! StructKeyExists(arguments.content,"settings")) {
+		if (NOT StructKeyExists(arguments.content,"settings")) {
 			arguments.content["settings"] = {
 			};	
 		}
 		else {
-			variables.contentObj.DeepStructAppend(arguments.content["settings"], {}, false);
+			variables.contentObj.DeepStructAppend(arguments.content["settings"], this.settings, false);
 		}
 
 		var currentSettings = Duplicate(variables.settings);
-
+		
 		for (local.medium in arguments.media) {
 			// need to use root if main.
 			if (StructKeyExists(arguments.content["settings"],local.medium.name)) {
@@ -335,8 +337,7 @@ component {
 				
 			}
 		}
-		// to do: wrong. Update the value.
-		return arguments.content["settings"];
+		
 	}
 	
 	public struct function getStaticCss() {

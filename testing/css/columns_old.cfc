@@ -1,3 +1,10 @@
+<!---
+
+ALL MOVED TO content.columns
+
+--->
+
+
 /*
 
 :root {
@@ -42,7 +49,19 @@ The settings can be used for any viewport.
 component extends="test_csbase" {
 
 	columns function init() {
-		this.settings = ["uber-grid-template-areas","content-grid-template-rows","content-grid-template-areas","uber-grid-template-rows","uber-grid-template-columns","xcolwidth","subcolwidth","columns-grid-gap","header-height","footer-height","header-position","footer-position","header-fixed-height","footer-fixed-height","header-fixed","footer-fixed","header-display","footer-display","topnav-display","bottomnav-display","content_top-display","content_bottom-display","topnav-width","topnav-position","topnav-height","topnav-top"];
+
+		this.styleDefs = [
+			"xcol-width":{"type":"dimension"},
+			"subcol-width":{"type":"dimension"},
+			"column-layout":{"type":"text"},
+			"row-layout":{"type":"text"},
+			"columns-grid-gap"{"type":"dimension"}
+		];
+		
+		this.settings = {
+			"column-layout":"S-M-X",
+			"row-layout":"H-T-C-B-F"
+		}
 
 		return this;
 	}
@@ -256,10 +275,27 @@ component extends="test_csbase" {
 		return css;
 	} 
 
-	// Convert shorthand row settings into required vars
+	/**
+	 * @hint Convert shorthand row settings into required vars
+	 *
+	 * There are 5 rows in a default page layout. 
+	 *
+	 * Header
+	 * Top nav
+	 * Content
+	 * Bottom nav
+	 * Footer
+	 *
+	 * The sofrt hand is row-layout; H-T-C-B-F
+	 *
+	 * Omit rows you don't want.
+	 *
+	 * H,T, and F can be fixed. Use HF etc
+	 *
+	 * TC and can be joined. This is hard wired.
+	 *  
+	 */
 	public void function rowSettings(required struct styles) {
-
-		
 
 		// aliases for uber-grid-template-areas, uber-grid-template-rows 
 		var uber_areas = "";
@@ -355,7 +391,6 @@ component extends="test_csbase" {
 
 			arguments.styles["uber-grid-template-areas"] = uber_areas;
 			arguments.styles["uber-grid-template-rows"] = uber_rows;
-
 
 		}
 

@@ -15,7 +15,7 @@ See the documentation /technotes/css/grids.md for overview
 --->
 
 <cfscript>
-gridObj = new clikpic._testing.css_tests.grid();
+gridObj = new grid();
 settings = gridObj.new(url);
 // writeDump(settings);
 // abort;
@@ -36,6 +36,7 @@ settings = gridObj.new(url);
 
 <cfset images = getImages()>
 <cfset maximagescalc = url.maximages eq "" ? arrayLen(images) : url.maximages>
+<cfset css = gridObj.css(selector="div.cs-photos",settings=settings)>
 
 <html>
 	<head>
@@ -46,7 +47,7 @@ settings = gridObj.new(url);
 		<link rel="stylesheet" type="text/css" href="_styles/settingsPanel.css">
 		
 		<style id="dynamic_css">
-			<cfoutput>#gridObj.css(selector="div.cs-photos",settings=settings)#</cfoutput>
+			<cfoutput>#css#</cfoutput>
 		</style>
 	</head>
 
@@ -69,8 +70,6 @@ settings = gridObj.new(url);
 						<input name="grid-width" value="#settings["grid-width"]#">
 						<label>Grid gap</label>				
 						<input name="grid-gap" value="#settings["grid-gap"]#">
-						<label>Grid row gap</label>				
-						<input name="grid-row-gap" value="#settings["grid-row-gap"]#">
 						<label title="Only applies to  Fixed columns">Widths</label>				
 						<input name="grid-template-columns" value="#settings["grid-template-columns"]#">
 						<label title="Only applies to Fixed columns">Columns</label>				

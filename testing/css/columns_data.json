@@ -1,0 +1,154 @@
+{
+  "M": {
+    "areas": "maincol",
+    "columns": "1fr",
+    "subcol": "none",
+    "xcol": "none"
+  },
+  "M-S": {
+    "areas": "maincol subcol",
+    "columns": "auto  var(--subcolwidth)",
+    "xcol": "none"
+  },
+  "M-S-X": {
+    "areas": "maincol   subcol xcol ",
+    "columns": "auto var(--subcolwidth) var(--xcolwidth)"
+  },
+  "M-SX": {
+    "areas": "\"maincol subcol\" \"maincol xcol\"",
+    "columns": "auto var(--subcolwidth) ",
+    "rows": "min-content auto"
+  },
+  "M-X": {
+    "areas": "maincol xcol",
+    "columns": "auto  var(--xcolwidth)",
+    "subcol": "none"
+  },
+  "M-X-S": {
+    "areas": "maincol xcol  subcol",
+    "columns": "auto  var(--xcolwidth)  var(--subcolwidth)"
+  },
+  "M-XS": {
+    "areas": "\"maincol xcol\" \"maincol subcol\"",
+    "columns": "auto var(--subcolwidth) ",
+    "rows": "min-content auto"
+  },
+  "MS": {
+    "areas": "\"maincol\" \"subcol\"",
+    "columns": "1fr",
+    "xcol": "none"
+  },
+  "MS-X": {
+    "areas": "\"maincol xcol\" \"subcol xcol\"",
+    "columns": "auto var(--xcolwidth) ",
+    "rows": "min-content auto"
+  },
+  "MSX": {
+    "areas": "\"maincol\" \"subcol\" \"xcol\"",
+    "columns": "1fr"
+  },
+  "MX": {
+    "areas": "\"maincol\" \"xcol\"",
+    "columns": "1fr",
+    "subcol": "none"
+  },
+  "MX-S": {
+    "areas": "\"maincol subcol\" \"xcol subcol\"",
+    "columns": "auto  var(--subcolwidth)",
+    "rows": "min-content auto"
+  },
+  "MXS": {
+    "areas": "\"maincol\" \"xcol\" \"subcol\"",
+    "columns": "1fr"
+  },
+  "S-M": {
+    "areas": "subcol maincol",
+    "columns": "var(--subcolwidth) auto",
+    "xcol": "none"
+  },
+  "S-M-X": {
+    "areas": "subcol maincol xcol",
+    "columns": "var(--subcolwidth) auto var(--xcolwidth)"
+  },
+  "S-MX": {
+    "areas": "\"subcol maincol\" \"subcol xcol\"",
+    "columns": "var(--subcolwidth) auto",
+    "rows": "min-content auto"
+  },
+  "S-X-M": {
+    "areas": "subcol xcol maincol",
+    "columns": "var(--subcolwidth) var(--xcolwidth) auto "
+  },
+  "S-XM": {
+    "areas": "\"subcol xcol\" \"subcol maincol\"",
+    "columns": "var(--subcolwidth) auto",
+    "rows": "min-content auto"
+  },
+  "SM": {
+    "areas": "\"subcol\" \"maincol\"",
+    "columns": "1fr",
+    "xcol": "none"
+  },
+  "SM-X": {
+    "areas": "\"subcol xcol\" \"maincol xcol\"",
+    "columns": "auto var(--xcolwidth) ",
+    "rows": "min-content auto"
+  },
+  "SMX": {
+    "areas": "\"subcol\" \"maincol\" \"xcol\"",
+    "columns": "1fr"
+  },
+  "SX-M": {
+    "areas": "\"subcol maincol\" \"xcol maincol\"",
+    "columns": "var(--subcolwidth) auto"
+  },
+  "SXM": {
+    "areas": "\"subcol\" \"xcol\" \"maincol\"",
+    "columns": "1fr"
+  },
+  "X-M": {
+    "areas": "xcol maincol",
+    "columns": "var(--xcolwidth) auto",
+    "subcol": "none"
+  },
+  "X-M-S": {
+    "areas": "xcol maincol subcol",
+    "columns": "var(--xcolwidth) auto  var(--subcolwidth)"
+  },
+  "X-MS": {
+    "areas": "\"xcol maincol\" \"xcol subcol\"",
+    "columns": "var(--xcolwidth) auto",
+    "rows": "min-content auto"
+  },
+  "X-S-M": {
+    "areas": "xcol  subcol maincol",
+    "columns": "var(--xcolwidth)   var(--subcolwidth) auto"
+  },
+  "X-SM": {
+    "areas": "\"xcol subcol\" \"xcol maincol\"",
+    "columns": "var(--xcolwidth) auto",
+    "rows": "min-content auto"
+  },
+  "XM": {
+    "areas": "xcol maincol",
+    "columns": "1fr",
+    "subcol": "none"
+  },
+  "XM-S": {
+    "areas": "\"xcol subcol\" \"maincol subcol\"",
+    "columns": "auto var(--subcolwidth)"
+  },
+  "XMS": {
+    "areas": "\"xcol\" \"maincol\" \"subcol\"",
+    "columns": "1fr"
+  },
+  "XS-M": {
+    "areas": "\"xcol maincol\" \"subcol maincol\"",
+    "columns": "var(--subcolwidth) auto",
+    "rows": "min-content auto"
+  },
+  "XSM": {
+    "areas": "\"xcol\" \"subcol\" \"maincol\"",
+    "columns": "1fr"
+  }
+}

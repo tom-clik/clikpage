@@ -67,13 +67,7 @@ columnsObj = new columns();
 				--field-padding: 1px;
 				
 			}
-			
-
-			.overlay {
-				
-
-			}
-
+	
 			#topnav > .inner > div.sticky {
 				position: sticky;
 				top:calc((var(--header-fixed-height) * var(--header-fixed)) + var(--body-margin-top));

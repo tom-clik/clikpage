@@ -1,7 +1,7 @@
 <cfscript>
 layoutObj = new clikpage.layouts.layouts(getDirectoryFromPath(getCurrentTemplatePath()));
 
-mylayout = layoutObj.getLayout("testlayout1/testlayout6");
+mylayout = layoutObj.getLayout("testlayout1/testlayout1");
 
 WriteDump(mylayout);
 

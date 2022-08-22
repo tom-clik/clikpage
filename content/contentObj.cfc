@@ -5,10 +5,10 @@ component {
 	 * @settingsObj  pass in reference to intialised singleton settings object
 	 * @types        list of content section types to load
 	*/
-	public contentObj function init(
+	public contentObj function init (
 		    required   any      settingsObj,
 			           string   types="item,title,menu,text,image,imagegrid,articlelist,button"
-		) {
+		)  output=false {
 		
 		this.contentSections = {};
 		this.debug = false;
@@ -180,23 +180,25 @@ component {
 	/**
 	 * @hint Update settings for a content section
 	 *
-	 * NB MUST put backing in the settings function at the end. Currently broken
-	 * due to change in media stuff.
+	 * NB MUST put back in in the settings function at the end. Currently broken
+	 * due to change in media stuff. This  is needing for inheritance.
+	 *
+	 * NB this needs to work for containers as well. Do not break.
 	 * 
 	 */
-	public struct function settings(required struct content, required struct styles ) {
+	public void function settings(required struct content, required struct styles) {
 		
 		if (StructKeyExists(arguments.styles.content, arguments.content.id)) {
-			arguments.content.settings = Duplicate(arguments.styles.content[arguments.content.id]);
+			arguments.content["settings"] = Duplicate(arguments.styles.content[arguments.content.id]);
 		}
 		else {
-			arguments.content.settings =  {};
+			arguments.content["settings"] =  {};
 		}
 
 		// Add in settings from classes e.g. scheme-whatever, cs-type
 		if (StructKeyExists(arguments.content,"class")) {
 			// to do: some sort of sort order for this.
-			for (local.class in arguments.content.class) {
+			for (local.class in ListToArray(arguments.content.class," ")) {
 				if (StructKeyExists(arguments.styles.content, local.class)) {
 					deepStructAppend(arguments.content.settings,arguments.styles.content[local.class]);
 				}
@@ -208,8 +210,6 @@ component {
 		
 		// MUST DO: resurrect this.
 		// this.contentSections[arguments.content.type].settings(arguments.content, arguments.styles.media);
-
-		return arguments.content.settings;
 
 	}	
 

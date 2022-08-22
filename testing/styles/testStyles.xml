@@ -41,14 +41,29 @@
 
 	<layouts>
 
-		<testlayout>
-			<sitewidth>1400px</sitewidth>
-		</testlayout>
+		<testlayout1>
+			<inner-width>1090px</inner-width>
+			<column-layout>S-M-X</column-layout>
+			<columns-grid-gap>4</columns-grid-gap>
+			<mid>
+				<column-layout>S-MX</column-layout>
+			</mid>
+			<mobile>
+				<column-layout>SMX</column-layout>
+			</mobile>
+			<row-layout>HF-T-C-F</row-layout>
+		</testlayout1>
 		
 		<testlayout3>
-			<subcolwidth>20%</subcolwidth>
-			<xcolwidth>0%</xcolwidth>
+			<column-layout>M</column-layout>
 		</testlayout3>
+
+		<testlayout4>
+			<column-layout>S-M</column-layout>
+			<mobile>
+				<column-layout>SM</column-layout>
+			</mobile>
+		</testlayout4>
 		
 	</layouts>
 
@@ -59,6 +74,12 @@
 			<font-family>bodyfont</font-family>
 			<font-size>80%</font-size>
 			<padding>0</padding>
+			<mid>
+				<font-size>70%</font-size>
+			</mid>
+			<mobile>
+				<font-size>60%</font-size>
+			</mobile>	
 		</body>
 
 		<sitetitle>
@@ -71,6 +92,7 @@
 			<inner>
 				<max-width>1200</max-width>
 				<align>center</align>
+				<padding>12</padding>
 			</inner>
 			<background>
 				<color>panel-bg</color>
@@ -81,6 +103,10 @@
 			</grid>
 			
 			<mobile>
+				<inner>
+					<max-width>auto</max-width>
+					<padding>4</padding>
+				</inner>
 				<grid>
 					<grid>0</grid>
 				</grid>
@@ -172,12 +198,6 @@
 			<background>
 				<color>light-panel-bg</color>
 			</background>
-			<padding>8 0</padding>
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
-			
 		</topnav>
 
 		<footermenu>
@@ -223,21 +243,18 @@
 		</imagegrid>
 
 		<content>
-
-
-				<padding>8 0</padding>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-				</inner>
-	
+			<font>Shuoldn't work</font>
+			<color>No cascading</color>
+			<padding>8 0</padding>
+			<inner>
+				<max-width>1200</max-width>
+				<align>center</align>
+			</inner>
 
 		</content>
 
 		<sectiontitle>
-	
-				<margin>0 0 1em 0</margin>
-	
+			<margin>0 0 1em 0</margin>
 		</sectiontitle>
 
 		<list>
@@ -312,6 +329,17 @@
 				</hover>
 			</icon>
 		</scheme-button>
+
+		<scheme-spanning>
+			<inner>
+				<max-width>1200px</max-width>
+				<align>center</align>
+				<padding>8px</padding>
+			</inner>
+			<mobile>
+				<padding>4px</padding>
+			</mobile>
+		</scheme-spanning>
 
 		<navnext>
 			<button>
