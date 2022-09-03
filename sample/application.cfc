@@ -13,8 +13,11 @@
 component   extends="clikpage.clikpageApplication" { //
 	// Application properties
 	this.name = "clikpagesample";
-	this.componentpaths=[ExpandPath("../..")];
 
+	// TODO: needs sorting
+	this.mappings={
+		"/_assets" : "D:\git\libraries\coldlight\_assets"
+	};
 	// Java Integration
 	// this.javaSettings = { 
 	// 	loadPaths = [ ".\lib" ], 

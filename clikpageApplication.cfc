@@ -93,9 +93,8 @@ component {
 			// save site styling
 			// TO DO: a formal mechanism for this
 			// Possibly a site root in the siteObject?
-			local.css = application.settingsObj.siteCss(application.styles);
-
-			FileWrite(ExpandPath("styles.css"), local.css);
+			// local.css = application.settingsObj.siteCss(application.styles);
+			// FileWrite(ExpandPath("styles.css"), local.css);
 		}
 
 	}

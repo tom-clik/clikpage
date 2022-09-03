@@ -249,13 +249,13 @@ component {
 	public void function addPageContent(required struct page, required struct pageContent) {
 		
 		for (local.key in ['static_css','static_js','onready','css']) {
-			if (StructKeyExists(arguments.content,local.key)) {
+			if (StructKeyExists(arguments.pageContent,local.key)) {
 				switch (local.key) {
 					case "static_css": case "static_js": 
-						StructAppend(arguments.pageContent[local.key],arguments.content[local.key]);
+						StructAppend(arguments.page[local.key],arguments.pageContent[local.key]);
 					break;
 					case "onready": case "css": 
-						arguments.pageContent[local.key] &= arguments.content[local.key];
+						arguments.page[local.key] &= arguments.pageContent[local.key];
 					break;
 					default:
 				}
