@@ -143,10 +143,11 @@ component {
 			try {
 				var csdata = request.prc.mylayout.content[content];
 				
-				//writeDump(csdata);
 				cs[content] =  application.contentObj.new(argumentCollection=csdata);
 				//writeDump(cs[content]);
-				cs[content].settings =  application.contentObj.settings(cs[content],application.styles);
+				application.contentObj.settings(cs[content],application.styles);
+				
+
 				// hack for data
 				// TO DO: re do this when we have proper data set functionality
 				switch (content) {
@@ -221,32 +222,28 @@ component {
 			}
 
 		}
-
-		
-
 	}
 
 	public void function onRequestEnd(){
 		
 		try { 
 			request.prc.pageContent.css = application.settingsObj.outputFormat(css=request.prc.pageContent.css,styles=application.styles);
+			request.prc.pageContent.body = application.layoutObj.getHTML(request.prc.pageLayout);
+
+			request.prc.pageContent.body = application.siteObj.dataReplace(site=application.site, html=request.prc.pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
+
+			writeOutput(application.pageObj.buildPage(request.prc.pageContent));
+
 		}
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext,"pageContent"=request.prc.pageContent};
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Unable to generate CSS:" & e.message, 
+				message      = "Unable to render page:" & e.message, 
 				detail       = e.detail,
-				errorcode    = "onRequestEnd.css"		
+				errorcode    = "onRequestEnd.1"		
 			);
 		}
-		
-
-		request.prc.pageContent.body = application.layoutObj.getHTML(request.prc.pageLayout);
-
-		request.prc.pageContent.body = application.siteObj.dataReplace(site=application.site, html=request.prc.pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
-
-		writeOutput(application.pageObj.buildPage(request.prc.pageContent));
 	
 	}
 

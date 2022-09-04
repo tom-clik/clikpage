@@ -2,6 +2,7 @@ component {
 
 	this.sessionManagement = false;
 	this.debug = true;
+	this.componentPaths=[ExpandPath("..\..\..")];
 
 	public void function onApplicationStart()  output=false {
 		application.utils = new clikpage.utils.utilsold();

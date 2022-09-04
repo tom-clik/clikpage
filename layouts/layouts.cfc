@@ -221,7 +221,7 @@ component name="layouts" {
 				// by default any cs with a title will be a general cs
 				if (! StructKeyExists(local.cs, "type")) {
 					if (StructKeyExists(local.cs, "title")) {
-						local.cs["type"] = "general";
+						local.cs["type"] = "item";
 					}
 					else {
 						local.cs["type"] = "text";

@@ -16,9 +16,10 @@ This will generate an an image for each format and a json file. See generateData
 
 */
 
-// bgacbJ4DQq8,HMhRTbuSEhY,DKWjcMHF54E,jSqrSrtjB80,wlNh84JRb2M,Z89kRdt8wFE,OAzh2bBN110,Y1OUQTZRqMo,p70S-sgZtVI,t03o51DDV8Q,NiOAwBuV8f4
+// 
+cfsetting(requesttimeout="5000" );
 
-idslist = ListToArray('T_aDfsi8uYQ');
+idslist = ListToArray('wlNh84JRb2M,Z89kRdt8wFE,OAzh2bBN110,Y1OUQTZRqMo,p70S-sgZtVI,NiOAwBuV8f4');
 outputFolder = GetDirectoryFromPath(getCurrentTemplatePath());
 formats = [{"name":"main","width":1200,"ext":""},{"name":"thumb","width":600,"ext":"_thumb"}];
 outputData = {};

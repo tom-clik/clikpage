@@ -120,8 +120,8 @@ component extends="contentSection" {
 		
 		local.html &= "</div>";
 
-		if (arguments.content.settings.main.imagegrid.masonry) {
-			arguments.content.class["masonry"] = 1;
+		if (arguments.content.settings.masonry) {
+			variables.contentObj.addClass(arguments.content,"masonry");
 		}
 
 
@@ -133,7 +133,7 @@ component extends="contentSection" {
 
 		var js = "";
 
-		if (arguments.content.settings.main.imagegrid.masonry) {
+		if (arguments.content.settings.masonry) {
 			js &= "$#arguments.content.id#Grid = $('###arguments.content.id# .grid').masonry({\n";
 			js &= "\t/* options*/\n";
 			// js &= "\titemSelector: 'figure',\n";
@@ -152,7 +152,7 @@ component extends="contentSection" {
 			js &= "});\n";
 		}
 
-		if (arguments.content.settings.main.imagegrid.popup) {
+		if (arguments.content.settings.popup) {
 
 			js &= "$(""###arguments.content.id# figure a"").colorbox({rel:'group#arguments.content.id#'});";
 		}

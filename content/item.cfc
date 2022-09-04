@@ -4,7 +4,7 @@ component extends="contentSection" {
 		
 		super.init(arguments.contentObj);
 
-		variables.type = "general";
+		variables.type = "item";
 		variables.title = "General content";
 		variables.description = "HTML with optional title and text";
 		variables.defaults = {
@@ -40,7 +40,7 @@ component extends="contentSection" {
 	}
 
 	/** Create a new content section */
-	public struct function new(required string id, string title, string content, string image, string caption, string link) {
+	public struct function new(required string id, string title, string content, string image, string caption, string link, struct data) {
 		
 		var cs =super.new(argumentCollection = arguments);
 
@@ -62,7 +62,7 @@ component extends="contentSection" {
 	public string function html(required struct content) {
 		
 		var classes = {};
-
+		
 		var cshtml = variables.contentObj.itemHtml(content=arguments.content, settings = arguments.content.settings, classes=classes);
 
 		ListAppend(arguments.content.class, StructKeyList(classes," ")," ");

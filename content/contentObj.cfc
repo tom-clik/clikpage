@@ -52,7 +52,8 @@ component {
 				 string content,
 				 string image, 
 				 string caption, 
-				 string link
+				 string link,
+				 struct data
 				 ) {
 
 		if (!StructKeyExists(this.contentSections,arguments.type)) {
@@ -94,7 +95,26 @@ component {
 		return ret;
 	}
 
-	/* Get class html attribute for a content section */
+	/**
+	 * Add a class(es) to a content section
+	 * 
+	 * @content The content object
+	 * @class Class to add
+	 */
+	private void function addClass(required struct content, required string class) {
+		
+		var classstr = "cs-" & arguments.content.type;
+		
+		ListAppend(classstr,arguments.content.class, " ");
+		
+		return classstr;
+	}
+		
+	/**
+	 * Get class html attribute for a content section
+	 * @content The content object
+	 * @return string to use as value of class attribute
+	 */
 	public string function getClassList(required struct content) {
 		
 		var classstr = "cs-" & arguments.content.type;
@@ -104,13 +124,12 @@ component {
 		return classstr;
 	}
 
-	/* get individual css for a content section
-
-	 */
 	/**
-	 * [css description]
+	 * @hint Get css for a content section
+	 *
 	 * @content      Content section
-	 * @format       Format result. Turn off if joining e.g. generating a stylesheet
+	 * @format       Format result. Turn off if e.g. generating a stylesheet and you can run it later
+	 * @return       css string
 	 */
 	public string function css(required struct content, boolean format=true) {
 		
@@ -291,17 +310,19 @@ component {
 	}
 
 	/**
-	 * Return standard html for an item with a title, text, and image
+	 * @hint Return standard html for an item with a title, text, and image
 	 *
-	 * This can be used on its own (general) or as part of a listing
+	 * This can be used on its own (general) or as part of a listing. Accordingly we need a mechanism
+	 * to apply the necessary classes to the surrounding div. This *isn't* a vestigial remnant from
+	 * the old class based styling system, it is just to allow reuse of item html in different cases
 	 * 
 	 * @content  Content section
-	 * @content  item settings. Either root settings for an individual item or item sub key from others
+	 * @settings  item settings. Required are the settings that adjust the html
 	 * @classes  Pass in struct by reference to return required classes for the wrapping div.
 	 */
 	public string function itemHtml(required struct content, struct settings={}, struct classes) {
 
-		local.titletag = StructKeyExists(arguments.settings,"titletag") ? arguments.settings.titletag : "h3"; 
+		local.titletag = arguments.settings.titletag ? : "h3"; 
 		local.hasLink = StructKeyExists(arguments.content,"link");
 
 		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";

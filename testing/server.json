@@ -3,14 +3,14 @@
         "cfengine":"lucee@5.3.8+201",
         "libDirs":"D:\\apps\\commandbox\\java"
     },
+    "name":"Clikpage testing",
     "profile":"development",
     "web":{
         "http":{
-            "port":"8086"
+            "port":"8088"
         },
         "aliases":{
-            "/_assets":"D:\\git\\libraries\\coldlight\\_assets",
-            "/images":"../testing/images"
+           "/_assets":"D:\\git\\libraries\\coldlight\\_assets"
         }
     }
 }

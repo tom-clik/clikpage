@@ -27,7 +27,7 @@ component {
 		this.selectors = [
 			{"name"="main", "selector"=""}
 		];
-
+			
 		// some cs have hover states etc
 		this.states = [
 			{"state"="main", "selector"="","name":"Main","description":"The main state"},
@@ -75,7 +75,7 @@ component {
 	public struct function new(
 		required string id, 
 				 string class="", 
-				 string data,
+				 struct data,
 				 string title, 
 				 string content,
 				 string image, 

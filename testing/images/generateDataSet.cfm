@@ -29,16 +29,23 @@ try {
 	dataFiles = DirectoryList(path=imageFolder,filter="*.json");
 	dataList = [];
 	for (filename in dataFiles) {
-		data = FileRead(filename);
-		image = DeserializeJSON(data);
-		FileWriteLine(fileHandle,"  <image id='#identity#'>");
-		FileWriteLine(fileHandle,"    <image_thumbnail>#image.thumb.src#</image_thumbnail>");
-		FileWriteLine(fileHandle,"    <image>#image.main.src#</image>");		
-		FileWriteLine(fileHandle,"    <caption>#image.caption#</caption>");	
-		if (tags != "") {
-			FileWriteLine(fileHandle,"    <tags>#tags#</tags>");	
+		image = false;
+		try {
+			data = FileRead(filename);
+			image = DeserializeJSON(data);
+			FileWriteLine(fileHandle,"  <image id='#identity#'>");
+			FileWriteLine(fileHandle,"    <image_thumbnail>#image.thumb.src#</image_thumbnail>");
+			FileWriteLine(fileHandle,"    <image>#image.main.src#</image>");		
+			FileWriteLine(fileHandle,"    <caption>#image.caption#</caption>");	
+			if (tags != "") {
+				FileWriteLine(fileHandle,"    <tags>#tags#</tags>");	
+			}
+			FileWriteLine(fileHandle,"  </image>");
 		}
-		FileWriteLine(fileHandle,"  </image>");
+		catch (any e) {
+			writeOutput("Unable to write data for image #filename#");
+			
+		}
 		identity++;
 	}
 
@@ -47,7 +54,7 @@ try {
 	WriteOutput("File written to #dataFile#");
 }
 catch (any e) {
-	local.extendedinfo = {"tagcontext"=e.tagcontext};
+	extendedinfo = {"tagcontext"=e.tagcontext};
 	throw(
 		extendedinfo = SerializeJSON(local.extendedinfo),
 		message      = "Unable to save data:" & e.message, 
