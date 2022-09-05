@@ -27,7 +27,7 @@
 	</colors>
 
 	<media>
-		<medium name="max" min="800" description="Full size only" />
+		<medium name="max" min="1200" description="Full size only" />
 		<medium name="mid" max="800"  description="Medium width for tablets"/>
 		<medium name="mobile" max="600" description="mobile" />
 		<medium name="print" media="print" description="Print only" />

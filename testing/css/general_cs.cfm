@@ -41,7 +41,14 @@ item-gridgap
 
 ## Status
 
-Working really well. Bugs in the imagespace thing but apart from that it's great.
+Working really well. 
+
+## TODO:
+
+The image space functionality is missing. This is for when we have a listing of items
+and the styling applies to all of them. Those without an image can show the image space or 
+not. This will require a class appended to the individual item t indicate it doesn't
+have an image.
 
 --->
 
@@ -156,26 +163,22 @@ styles = {
 
 	<title>General cs with grid positions</title>
 
-		<meta name="VIEWPORT" content="width=device-width, initial-scale=1.0">
-	 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
-		<link rel="stylesheet" type="text/css" href="_styles/standard.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/panels.css">
+	<meta name="VIEWPORT" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="_styles/standard.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/panels.css">
 		
-<style>
+	<style>
 
+	<cfoutput>#css(tests,styles)#</cfoutput>
+	/* styling for this page only */
+	.itemlist {
+	  min-width:260px;
+	  max-width: 800px;
+	  margin:20px auto;
+	}
 
-<cfoutput>#css(tests,styles)#</cfoutput>
-
-
-
-/* styling for this page -- ignore or set width */
-.itemlist {
-  min-width:260px;
-  max-width: 800px;
-  margin:20px auto;
-}
-
-</style>
+	</style>
 
 <body>
 
@@ -186,7 +189,9 @@ styles = {
 		<cfset StructAppend(test,{"image"=1},false)>
 
 		<cfoutput>
-		
+			
+			<cfset local.noimage = test.image>
+			
 			<div class="item" id="#test.id#">
 	
 				<h3 class="title">#test.id# #test.title#</h3>

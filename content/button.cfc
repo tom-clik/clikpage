@@ -1,5 +1,5 @@
 /**
- * Button definition
+ * # Button definition
  *
  * We do not use fonts for button definitions. Instead we use SVG files. Any icon font 
  * will have SVG equivalents to download and use.

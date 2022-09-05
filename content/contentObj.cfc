@@ -7,7 +7,7 @@ component {
 	*/
 	public contentObj function init (
 		    required   any      settingsObj,
-			           string   types="item,title,menu,text,image,imagegrid,articlelist,button"
+			           string   types="item,columns,title,menu,text,image,imagegrid,articlelist,button"
 		)  output=false {
 		
 		this.contentSections = {};
@@ -88,11 +88,28 @@ component {
 	// Really? This sounds like nonsense. THP. TODO: use element.replaceWith()
 	
 	*/
-	public string function wrapHTML(required struct content, required string html) {
+	private string function wrapHTML(required struct content, required string html) {
 		
 		var ret = "<div id='#arguments.content.id#' class='" & getClassList(arguments.content) & "'>" &  NewLine() & arguments.html & "</div>";
 
 		return ret;
+	}
+
+	/**
+	 * @hint Return html and page elements for a CS
+	 *
+	 * This was always the preferred mechanism in Clikpic. It's the basis of the caching
+	 * mechanism. See notes about wrapHTML
+	 *
+	 * See no reason not to revert to using this.
+	 *
+	 * TODO: start using this in prefence to the separate elements
+	 * 
+	 */
+	public struct function display(required struct content) {
+		local.ret["html"] = wrapHTML(arguments.content,html(arguments.content));
+		local.ret["pagecontent"] = getPageContent(arguments.content);
+		return local.ret;
 	}
 
 	/**
@@ -156,10 +173,11 @@ component {
 	 * @styles    Complete stylesheet with media and content fields
 	 * @content_sections Struct of content sections
 	 * @loadsettings     Update each cs with its settings. Turn off if this has been done. See settings()
+	 * @format   process text at end
 	 */
-	public string function stylesheet(required struct styles, required struct content_sections, boolean loadsettings=1) {
+	public string function stylesheet(required struct styles, required struct content_sections, boolean loadsettings=1,format=1) {
 
-		var css_str = "";
+		var ret_css = "";
 
 		local.media = this.settingsObj.getMedia(arguments.styles);
 		
@@ -168,39 +186,44 @@ component {
 			local.medium = local.media[local.mediumname];
 
 			if (local.mediumname NEQ "main") {
-				css_str &= "@media.#local.mediumname# {" & NewLine();
+				ret_css &= "@media.#local.mediumname# {" & NewLine();
 			}
 
 			for (var id in arguments.content_sections) {
 
 				var cs = arguments.content_sections[id];
-				if (arguments.update) {
+				
+				if (arguments.loadsettings) {
 					// NB see TO DO in  settings function. No inheritance 
-					settings(cs,arguments.styles);
+					this.settings(content=cs,styles=arguments.styles);
 				}
 				
 				if (local.mediumname EQ "main" OR StructKeyExists(cs.settings,local.mediumname)) {
 					
-					local.styles = 	local.mediumname EQ "main" ? local.cs_styles : local.cs_styles[local.mediumname];
+					local.settings = local.mediumname EQ "main" ? cs.settings : cs.settings[local.mediumname];
 
-					css_str &= this.contentSections[cs.type].css(styles=local.settings, selector="##" & id);
+					ret_css &= this.contentSections[cs.type].css(styles=local.settings, selector="##" & id);
 					
 				}
 
 			}
 
 			if (local.mediumname NEQ "main") {
-				css &= NewLine() & "}" & NewLine();
+				ret_css &= NewLine() & "}" & NewLine();
 			}
 
 		}
+		if (arguments.format) {
+			ret_css = this.settingsObj.outputFormat(css=ret_css,styles=arguments.styles);
+		}
+		return ret_css;
 	}
 
 	/**
 	 * @hint Update settings for a content section
 	 *
 	 * NB MUST put back in in the settings function at the end. Currently broken
-	 * due to change in media stuff. This  is needing for inheritance.
+	 * due to change in media stuff. This is needed for inheritance.
 	 *
 	 * NB this needs to work for containers as well. Do not break.
 	 * 
@@ -234,14 +257,14 @@ component {
 
 
 	/**
-	 * @hint Get struct of page content
-	 
-	For details of page content see the pageObj component.
-	
-	@content content section
-	
-	@seealso addPageContent
-	*/
+	 * @hint Get struct of page content for a content section
+	 *  
+	 * For details of page content see the pageObj component.
+	 * 
+	 * @content content section
+	 * @return struct on page content keys (static_css,static_js,onready)
+	 * @see addPageContent
+	 */
 	public struct function getPageContent(required struct content) {
 		
 		var pageContent = {};

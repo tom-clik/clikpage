@@ -395,7 +395,7 @@
 			arguments.css = replace(arguments.css, "\t", chr(9),"all");
 		}
 		else {
-			/** to do: rewrite with java regex to avoid cf bugs */
+			/** TODO: rewrite with java regex to avoid cf bugs */
 			arguments.css = replace(arguments.css, "\t", "","all");
 			arguments.css = replace(arguments.css, "\n", "","all");
 			arguments.css = REReplace(arguments.css,"\/\*.*?\*\/","","all");

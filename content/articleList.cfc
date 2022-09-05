@@ -14,20 +14,14 @@ component extends="contentSection" {
 		variables.static_css = {"panels":1, "images":1};
 		
 		this.panels = [
-			{"name":"Title","panel":"title","selector":" .title", "type":"item"},
+			{"name":"Title","panel":"title","selector":" .title"},
 			{"name":"Item","panel":"item","selector":" .item", "type":"item"},
 			{"name":"Image","panel":"image","selector":" .imageWrap"},
 			{"name":"Text","panel":"text","selector":" .textWrap"}
 		];
 		
-		this.styleDefs = [
-			"item-gridgap":{"type":"dimension"},
-			"item-image-width":{"type":"dimension"}
-		];
-		
-		
-		
 		return this;
+
 	}
 
 	public string function html(required struct content) {

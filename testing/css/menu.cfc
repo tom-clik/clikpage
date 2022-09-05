@@ -1,4 +1,9 @@
 /*
+DEPRECATED
+
+See clikpage.content.menu
+
+TODO: remove when the move is complete
 
 New menu component for var based stying.
 

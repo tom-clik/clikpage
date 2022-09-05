@@ -2,11 +2,24 @@
 
 # Grids testing page
 
-This page is the definitive testpad for Clik grids.
-
 See the documentation /technotes/css/grids.md for overview
 
-## NB there is also photo gallery styling in here, the captions etc
+## Notes
+
+This needs changing to be a grids testing page and then a separate one for image grids with the photo
+captions etc
+
+Also the whole grids component is WIP. This needs updating to use the standard one not the one in this folder
+which was canobalised from Clikpic.
+
+
+## Status
+
+Working ok. Named positions doesn't work. Otherwise ok. Flex options meaningless with such big images but they ware working.
+
+## TODO 
+
+-[] Same as the others -- needs formalising with move to clikpiage.content components
 
 ## History
 
@@ -43,7 +56,8 @@ settings = gridObj.new(url);
 		<title>Grids CSS Samples</title>
 		<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 		<link rel="stylesheet" type="text/css" href="_styles/standard.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/imagegrids.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/images.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/grid.css">
 		<link rel="stylesheet" type="text/css" href="_styles/settingsPanel.css">
 		
 		<style id="dynamic_css">
@@ -110,7 +124,7 @@ settings = gridObj.new(url);
 					<cfset image = images[i]>
 					<div class="frame">
 						<figure>
-							<img src="/_sampleimages/random/out/#image#" />
+							<img src="/images/#image#" />
 							<figcaption>#ListFirst(image,"-")# #ListGetAt(image,2,"-")#</figcaption>
 						</figure>
 					</div>
@@ -128,22 +142,20 @@ settings = gridObj.new(url);
 
 <cffunction name="getImages">
 	<cfreturn [
-		"emil-widlund-Fyxq6Paxskw-unsplash.jpg",
-		"harley-davidson-XnhmpwEbv5I-unsplash.jpg",
-		"joshua-fernandez-Q4SCuuKtSDU-unsplash.jpg",
-		"larisa-birta-h9kODfOsyOU-unsplash.jpg",
-		"mak-ipkw44S_LHM-unsplash.jpg",
-		"nate-johnston-cK_1Q_e5FfU-unsplash.jpg",
-		"nathan-dumlao-ljbqCDlAhjY-unsplash.jpg",
-		"sarah-dokowicz-V3W8Lknvhq8-unsplash.jpg",
-		"emil-widlund-Fyxq6Paxskw-unsplash.jpg",
-		"harley-davidson-XnhmpwEbv5I-unsplash.jpg",
-		"joshua-fernandez-Q4SCuuKtSDU-unsplash.jpg",
-		"larisa-birta-h9kODfOsyOU-unsplash.jpg",
-		"mak-ipkw44S_LHM-unsplash.jpg",
-		"nate-johnston-cK_1Q_e5FfU-unsplash.jpg",
-		"nathan-dumlao-ljbqCDlAhjY-unsplash.jpg",
-		"sarah-dokowicz-V3W8Lknvhq8-unsplash.jpg"
+		"emil-widlund-Fyxq6Paxskw-unsplash_thumb.jpg",
+		"harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg",
+		"joshua-fernandez-Q4SCuuKtSDU-unsplash_thumb.jpg",
+		"larisa-birta-h9kODfOsyOU-unsplash_thumb.jpg",
+		"mak-ipkw44S_LHM-unsplash_thumb.jpg",
+		"nate-johnston-cK_1Q_e5FfU-unsplash_thumb.jpg",
+		"nathan-dumlao-ljbqCDlAhjY-unsplash_thumb.jpg",
+		"emil-widlund-Fyxq6Paxskw-unsplash_thumb.jpg",
+		"harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg",
+		"joshua-fernandez-Q4SCuuKtSDU-unsplash_thumb.jpg",
+		"larisa-birta-h9kODfOsyOU-unsplash_thumb.jpg",
+		"mak-ipkw44S_LHM-unsplash_thumb.jpg",
+		"nate-johnston-cK_1Q_e5FfU-unsplash_thumb.jpg",
+		"nathan-dumlao-ljbqCDlAhjY-unsplash_thumb.jpg"
 			]>
 
 </cffunction>

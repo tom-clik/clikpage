@@ -67,7 +67,8 @@ component extends="contentSection" {
 		// popup          | boolean               | height: 0   NB &.open  applies height:auto
 
 		this.settings = [
-			"orientation": "left",
+			"orientation": "horizontal",
+			"align":"left",
 			"border-type": "none",
 			"flex":"false",
 			"stretch":"false",
@@ -134,7 +135,8 @@ component extends="contentSection" {
 		local.menu = "<ul class='#arguments.class#'>";
 		
 		for (local.item in arguments.menu) {
-			local.menu &= "<li><a href='#local.item.link#' class='menu_#local.item.section#'><b></b><span>#local.item.title#</span></a>";
+			local.class = StructKeyExists(local.item,"code") ? "  class='menu_#local.item.code#'" : "";
+			local.menu &= "<li><a href='#local.item.link#'#local.class#><b></b><span>#local.item.title#</span></a>";
 			if (StructKeyExists(local.item,"submenu")) {
 				local.menu &= menuHTML(menu=local.item.submenu,class=local.subclass);
 			}

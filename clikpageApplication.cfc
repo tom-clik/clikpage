@@ -1,6 +1,5 @@
-/* Extend this in your application.cfc to create a Clikpage app or use it as an example   
-
-
+/**
+ * Extend this in your application.cfc to create a Clikpage app or use it as an example
  */
 component {
 
@@ -88,8 +87,9 @@ component {
 		local.update = arguments.reload OR checkStylesChanged();
 
 		if (local.update) {
-			application.styles = application.settingsObj.loadStyleSheet(application.styleSheetFile);
 
+			application.styles = application.settingsObj.loadStyleSheet(application.styleSheetFile);
+				
 			// save site styling
 			// TO DO: a formal mechanism for this
 			// Possibly a site root in the siteObject?

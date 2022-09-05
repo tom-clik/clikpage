@@ -32,7 +32,13 @@ param name="url.media" default="main";
 
 styles = sampleStyles(url.style);
 
-columnsObj = new columns();
+settingsObj = new clikpage.settings.settingsObj(debug=1);
+contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
+
+styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
+contentObj.debug = 1;
+
+// columnsObj = new clikpage.content.columns();
 
 // for (setting in columnsObj.settings) {
 // 	if (structKeyExists(url, setting)) {

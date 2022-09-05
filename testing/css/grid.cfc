@@ -60,9 +60,9 @@ component extends="test_csbase" {
 	 * generate CSS for a grid container
 	 * 
 	 * @settings      [description]
-	 * @param  {[type]} required string        selector      [description]
-	 * @param  {String} string   item          [description]
-	 * @return {[type]}          [description]
+	 * @selector      [description]
+	 * @item          [description]
+	 * @return  css string
 	 */
 	public string function css(required struct settings, required string selector, string item="> *",boolean debug) {
 		local.mode = StructKeyExists(arguments.settings, "grid-mode") ?  arguments.settings["grid-mode"] : "none" ;
@@ -139,7 +139,7 @@ component extends="test_csbase" {
 	}
 
 	/**
-	 * Return array of available grid mode settings
+	 * Return array of available grid alignments
 	 */
 	public static array function justifyOptions() {
 

@@ -178,7 +178,7 @@ component {
 						ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
 					}
 					else {
-						ret &= "\t/-- no style for #local.style# --/\n";	
+						ret &= "\t/* no style for #local.style# */\n";	
 					}
 				}
 			}

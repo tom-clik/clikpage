@@ -10,7 +10,8 @@
             "port":"8088"
         },
         "aliases":{
-           "/_assets":"D:\\git\\libraries\\coldlight\\_assets"
+           "/_assets":"D:\\git\\libraries\\coldlight\\_assets",
+            "/_common":"D:\\git\\clikpic\\wwwroot\\_common"
         }
     }
 }
