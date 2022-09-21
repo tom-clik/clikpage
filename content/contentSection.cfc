@@ -52,9 +52,14 @@ component {
 		// 
 		this.styleDefs = {};
 
+		// apply to main settings struct
+		this.defaultStyles = {};
+
 		// Keys of this struct are treated as special cases requiring logic to produce CSS
 		// They will not be added to the CSS. They will also inherit down the media queries.
 		this.settings = [=];
+
+		
 
 		return this;
 	}
@@ -64,6 +69,29 @@ component {
 			"title"=variables.title,
 			"description"=variables.description
 		};
+	}
+
+	/**
+	 * @hint Update settings and defaults from styleDefs
+	 *
+	 * Some cs still do this manually. This is deprecated
+	 */
+	private void function updateDefaults() {
+		// settings inherit across media
+		this.settings = {};
+		// defaults only need applying to root
+		this.defaultStyles = {};
+		for (local.setting_code in this.styleDefs){
+			local.setting  = this.styleDefs[local.setting_code];
+			if (StructKeyExists(local.setting,"default")) {
+				this.defaultStyles[local.setting_code] = local.setting.default;
+				if (StructKeyExists(local.setting,"inherit")) {
+					this.settings[local.setting_code] = local.setting.default;
+				}
+			}
+			
+		}
+
 	}
 
 	/**
@@ -304,7 +332,7 @@ component {
 	}
 
 	/**
-	 * @hint Update settings with required values
+	 * @hint Ensure settings inherit through media hierarchy
 	 * 
 	 * This is one of the key functions to understand. Say for instance you have a required 
 	 * setting "orientation" for a menu. This will have a default value, but this might be 
@@ -316,7 +344,7 @@ component {
 	 * If you want a default for mobile that's different, use the styling to inherit from a base value.
 	 * 
 	 */
-	public void function settings(required struct content, required array media ) {
+	public void function mediaSettings(required struct content, required struct media ) {
 		
 		if (NOT StructKeyExists(arguments.content,"settings")) {
 			arguments.content["settings"] = {
@@ -326,16 +354,30 @@ component {
 			variables.contentObj.DeepStructAppend(arguments.content["settings"], this.settings, false);
 		}
 
-		var currentSettings = Duplicate(variables.settings);
+		var currentSettings = Duplicate(this.settings);
 		
-		for (local.medium in arguments.media) {
+		for (local.medium_name in arguments.media) {
+			local.medium = arguments.media[local.medium_name];
 			// need to use root if main.
-			if (StructKeyExists(arguments.content["settings"],local.medium.name)) {
-				variables.contentObj.DeepStructAppend(arguments.content["settings"][local.medium.name],currentSettings,false);
-				/** if a value is defined in the styling, use it for this and subsequent media */
-				variables.contentObj.DeepStructUpdate(currentSettings,arguments.content["settings"][local.medium.name]);
-				
+			if (local.medium.name EQ "main") {
+				local.settings = arguments.content.settings;
+				variables.contentObj.DeepStructAppend(local.settings,this.defaultStyles,false);
 			}
+			else {
+				
+
+				if (StructKeyExists(arguments.content.settings,local.medium.name)) {
+					local.settings = arguments.content.settings[local.medium.name];
+				}
+				else {
+					continue;
+				}
+			}
+
+			variables.contentObj.DeepStructAppend(local.settings,currentSettings,false);
+			/** if a value is defined in the styling, use it for this and subsequent media */
+			variables.contentObj.DeepStructUpdate(currentSettings,local.settings);
+			
 		}
 		
 	}

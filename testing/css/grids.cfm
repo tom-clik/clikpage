@@ -28,28 +28,35 @@ Working ok. Named positions doesn't work. Otherwise ok. Flex options meaningless
 --->
 
 <cfscript>
-gridObj = new grid();
-settings = gridObj.new(url);
-// writeDump(settings);
-// abort;
+settingsObj = new clikpage.settings.settingsObj(debug=1);
+contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
+contentObj.debug = 1;
+styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
+grid_cs = contentObj.new(id="grid",type="grid");
 
+// for page editing
+settings = {};
+
+for (setting in contentObj.contentSections["grid"].styleDefs) {
+	if (structKeyExists(url, setting) AND url[setting] != "") {
+		styles.content["grid"][setting] = url[setting];
+		settings[setting] = url[setting];
+	}
+	else {
+		settings[setting] = "";
+	}
+}
+
+contentObj.settings(content=grid_cs,styles=styles);
+
+css = contentObj.css(grid_cs);
+// abort;
 </cfscript>
 
 <cfparam name="url.maximages" default=""><!--- numeric or blank --->
 
-<cfset modes = [
-	 
-	{"name"="plain","title"="Grid","description"="Simple grid with min widths"},
-	{"name"="fixedcols","title"="Fixed columns","description"="Fixed number of columns"},
-	{"name"="fixed","title"="Fixed widths","description"="Columns have fixed width"},
-	{"name"="test","title"="Exotica","description"="Showing off here"}
-	
-]>
-
-
 <cfset images = getImages()>
 <cfset maximagescalc = url.maximages eq "" ? arrayLen(images) : url.maximages>
-<cfset css = gridObj.css(selector="div.cs-photos",settings=settings)>
 
 <html>
 	<head>
@@ -57,7 +64,7 @@ settings = gridObj.new(url);
 		<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 		<link rel="stylesheet" type="text/css" href="_styles/standard.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/images.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/grid.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
 		<link rel="stylesheet" type="text/css" href="_styles/settingsPanel.css">
 		
 		<style id="dynamic_css">
@@ -72,9 +79,11 @@ settings = gridObj.new(url);
 			<form action="grids.cfm">
 				<cfoutput>
 					<fieldset>
-						<label>Mode</label>			
+						<label>Mode</label>	
+						<cfset options = contentObj.options("grid","grid-mode")>	
+
 						<select name="grid-mode">
-							<cfloop item="mode" array="#gridObj.modes()#">
+							<cfloop item="mode" array="#options#">
 								<cfset selected = mode.code eq settings["grid-mode"] ? " selected": "">
 								<option value="#mode.code#" #selected# title="#encodeForHTML(mode.description)#">#encodeForHTML(mode.name)#</option>
 							</cfloop>
@@ -90,8 +99,9 @@ settings = gridObj.new(url);
 						<input name="grid-columns" value="#settings["grid-columns"]#">
 						<label>Justify</label>
 						<cftry>
+
 						<select name="justify-content">
-							<cfloop item="mode" array="#gridObj.justifyOptions()#">
+							<cfloop item="mode" array="#contentObj.options("grid","justify-content")#">
 								<cfset selected = mode.code eq settings["justify-content"] ? " selected": "">
 								<option value="#mode.code#" #selected# title="#encodeForHTML(mode.description)#">#encodeForHTML(mode.name)#</option>
 							</cfloop>
@@ -102,7 +112,7 @@ settings = gridObj.new(url);
 						</cftry>
 						<label>Align</label>			
 						<select name="align-items">
-							<cfloop item="mode" array="#gridObj.justifyOptions()#">
+							<cfloop item="mode" array="#contentObj.options("grid","align-items")#">
 								<cfset selected = mode.code eq settings["align-items"] ? " selected": "">
 								<option value="#mode.code#" #selected# title="#encodeForHTML(mode.description)#">#encodeForHTML(mode.name)#</option>
 							</cfloop>
@@ -115,10 +125,10 @@ settings = gridObj.new(url);
 				</cfoutput>
 			</form>
 		</div>
-		<div id="wrapper">
+		<div>
 			
 			<cfoutput>		
-				<div class="cs-photos">
+				<div id="grid" class="grid cs-photos">
 				
 				<cfloop index="i" from="1" to="#maximagescalc#">
 					<cfset image = images[i]>

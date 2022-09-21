@@ -7,7 +7,7 @@ component {
 	*/
 	public contentObj function init (
 		    required   any      settingsObj,
-			           string   types="item,columns,title,menu,text,image,imagegrid,articlelist,button"
+			           string   types="item,grid,columns,title,menu,text,image,imagegrid,articlelist,button"
 		)  output=false {
 		
 		this.contentSections = {};
@@ -248,10 +248,7 @@ component {
 			}
 		}
 
-		// TO DO: inhertance
-		
-		// MUST DO: resurrect this.
-		// this.contentSections[arguments.content.type].settings(arguments.content, arguments.styles.media);
+		this.contentSections[arguments.content.type].mediaSettings(arguments.content, this.settingsObj.getMedia(arguments.styles));
 
 	}	
 
@@ -499,5 +496,33 @@ component {
 		return retVal;
 	}
 
+
+	public array function options(required string type, required string setting) {
+		try {
+			
+			if (NOT StructKeyExists(this.contentSections,arguments.type)) {
+				throw("Type #arguments.type#  not defined");
+			}
+			if (NOT StructKeyExists(this.contentSections[arguments.type].styleDefs,arguments.setting)) {
+				throw("Setting #arguments.setting# not defined for type #arguments.type#");
+			}
+			if (NOT StructKeyExists(this.contentSections[arguments.type].styleDefs[arguments.setting],"options")) {
+				throw("Setting #arguments.setting# for type #arguments.type# has no options");
+			}
+
+			return this.contentSections[arguments.type].styleDefs[arguments.setting].options;
+		}
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext,"type"=arguments.type,"setting"=arguments.setting};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = e.message, 
+				detail       = e.detail,
+				errorcode    = "contentObj.options.1"		
+			);
+		}
+		
+
+	}
 
 }

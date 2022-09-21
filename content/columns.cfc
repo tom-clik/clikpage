@@ -11,19 +11,15 @@ NOT convinced by this at all.
 I think we should just use a generic system with grid template areas.
 
 <ubercontainer>
-	
-	<grid>
-		<areas>"header" "topnav content" "footer"</areas>
-		<rows>min-content auto min-content</rows>
-		<columns>340px auto</columns>
-	</grid>
-	
-	<content>
-		<areas>"subcol maincol xcol"</areas>
-		<rows>240px auto 140px</rows>
-	</content>
-
+	<grid-areas>"header" "topnav content" "footer"</grid-areas>
+	<grid-rows>min-content auto min-content</grid-rows>
+	<grid-columns>340px auto</grid-columns>
 </ubercontainer>
+
+<content>
+	<grid-areas>"subcol maincol xcol"</grid-areas>
+	<grid-rows>240px auto 140px</grid-rows>
+</content>
 
 If you want to fix stuff then you can do it on the elements themselves.
 
