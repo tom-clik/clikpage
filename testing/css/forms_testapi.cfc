@@ -1,4 +1,4 @@
-component extends="clikpic.api.baseApi" {
+component extends="clikpage.api.baseApi" {
 
 	remote function testTransaction() returnformat="json" {
 		var ret = checkAuth();

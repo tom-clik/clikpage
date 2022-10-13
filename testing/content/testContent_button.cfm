@@ -1,7 +1,9 @@
 <cfscript>
 cfinclude(template="testContent_include.cfm");
 
-contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+defFile = ExpandPath("/_assets/images/buttons.xml");
+
+contentObj.loadButtonDefFile(defFile);
 
 button = contentObj.new(id="button",title="button",type="button");
 

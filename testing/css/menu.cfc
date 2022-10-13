@@ -63,8 +63,8 @@ component extends="test_csbase" {
 			"orientation": 1,
 			"border-type": 1,
 			"menu-anim-time":1,
-			"menu-label-display":1
-			"menu-icon-display",1
+			"menu-label-display":1,
+			"menu-icon-display":1
 		];
 
 		

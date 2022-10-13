@@ -15,13 +15,10 @@ function testCS(required struct cs, boolean getSettings=1) {
 
 	displayCSS(arguments.cs);
 
-	local.html=contentObj.html(arguments.cs);
+	local.cs = contentObj.display(content=arguments.cs)
 
-	writeOutput( HTMLEditFormat(contentObj.wrapHTML(content=arguments.cs,html = local.html)));
-
-	local.content = contentObj.getPageContent(arguments.cs,true);
-
-	writeDump(var=local.content,label="Page content");
+	writeOutput( HTMLEditFormat(local.cs.html));
+	writeDump(var=local.cs.pagecontent,label="Page content");
 }
 
 

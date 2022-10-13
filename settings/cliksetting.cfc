@@ -2,7 +2,7 @@ component {
 
 	this.name = "Base setting";
 	this.description = "Abstract setting type";
-	variables.type = base;
+	variables.type = "base";
 	variables.default = "No value";
 
 	public struct function new() {

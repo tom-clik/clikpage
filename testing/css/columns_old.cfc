@@ -57,7 +57,7 @@ component extends="test_csbase" {
 			"subcol-width":{"type":"dimension"},
 			"column-layout":{"type":"text"},
 			"row-layout":{"type":"text"},
-			"columns-grid-gap"{"type":"dimension"}
+			"columns-grid-gap":{"type":"dimension"}
 		];
 		
 		this.settings = {

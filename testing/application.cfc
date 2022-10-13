@@ -2,7 +2,13 @@ component {
 
 	this.sessionManagement = false;
 	this.debug = true;
-	this.componentPaths=[ExpandPath("..\..\..")];
+	this.baseDir = ExpandPath("..\..\..")
+	this.componentPaths=[this.baseDir];
+
+	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
+	this.mappings = [
+		"/_assets" = this.baseDir & "\coldlight\_assets",
+	];
 
 	public void function onApplicationStart()  output=false {
 		application.utils = new clikpage.utils.utilsold();
