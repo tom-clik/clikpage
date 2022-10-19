@@ -68,14 +68,13 @@ Tab/Accordion/info panel Testing
 	#getTabs(id="test2",class="vertical",count=10)#
 	#getTabs(id="test3",class="accordian")#
 </cfoutput>
-<script src="/_common/_scripts/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_common/_scripts/jquery-migrate-1.2.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>	
 <script src="/_assets/js/jquery.tabs.js"></script>	
-<script src="/_common/_scripts/jquery.throttledresize.js"></script>
+<script src="/_assets/js/jquery.throttledresize.js"></script>
 <script>
 $( document ).ready(function() {
-$(".cs-tabs").tabs({"resize":"throttledresize"});
+	$(".cs-tabs").tabs({"resize":"throttledresize"});
 });
 </script>
 </body>

@@ -10,24 +10,19 @@
 */
 
 
-component   extends="clikpage.clikpageApplication" { //
+component extends="clikpage.clikpageApplication" { //
 	// Application properties
 	this.name = "clikpagesample";
 
-	// TODO: needs sorting
-	this.mappings={
-		"/_assets" : "D:\git\libraries\coldlight\_assets"
-	};
-	// Java Integration
-	// this.javaSettings = { 
-	// 	loadPaths = [ ".\lib" ], 
-	// 	loadColdFusionClassPath = true, 
-	// 	reloadOnChange= false 
-	// };
-
+	this.rootDir = GetCanonicalPath(getCurrentTemplatePath() & "../../../..");
+	this.mappings = [
+		"/_assets" = this.rootDir & "coldlight\_assets",
+	];
+	
 	this.debug = 1;
-
+	
 	public boolean function startApp(){
+
 		application.config = {
 			layoutsFolder=ExpandPath("layouts"),
 			siteDef=ExpandPath("_data/sampleSite.xml"),

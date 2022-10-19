@@ -7,7 +7,7 @@ component {
 	*/
 	public contentObj function init (
 		    required   any      settingsObj,
-			           string   types="item,grid,columns,title,menu,text,image,imagegrid,articlelist,button"
+			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button"
 		)  output=false {
 		
 		this.contentSections = {};
@@ -248,7 +248,30 @@ component {
 			}
 		}
 
-		this.contentSections[arguments.content.type].mediaSettings(arguments.content, this.settingsObj.getMedia(arguments.styles));
+		try{
+			local.media =this.settingsObj.getMedia(arguments.styles);
+		} 
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error getting media:" & e.message, 
+				detail       = e.detail
+			);
+		}
+		
+		try{
+			this.contentSections[arguments.content.type].mediaSettings(arguments.content, local.media);
+		} 
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext,"content"=arguments.content,"media"=local.media};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error getting media settings" & e.message, 
+				detail       = e.detail
+			);
+		}
+		
 
 	}	
 

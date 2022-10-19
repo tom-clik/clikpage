@@ -19,9 +19,10 @@ This will generate an an image for each format and a json file. See generateData
 // 
 cfsetting(requesttimeout="5000" );
 
-// 'wlNh84JRb2M,Z89kRdt8wFE,OAzh2bBN110,Y1OUQTZRqMo,p70S-sgZtVI,NiOAwBuV8f4'
+//'Fyxq6Paxskw,XnhmpwEbv5I,Q4SCuuKtSDU,h9kODfOsyOU,ipkw44S_LHM,cK_1Q_e5FfU,ljbqCDlAhjY,V3W8Lknvhq8,Fyxq6Paxskw,XnhmpwEbv5I,Q4SCuuKtSDU,h9kODfOsyOU,ipkw44S_LHM,cK_1Q_e5FfU,ljbqCDlAhjY,V3W8Lknvhq8'
+// 
 
-idslist = ListToArray('Fyxq6Paxskw,XnhmpwEbv5I,Q4SCuuKtSDU,h9kODfOsyOU,ipkw44S_LHM,cK_1Q_e5FfU,ljbqCDlAhjY,V3W8Lknvhq8,Fyxq6Paxskw,XnhmpwEbv5I,Q4SCuuKtSDU,h9kODfOsyOU,ipkw44S_LHM,cK_1Q_e5FfU,ljbqCDlAhjY,V3W8Lknvhq8');
+idslist = ListToArray('wlNh84JRb2M,Z89kRdt8wFE,OAzh2bBN110,Y1OUQTZRqMo,p70S-sgZtVI,NiOAwBuV8f4');
 outputFolder = GetDirectoryFromPath(getCurrentTemplatePath());
 formats = [{"name":"main","width":1200,"ext":""},{"name":"thumb","width":600,"ext":"_thumb"}];
 outputData = {};

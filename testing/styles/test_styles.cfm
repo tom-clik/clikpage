@@ -13,8 +13,8 @@ contentObj.debug = true;
 
 styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
 
-writeDump(styles);
-abort;
+// writeDump(styles);
+// abort;
 
 containers = containersData(styles);
 media = settingsObj.getMedia(styles);
@@ -29,7 +29,7 @@ string function siteCSS(required struct media) {
 	var css = "";
 	css &= ":root {\n ";
 	css &= settingsObj.fontVariablesCSS(styles);
-	// css &= settingsObj.layoutCss(styles);
+	css &= settingsObj.layoutCss(styles);
 	css &=  "\n}\n";
 	return css;
 }
@@ -89,6 +89,7 @@ struct function containersData(required struct styles) output=false {
 	];
 
 	for (var id in containers) {
+		containers[id]["type"] = "container";
 		contentObj.settings(containers[id],arguments.styles);
 	}
 

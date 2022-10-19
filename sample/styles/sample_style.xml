@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stylesheet>
-
+ 
 	<colors>
 		<color name="textcolor" title="Main text color" value="#333333">
 			<description></description>

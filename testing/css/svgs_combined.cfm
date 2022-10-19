@@ -1,15 +1,21 @@
 <cfscript>
-/**
- * Fun with bootstrap icons. The actual file is 1mb so we need to do something to select only the ones
- * we want
- * 
- */
+/*
+Fun with bootstrap icons. The actual file is 1mb so we need to do something to select only the ones
+we want
 
+# Downloading icons
+
+Ensure you have downloaded the whole "sprite" (bootstrap-icons.svg). Don't put them in the repo.
+ 
+*/
 array function readFile(path) {
 	
 	local.res = [];
-
-	var data = FileRead(ExpandPath(arguments.path));
+	local.filename = ExpandPath(arguments.path);
+	if (! fileExists(local.filename)) {
+		throw(message="File #local.filename# not found. Please download the bootstrap icons (see notes)");
+	}
+	var data = FileRead(local.filename);
 	var coldSoup = new coldSoup();
 
 	var doc = coldSoup.parseXML(FileRead(ExpandPath(arguments.path)));
@@ -109,11 +115,12 @@ function displayCode(html) {
 
 <h2 class="open">Testing Combined SVGs</h2>
 
-<p>SVGs <em>can</em> be styled with CSS if you use the <code>use</code> syntax. The html for both these elements is the same, just copied</p>
+<p>Here all the images come from the same file. Don't use this in production. It is 1mb.</p>
 
 <div class="smallblue scheme-grid scheme-small">
 <cfscript>
 path = "graphics/bootstrap-icons.svg";
+
 for (img in readFile(path)) {
 	writeOutput("<div class='cell'><div class='icon'><svg viewBox='0 0 16 16'><use xlink:href='#path####img.id#'></svg></div><h2>#img.id#</h2></div>");
 

@@ -176,7 +176,7 @@ component  accessors="true" {
 	}
 
 	/**
-	 * Get array od data IDs that match data set filter criteria
+	 * Get array of data IDs that match data set filter criteria
 	 * 
 	 * @site         Site struct
 	 * @tag          see notes. WIP to be replaced by creiteria for search

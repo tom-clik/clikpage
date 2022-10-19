@@ -2,11 +2,13 @@
 
 # Columns Generate Schems
 
-generate the column shcemes file to allow use of e.g.  body.col-MX etc
+generate the column schemes file to allow use of e.g.  body.col-MX etc
 
 ## Synopsis
 
-Loop over the complete range of permutations for columns and rows in each media query and write out the CSS
+Loop over the complete range of permutations for columns and rows in each media query and write out the CSS.
+
+
 
 ## Notes
 
@@ -19,42 +21,61 @@ Loop over the complete range of permutations for columns and rows in each media 
 --->
 
 <cfscript>
-columnsObj = new clikpic._testing.css_tests.columns();
+fileout = ExpandPath("_styles/css-autoschemes.css");
+columns = deserializeJSON(fileRead("columns_data.json"));
+// writeDump(columns);
+settingsObj = new clikpage.settings.settingsObj(debug=1);
+styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
+// writeDump(styles);
 
-css = "";
 
-for (media in ["main","mid","mobile"]) {
-	for (layout in columns()) {
-		styles = {};
-		styles[media] = {"column-layout"=layout};
-		class = getClass(media);
-		css &= columnsObj.css(styles,class & "-" & layout);
+css = "
+:root {
+	--subcolwidth:160px;
+	--xcolwidth:120px;
+}
+";
+
+mediaStr = settingsObj.getMedia(styles);
+for (media_name in mediaStr) {
+	media = mediaStr[media_name];
+	if (media_name != "main") {
+		css &= "@media.#media_name# {\n";
+	}
+	for (scheme_id in columns) {
+		css &= "." & getClass(media_name) & "-" & scheme_id & " ##columns {\n";
+		scheme = columns[scheme_id];
+		local.areas = scheme.areas;
+		if (left(local.areas,1) neq """") {
+			local.areas = """" & local.areas & """";
+		}
+		css &= "\tgrid-template-areas:" & local.areas & ";\n";
+		css &= "\tgrid-template-columns:" & scheme.columns & ";\n";
+		css &= "}\n";
 	}
 	
+	if (media_name != "main") {
+		css &= "}\n";
+	}	
 }
 
-fileWrite(ExpandPath("_styles/css-autoschemes.css"), css);
+css = settingsObj.outputFormat(css=css,styles=styles);
+
+fileWrite(fileout, css);
 </cfscript>
 
 <cfscript>
-array function columns() {
-	return ["S-M","M-S","SM","MS","M-X","X-M","MX","XM","M","S-MX","S-XM","M-SX", "M-XS","X-MS","X-SM","SM-X", "MS-X","X-SM", "X-MS",
-"XM-S", "MX-S","S-M-X","S-X-M","X-M-S","X-S-M","M-X-S","M-S-X","S-M","M-S","X-M","M-X","MX-S","S-MX","S-XM","SX-M","M-XS",
-"M-SX","X-SM","X-MS","XS-M","XM-S","MS","SM","MX","SMX","SXM","MSX","MXS","XMS","XSM","M"];
-}
 
 string function getClass(string medium) {
 	switch (arguments.medium) {
 		case "main":
 			return "col";
 			break;
-		case "mid":
-			return "mid";
-			break;	
 		case "mobile":
 			return "mob";
 			break;		
-
+		default:
+			return	arguments.medium;
 
 	}
 

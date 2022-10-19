@@ -6,16 +6,26 @@ Provided strictly on an as-is basis
 
 ## Usage
 
-Use unsplash.cfm to download images and generate the json files and then run this.
+First use unsplash.cfm to download images and generate the json files.
+
+The configure params and run.
 
 */
 
-// processes all files in folder
+
+/************************************ 
+ * Params
+ ************************************/
+// processes all json files in folder. 
 imageFolder = GetDirectoryFromPath(getCurrentTemplatePath());
 // tags for data (use list for multiple) - must be defined, leave blank if none
 tags = "gallery";
-dataFile = imageFolder & "photos3.xml";
-identity = 1; // identity seed
+// output file
+dataFile = imageFolder & "photos.xml";
+// identity seed
+identity = 1; 
+/************************************/
+
 if (FileExists(dataFile)) {
 	FileDelete(dataFile);
 }

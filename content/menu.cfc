@@ -212,7 +212,7 @@ component extends="contentSection" {
 		}
 
 		//padding-adjust | boolean               | adjust padding for first and last items (only makes sense for flex)
-		if (StructKeyExists(arguments.styles,"padding-adjust") AND arguments.styles.padding-adjust) {
+		if (StructKeyExists(arguments.styles,"padding-adjust") AND arguments.styles["padding-adjust"]) {
 			// TODO: check we don't have  specificity nightmare
 			data.first &= "/* padding-adjust  */\n";
 			data.first &= "padding-left:0;\n";
