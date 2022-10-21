@@ -1,0 +1,79 @@
+<!--
+
+# Select 2 Demo Page
+
+## Synopsis
+
+
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
+	<style>
+	body {
+		padding:20px;
+		background-color: #ccc;
+	}
+
+	#ubercontainer {
+		background-color: #fff;
+		border: 1px solid #000;
+		padding:20px;
+		margin: 0 auto;
+		max-width: 660px;
+	}
+
+	.section {
+		margin:20px;
+		border: 1px solid #000;
+		padding:20px;
+	}
+	.form {
+		
+		
+	}
+	</style>
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+
+		<form class="form">
+			
+			<div class="fieldrow">
+				<label>Elastic field</label>
+
+				<field>
+					
+					<textarea class="elastic"></textarea>
+
+
+				<field>
+			</div>
+		
+
+		</form>
+	</div>
+
+</body>
+
+<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/jquery.elastic.1.6.11.js"></script>
+
+<script>
+	
+	$(document).ready(function() {
+		
+		$('textarea.elastic').elastic();
+
+	
+	});
+
+</script>
+
+</html>

@@ -1,0 +1,122 @@
+<!--
+
+# Auto Button Demo Page
+
+See autoButton.js for details of the JS
+
+## Synopsis
+
+There are two samples. One is a three state button and the other is a single button with the openclose action
+specified.
+
+In both tests, the "target" is a an html container with methods that chnage the text to indicate the method called.
+
+
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/menus-schemes.css">
+	
+	<style>
+	body {
+		padding:20px;
+		background-color: #ccc;
+	}
+
+	#ubercontainer {
+		background-color: #fff;
+		border: 1px solid #000;
+		padding:20px;
+		margin: 0 auto;
+		max-width: 660px;
+	}
+
+	.section {
+		margin:20px;
+		border: 1px solid #000;
+		padding:20px;
+	}
+	
+	.cs-button.scheme-rotate.state_open a .icon {
+		transform: rotate(90deg);
+	}
+
+	</style>
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+		<div class="scheme-grid">
+			<div class="cs-button button auto" id="mainmenu_button">
+				<a href="#mainmenu.open">
+					<div class="icon">
+						<svg   viewBox="0 0 32 32"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
+					</div>
+				</a>
+				<a href="#mainmenu.close">
+					<div class="icon">
+						<svg   viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
+					</div>
+				</a>
+				<a href="#mainmenu.random">
+					<div class="icon">
+						<svg   viewBox="0 0 408 408"><use xlink:href="/_assets/images/thumbnails.svg#thumbnails"></svg>
+					</div>
+				</a>
+			</div>
+
+			<div id="mainmenu" class="target">
+				
+			</div>
+		</div>
+
+		<div class="scheme-grid">
+			<div class="cs-button button auto scheme-rotate" data-target="">
+				<a href="#mainmenu2.openclose">
+					<div class="icon">
+						<svg   viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right"></svg>
+					</div>
+				</a>
+				
+			</div>
+
+			<div id="mainmenu2" class="target">
+				
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/jquery.autoButton.js"></script>
+
+<script>
+
+	$(document).ready(function() {
+		$(".target").on("open",function() {
+			console.log("Opening");
+			$(this).html("Open method called");
+		}).on("close",function() {
+			$(this).html("Close method called");
+			console.log("Closing");
+		}).on("random",function() {
+			$(this).html("Custom method");
+			console.log("Random method called");
+		});
+
+		$(".cs-button").button();
+	});
+
+</script>
+
+</html>

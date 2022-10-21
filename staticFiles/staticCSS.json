@@ -94,6 +94,16 @@
         	"debug": "/_assets/css/fonts/font-awesome-local.css",
         	"min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
             "name": "fontawesome"
+        },
+        {
+          "flickity": {
+            "debug": "/_common/js/flickity.min.css",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.min.css",
+            "description": "Carousel plug in",
+            "jsdoc": "https://flickity.metafizzy.co/",
+            "name": "Flickity",
+            "exclude_from_packages": 1
+          }
         }
     ]
 }

@@ -1,0 +1,137 @@
+
+	<head>
+		<link rel="stylesheet" type="text/css" href="_common/_styles/tooltipster/tooltipster.bundle.css" />
+		<link rel="stylesheet" type="text/css" href="_common/_styles/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css" />
+
+		<script src="_common/_scripts/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+		<script src="_common/_scripts/tooltipster/tooltipster.bundle.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- nb we will be demonstrating combining tooltipster with validate -->
+		<script src="_common/_scripts/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
+
+		<style>
+		body {
+			padding:20px;
+			background-color: #ccc;
+		}
+
+		#ubercontainer {
+			background-color: #fff;
+			border: 1px solid #000;
+			padding:20px;
+			margin: 0 auto;
+		}
+
+		.tooltip_templates {
+			display: none;
+		}
+
+		.section {
+			margin:20px;
+			border: 1px solid #000;
+			padding:20px;
+		}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="ubercontainer">
+
+			<h2>Tooltipster</h2>
+
+			<p>This is listed as deprecated in the static file but it's actually quite useful and should be preferred to any
+			of the other "tooltip" functions</p>
+
+			<p>It's also being maintained, unlikle the others. The integration with validate is good and easy. Just a reminder that general help users JqueryUI dialogs and is set up by the doClikHelp()</p>
+
+			
+			
+			<div id="simpletooltip" class="section">
+				<span class="tooltip" title="This is my span's tooltip message!">Rollover tip</span>
+			</div>
+			
+			<div id="htmlelementtooltip" class="section">
+				<span class="help" data-tooltip-content="#tooltip_content">This span has a tooltip with HTML when you click it!</span>
+
+				<div class="tooltip_templates">
+				    <span id="tooltip_content">
+				         <strong>This is the content of my tooltip!</strong>
+				    </span>
+				</div>
+			</div>
+
+
+			<div id="validatetooltip" class="section">
+				
+				<p>This form uses tooltipster in conjunction with validate</p>
+				<form id="myform">
+				    <input type="text" name="field1" />
+				    <br />
+				    <input type="text" name="field2" />
+				    <br/>
+				    <input type="submit" />
+				</form>
+
+
+			</div>
+
+
+		</div>
+
+	</body>
+
+	<script>
+		
+		$(document).ready(function() {
+			$('.tooltip').tooltipster({theme: 'tooltipster-shadow'});
+
+			$('.help').tooltipster({
+				theme: 'tooltipster-shadow',
+				trigger: 'click'
+			});
+
+
+			// initialize tooltipster on text input elements
+			$('input[type="text"]').tooltipster({ //find more options on the tooltipster page
+			    trigger: 'custom', // default is 'hover' which is no good here
+			    position: 'top',
+			    animation: 'grow'
+			});
+
+    		// initialize validate plugin on the form
+		    $("#myform").validate({
+		        errorPlacement: function(error, element) {
+		            var ele = $(element),
+		                err = $(error),
+		                msg = err.text();
+		            if (msg != null && msg !== "") {
+		                ele.tooltipster('content', msg);
+		                ele.tooltipster('open'); //open only if the error message is not blank. By default jquery-validate will return a label with no actual text in it so we have to check the innerHTML.
+		            }
+		        },
+		        unhighlight: function(element, errorClass, validClass) {
+		            $(element).removeClass(errorClass).addClass(validClass).tooltipster('close');
+		        },
+		        rules: {
+		            field1: {
+		                required: true,
+		                email: true
+		            },
+		            field2: {
+		                //required: true,
+		                minlength: 5
+		            }
+		        },
+		        submitHandler: function(form) { // for demo
+		            alert('valid form');
+		            return false;
+		        }
+		    });
+
+		
+		});
+
+	</script>
+	
+</html>

@@ -114,7 +114,7 @@ display = contentObj.display(menu_cs);
 
 	<meta charset="UTF-8">
 	<style>
-			#menu .menu_sample1-1  {
+		#menu .menu_sample1-1  {
 			--menu-icon: var(--icon-home);
 		}
 		#menu .menu_sample2-1  {
@@ -155,7 +155,11 @@ Menu Testing
 	
 	$(document).ready(function() {
 		
-		Writeoutput(display.onready);
+		<cfscript>
+		Writeoutput(display.pagecontent.onready);
+		</cfscript>
+		// $("#menu").menu();
+
 	
 	});
 

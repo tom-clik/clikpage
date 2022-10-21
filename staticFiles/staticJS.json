@@ -105,6 +105,26 @@
             "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js",
             "name": "colorbox",
             "requires": "jquery"
+        },
+        {
+          "flickity": {
+            "debug": "/_assets/js/flickity.pkgd.min.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js",
+            "description": "Carousel plug in",
+            "jsdoc": "https://flickity.metafizzy.co/",
+            "name": "Flickity",
+            "requires": "jquery",
+            "exclude_from_packages": 1
+          }
+        },
+        {
+          "mustache": {
+            "debug": "/_assets/js/mustache.js",
+            "description": "Mustache implemnetation for JS",
+            "documentation": "https://github.com/janl/mustache.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js",
+            "name": "Mustache"
+          }
         }
     ]
 }
