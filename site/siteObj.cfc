@@ -7,7 +7,7 @@ component  accessors="true" {
 
 	public siteObj function init(string mode="preview") {
 
-		this.utils = CreateObject("component", "clikpage.utils.utilsold");	
+		this.utils = CreateObject("component", "utils.utils");	
 		local.patternObj = createObject( "java", "java.util.regex.Pattern");
 		
 		variables.pattern = patternObj.compile("\{\{\w+?\.([\w\.]+)?\}\}" ,local.patternObj.MULTILINE + local.patternObj.CASE_INSENSITIVE);

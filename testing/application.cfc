@@ -11,7 +11,7 @@ component {
 	];
 
 	public void function onApplicationStart()  output=false {
-		application.utils = new clikpage.utils.utilsold();
+		application.utils = new utils.utils();
 	}
 
 	public void function onRequestStart() output=false {

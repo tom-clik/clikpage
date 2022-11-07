@@ -19,9 +19,7 @@ component {
 		
 		variables.defaultMedia = [{"name"="main"}];
 		this.settingsObj = arguments.settingsObj;
-		// TO DO: strip utils down to just required sections, put in deepstruct appends
-		// and just extend it in this.
-		this.utils = CreateObject("component", "clikpage.utils.utilsold");
+		this.utils = CreateObject("component", "utils.utils");
 
 		return this;
 	}

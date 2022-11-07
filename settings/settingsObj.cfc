@@ -3,7 +3,7 @@
 	public settingsObj function init(debug=false)  output=false {
 
 		this.cr = chr(13) & chr(10);
-		this.utils = CreateObject("component", "clikpage.utils.utilsold");	
+		this.utils = CreateObject("component", "utils.utils");	
 		this.debug = arguments.debug;
 
 		return this;
