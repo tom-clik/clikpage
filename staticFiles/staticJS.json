@@ -1,130 +1,125 @@
 {
-    "packages": [
-        {
-            "scripts": [
-                "jquery",
-                "jqueryui",
-                "validate",
-                "fuzzy",
-                "select2"
-            ],
-            "pack":false,
-            "name":"main"
-        },
-        {
-            "scripts": [
-                "fuzzy",
-                "search",
-                "menuScroll",
-                "menus"
-            ],
-             "min":"/_assets/js/_min/coldlightpackage.0.1.min.js",
-            "name":"coldlight"
-        }
-    ],
-    "scripts": [
-        {
-
-            "debug": "/_assets/js/jquery-3.4.1.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-            "name": "jquery",
-            "packageExclude": 1,
-            "hash":"sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
-        },
-        {
-            "debug": "/_assets/js/query-ui.min.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
-            "name": "jqueryui",
-            "packageExclude": 1,
-            "requires": "jquery",
-            "hash": "sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-        },
-        {
-            "debug": "/_assets/js/jquery.validate.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js",
-            "name": "validate",
-            "packageExclude": 1,
-            "requires": "jquery",
-            "hash": "sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
-        },
-        {
-            "min": "/_assets/js/fts_fuzzy_match.js",
-            "debug": "/_assets/js/fts_fuzzy_match.js",
-            "name": "fuzzy",
-            "requires": "jquery"
-        },
-        {
-            "min": "/_assets/js/search.js",
-            "debug": "/_assets/js/search.js",
-            "name": "search",
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_assets/js/jquery.dataTables.min.js",
-            "min": "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js",
-            "name": "datatables",
-            "packageExclude": 1,
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_assets/js/select2.min.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js",
-            "name": "select2",
-            "packageExclude": 1,
-            "requires": "jquery",
-            "hash": "sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-        },
-        {
-        	"debug": "/_assets/js/menuScroll.js",
-            "min": "/_assets/js/menuScroll.js",
-            "name": "menuScroll",
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_assets/js/jquery.menu.js",
-            "min": "/_assets/js/jquery.menu.js",
-            "name": "menus",
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_assets/js/imagesloaded.pkgd.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
-            "name": "imagesloaded",
-            "packageExclude": 1,
-            "requires": "jquery"
-        },
-        {
-            "debug": "/_assets/js/masonry.pkgd.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
-            "name": "masonry",
-            "packageExclude": 1,
-            "requires": "imagesloaded,jquery"
-        },
-        {
-            "debug": "/_assets/js/jquery.colorbox.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js",
-            "name": "colorbox",
-            "requires": "jquery"
-        },
-        {
-          "flickity": {
-            "debug": "/_assets/js/flickity.pkgd.min.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js",
-            "description": "Carousel plug in",
-            "jsdoc": "https://flickity.metafizzy.co/",
-            "name": "Flickity",
-            "requires": "jquery",
-            "exclude_from_packages": 1
-          }
-        },
-        {
-          "mustache": {
-            "debug": "/_assets/js/mustache.js",
-            "description": "Mustache implemnetation for JS",
-            "documentation": "https://github.com/janl/mustache.js",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js",
-            "name": "Mustache"
-          }
-        }
-    ]
+  "packages": [
+    {
+      "scripts": [
+        "jquery",
+        "jqueryui",
+        "validate",
+        "fuzzy",
+        "select2"
+      ],
+      "pack": false,
+      "name": "main"
+    },
+    {
+      "scripts": [
+        "fuzzy",
+        "search",
+        "menuScroll",
+        "menus"
+      ],
+      "min": "/_assets/js/_min/coldlightpackage.0.1.min.js",
+      "name": "coldlight"
+    }
+  ],
+  "scripts": [
+    {
+      "debug": "/_assets/js/jquery-3.4.1.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+      "name": "jquery",
+      "packageExclude": 1,
+      "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
+    },
+    {
+      "debug": "/_assets/js/query-ui.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
+      "name": "jqueryui",
+      "packageExclude": 1,
+      "requires": "jquery",
+      "hash": "sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+    },
+    {
+      "debug": "/_assets/js/jquery.validate.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js",
+      "name": "validate",
+      "packageExclude": 1,
+      "requires": "jquery",
+      "hash": "sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+    },
+    {
+      "min": "/_assets/js/fts_fuzzy_match.js",
+      "debug": "/_assets/js/fts_fuzzy_match.js",
+      "name": "fuzzy",
+      "requires": "jquery"
+    },
+    {
+      "min": "/_assets/js/search.js",
+      "debug": "/_assets/js/search.js",
+      "name": "search",
+      "requires": "jquery"
+    },
+    {
+      "debug": "/_assets/js/jquery.dataTables.min.js",
+      "min": "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js",
+      "name": "datatables",
+      "packageExclude": 1,
+      "requires": "jquery"
+    },
+    {
+      "debug": "/_assets/js/select2.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js",
+      "name": "select2",
+      "packageExclude": 1,
+      "requires": "jquery",
+      "hash": "sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+    },
+    {
+      "debug": "/_assets/js/menuScroll.js",
+      "min": "/_assets/js/menuScroll.js",
+      "name": "menuScroll",
+      "requires": "jquery"
+    },
+    {
+      "debug": "/_assets/js/jquery.menu.js",
+      "min": "/_assets/js/jquery.menu.js",
+      "name": "menus",
+      "requires": "jquery"
+    },
+    {
+      "debug": "/_assets/js/imagesloaded.pkgd.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
+      "name": "imagesloaded",
+      "packageExclude": 1,
+      "requires": "jquery"
+    },
+    {
+      "debug": "/_assets/js/masonry.pkgd.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+      "name": "masonry",
+      "packageExclude": 1,
+      "requires": "imagesloaded,jquery"
+    },
+    {
+      "debug": "/_assets/js/jquery.colorbox.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js",
+      "name": "colorbox",
+      "requires": "jquery"
+    },
+    {
+      "debug": "/_assets/js/flickity.pkgd.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js",
+      "description": "Carousel plug in",
+      "jsdoc": "https://flickity.metafizzy.co/",
+      "name": "flickity",
+      "requires": "jquery",
+      "packageExclude": 1
+    },
+    {
+      "debug": "/_assets/js/mustache.js",
+      "description": "Mustache implemnetation for JS",
+      "documentation": "https://github.com/janl/mustache.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js",
+      "name": "mustache"
+    }
+  ]
 }
