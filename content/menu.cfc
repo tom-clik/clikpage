@@ -1,5 +1,5 @@
 component extends="contentSection" {
-	function init(required contentObj contentObj) {
+	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
 
@@ -249,60 +249,6 @@ component extends="contentSection" {
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
 	}	
 	
-	// public string function css(required struct settings, required string selector) {
-			
-	// 	var ret = "";
-	// 	var t = "";
-
-	// 	local.settings = arguments.settings.menu;
-
-	// 	ret &= arguments.selector  & " ul {\n";
-
-	// 	if (StructKeyExists(local.settings,"min-height")) {
-	// 		ret &= "\tmin-height: #local.settings["min-height"]#;\n";
-	// 	}
-
-	// 	if (local.settings.orientation eq "vertical") {
-	// 		ret &= "\tdisplay: grid;\n";
-	// 		ret &= "\tgrid-template-columns: 1fr;\n";
-	// 	}
-	// 	else {
-	// 		if (local.settings.flex) {
-	// 			ret &= "\tdisplay: flex;\n";
-	// 			ret &= "\tflex-wrap: wrap;\n";
-	// 			ret &= "\tflex-direction: row;\n";
-	// 			if (StructKeyExists(local.settings,"align")) {
-	// 				switch(local.settings.align) {
-	// 					case "left":
-	// 						ret &= "\tjustify-content: flex-start;\n";
-	// 						break;
-	// 					case "right":
-	// 						ret &= "\tjustify-content: flex-end;\n";
-	// 						break;
-	// 					case "spaced":
-	// 						ret &= "\tjustify-content: space-evenly;\n";
-	// 						break;
-	// 				}
-					
-	// 			}
-	// 		}
-	// 		else {
-	// 			ret &= "\tdisplay: grid;\n";
-	// 			ret &= "\tgrid-template-columns: repeat(auto-fill, minmax(100px,1fr));\n";
-	// 		}
-	// 	}
-
-	// 	for (local.setting in ["menucolor","menuhicolor","menubordercolor","menuactivecolor","menugap","menucolumngap","menuitempadding"]) {
-	// 		if (StructKeyExists(local.settings,local.setting)) {
-	// 			ret &= "\t--#local.setting#:" & local.settings["#local.setting#"] & ";\n";
-	// 		}
-	// 	}
-
-	// 	ret &= "}\n";
-		
-	// 	return ret;
-	// }
-
 	public string function onready(required struct content) {
 		var js = "$(""###arguments.content.id#"").menu();\n";
 

@@ -1,14 +1,14 @@
 component extends="contentSection" {
-	function init(required contentObj contentObj) {
+	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
 
-		variables.type = "menu";
-		variables.title = "Menu";
-		variables.description = "CSS list with styling and interactive options";
+		variables.type = "grid";
+		variables.title = "grid";
+		variables.description = "CSS grid";
 		variables.defaults = {
-			"title"="Untitled Menu",
-			"content"="Undefined menu",
+			"title"="Untitled grid container",
+			"content"="Undefined grid content",
 		};
 		// static css definitions
 		variables.static_css = {"grids"=1};

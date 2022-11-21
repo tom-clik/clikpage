@@ -1,9 +1,6 @@
 /*
 
-# Grid CSS component
-
-See implementation notes in clikdesign/Grid_styling.md
-
+Should be deprecated by standard component in content
 */
 
 component extends="test_csbase" {

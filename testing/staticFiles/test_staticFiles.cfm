@@ -22,8 +22,7 @@ catch (Any e) {
 	throw("Unable to parse static files definition file #arguments.defFile#");	
 }
 
-staticFilesObj = createObject("component", "clikpage.staticFiles.staticFiles").init(staticDef=local.jsonData);
-
+staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=local.jsonData);
 
 count = 1;
 for (js in [

@@ -10,7 +10,7 @@ A content section is created using the new() method and passed by reference to e
 
 component {
 
-	function init(required any contentObj) {
+	function init(required content contentObj) {
 		
 		variables.contentObj = arguments.contentObj;
 		variables.type = "base";
@@ -39,27 +39,44 @@ component {
 		this.panels = [
 		];
 
-
-		// define all available settings for this CS
-		// Any styles not added to settings (see below) will be written our as a CSS var
-		//
-		// E.g.
-		// 	"htop":{"type":"boolean","description":"Put headline before image"},
-		//	"image-width":{"type":"dimension","description":"Put headline before image"},
+		/*
+		 define all available settings for this CS
+		 Any styles not added to settings (see below) will be written out as a CSS var
 		
-		// Basically freeform at this time. Will be formalised when we 
-		// come to build the editing system!
-		// 
-		this.styleDefs = {};
+		 E.g.
+		 	this.styleDefs = [
+				"orientation":{"type":"orientation"},
+				"link-color":{"type":"color"}
+			]		
+		 Basically freeform at this time. Will be formalised when we 
+		 come to build the editing system!
+
+		 Also maybe rework so the settings are generated automatically
+		 from this struct which would have default and custom=bool in it.
+		*/
+		this.styleDefs = [=];
 
 		// apply to main settings struct
+		// See above we should probably create this automatically.
+		// also try to avoid using this.
 		this.defaultStyles = {};
 
-		// Keys of this struct are treated as special cases requiring logic to produce CSS
-		// They will not be added to the CSS. They will also inherit down the media queries.
-		this.settings = [=];
+		/*
+		 Keys of this struct are treated as special cases requiring logic to produce CSS
+		 
+		 They are not added directly to the CSS. Not the values of the struct are the default.
 
-		
+		 NB see note above. Possibly we should create this automatically.
+		 
+		 e.g.	
+			this.settings = [
+				"orientation": "horizontal",
+				"popup":"false",
+				"padding-adjust": true
+			];
+		*/
+			
+		this.settings = [=];
 
 		return this;
 	}
@@ -119,6 +136,9 @@ component {
 		return cs;
 	}
 
+	/**
+	 * Generate HTML for the content section
+	*/
 	public string function html(required struct content) {
 		return arguments.content.content;
 	}
@@ -198,7 +218,7 @@ component {
 			ret &= "/* writing styles for state #local.state.state# */\n";
 
 			ret &= arguments.selector & local.state.selector & " {\n";
-
+			
 			for (local.style in this.styleDefs) {
 				// ignore complex settings
 				if (NOT StructKeyExists(this.settings, local.style)) {
@@ -337,47 +357,25 @@ component {
 	 * This is one of the key functions to understand. Say for instance you have a required 
 	 * setting "orientation" for a menu. This will have a default value, but this might be 
 	 * overridden in "main". When we want to get the value for mobile, it should inherit 
-	 * from main or mid.
+	 * from main or even mid.
 	 *
-	 * At the same time, we don't want to create settings for a medium where there are none.
-	 *
-	 * If you want a default for mobile that's different, use the styling to inherit from a base value.
+	 * NB shouldn't really be public.
 	 * 
 	 */
-	public void function mediaSettings(required struct content, required struct media ) {
+	public void function inheritSettings(required struct settings, required struct styles) {
 		
-		if (NOT StructKeyExists(arguments.content,"settings")) {
-			arguments.content["settings"] = {
-			};	
-		}
-		else {
-			variables.contentObj.DeepStructAppend(arguments.content["settings"], this.settings, false);
-		}
-
-		var currentSettings = Duplicate(this.settings);
+		var currentSettings =duplicate(this.settings);
 		
-		for (local.medium_name in arguments.media) {
-			local.medium = arguments.media[local.medium_name];
-			// need to use root if main.
-			if (local.medium.name EQ "main") {
-				local.settings = arguments.content.settings;
-				variables.contentObj.DeepStructAppend(local.settings,this.defaultStyles,false);
+		for (local.medium in arguments.styles.media) {
+			
+			if (NOT StructKeyExists(arguments.settings,local.medium)) {
+				arguments.settings[local.medium] = Duplicate(currentSettings);
 			}
 			else {
-				
-
-				if (StructKeyExists(arguments.content.settings,local.medium.name)) {
-					local.settings = arguments.content.settings[local.medium.name];
-				}
-				else {
-					continue;
-				}
+				variables.contentObj.DeepStructAppend(arguments.settings[local.medium],currentSettings,false);
+				currentSettings =duplicate(arguments.settings[local.medium]);
 			}
 
-			variables.contentObj.DeepStructAppend(local.settings,currentSettings,false);
-			/** if a value is defined in the styling, use it for this and subsequent media */
-			variables.contentObj.DeepStructUpdate(currentSettings,local.settings);
-			
 		}
 		
 	}

@@ -2,40 +2,29 @@
 <stylesheet>
  
 	<colors>
-		<color name="textcolor" title="Main text color" value="#333333">
-			<description></description>
-		</color>
-		<color name="myfavcolor" title="My favourite colour" value="#ff0000">
-			<description></description>
-		</color>
-		<color name="panel-bg" title="Darker panel bg" value="#01798a">
-			<description></description>
-		</color>
-		<color name="accent" title="Accent colour" value="#38bbcd">
-			<description></description>
-		</color>
-		<color name="panel-text" title="Panel text" value="#ffffff">
+		<textcolor title="Main text color" value="#333333" />
+		<myfavcolor title="My favourite colour" value="#ff0000" />
+		<panelbg title="Darker panel bg" value="#01798a" />
+		<accent title="Accent colour" value="#38bbcd" />
+		<paneltext title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>
-		</color>
-		<color name="light-panel-bg" title="Light panel packground" value="#eaeaea">
-			<description></description>
-		</color>
-		<color name="linkcolor" title="Link color" value="#38bbcd">
-			<description></description>
-		</color>
-		
+		</paneltext>
+		<lightpanel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />		
 	</colors>
 
 	<media>
-		<medium name="main" />
-		<medium name="mid" max="800" />
-		<medium name="mobile" max="600" />
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
 	</media>
 
 	<fonts>
-		<font name="titlefont" value="Lato" />
-		<font name="bodyfont" value="Open Sans" />
-		<font name="test" face="broken" />
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+		<subtitlefont title="Sub Title font" family="--titlefont" description="Used by sub titles" />
+		<test font-family="broken"  weights="" styles="" variants="" stretch="" />
 	</fonts>
 
 	<layouts>

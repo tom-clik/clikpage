@@ -33,7 +33,7 @@ To generate the class based mechanism you wouldn't need all this data in here, y
 
 component extends="contentSection" {
 
-	columns function init(required any contentObj) {
+	columns function init(required content contentObj) {
 		
 		super.init(contentObj=arguments.contentObj);
 

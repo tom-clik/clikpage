@@ -1,7 +1,7 @@
 <cfscript>
 cfinclude(template="testContent_include.cfm");
 
-siteObj = new clikpage.site.siteObj();
+siteObj = new clikpage.site.site();
 
 siteObj.debug = true;
 

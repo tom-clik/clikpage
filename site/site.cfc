@@ -5,9 +5,10 @@ component  accessors="true" {
 	property name="previewurl" type="string" default="index.cfm";
 	property name="mode" type="string" default="preview";
 
-	public siteObj function init(string mode="preview") {
+	public site function init(string mode="preview") {
 
 		this.utils = CreateObject("component", "utils.utils");	
+		this.utilsXML = CreateObject("component", "utils.xml");	
 		local.patternObj = createObject( "java", "java.util.regex.Pattern");
 		
 		variables.pattern = patternObj.compile("\{\{\w+?\.([\w\.]+)?\}\}" ,local.patternObj.MULTILINE + local.patternObj.CASE_INSENSITIVE);
@@ -47,7 +48,7 @@ component  accessors="true" {
 		}
 
 		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-		local.site = this.utils.xml2data(local.xmlData);
+		local.site = this.utilsXML.xml2data(local.xmlData);
 		
 		local.site["mode"] = variables.mode;
 
@@ -105,7 +106,7 @@ component  accessors="true" {
 			local.filepath = arguments.directory & local.data.src;
 			try {
 				local.xmlData = this.utils.fnReadXML(local.filepath,"utf-8");
-				local.records = this.utils.xml2data(local.xmlData);
+				local.records = this.utilsXML.xml2data(local.xmlData);
 				if (NOT IsArray(local.records)) {
 					throw("Data is not array");
 				}

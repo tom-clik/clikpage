@@ -2,9 +2,9 @@
 
 Styling is made up of the standard (static) stylesheets for each content section and the individual styling for each element.
 
-Styling does not cascade, and if you apply styling via multiple schemes they will be written out for each content section. This often isn't a problem, especially if you have designed your templates efficiently.
+Styling does not cascade, and all styles will be written out for each content section. This often isn't a problem, especially if you have designed your templates efficiently.
 
-If it is, you can operate in a "schemes only" mode. This allows for only one scheme per cs, which has to inherit any other schemes you wish to apply. No individual styling is then allowed. The effort of maintaining this is rarely worth it, and you should always look to reduce the number of content sections on your site before adopting its use.
+If it is, you can operate in a "schemes only" mode. No individual styling is then allowed. However, if there is an issue you have to do a classic CSS debug exercise to ascertain which stylesheet is causing the issue. To avoid this you can try and keep it to one stylesheet per content section where you can. Remember they can inherit.
 
 ## Static files
 
@@ -16,7 +16,7 @@ In preview mode, all static files are included separately, allowing for debuggin
 
 Dynamic css is generated according to the styling for each content section and container. Much of the styling is applied as simple css vars, but some is more complicated, and requires logic contained within the components.
 
-Within the content section definitions, all available style settings are defined in "styldefs". Those that require logic and aren't simple vars are also added to "settings".
+Within the content section definitions, all available style settings are defined in "styledefs". Those that require logic and aren't simple vars are also added to "settings".
 
 Each content section type also defines "panels", which can be styled using standard css styling such as font, border, margin, etc.
 

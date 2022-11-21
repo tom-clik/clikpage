@@ -27,16 +27,16 @@ component {
 
 		try {
 			
-			application.settingsObj = new clikpage.settings.settingsObj(debug=this.debug);
-			application.contentObj = new clikpage.content.contentObj(settingsObj=application.settingsObj);
+			application.settingsObj = new clikpage.settings.settings(debug=this.debug);
+			application.contentObj = new clikpage.content.content(settingsObj=application.settingsObj);
 
-			application.layoutObj = new clikpage.layouts.layouts(application.config.layoutsFolder);
-			application.pageObj = new clikpage.pageObj(debug=this.debug);
+			application.layoutsObj = new clikpage.layouts.layouts(application.config.layoutsFolder);
+			application.pageObj = new clikpage.page(debug=this.debug);
 			application.pageObj.content.static_css["columns"] = 1;
 			application.pageObj.content.static_css["fonts"] = 1;
 			
 
-			application.siteObj = new clikpage.site.siteObj(debug = this.debug);
+			application.siteObj = new clikpage.site.site(debug = this.debug);
 			application.siteObj.setdebug(this.debug);
 			application.siteObj.setpreviewurl("index.cfm");
 			application.site = application.siteObj.loadSite(application.config.siteDef);
@@ -128,7 +128,7 @@ component {
 		application.site.sections[request.rc.section].location = application.siteObj.sectionLocation(site=application.site,section=request.rc.section);
 
 		request.prc.layoutname = application.siteObj.getLayoutName(section=request.prc.section,action=request.rc.action);
-		request.prc.mylayout = application.layoutObj.getLayout(request.prc.layoutname);
+		request.prc.mylayout = application.layoutsObj.getLayout(request.prc.layoutname);
 
 		request.prc.pageContent.bodyClass =  application.siteObj.bodyClass(request.prc.mylayout);
 
@@ -228,7 +228,7 @@ component {
 		
 		try { 
 			request.prc.pageContent.css = application.settingsObj.outputFormat(css=request.prc.pageContent.css,styles=application.styles);
-			request.prc.pageContent.body = application.layoutObj.getHTML(request.prc.pageLayout);
+			request.prc.pageContent.body = application.layoutsObj.getHTML(request.prc.pageLayout);
 
 			request.prc.pageContent.body = application.siteObj.dataReplace(site=application.site, html=request.prc.pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
 

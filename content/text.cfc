@@ -1,5 +1,5 @@
 component extends="contentSection" {
-	function init(required contentObj contentObj) {
+	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
 		variables.type = "text";

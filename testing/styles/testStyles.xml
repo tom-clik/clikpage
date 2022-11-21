@@ -2,46 +2,140 @@
 <stylesheet>
 
 	<colors>
-		<color name="textcolor" title="Main text color" value="#333333">
-			<description></description>
-		</color>
-		<color name="myfavcolor" title="My favourite colour" value="#ff0000">
-			<description></description>
-		</color>
-		<color name="panel-bg" title="Darker panel bg" value="#01798a">
-			<description></description>
-		</color>
-		<color name="accent" title="Accent colour" value="#38bbcd">
-			<description></description>
-		</color>
-		<color name="panel-text" title="Panel text" value="#ffffff">
+		<textcolor title="Main text color" value="#333333" />
+		<myfavcolor title="My favourite colour" value="#ff0000" />
+		<panel-bg name="panel-bg" title="Darker panel bg" value="#01798a" />
+		<accent name="accent" title="Accent colour" value="#38bbcd" />
+		<panel-text  title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>
-		</color>
-		<color name="light-panel-bg" title="Light panel packground" value="#eaeaea">
-			<description></description>
-		</color>
-		<color name="linkcolor" title="Link color" value="#38bbcd">
-			<description></description>
-		</color>
-		
+		</panel-text>
+		<light-panel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />
 	</colors>
 
 	<media>
-		<medium name="max" min="1200" description="Full size only" />
-		<medium name="mid" max="800"  description="Medium width for tablets"/>
-		<medium name="mobile" max="600" description="mobile" />
-		<medium name="print" media="print" description="Print only" />
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
 	</media>
 
 	<fonts>
-		<font name="titlefont" value="Lato" />
-		<font name="bodyfont" value="Open Sans" />
-		<font name="test" face="broken" />
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+		<subtitlefont title="Sub Title font" family="--titlefont" description="Used by sub titles" />
+		<test family="broken"  weights="" styles="" variants="" stretch="" />
 	</fonts>
 
 	<layouts>
 
 		<testlayout1>
+
+			<body>
+				<padding>0</padding>
+			</body>
+	
+			<ubercontainer>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"topnav" "header" "content" "footer"</grid-template-areas>
+					<grid-template-rows>min-content min-content 1fr min-content</grid-template-rows>
+				</grid>
+			</ubercontainer>
+
+			<header>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+					<padding>12</padding>
+				</inner>
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+					<grid-template-columns>max-content 1fr</grid-template-columns>
+				</grid>
+				
+				<mobile>
+					<inner>
+						<max-width>auto</max-width>
+						<padding>4</padding>
+					</inner>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</header>
+
+			<content>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"contentheader" "contentwrap" "contentfooter"</grid-template-areas>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+				</grid>
+			</content>
+
+			<contentfooter>
+				<grid>
+					<grid-mode>auto</grid-mode>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</contentfooter>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"subcol maincol xcol"</grid-template-areas>
+					<grid-template-rows>180px 1fr 140px</grid-template-rows>
+				</grid>
+				<mid>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"subcol maincol" "subcol xcol"</grid-template-areas>
+						<grid-template-rows>180px 1fr</grid-template-rows>
+					</grid>
+				</mid>
+				<mobile>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"maincol" "subcol"  "xcol"</grid-template-areas>
+						<grid-template-rows>1fr</grid-template-rows>
+					</grid>
+				</mobile>
+			</contentwrap>			
+
+			<scheme-spanning>
+				<inner>
+					<max-width>1200px</max-width>
+					<align>center</align>
+					<padding>8px</padding>
+				</inner>
+				<mobile>
+					<padding>4px</padding>
+				</mobile>
+			</scheme-spanning>
+
+			<footer>
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+				</grid>
+
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+				
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+
+			</footer>
+
+			<!-- 
 			<inner-width>1090px</inner-width>
 			<column-layout>S-M-X</column-layout>
 			<columns-grid-gap>4</columns-grid-gap>
@@ -51,18 +145,34 @@
 			<mobile>
 				<column-layout>SMX</column-layout>
 			</mobile>
-			<row-layout>HF-T-C-F</row-layout>
+			<row-layout>HF-T-C-F</row-layout> -->
 		</testlayout1>
 		
 		<testlayout3>
-			<column-layout>M</column-layout>
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"maincol"</grid-template-areas>
+					<grid-template-rows>1fr</grid-template-rows>
+				</grid>
+			</contentwrap>	
 		</testlayout3>
 
 		<testlayout4>
-			<column-layout>S-M</column-layout>
-			<mobile>
-				<column-layout>SM</column-layout>
-			</mobile>
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"subcol maincol"</grid-template-areas>
+					<grid-template-rows>180px 1fr</grid-template-rows>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"subcol" "maincol"</grid-template-areas>
+						<grid-template-rows>1fr</grid-template-rows>
+					</grid>
+				</mobile>
+			</contentwrap>		
 		</testlayout4>
 		
 	</layouts>
@@ -89,28 +199,11 @@
 		</sitetitle>
 
 		<header>
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-				<padding>12</padding>
-			</inner>
+			
 			<background>
 				<color>panel-bg</color>
 			</background>
-			<grid>
-				<gap>0</gap>
-				<grid-template-columns>max-content auto</grid-template-columns>
-			</grid>
-			
-			<mobile>
-				<inner>
-					<max-width>auto</max-width>
-					<padding>4</padding>
-				</inner>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
+
 		</header>
 
 		<mainmenu>
@@ -158,40 +251,6 @@
 				<show>0</show>
 			</mobile>			
 		</topmenu>
-
-		<footer>
-			
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
-			
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
-
-		</footer>
-
-		<contentfooter>
-
-			<grid>
-				<grid>1</grid>
-				<columns>3</columns>
-			</grid>
-			
-			<mid>
-				<grid>
-					<columns>2</columns>
-				</grid>
-			</mid>
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
-		</contentfooter>
 
 		<topnav>
 			
@@ -254,6 +313,7 @@
 		</content>
 
 		<sectiontitle>
+			<tag>h4</tag>
 			<margin>0 0 1em 0</margin>
 		</sectiontitle>
 
@@ -329,17 +389,6 @@
 				</hover>
 			</icon>
 		</scheme-button>
-
-		<scheme-spanning>
-			<inner>
-				<max-width>1200px</max-width>
-				<align>center</align>
-				<padding>8px</padding>
-			</inner>
-			<mobile>
-				<padding>4px</padding>
-			</mobile>
-		</scheme-spanning>
 
 		<navnext>
 			<button>

@@ -11,7 +11,7 @@ The body content is just set as a text string.
 
 */
 
-pageObj = createObject("component", "clikpage.pageObj").init(debug=1);
+pageObj = new clikpage.page(debug=1);
 
 // add to default content
 pageObj.addLink(pageObj.content,"icon","/favicon.ico","image/x-icon");

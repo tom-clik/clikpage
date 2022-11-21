@@ -5,7 +5,7 @@ component {
 	 * @settingsObj  pass in reference to intialised singleton settings object
 	 * @types        list of content section types to load
 	*/
-	public contentObj function init (
+	public content function init (
 		    required   any      settingsObj,
 			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button"
 		)  output=false {
@@ -20,6 +20,7 @@ component {
 		variables.defaultMedia = [{"name"="main"}];
 		this.settingsObj = arguments.settingsObj;
 		this.utils = CreateObject("component", "utils.utils");
+		this.XMLutils = CreateObject("component", "utils.xml");
 
 		return this;
 	}
@@ -220,9 +221,6 @@ component {
 	/**
 	 * @hint Update settings for a content section
 	 *
-	 * NB MUST put back in in the settings function at the end. Currently broken
-	 * due to change in media stuff. This is needed for inheritance.
-	 *
 	 * NB this needs to work for containers as well. Do not break.
 	 * 
 	 */
@@ -231,9 +229,8 @@ component {
 		if (StructKeyExists(arguments.styles.content, arguments.content.id)) {
 			arguments.content["settings"] = Duplicate(arguments.styles.content[arguments.content.id]);
 		}
-		else {
-			arguments.content["settings"] =  {};
-		}
+
+		StructAppend(arguments.content["settings"],{"main"={}},false);
 
 		// Add in settings from classes e.g. scheme-whatever, cs-type
 		if (StructKeyExists(arguments.content,"class")) {
@@ -246,23 +243,14 @@ component {
 			}
 		}
 
+		// add default styling
+		deepStructAppend(arguments.content.settings.main,this.contentSections[arguments.content.type].defaultStyles,false);
+			
 		try{
-			local.media =this.settingsObj.getMedia(arguments.styles);
+			this.contentSections[arguments.content.type].inheritSettings(settings=arguments.content.settings, styles=arguments.styles);
 		} 
 		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext};
-			throw(
-				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Error getting media:" & e.message, 
-				detail       = e.detail
-			);
-		}
-		
-		try{
-			this.contentSections[arguments.content.type].mediaSettings(arguments.content, local.media);
-		} 
-		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext,"content"=arguments.content,"media"=local.media};
+			local.extendedinfo = {"tagcontext"=e.tagcontext,"content"=arguments.content};
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
 				message      = "Error getting media settings" & e.message, 
@@ -448,7 +436,7 @@ component {
 				throw("buttons content section not defined");
 			}
 			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-			local.buttons = this.utils.xml2data(local.xmlData);
+			local.buttons = this.XMLutils.xml2data(local.xmlData);
 			
 			this.contentSections["button"].addShapes(local.buttons);
 			

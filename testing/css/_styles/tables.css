@@ -6,7 +6,7 @@ We can't use border collapse to do any sort of sensible table styling
 
 We need to do it the usual way of adjusting border widths for rows and columns
 
-NB Note that if you want to adjust the border widths for td/th you do it by just adjuting the
+NB Note that if you want to adjust the border widths for td/th you do it by just adjusting the
 vars for that scope e.g.
 
 ```css

@@ -1,9 +1,10 @@
 ﻿component {
 
-	public settingsObj function init(debug=false)  output=false {
+	public settings function init(debug=false)  output=false {
 
 		this.cr = chr(13) & chr(10);
-		this.utils = CreateObject("component", "utils.utils");	
+		this.utils = CreateObject("component", "utils.utils");
+		this.utilsXML = CreateObject("component", "utils.xml");	
 		this.debug = arguments.debug;
 
 		return this;
@@ -17,10 +18,70 @@
 		}
 
 		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-		local.xml = this.utils.xml2data(local.xmlData);
+		local.styles = this.utilsXML.xml2data(local.xmlData);
+		StructAppend(local.styles,{
+				"colors" :[=],
+				"fonts" :[=],
+				"media" :[=],
+				"layouts" :[=],
+				"content" :[=]
+			},
+			false
+		);
 
-		return local.xml;
+		checkMedia(local.styles);
 
+		return local.styles;
+
+	}
+
+	/**
+	 * Check we don't have a main medium defined.
+	 */
+	private void function checkMedia(required struct styles) {
+		
+		// Add main medium to media
+		structDelete(arguments.styles.media, "main"); // mustn't be defined by user
+
+		local.tempMedia = ["main"={"title":"Main"}];
+		
+		for (local.medium in arguments.styles.media) {
+			if (NOT structKeyExists(arguments.styles.media[local.medium], "title")) {
+				arguments.styles.media[local.medium]["title"] = local.medium;
+			}
+			local.tempMedia[local.medium] = arguments.styles.media[local.medium];
+		}
+		arguments.styles.media = local.tempMedia;
+
+		checkMediaMainStyles(arguments.styles.content,arguments.styles);
+		for (local.layout in arguments.styles.layouts) {
+			checkMediaMainStyles(arguments.styles.layouts[local.layout],arguments.styles);
+		}
+		
+	}
+
+	/**
+	 * move root settings "up" into main medium
+	 *
+	 * See checkMedia()
+	 */
+	private void function checkMediaMainStyles(required struct section, required struct styles) {
+		
+		for (local.cs in arguments.section) {
+
+			local.styles = arguments.section[local.cs];
+			local.tempStyles = {};
+
+			for (local.medium in arguments.styles.media) {
+				if (StructKeyExists(local.styles,local.medium)) {
+					local.tempStyles["#local.medium#"] = local.styles[local.medium];
+					structDelete(local.styles, local.medium);
+				}
+			}
+
+			local.tempStyles["main"] = local.styles;
+			arguments.section[local.cs] = local.tempStyles;
+		}
 	}
 
 	/**
@@ -71,34 +132,36 @@
 	/**
 	 * @hint get CSS for layouts
 	 *
-	 * WIP 
-	 *
-	 * NOT done
+	 * Loop over a collection of content sections and apply basic styling qualified by the template
+	 * name
+	 * 
+	 * @containers Struct of containers. Only IDs used.
+	 * @settings   template settings (e.g. from layouts>template1 in stylesheet)
+	 * @media      struct of media settings
+	 * @template   name of the template. Settings are qualified by body.template #id
+	 * 
 	 */
-	public string function layoutCss(required struct containers, required struct media)  output=false {
+	
+	public string function layoutCss(required struct containers, required struct settings, required struct media, required string template) {
 
-		var css = "";
-
+		var css = "/* Layout #arguments.template# */\n";
+		
 		for (var medium in arguments.media ) {
+			var media = arguments.media[medium];
 			var section_css = "";
 
-			//get template here
-
-			for (var id in template.containers) {
-				var cs =  arguments.containers[id];
-				
-				//get the settings don,t do it on every loop!
-
-				if ((medium EQ "main") OR (StructKeyExists(cs.settings, medium))) {
-					local.settings = medium EQ "main" ? cs.settings : cs.settings[medium];
-					section_css &= settingsObj.containerCss(settings=local.settings,selector="###id#");
-				}	
+			for (var id in arguments.containers) {
+				if (StructKeyExists(arguments.settings, id)) {
+					if (StructKeyExists(arguments.settings[id], medium)) {
+						section_css &= containerCss(settings=arguments.settings[id],selector="body.#arguments.template# ###id#");
+					}
+				}
 			}
 
 			css &= "/* CSS for #medium# */\n";
 			if (section_css NEQ "") {
 				if (medium NEQ "main") {
-					css &= "@media.#medium# {\n " & section_css & "\n}\n";
+					css &= "@media.#medium# {\n" & indent(section_css,1) & "\n}\n";
 				}
 				else {
 					css &= section_css;
@@ -119,7 +182,7 @@
      * e.g.
      *
      * :root {
-     * 	--bodyfont: Open sans;
+     * 	--bodyfont: "Open sans";
      * }
      *
      * body {
@@ -130,15 +193,22 @@
 	 */
 	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug)  output=false {
 
-		local.css = "";
+		local.css = "\t/*=========================\n\t * Fonts \n\t *========================= */\n";
 
 		if (StructKeyExists(arguments.settings,"fonts")) {
-			for (local.font in arguments.settings.fonts) {
-				if (! (StructKeyExists(local.font,"name") && StructKeyExists(local.font,"value"))) {
-					local.css &= "\t/* font incorrectly configured #serializeJSON(local.font)# */\n";
+			for (local.fontname in arguments.settings.fonts) {
+				local.font = arguments.settings.fonts[local.fontname];
+				if (! StructKeyExists(local.font,"family")) {
+					local.css &= "\t/* No family specified for font #local.fontname# */\n";
 				}
 				else {
-					local.css &= "\t--#local.font.name#: #local.font.value#;\n";
+					local.fontfamily = Left(local.font.family,2) eq "--" ? "var(#local.font.family#)" : local.font.family; 
+					local.css &= "\t--#local.fontname#: #local.fontfamily#;";
+					if (structKeyExists(local.font,"title")) {
+						local.css &= " /* #local.font.title# */";
+					}
+					local.css &= "\n";
+
 				}	
 				
 			}
@@ -168,18 +238,23 @@
 	 */
 	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = "";
+		local.css = "\t/*=========================\n\t * Colors \n\t *========================= */\n";
 
 		if (StructKeyExists(arguments.settings,"colors")) {
-			for (local.color in arguments.settings.colors) {
-				if (! (StructKeyExists(local.color,"name") && StructKeyExists(local.color,"value"))) {
-					local.css &= "\t/* color incorrectly configured #serializeJSON(local.color)# */\n";
+			for (local.colorname in arguments.settings.colors) {
+				local.color = arguments.settings.colors[local.colorname];
+				if (! StructKeyExists(local.color,"value")) {
+					local.css &= "\t/* No value specified for color #local.colorname# */\n";
 				}
 				else {
-					if (StructKeyExists(local.color, "title") && arguments.debug) {
-						local.css &= "\t/*  #local.color.title# */\n";
+					
+					local.colorvalue = Left(local.color.value,2) eq "--" ? "var(#local.color.value#)" : local.color.value; 
+					local.css &= "\t--#local.colorname#: #local.colorvalue#;";
+					if (structKeyExists(local.color,"title")) {
+						local.css &= " /* #local.color.title# */";
 					}
-					local.css &= "\t--#local.color.name#: #local.color.value#;\n";
+					local.css &= "\n";
+
 				}	
 				
 			}
@@ -196,11 +271,10 @@
 	 * @selector  css stylesheet selector e.g. #main
 	 */
 	public string function containerCss(
-			required struct  settings, 
+			required struct  settings,
 			required string  selector, 
 					 boolean debug=this.debug
 			) {
-
 		local.css = "";
 		local.innerCSS = "";
 		local.gridcss = "";
@@ -340,7 +414,6 @@
 		return retVal;
 	}
 
-
 	private string function grid(required struct settings) {
 
 		local.css = "";
@@ -385,9 +458,8 @@
 	 */
 	
 	public string function outputFormat(required string css, required struct styles, boolean debug=this.debug) {
-		local.media  = getMedia(arguments.styles);
-		for (local.medium in local.media) {
-			arguments.css = ReplaceNoCase(arguments.css, "@media.#local.medium#", MediaQuery(local.media[local.medium]),"all");
+		for (local.medium in arguments.styles.media) {
+			arguments.css = ReplaceNoCase(arguments.css, "@media.#local.medium#", MediaQuery(arguments.styles.media[local.medium]),"all");
 		}
 
 		if (arguments.debug) {
@@ -432,31 +504,6 @@
 	}
 
 	/**
-	 * Return struct of mediums from array defined in styles
-	 *
-	 * @styles    Complete styles
-	 */
-	public struct function getMedia(required struct styles)  output=false {
-		
-		StructAppend(arguments.styles,{"media":[]},false);
-
-		local.styles = [=];
-
-		// TO DO: separate medium field, don't use main
-		StructAppend(local.styles,{"main":{"name": "main", "description":"Applies to all screen sizes"}},true);
-
-		for (local.row in arguments.styles.media) {
-			// ensure we override any attempt to sabotage main.
-			if (StructKeyExists(local.row,"name") AND local.row.name NEQ "main") {
-				local.styles[local.row.name] = local.row;
-			}
-		}
-
-		return local.styles;
-
-	}
-
-	/**
 	 * Create a struct of styles to start playing with
 	 * probably not needed in final cut 
 	 */
@@ -467,6 +514,12 @@
 			"mid": {},
 		}
 		return styles;
+	}
+
+	public string function indent(required string input, numeric num=1){
+		local.indent = repeatString("\t", arguments.num);
+		local.ret = ListToArray(arguments.input,"\n",false,true);
+		return local.indent & local.ret.toList("\n" & local.indent) & "\n";
 	}
 
 }

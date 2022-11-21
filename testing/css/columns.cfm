@@ -30,10 +30,11 @@
 		<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/title.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/layouts.css">
 		<link rel="stylesheet" type="text/css" href="_styles/css-autoschemes.css">
 		<link rel="stylesheet" type="text/css" href="_styles/grids.css">
 		<style type="text/css">
+
+
 			
 			.form {
 				--form-width:80%;
@@ -77,7 +78,7 @@
 
 	</head>
 
-<body class="notopnav nocontenttop">
+<body class="notopnav nocontenttop col-M-X-S mid-M-SX mob-SMX">
 
 	<!--- <cfdump var="#styles#">
 	<cfabort>
@@ -192,8 +193,8 @@
 
 	</div>
 
-	<script src="/_common/_scripts/_min/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/_common/_scripts/jquery.throttledresize.js"></script>
+	<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/_assets/js/jquery.throttledresize.js"></script>
 	<script>
 		
 		$(document).ready(function() {
