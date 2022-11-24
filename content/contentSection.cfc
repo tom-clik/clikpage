@@ -57,7 +57,7 @@ component {
 		this.styleDefs = [=];
 
 		// apply to main settings struct
-		// See above we should probably create this automatically.
+		// See above we should probably create this automatically. (DONE: see updateDefaults())
 		// also try to avoid using this.
 		this.defaultStyles = {};
 
@@ -362,18 +362,18 @@ component {
 	 * NB shouldn't really be public.
 	 * 
 	 */
-	public void function inheritSettings(required struct settings, required struct styles) {
+	public void function inheritSettings(required struct settings, required struct media) {
 		
 		var currentSettings =duplicate(this.settings);
 		
-		for (local.medium in arguments.styles.media) {
+		for (local.medium in arguments.media) {
 			
 			if (NOT StructKeyExists(arguments.settings,local.medium)) {
 				arguments.settings[local.medium] = Duplicate(currentSettings);
 			}
 			else {
 				variables.contentObj.DeepStructAppend(arguments.settings[local.medium],currentSettings,false);
-				currentSettings =duplicate(arguments.settings[local.medium]);
+				currentSettings = duplicate(arguments.settings[local.medium]);
 			}
 
 		}

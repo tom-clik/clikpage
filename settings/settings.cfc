@@ -89,76 +89,48 @@
 	 * 
 	 */
 	public string function siteCSS(required struct styles, boolean debug=this.debug)  output=false {
-
-		local.css = layoutCss(arguments.styles);
+		
+		throw("WIP see test_styles.cfm");
 		local.css &= fontVariablesCSS(arguments.styles);
 		local.css &= colorVariablesCSS(arguments.styles);
+		local.css = layoutCss(argsneeded);
 		
 		return outputFormat(local.css,arguments.styles);
 
 	}
 	
 	/**
-	 * @hint Generate css for containers
-	 *
-	 * NOT really working. Only works for one container. Being used on the fly in the current
-	 * sample site.
-	 * 
-	 */
-	public string function containersCSS(required struct styles, required struct layout, boolean debug=this.debug) {
-
-		local.css = "";
-
-		for (var medium in arguments.styles.media) {
-			if (medium.name != "main") {
-				local.css  &= "@media.#medium.name# {\n";
-			}
-
-			local.css  &= containerCss(styles=arguments.styles,name="body",selector="body", media=medium.name);
-			
-			for (var container in  arguments.layout.containers) {
-				local.css  &= "/* generating stylings for #container# [#medium.name#] */\n";
-				local.css  &= containerCss(styles=arguments.styles,name=container, media=medium.name);	
-			}
-
-			if (medium.name != "main") {
-				local.css &= "}\n";
-			}
-		}
-
-		return local.css;
-	}
-
-	/**
 	 * @hint get CSS for layouts
 	 *
-	 * Loop over a collection of content sections and apply basic styling qualified by the template
+	 * Loop over a collection of containers and apply basic styling qualified by the template
 	 * name
 	 * 
 	 * @containers Struct of containers. Only IDs used.
-	 * @settings   template settings (e.g. from layouts>template1 in stylesheet)
+	 * @settings   settings (e.g. from layouts>templatename in stylesheet)
 	 * @media      struct of media settings
-	 * @template   name of the template. Settings are qualified by body.template #id
+	 * @selector   Settings qualififier e.g. body.templatename.
 	 * 
 	 */
 	
-	public string function layoutCss(required struct containers, required struct settings, required struct media, required string template) {
+	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="") {
 
-		var css = "/* Layout #arguments.template# */\n";
+		var css = "";
 		
 		for (var medium in arguments.media ) {
+
 			var media = arguments.media[medium];
 			var section_css = "";
 
 			for (var id in arguments.containers) {
-				if (StructKeyExists(arguments.settings, id)) {
-					if (StructKeyExists(arguments.settings[id], medium)) {
-						section_css &= containerCss(settings=arguments.settings[id],selector="body.#arguments.template# ###id#");
+				if (StructKeyExists(arguments.styles, id)) {
+					if (StructKeyExists(arguments.styles[id], medium)) {
+						local.select = ListAppend(arguments.selector, "###id#", " ");
+						section_css &= containerCss(settings=arguments.styles[id][medium],selector=local.select);
 					}
 				}
+				
 			}
 
-			css &= "/* CSS for #medium# */\n";
 			if (section_css NEQ "") {
 				if (medium NEQ "main") {
 					css &= "@media.#medium# {\n" & indent(section_css,1) & "\n}\n";
@@ -171,6 +143,8 @@
 		return css;
 
 	}
+
+	
 
 	/** 
 	 * @hint  Generate css for assigning font variable values
@@ -193,17 +167,17 @@
 	 */
 	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug)  output=false {
 
-		local.css = "\t/*=========================\n\t * Fonts \n\t *========================= */\n";
+		local.css = CSSCommentHeader("Fonts");
 
 		if (StructKeyExists(arguments.settings,"fonts")) {
 			for (local.fontname in arguments.settings.fonts) {
 				local.font = arguments.settings.fonts[local.fontname];
 				if (! StructKeyExists(local.font,"family")) {
-					local.css &= "\t/* No family specified for font #local.fontname# */\n";
+					local.css &= "/* No family specified for font #local.fontname# */\n";
 				}
 				else {
 					local.fontfamily = Left(local.font.family,2) eq "--" ? "var(#local.font.family#)" : local.font.family; 
-					local.css &= "\t--#local.fontname#: #local.fontfamily#;";
+					local.css &= "--#local.fontname#: #local.fontfamily#;";
 					if (structKeyExists(local.font,"title")) {
 						local.css &= " /* #local.font.title# */";
 					}
@@ -214,7 +188,7 @@
 			}
 		}
 		
-		return local.css;
+		return indent(local.css);
 
 	}
 
@@ -238,18 +212,18 @@
 	 */
 	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = "\t/*=========================\n\t * Colors \n\t *========================= */\n";
+		local.css = CSSCommentHeader("Colors");
 
 		if (StructKeyExists(arguments.settings,"colors")) {
 			for (local.colorname in arguments.settings.colors) {
 				local.color = arguments.settings.colors[local.colorname];
 				if (! StructKeyExists(local.color,"value")) {
-					local.css &= "\t/* No value specified for color #local.colorname# */\n";
+					local.css &= "/* No value specified for color #local.colorname# */\n";
 				}
 				else {
 					
 					local.colorvalue = Left(local.color.value,2) eq "--" ? "var(#local.color.value#)" : local.color.value; 
-					local.css &= "\t--#local.colorname#: #local.colorvalue#;";
+					local.css &= "--#local.colorname#: #local.colorvalue#;";
 					if (structKeyExists(local.color,"title")) {
 						local.css &= " /* #local.color.title# */";
 					}
@@ -260,7 +234,7 @@
 			}
 		}
 		
-		return local.css;
+		return Indent(local.css);
 
 	}
 	
@@ -285,16 +259,29 @@
 		if (StructKeyExists(arguments.settings, "inner")) {
 			local.innerCSS &= this.dimensions(arguments.settings.inner);
 		}
+		
+		local.gridSettings = {};
 		if (StructKeyExists(arguments.settings,"grid")) {
-			local.gridcss &= grid(arguments.settings.grid);
+			grid(arguments.settings.grid,local.gridSettings);
 		}
-
+		
 		local.css &= "}\n";
 		
-		if (local.innerCSS NEQ "" OR local.gridcss NEQ "") {
+		if (local.innerCSS NEQ "" OR StructCount(local.gridSettings)) {
 			local.css &= "#arguments.selector# .inner {\n";
-			local.css &= local.innerCSS & local.gridcss;
+			local.css &= local.innerCSS;
+			if (StructCount(local.gridSettings)) {
+				local.css &= local.gridSettings.main;
+			
+			};
 			local.css &= "}\n";
+			// hacky here. Should use format qualifier mechanism from grid cs type
+			if (StructCount(local.gridSettings) AND local.gridSettings.item !="") {
+				local.css &= "#arguments.selector# .inner > * {\n";
+				local.css  &= local.gridSettings.item;
+				local.css &= "}\n";
+			};
+			
 		}
 		
 		
@@ -414,38 +401,75 @@
 		return retVal;
 	}
 
-	private string function grid(required struct settings) {
+	/**
+	 * NOTE THIS IS JUST COPIED FROM grid.cfc. TODO: incorporate grid styling from grid.cfc
+	 * somehow.
+	 * ALSO flex doesn't work because we don't have our selector qualifiers.
+	 * 
+	 */
+	private void function grid(required struct settings, required struct out) {
 
-		local.css = "";
+		var styles = arguments.settings;
+		
+		arguments.out["main"] = "";
+		arguments.out["item"] = "";
 
-		local.isGrid = StructKeyExists(arguments.settings, "grid") ? arguments.settings.grid : true;
+		structAppend(styles, {
+			"grid-mode":"auto",
+			"grid-fit":"auto-fit",
+			"grid-width":"180px",
+			"grid-max-width":"default",
+			"grid-columns":"2"
+			},false);
+		switch (styles["grid-mode"]) {
+			case "none":
+				arguments.out.main &= "\tdisplay:block;\n";
+				break;
+			case "auto":
+				arguments.out.main &= "\tdisplay:grid;\n";
+				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, minmax(#styles["grid-width"]#, #styles["grid-max-width"]#));\n";
 
-		if (local.isGrid) {
-			local.css &= "\tdisplay:grid;\n";
-			for (local.setting in ['grid-gap','grid-row-gap']) {
-				if (StructKeyExists(arguments.settings, local.setting)) {
-					local.css &= "\t#local.setting#: #arguments.settings[local.setting]#;\n";
+				break;	
+			case "fixedwidth":
+				arguments.out.main &= "\tdisplay:grid;\n";
+				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, #styles["grid-width"]#);\n";
+				break;	
+			case "fixedcols":
+				arguments.out.main &= "\tdisplay:grid;\n";
+				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
+				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
+					arguments.out.main &= "\tgrid-template-columns: " & styles["grid-template-columns"] & ";\n";
 				}
-			}
-			// short cut for exact number of columns. Rarely used.
-			if (StructKeyExists(arguments.settings, "columns")) {
-				local.css &= "\tgrid-template-columns: repeat(#arguments.settings.columns#, 1fr);\n";
-			}
-			else if (StructKeyExists(arguments.settings, "max-width")) {
-				local.css &= "\tgrid-template-columns: repeat(auto-fill, #arguments.settings["max-width"]#,1fr));\n";
-			}
-			else if (StructKeyExists(arguments.settings, "grid-template-columns")) {
-				local.css &= "\tgrid-template-columns: #arguments.settings["grid-template-columns"]#;\n";
-			}
-			else if (StructKeyExists(arguments.settings, "grid-template-rows")) {
-				local.css &= "\tgrid-template-rows: #arguments.settings["grid-template-rows"]#;\n";
-			}			
-		}
-		else {
-			local.css &= "\tdisplay:block;\n";
-		}
+				// specified number of columns
+				else if (StructKeyExists(styles,"grid-columns") AND isValid("integer", styles["grid-columns"])) {
+					arguments.out.main &= "\tgrid-template-columns: repeat(" & styles["grid-columns"] & ",1fr);\n";
+				}
+				// All columns in one row -- not a very good idea.
+				else {
+					arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
+				}
+				
+				break;	
 
-		return local.css;
+			case "templateareas":
+				if (NOT StructKeyExists(styles,"grid-template-areas")) {
+					throw("Grid mode templateareas requires grid-template-areas to be set");
+				}
+				arguments.out.main &= "\tgrid-template-areas:" & styles["grid-template-areas"] & ";\n";
+				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
+					arguments.out.main &= "\tgrid-template-columns: " & styles["grid-template-columns"] & ";\n";
+				}
+				if (StructKeyExists(styles,"grid-template-rows") AND styles["grid-template-rows"] neq "") {
+					arguments.out.main &= "\tgrid-template-rows: " & styles["grid-template-rows"] & ";\n";
+				}
+				break;
+			case "flex": case "flexstretch":
+				arguments.out.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n\tflex-direction: row;\n";
+				if (styles["grid-mode"] eq "flexstretch") {
+					arguments.out.item &= "\n\tflex-grow:1;\n;";
+				}
+				break;
+		}
 
 	}
 
@@ -516,10 +540,23 @@
 		return styles;
 	}
 
+	/**
+	 * Indent string using tabs
+	 */
 	public string function indent(required string input, numeric num=1){
 		local.indent = repeatString("\t", arguments.num);
 		local.ret = ListToArray(arguments.input,"\n",false,true);
 		return local.indent & local.ret.toList("\n" & local.indent) & "\n";
 	}
+
+	/**
+	 * Create a comment box for a CSS page
+	 */
+	public string function CSSCommentHeader(required string title, numeric width=66) {
+	ret = "/*" & repeatString("*", arguments.width-2) & "\n";
+	ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*\n";
+	ret &= "" & repeatString("*", arguments.width) & "/\n";
+	return ret;
+}
 
 }

@@ -165,69 +165,18 @@ component {
 	}
 
 	/**
-	 * @hint Get complete css for all content section
-	 *
-	 * Loop over all the media queries and generate stylesheet for each CSS
-	 * 
-	 * @styles    Complete stylesheet with media and content fields
-	 * @content_sections Struct of content sections
-	 * @loadsettings     Update each cs with its settings. Turn off if this has been done. See settings()
-	 * @format   process text at end
-	 */
-	public string function stylesheet(required struct styles, required struct content_sections, boolean loadsettings=1,format=1) {
-
-		var ret_css = "";
-
-		local.media = this.settingsObj.getMedia(arguments.styles);
-		
-		for (local.mediumname in local.media) {
-			
-			local.medium = local.media[local.mediumname];
-
-			if (local.mediumname NEQ "main") {
-				ret_css &= "@media.#local.mediumname# {" & NewLine();
-			}
-
-			for (var id in arguments.content_sections) {
-
-				var cs = arguments.content_sections[id];
-				
-				if (arguments.loadsettings) {
-					// NB see TO DO in  settings function. No inheritance 
-					this.settings(content=cs,styles=arguments.styles);
-				}
-				
-				if (local.mediumname EQ "main" OR StructKeyExists(cs.settings,local.mediumname)) {
-					
-					local.settings = local.mediumname EQ "main" ? cs.settings : cs.settings[local.mediumname];
-
-					ret_css &= this.contentSections[cs.type].css(styles=local.settings, selector="##" & id);
-					
-				}
-
-			}
-
-			if (local.mediumname NEQ "main") {
-				ret_css &= NewLine() & "}" & NewLine();
-			}
-
-		}
-		if (arguments.format) {
-			ret_css = this.settingsObj.outputFormat(css=ret_css,styles=arguments.styles);
-		}
-		return ret_css;
-	}
-
-	/**
 	 * @hint Update settings for a content section
 	 *
 	 * NB this needs to work for containers as well. Do not break.
 	 * 
 	 */
-	public void function settings(required struct content, required struct styles) {
+	public void function settings(required struct content, required struct styles, required struct media) {
 		
-		if (StructKeyExists(arguments.styles.content, arguments.content.id)) {
-			arguments.content["settings"] = Duplicate(arguments.styles.content[arguments.content.id]);
+		if (StructKeyExists(arguments.styles, arguments.content.id)) {
+			arguments.content["settings"] = Duplicate(arguments.styles[arguments.content.id]);
+		}
+		else {
+			arguments.content["settings"] = {};
 		}
 
 		StructAppend(arguments.content["settings"],{"main"={}},false);
@@ -236,8 +185,8 @@ component {
 		if (StructKeyExists(arguments.content,"class")) {
 			// to do: some sort of sort order for this.
 			for (local.class in ListToArray(arguments.content.class," ")) {
-				if (StructKeyExists(arguments.styles.content, local.class)) {
-					deepStructAppend(arguments.content.settings,arguments.styles.content[local.class]);
+				if (StructKeyExists(arguments.styles, local.class)) {
+					deepStructAppend(arguments.content.settings,arguments.styles[local.class]);
 				}
 				
 			}
@@ -247,7 +196,7 @@ component {
 		deepStructAppend(arguments.content.settings.main,this.contentSections[arguments.content.type].defaultStyles,false);
 			
 		try{
-			this.contentSections[arguments.content.type].inheritSettings(settings=arguments.content.settings, styles=arguments.styles);
+			this.contentSections[arguments.content.type].inheritSettings(settings=arguments.content.settings, media=arguments.media);
 		} 
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext,"content"=arguments.content};
