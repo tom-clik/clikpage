@@ -1,6 +1,6 @@
 # Layouts
 
-Layouts control what content is applied to a page. Content is not _data_, which comes from a site definition. Content defines the position and styling of items such as menus, titles, and photo grids. 
+Layouts control what "content" is applied to a page. _Content_ is not _data_, which comes from a site definition. _Content_ defines the position and styling of items such as menus, titles, and photo grids. 
 
 All information on a page is defined as a content section, whether that's just a simple text item, or a menu with sub menus.
 
@@ -19,5 +19,3 @@ For more complicated items like menus, article lists, photo galleries, data _has
 A typical global data set would be a list of sections for the main menu. This would usually be all sections tagged "main menu".
 
 A section dataset might be a list of articles or products. Content sections that show "detail" of content require a dataset to be defined and to contain the record being shown. Navigation buttons can then be linked to the content section to show next and previous buttons.
-
-

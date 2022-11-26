@@ -5,22 +5,16 @@ All styling in Clikpage needs to be in a "medium" of some description. The mediu
 Typical definitions are "mobile" and "mid". You might also define "wide". The definition would be so:
  
     <media>
-        <medium name="main" />
         <medium name="wide" min="1200" />
         <medium name="mid" max="800" />
         <medium name="mobile" max="600" />
+        <medium name="print" media="print" />
     </media>
 
-Note the order is important. Main styles would override mobile styles if they came after. CSS doesn't apply specificity on the basis of media.
-
-The "main" definition is optional but will always be available.
-
-All styling applied to content needs to be in a medium, e.g.
+Note the order is important.The "main" medium is always prepended to the list. The others are applied in order. Styles specified without a medium are applied to the main medium.
 
     <topmenu>
-        <main>
-            <height>100%</height>
-        </main>
+        <height>100%</height>
         <mid>
            <height>auto</height>
         </mid>
@@ -28,24 +22,4 @@ All styling applied to content needs to be in a medium, e.g.
             <show>0</show>
         </mobile>           
     </topmenu>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -20,22 +20,6 @@ Article data sets can be created automatically for given tags. These can be used
 
 Some data sets can be defined according to properties of a section. For instance a layout might defined a list of articles or a gallery of photos. The data set assigned to the content might be section.articles, a set that varies according to the section.
 
-
-
 ## Other data types
 
 Other data types can be defined and then used by custom content sections. These might be products or entries in a reference library.
-
-
-
-
-
-
-
-
-
-
-
-
-
-

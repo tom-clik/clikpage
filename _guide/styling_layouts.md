@@ -1,57 +1,95 @@
 # Styling Layouts { #styling-layouts}
 
-Styling can be applied to a layout as a whole. These are applied via a class attached to the body, e.g.
+The "structure" of a page is defined using a layout. These define the available "containers" on a page and the content items that go into them.
 
-    body class='layout-standard'
+An important distinction between the styling of layouts and the styling of other content items is that layouts can utilise multiple classes for styling and class attributes are left in the HTML.
 
-All entries in the styling are exported as CSS variables. Layout styling is all static and only the variables will change.
+A layouts can (and should) inherit from another layout, and the body class will be assigned something like
 
-The variables are exported so
+    body class='layout-standard layout-article'
 
-    body.layout-standard {
-        --sitewidth: 1060px;
-    }
+## Defining layouts
 
-Any more advanced styling would required using the standard styling applied to the elements themselves.
+Each layout is an HTML file. A title should be supplied to name the template, and meta information can allows be added.
 
-The purpose of this is that layout CSS files are usually developed outside of the Clikpage framework and CSS variables offer the quickest way to achieve modularity and integration.
+Each `div` tag is a container. They must have an ID tag, and optional title and data tags if required. All tags except id and class are removed from the container before export.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic layout</title>
+    <meta name="description" content="A test layout">
+    <meta name="author" content="Tom peer">
+</head>
+
+<body>
+
+    <div id="ubercontainer">
+
+        <div id="header" class="scheme-spanning">
+            <content type="title" id="sitetitle">
+                {{site.title}}  
+            </content>
+            <content id="topmenu" type="menu"></content>
+        </div>
+```
+{data-caption="A typical layout"}
+
+### Content items
+
+Content items are added using a `<content>` tag. See [](content.md) for details.
+
+### Container classes
+
+Containers can be assigned classes in the layouts. The styling for these can be added to the styling and will apply in the normal CSS fashion. Typically this would be used to apply a width to a number of containers for a "spanning" site.
+
+### Layout inheritance
+
+Layouts can inherit from other layouts. This is specified with the `data-extends` attribute of the body. This can be relative to site root or a URI.
+
+```html
+<body data-extends="layouts/layout1">
+```
+
+Containers in the root of the layout will replace containers of the same ID of the base layout.
+
+E.g.
+
+```html
+<body data-extends="layouts/layout1">
+        
+    <div id="maincol">
+        ...
+    </div>
+        
+    <div id="footer">
+        <content id="copyright">{{site.meta.copyright}}</content>
+    </div>
+```
+
+will replace the whole `maincol` and `footer` tags in layout1. This mechanism shouldn't be used to update content. It's to change the structure of the page.
+
+Note that by default empty containers are removed from the page, so your "base" containers can have unused containers that are replaced by derived containers.
+
+!!! note
+    It's good practice to create abstract layouts just for the purposes of inheritance and ensure all your layouts inherit from this.
+
+## Styling Layouts
+
+In the stylesheet, a section `layouts` contains subkeys for each layout. These should be defined in the order of inheritance.
+
+<!--
+
+Note we hope to make some of the styling a little easier by getting information from the layout pages.
+
+-->
+
+### Styling in the main stylesheet
+
+It's acceptable and common practice to add "soft" styling such as colors to containers in the main stylesheet just like other content sections. This keeps the structure and the soft styling separate and allows for easy template reuse.
 
 ## Layouts and media queries
 
-There remains a killer weakness in CSS in that you can't use CSS variables to define media queries. Every media query has to include the break point value, contrary to the DRY principle. 
-
-This leaves two main alternatives, hardwire every media query, which rather defeats the purpose of Clikpage, or use separate files for your styling.
-
-When developing your CSS, use the media query in the link tag:
-
-    <link rel="stylesheet" type="text/css" href="mobile.css" media="screen and (max-width: 800px)">
-
-There is a third alternative which is to use a Clikpage script to process CSS files, allowing you to simulate the way media queries should have worked, e.g.
-
-    @media mobile {
-        ...
-    }
-
-    @media mid {
-        ...
-    }
-
-The utility will then replace "mobile" and "mid" with the media query defined in your XML stylesheet. For details see `scriptViewer.cfm` in the sample app.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Layouts can contain keys for the media queries defined in the stylesheet.
 

@@ -12,5 +12,3 @@ There are three key parts to it.
 
 3. [Styling](styling.md)
     XML based styles allow for control over styles and interactivity without the need to code HTML or JavaScript.
-
-
