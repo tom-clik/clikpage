@@ -115,7 +115,7 @@
 	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="") {
 
 		var css = "";
-		
+
 		for (var medium in arguments.media ) {
 
 			var media = arguments.media[medium];
@@ -254,13 +254,19 @@
 		local.gridcss = "";
 		
 		local.css &= "#arguments.selector# {\n";
-		local.css &= this.dimensions(settings=arguments.settings);
+		local.css &= dimensions(settings=arguments.settings);
 		
+		// if (StructKeyExists(arguments.settings,"show")) {
+		// 	if (NOT arguments.settings.show) {
+		// 		local.css &= "}\n";
+		// 	}
+		// }
+
 		if (StructKeyExists(arguments.settings, "inner")) {
-			local.innerCSS &= this.dimensions(arguments.settings.inner);
+			local.innerCSS &= dimensions(arguments.settings.inner);
 		}
 		
-		local.gridSettings = {};
+		local.gridSettings = {"main"="","item"=""};
 		if (StructKeyExists(arguments.settings,"grid")) {
 			grid(arguments.settings.grid,local.gridSettings);
 		}
@@ -268,7 +274,7 @@
 		local.css &= "}\n";
 		
 		if (local.innerCSS NEQ "" OR StructCount(local.gridSettings)) {
-			local.css &= "#arguments.selector# .inner {\n";
+			local.css &= "#arguments.selector# > .inner {\n";
 			local.css &= local.innerCSS;
 			if (StructCount(local.gridSettings)) {
 				local.css &= local.gridSettings.main;
@@ -326,7 +332,12 @@
 
 		if (StructKeyExists(arguments.settings,"show")) {
 			if (isBoolean(arguments.settings.show)) {
-				local.css &= "\tdisplay:" & (arguments.settings.show ? "block" : "none" ) & ";\n" ;
+				if (NOT arguments.settings.show ) {
+					local.css &= "\tdisplay:" & "none";
+				}
+				else if (NOT structKeyExists(arguments.settings, "grid")) {
+					local.css &= "\tdisplay:" & "block";
+				}
 			}
 		}
 
@@ -418,23 +429,27 @@
 			"grid-mode":"auto",
 			"grid-fit":"auto-fit",
 			"grid-width":"180px",
-			"grid-max-width":"default",
+			"grid-max-width":"1fr",
 			"grid-columns":"2"
 			},false);
 		switch (styles["grid-mode"]) {
 			case "none":
+				arguments.out.item &= "\ngrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:block;\n";
 				break;
 			case "auto":
+				arguments.out.item &= "\ngrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, minmax(#styles["grid-width"]#, #styles["grid-max-width"]#));\n";
 
 				break;	
 			case "fixedwidth":
+				arguments.out.item &= "\ngrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, #styles["grid-width"]#);\n";
 				break;	
 			case "fixedcols":
+				arguments.out.item &= "\ngrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
 				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
@@ -452,6 +467,7 @@
 				break;	
 
 			case "templateareas":
+				arguments.out.main &= "\tdisplay:grid;\n";
 				if (NOT StructKeyExists(styles,"grid-template-areas")) {
 					throw("Grid mode templateareas requires grid-template-areas to be set");
 				}

@@ -258,9 +258,9 @@ component name="layouts" {
 
 	*/
 	private void function addInners(required layoutObj) {
-		// inner divs applied to children of uberContainer
-		// if you don't want this, don't use uberContainer...
-		local.test = arguments.layoutObj.select("##uberContainer > div");
+		// inner divs applied to children of ubercontainer
+		// if you don't want this, don't use ubercontainer...
+		local.test = arguments.layoutObj.layout.select("##ubercontainer > div");
 		for (local.temp in local.test) {
 			local.temp.html("<div class='inner'>" & local.temp.html() & "</div>");
 			// writeDump(local.test2.outerHtml());

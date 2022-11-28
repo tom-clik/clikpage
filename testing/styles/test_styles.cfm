@@ -10,26 +10,24 @@ The main styles can also have styling for containers but these will apply to eve
 
 Then we have to write out the styles for all the content sections. How we do this I'm not sure. We need to get every CS from every template.
 
-1. Currently taking a fake collection of divs and writing out the layout styles for these.
-
-Next:
-
-Loop over the same divs and write out styles from the main styles. 
-
 --->
 
 <cfscript>
 settingsObj = new clikpage.settings.settings(debug=1);
 contentObj  = new clikpage.content.content(settingsObj=settingsObj);
 
-contentObj.debug = true;
-
 styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
 fakesite = deserializeJSON(fileRead(ExpandPath("./testlayout5.json")));
 
-css = siteCSS(styles);
+outfile = ExpandPath("test_settings.css");
 
-WriteOutput("<pre>" & HtmlEditFormat(settingsObj.outputFormat(css,styles)) & "</pre>");
+contentObj.debug = true;
+css = siteCSS(styles);
+css = settingsObj.outputFormat(css,styles);
+
+fileWrite(outfile, css);
+
+WriteOutput("<pre>" & HtmlEditFormat(css) & "</pre>");
 
 string function siteCSS(required styles) {
 	var css = "";
@@ -38,6 +36,12 @@ string function siteCSS(required styles) {
 	css &= settingsObj.fontVariablesCSS(styles);
 	css &=  "\n}\n";
 	css &= settingsObj.CSSCommentHeader("Layouts");
+	// TO DO: only apply grid areas for templatearea mode 
+	// This breaks auto grids
+	// for (var id in fakesite.containers) {
+	// 	css &= "###id# {grid-area:#id#}\n";
+	// }
+		
 	for (local.layout in arguments.styles.layouts) {
 		css &= "/* Layout #local.layout# */\n"
 		css &= settingsObj.layoutCss(containers=fakesite.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");

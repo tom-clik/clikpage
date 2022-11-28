@@ -1,3 +1,9 @@
+<!---
+
+Scratch pad for testing individual cs styling
+
+--->
+
 <cfscript>
 settingsObj = CreateObject("component", "clikpage.settings.settingsObj").init(debug=1);
 contentObj = CreateObject("component", "clikpage.content.contentObj").init(settingsObj=settingsObj);

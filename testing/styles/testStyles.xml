@@ -33,9 +33,14 @@
 
 			<body>
 				<padding>0</padding>
+
 			</body>
 	
 			<ubercontainer>
+				<height>100%</height>
+				<inner>
+					<height>100%</height>
+				</inner>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"topnav" "header" "content" "footer"</grid-template-areas>
@@ -88,20 +93,20 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"subcol maincol xcol"</grid-template-areas>
-					<grid-template-rows>180px 1fr 140px</grid-template-rows>
+					<grid-template-columns>180px 1fr 140px</grid-template-columns>
 				</grid>
 				<mid>
 					<grid>
 						<grid-mode>templateareas</grid-mode>
 						<grid-template-areas>"subcol maincol" "subcol xcol"</grid-template-areas>
-						<grid-template-rows>180px 1fr</grid-template-rows>
+						<grid-template-columns>180px 1fr</grid-template-columns>
 					</grid>
 				</mid>
 				<mobile>
 					<grid>
 						<grid-mode>templateareas</grid-mode>
 						<grid-template-areas>"maincol" "subcol"  "xcol"</grid-template-areas>
-						<grid-template-rows>1fr</grid-template-rows>
+						<grid-template-columns>1fr</grid-template-columns>
 					</grid>
 				</mobile>
 			</contentwrap>			
@@ -148,14 +153,53 @@
 			<row-layout>HF-T-C-F</row-layout> -->
 		</testlayout1>
 		
+		<testlayout2>
+			<content>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"contentheader" "contentwrap"</grid-template-areas>
+					<grid-template-rows>min-content 1fr</grid-template-rows>
+				</grid>
+			</content>
+
+			<maincol>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"maincol_top maincol_top" "maincol_right maincol_left" "maincol_bottom maincol_bottom"</grid-template-areas>
+					<grid-template-rows>min-content min-content min-content</grid-template-rows>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</maincol>
+
+			<contentfooter>
+				<show>0</show>
+			</contentfooter>
+
+		
+			
+		</testlayout2>
+
 		<testlayout3>
+			<subcol>
+				<show>0</show>
+			</subcol>
+			<xcol>
+				<show>0</show>
+			</xcol>
 			<contentwrap>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"maincol"</grid-template-areas>
 					<grid-template-rows>1fr</grid-template-rows>
 				</grid>
-			</contentwrap>	
+			</contentwrap>
+
+			
+
 		</testlayout3>
 
 		<testlayout4>
