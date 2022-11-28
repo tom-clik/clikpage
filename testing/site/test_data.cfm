@@ -1,5 +1,5 @@
 <cfscript>
-siteObj = new clikpage.site.siteObj();
+siteObj = new clikpage.site.site();
 
 siteObj.debug = true;
 

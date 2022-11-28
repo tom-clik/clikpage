@@ -154,6 +154,7 @@
 		</testlayout1>
 		
 		<testlayout2>
+
 			<content>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
@@ -178,12 +179,11 @@
 			<contentfooter>
 				<show>0</show>
 			</contentfooter>
-
-		
 			
 		</testlayout2>
 
 		<testlayout3>
+
 			<subcol>
 				<show>0</show>
 			</subcol>
@@ -198,11 +198,16 @@
 				</grid>
 			</contentwrap>
 
-			
-
 		</testlayout3>
 
+		
+
 		<testlayout4>
+			
+			<xcol>
+				<show>0</show>
+			</xcol>
+
 			<contentwrap>
 				<grid>
 					<grid-mode>templateareas</grid-mode>

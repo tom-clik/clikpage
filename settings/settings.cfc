@@ -85,19 +85,19 @@
 	}
 
 	/**
-	 * Generate css for global level variables
+	 * not going to work becuase we need the contentObject
 	 * 
 	 */
-	public string function siteCSS(required struct styles, boolean debug=this.debug)  output=false {
+	// public string function siteCSS(required struct styles, boolean debug=this.debug)  output=false {
 		
-		throw("WIP see test_styles.cfm");
-		local.css &= fontVariablesCSS(arguments.styles);
-		local.css &= colorVariablesCSS(arguments.styles);
-		local.css = layoutCss(argsneeded);
+	// 	throw("WIP see test_styles.cfm");
+	// 	local.css &= fontVariablesCSS(arguments.styles);
+	// 	local.css &= colorVariablesCSS(arguments.styles);
+	// 	local.css = layoutCss(argsneeded);
 		
-		return outputFormat(local.css,arguments.styles);
+	// 	return outputFormat(local.css,arguments.styles.media);
 
-	}
+	// }
 	
 	/**
 	 * @hint get CSS for layouts
@@ -290,7 +290,6 @@
 			
 		}
 		
-		
 		return local.css;
 
 	}
@@ -415,7 +414,6 @@
 	/**
 	 * NOTE THIS IS JUST COPIED FROM grid.cfc. TODO: incorporate grid styling from grid.cfc
 	 * somehow.
-	 * ALSO flex doesn't work because we don't have our selector qualifiers.
 	 * 
 	 */
 	private void function grid(required struct settings, required struct out) {
@@ -493,13 +491,18 @@
 	 * Remove \n,\ts etc from css string 
 	 * 
 	 * @css           CSS to process
+	 * @media         Struct of media settings
 	 * @debug         Return readable version with comments
 	 * 
 	 */
 	
-	public string function outputFormat(required string css, required struct styles, boolean debug=this.debug) {
-		for (local.medium in arguments.styles.media) {
-			arguments.css = ReplaceNoCase(arguments.css, "@media.#local.medium#", MediaQuery(arguments.styles.media[local.medium]),"all");
+	public string function outputFormat(required string css, required struct media, boolean debug=this.debug) {
+
+		var patternObj = createObject( "java", "java.util.regex.Pattern");
+		var pattern = patternObj.compile("\/\*.*?\*\/", patternObj.MULTILINE + patternObj.UNIX_LINES);
+
+		for (local.medium in arguments.media) {
+			arguments.css = ReplaceNoCase(arguments.css, "@media.#local.medium#", MediaQuery(arguments.media[local.medium]),"all");
 		}
 
 		if (arguments.debug) {
@@ -507,15 +510,13 @@
 			arguments.css = replace(arguments.css, "\t", chr(9),"all");
 		}
 		else {
-			/** TODO: rewrite with java regex to avoid cf bugs */
 			arguments.css = replace(arguments.css, "\t", "","all");
 			arguments.css = replace(arguments.css, "\n", "","all");
-			arguments.css = REReplace(arguments.css,"\/\*.*?\*\/","","all");
+			arguments.css  = pattern.matcher(arguments.css).replaceAll("");
 		}
 
-
-
 		return arguments.css;
+
 	}
 
 	/**

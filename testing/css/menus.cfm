@@ -6,14 +6,14 @@ WIP converting to formal cs. NB menu.cfc in this folder deprecated.
      
 ## To Do
 
--[] Align - not working in other media
--[] Icons - NB need menu icons and open indicator! Confusion here.
+- [ ] Align - not working in other media
+- [ ] Icons - NB need menu icons and open indicator! Confusion here.
 
 --->
 
 <cfscript>
-settingsObj = new clikpage.settings.settingsObj(debug=1);
-contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
+settingsObj = new clikpage.settings.settings(debug=1);
+contentObj = new clikpage.content.content(settingsObj=settingsObj);
 
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 
@@ -21,7 +21,7 @@ contentObj.debug = 1;
 
 menustyles = {};
 
-menustyles = {
+menustyles.main = {
 	"menu-icon-display": "none",
 	"menu-item-padding": "8px",
 	"flex": 0,
@@ -91,7 +91,9 @@ site.cs = {
 	"menu" = menu_cs
 };
 
-menuCss &= contentObj.stylesheet(selector="##menu",styles=styles,content_sections=site.cs,loadsettings=1);
+menuCss &= contentObj.contentCSS(styles=styles.content,content_sections=site.cs,media=styles.media);
+
+menuCss = settingsObj.outputFormat(menuCss,styles.media);
 
 FileWrite(ExpandPath("menu_styling.css"),menuCss,"utf-8");
 
@@ -172,23 +174,23 @@ Menu Testing
 <cfscript>
 
 public array function getSampleMenuData(count=8,level=1) {
-		var menuData = [];
-		local.string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit";
-		for (local.i =1; i lte arguments.count; i++) {
-			local.start = RandRange(1,Len(local.string) - 20);
-			local.end = RandRange(8, 16);
-			local.title =  Mid(local.string,local.start,local.end);
-			local.item = {"code"="sample#local.i#-#arguments.level#","title"=local.title};
-			local.item["link"] = local.item.code & ".html";
-			// add sample sub menu
-			if ((local.i mod 2) eq 1 AND arguments.level < 3) {
-				local.item["submenu"] = getSampleMenuData(count=RandRange(3,5),level=arguments.level + 1);
-			}
-			ArrayAppend(menuData,local.item);			
+	var menuData = [];
+	local.string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit";
+	for (local.i =1; i lte arguments.count; i++) {
+		local.start = RandRange(1,Len(local.string) - 20);
+		local.end = RandRange(8, 16);
+		local.title =  Mid(local.string,local.start,local.end);
+		local.item = {"code"="sample#local.i#-#arguments.level#","title"=local.title};
+		local.item["link"] = local.item.code & ".html";
+		// add sample sub menu
+		if ((local.i mod 2) eq 1 AND arguments.level < 3) {
+			local.item["submenu"] = getSampleMenuData(count=RandRange(3,5),level=arguments.level + 1);
 		}
-
-		return menuData;
+		ArrayAppend(menuData,local.item);			
 	}
+
+	return menuData;
+}
 
 
 </cfscript>

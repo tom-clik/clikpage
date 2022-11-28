@@ -215,6 +215,8 @@ component {
 				local.state_styles = arguments.styles[local.state.state];
 			}
 
+			ret &= "/* #serializeJSON(local.state_styles) # */\n";
+
 			ret &= "/* writing styles for state #local.state.state# */\n";
 
 			ret &= arguments.selector & local.state.selector & " {\n";

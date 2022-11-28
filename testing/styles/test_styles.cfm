@@ -23,24 +23,20 @@ outfile = ExpandPath("test_settings.css");
 
 contentObj.debug = true;
 css = siteCSS(styles);
-css = settingsObj.outputFormat(css,styles);
+css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
 
 fileWrite(outfile, css);
 
 WriteOutput("<pre>" & HtmlEditFormat(css) & "</pre>");
 
 string function siteCSS(required styles) {
+	
 	var css = "";
 	css &= ":root {\n";
 	css &= settingsObj.colorVariablesCSS(styles);
 	css &= settingsObj.fontVariablesCSS(styles);
 	css &=  "\n}\n";
 	css &= settingsObj.CSSCommentHeader("Layouts");
-	// TO DO: only apply grid areas for templatearea mode 
-	// This breaks auto grids
-	// for (var id in fakesite.containers) {
-	// 	css &= "###id# {grid-area:#id#}\n";
-	// }
 		
 	for (local.layout in arguments.styles.layouts) {
 		css &= "/* Layout #local.layout# */\n"
@@ -51,58 +47,7 @@ string function siteCSS(required styles) {
 
 	css &= settingsObj.CSSCommentHeader("Content styling");
 	
-	css &= contentCSS(content_sections=fakesite.content,styles=arguments.styles.content,media=arguments.styles.media);
-	
-	return css;
-}
-
-/**
- * @hint Get complete css for all content section
- *
- * Loop over all the media queries and generate stylesheet for each CSS
- * 
- * @styles    Complete stylesheet with media and content fields
- * @content_sections Struct of content sections
- * @loadsettings     Update each cs with its settings. Turn off if this has been done. See contentObj.settings()
- */
-public string function contentCSS(required struct styles, required struct content_sections, required struct media, boolean loadsettings=1) {
-	
-	var css = "";
-	var cs = false;
-
-	if (arguments.loadsettings) {
-		for (var id in arguments.content_sections) {
-			cs = arguments.content_sections[id];
-			contentObj.settings(cs,arguments.styles,arguments.media);
-		}
-		
-	}
-	
-	for (var medium in arguments.media ) {
-
-		var media = arguments.media[medium];
-		var media_css = "";
-
-		for (var id in arguments.content_sections) {
-			
-			cs = arguments.content_sections[id];
-			
-			if (StructKeyExists(arguments.styles, id)) {
-				if (StructKeyExists(arguments.styles[id], medium)) {
-					media_css &= contentObj.css(cs,false);
-				}
-			}
-		}
-
-		if (media_css NEQ "") {
-			if (medium NEQ "main") {
-				css &= "@media.#medium# {\n" & settingsObj.indent(media_css,1) & "\n}\n";
-			}
-			else {
-				css &= media_css;
-			}
-		}
-	}
+	css &= contentObj.contentCSS(content_sections=fakesite.content,styles=arguments.styles.content,media=arguments.styles.media);
 	
 	return css;
 }

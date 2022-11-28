@@ -71,7 +71,7 @@ component {
 		var ret = this.contentSections[arguments.content.type].html(arguments.content);
 		//ret = wrapHTML(arguments.content,ret);
 		
-		ret = processText(text=ret,debug=this.debug);
+		ret = this.settingsObj.outputFormat(css=ret,media={},debug=this.debug);
 		
 		return ret;
 		
@@ -141,24 +141,84 @@ component {
 	}
 
 	/**
+	 * Generate CSS for a collection of content sections
+	 * 
+	 * @styles           Struct of styles for each cs.
+	 * @content_sections Struct of content section definitions
+	 * @media            Struct of media query definitions
+	 * @loadsettings     Load settings for each CSS
+	 * 
+	 * @return CSS stylesheet
+	 */
+	
+	public string function contentCSS(required struct styles, required struct content_sections, required struct media, boolean loadsettings=1, boolean format=true) {
+		
+		var css_out = "";
+		var cs = false;
+
+		if (arguments.loadsettings) {
+			for (var id in arguments.content_sections) {
+				cs = arguments.content_sections[id];
+				settings(cs,arguments.styles,arguments.media);
+			}
+		}
+		
+		for (var medium in arguments.media ) {
+
+			var media = arguments.media[medium];
+			var media_css = "";
+
+			for (var id in arguments.content_sections) {
+				
+				cs = arguments.content_sections[id];
+				
+				if (StructKeyExists(arguments.styles, id)) {
+					if (StructKeyExists(arguments.styles[id], medium)) {
+						media_css &= css(cs,medium,false);
+					}
+				}
+			}
+
+			if (media_css NEQ "") {
+				if (medium NEQ "main") {
+					css_out &= "@media.#medium# {\n" & this.settingsObj.indent(media_css,1) & "\n}\n";
+				}
+				else {
+					css_out &= media_css;
+				}
+			}
+		}
+
+		if (arguments.format) {
+			css_out = this.settingsObj.outputFormat(css=css_out, media=arguments.media,debug=this.debug);
+		}
+		
+		return css_out;
+
+	}
+
+	/**
 	 * @hint Get css for a content section
 	 *
 	 * @content      Content section
-	 * @format       Format result. Turn off if e.g. generating a stylesheet and you can run it later
+	 * @format       Format result. Turn off if concatenating many cs
 	 * @return       css string
 	 */
-	public string function css(required struct content, boolean format=true) {
+	public string function css(required struct content, medium="main",boolean format=true) {
 		
 		var css = "";
 
 		if (! StructKeyExists(arguments.content, "settings")) {
 			return "/* Settings not defined for cs */";
 		}
+		if (! StructKeyExists(arguments.content.settings,arguments.medium)) {
+			return "/* #arguments.medium# Settings not defined for cs */";
+		}
 		
-		css &= this.contentSections[arguments.content.type].css(styles=arguments.content.settings, selector="##" & arguments.content.id);
-
+		css &= this.contentSections[arguments.content.type].css(styles=arguments.content.settings[arguments.medium], selector="##" & arguments.content.id);
+		
 		if (arguments.format) {
-			css = processText(css);
+			css = this.settingsObj.outputFormat(css=css,media={},debug=this.debug);
 		}
 
 		return css;
@@ -412,29 +472,7 @@ component {
 		return html;
 	}
 	 
-	/**
-	 * @hint Process text with \t\t and /-- --/ comments
-	 *
-	 * If we're not in debug we strip these out otherwise we replace with white space or comment markers.
-	 * 
-	 * @text    Text to process
-	 * @debug   Pretty print output
-	 */
-	public string function processText(text,boolean debug=true) {
-		var tab = arguments.debug ? chr(9) : "";
-		var cr = arguments.debug ? chr(13) & chr(10) : "";
-
-		// if (!arguments.debug) {
-		// 	arguments.text = reReplace(arguments.text, "\/(\*|\-\-).*?(\*|\-\-)\/", "", "all");
-		// }
-
-		// this replace list has just stopped working. No idea why
-		// return ReplaceList(arguments.text,"\n,\t","#cr#,#tab#,/*,*/");
-		arguments.text = Replace(arguments.text,"/--","/*","all");
-		arguments.text = Replace(arguments.text,"--/","*/","all");
-		return ReplaceList(arguments.text,"\n,\t","#cr#,#tab#");
-	}
-
+	
 	/** 
 	 * @hint Indent string with \t characters 
 	 * 

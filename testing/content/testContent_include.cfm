@@ -33,7 +33,7 @@ function testCS(required struct cs, boolean getSettings=1) {
 
 
 function displayCSS(required struct cs) {
-	writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(arguments.cs),styles=styles) & "</pre>");
+	writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(arguments.cs),media=styles.media) & "</pre>");
 }
 
 </cfscript>

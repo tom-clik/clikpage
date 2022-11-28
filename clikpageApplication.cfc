@@ -227,7 +227,7 @@ component {
 	public void function onRequestEnd(){
 		
 		try { 
-			request.prc.pageContent.css = application.settingsObj.outputFormat(css=request.prc.pageContent.css,styles=application.styles);
+			request.prc.pageContent.css = application.settingsObj.outputFormat(css=request.prc.pageContent.css,media=application.styles.media);
 			request.prc.pageContent.body = application.layoutsObj.getHTML(request.prc.pageLayout);
 
 			request.prc.pageContent.body = application.siteObj.dataReplace(site=application.site, html=request.prc.pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
