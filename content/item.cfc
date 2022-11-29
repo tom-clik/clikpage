@@ -32,7 +32,7 @@ component extends="contentSection" {
 		this.settings = {
 			"titletag":"h3",
 			"showtitle":true,
-			"htop": 1,
+			"htop": true,
 			"image-align": 'left'
 		}
 
@@ -63,10 +63,10 @@ component extends="contentSection" {
 		
 		var classes = {};
 		
+		arguments.content.class = ListAppend(arguments.content.class, "item"," ");
+
 		var cshtml = variables.contentObj.itemHtml(content=arguments.content, settings = arguments.content.settings, classes=classes);
-
-		ListAppend(arguments.content.class, StructKeyList(classes," ")," ");
-
+		
 		return cshtml;
 
 	}
@@ -82,7 +82,7 @@ component extends="contentSection" {
 		//  htop  | adjust grid template rows to place title on top in spanning column
 		local.htop = false;
 		if (StructKeyExists(arguments.styles,"htop")) {
-			data.main &= "/-- htop: #arguments.styles.htop#  --/\n";
+			data.main &= "/* htop: #arguments.styles.htop#  */\n";
 			
 			if (arguments.styles.htop) {
 				local.htop = true;
@@ -90,7 +90,7 @@ component extends="contentSection" {
 			}
 		}
 		else {
-			data.main &= "/-- no htop  --/\n";
+			data.main &= "/* no htop  */\n";
 		}
 
 		if (StructKeyExists(arguments.styles,"image-gap")) {

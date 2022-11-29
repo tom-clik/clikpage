@@ -24,8 +24,8 @@ component extends="contentSection" {
 			"popup" : {"type":"boolean","default":0},
 			"grid-gap": {"type":"dimension"},
 			"row-gap": {"type":"dimension"},
-			"max-width": {"type":"dimension"},
-			"max-height": {"type":"dimension"},
+			"grid-max-width": {"type":"dimension"},
+			"grid-max-height": {"type":"dimension"},
 			"justify-content": {"type":"valign"},
 			"align-items": {"type":"halign"}
 		];
@@ -120,11 +120,6 @@ component extends="contentSection" {
 		
 		local.html &= "</div>";
 
-		if (arguments.content.settings.masonry) {
-			variables.contentObj.addClass(arguments.content,"masonry");
-		}
-
-
 		return local.html;
 		
 	}
@@ -133,15 +128,15 @@ component extends="contentSection" {
 
 		var js = "";
 
-		if (arguments.content.settings.masonry) {
+		if (arguments.content.settings.main.masonry) {
 			js &= "$#arguments.content.id#Grid = $('###arguments.content.id# .grid').masonry({\n";
 			js &= "\t/* options*/\n";
 			// js &= "\titemSelector: 'figure',\n";
 			js &= "\tcolumnWidth: '###arguments.content.id# figure',\n";
 			js &= "\tinitLayout: false,\n";
 			js &= "\tpercentPosition: true\n";
-			if (StructKeyExists(arguments.content.settings.main.imagegrid,"gridgap")) {
-				js &= "\tgutter: #arguments.content.settings.main.imagegrid.gridgap#\n";
+			if (StructKeyExists(arguments.content.settings.main,"gridgap")) {
+				js &= "\tgutter: #arguments.content.settings.main.gridgap#\n";
 			}
 			js &= "});\n";
 
@@ -152,7 +147,7 @@ component extends="contentSection" {
 			js &= "});\n";
 		}
 
-		if (arguments.content.settings.popup) {
+		if (arguments.content.settings.main.popup) {
 
 			js &= "$(""###arguments.content.id# figure a"").colorbox({rel:'group#arguments.content.id#'});";
 		}

@@ -9,9 +9,8 @@ function testCS(required struct cs, boolean getSettings=1) {
 	
 	try {
 		if (arguments.getSettings) {
-			contentObj.settings(arguments.cs,styles);
-		}
-		
+			contentObj.settings(arguments.cs,styles.content,styles.media);
+		}		
 		writeDump(var=arguments.cs.settings,label="settings");
 		displayCSS(arguments.cs);
 		local.cs = contentObj.display(content=arguments.cs);

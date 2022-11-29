@@ -11,7 +11,7 @@
 	}
 
 	/** Load an XML settings definition */
-	public struct function loadStyleSheet(required string filename)  output=false {
+	public struct function loadStyleSheet(required string filename) output=false  {
 
 		if (!FileExists(arguments.filename)) {
 			throw("Stylesheet #arguments.filename# not found");
@@ -19,15 +19,22 @@
 
 		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
 		local.styles = this.utilsXML.xml2data(local.xmlData);
-		StructAppend(local.styles,{
+		
+		local.defaults = {
 				"colors" :[=],
 				"fonts" :[=],
 				"media" :[=],
 				"layouts" :[=],
 				"content" :[=]
-			},
-			false
-		);
+			};
+		
+		StructAppend(local.styles,local.defaults,false);
+		
+		for (local.default in local.defaults) {
+			if ( NOT IsStruct(local.styles[local.default]) ) {
+				local.styles[local.default] = [=];
+			}
+		}
 
 		checkMedia(local.styles);
 
@@ -54,8 +61,11 @@
 		arguments.styles.media = local.tempMedia;
 
 		checkMediaMainStyles(arguments.styles.content,arguments.styles);
-		for (local.layout in arguments.styles.layouts) {
-			checkMediaMainStyles(arguments.styles.layouts[local.layout],arguments.styles);
+
+		if ( StructKeyExists( arguments.styles,"layouts" ) AND IsStruct(arguments.styles.layouts) ) {
+			for (local.layout in arguments.styles.layouts) {
+				checkMediaMainStyles(arguments.styles.layouts[local.layout],arguments.styles);
+			}
 		}
 		
 	}
@@ -381,8 +391,7 @@
 		switch (arguments.name) {
 
 			case "padding": case "margin":case "width":case "max-width": case "max-height":case "min-width":case "min-height":
-				retVal = "";
-				for (local.dimension in ListToArray(arguments.value," ")) {
+				for (local.dimension in ListToArray(arguments.value," #chr(13)##chr(10)##chr(9)#")) {
 					retVal = ListAppend(retVal,displayDimension(local.dimension)," ");
 				}
 				break;

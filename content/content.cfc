@@ -120,7 +120,7 @@ component {
 	private void function addClass(required struct content, required string class) {
 		
 		var classstr = "cs-" & arguments.content.type;
-		
+
 		ListAppend(classstr,arguments.content.class, " ");
 		
 		return classstr;
@@ -135,8 +135,8 @@ component {
 		
 		var classstr = "cs-" & arguments.content.type;
 		
-		ListAppend(classstr,arguments.content.class, " ");
-		
+		classstr = ListAppend(classstr,arguments.content.class, " ");
+
 		return classstr;
 	}
 
@@ -172,11 +172,8 @@ component {
 				
 				cs = arguments.content_sections[id];
 				
-				if (StructKeyExists(arguments.styles, id)) {
-					if (StructKeyExists(arguments.styles[id], medium)) {
-						media_css &= css(cs,medium,false);
-					}
-				}
+				media_css &= css(cs,medium,false);
+				
 			}
 
 			if (media_css NEQ "") {

@@ -18,18 +18,18 @@ outDir = getCanonicalPath(inputDir & "../styles");
 
 layoutsObj = new clikpage.layouts.layouts(inputDir);
 
-for (i = 1; i lte 6 ; i++) {
+data = {
+	"content" = {},
+	"containers" = {}
+};
 
+for (i = 1; i lte 6 ; i++) {
 	mylayout = layoutsObj.getLayout("testlayout1/testlayout#i#");
-	data = {
-		"content" = mylayout.content,
-		"containers" = mylayout.containers
-	};
-	fileWrite(outDir & "testlayout#i#.json",serializeJSON(data));
+	StructAppend(data.content,mylayout.content);
+	StructAppend(data.containers,mylayout.containers);
 }
 
-
-
+fileWrite(outDir & "testsite.json",serializeJSON(data));
 
 
 </cfscript>

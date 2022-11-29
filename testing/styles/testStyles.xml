@@ -329,24 +329,18 @@
 
 		<imagegrid>
 			
-			<imagegrid>
 				<masonry>true</masonry>
 				<popup>true</popup>
-				<max-width>24%</max-width>
-			</imagegrid>
+				<grid-max-width>24%</grid-max-width>
+			
 			
 			<mid>
-				
-				<imagegrid>
-					<masonry>false</masonry>
-					<max-width>33%</max-width>
-				</imagegrid>
+				<masonry>false</masonry>
+				<grid-max-width>33%</grid-max-width>
 			</mid>
 			<mobile>
-				<imagegrid>
-					<masonry>false</masonry>
-					<max-width>49%</max-width>
-				</imagegrid>
+				<masonry>false</masonry>
+				<grid-max-width>49%</grid-max-width>
 			</mobile>
 		</imagegrid>
 

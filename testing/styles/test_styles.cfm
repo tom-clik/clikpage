@@ -17,7 +17,7 @@ settingsObj = new clikpage.settings.settings(debug=1);
 contentObj  = new clikpage.content.content(settingsObj=settingsObj);
 
 styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
-fakesite = deserializeJSON(fileRead(ExpandPath("./testlayout5.json")));
+fakesite = deserializeJSON(fileRead(ExpandPath("./testsite.json")));
 
 outfile = ExpandPath("test_settings.css");
 
