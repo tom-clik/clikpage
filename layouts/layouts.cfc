@@ -184,6 +184,12 @@ component name="layouts" {
 
 		addInners(arguments.layoutObj);
 
+		local.test = arguments.layoutObj.layout.select("content");
+		
+		for (local.div in local.test) {
+			local.div.tagName("div");
+		}
+
 		return arguments.layoutObj.layout.body().html();
 
 	}

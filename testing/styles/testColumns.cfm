@@ -55,10 +55,6 @@ divs = addInners(mylayout);
 // big question here: how to add grid areas for all divs.
 cssTemp = "";
 
-for (div in divs) {
-	cssTemp &= "###div# {grid-area:#div#;}" & newLine();
-}
-
 mylayout.layout.head().append("<style>#cssTemp#</style>")
 	.append("<link rel=""stylesheet"" href=""/_assets/css/reset.css"">")
 	.append("<link rel=""stylesheet"" href=""/_assets/css/images.css"">")

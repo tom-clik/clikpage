@@ -11,6 +11,7 @@
 		<light-panel-bg title="Light panel packground" value="#eaeaea" />
 		<linkcolor title="Link color" value="#38bbcd" />
 		<bordercolor title="Border color" value="#333" />
+		<imageborder title="Image border color" value="teal" />
 	</colors>
 
 	<media>
@@ -56,26 +57,14 @@
 			</hover>
 		</scheme-title>
 
-		<scheme-panels>
-			<title>
-				<background>
-					<color>panel-bg</color>
-				</background>
-				<color>panel-text</color>
-			</title>
-			<hover>
-				<title>
-					<color>panel-text</color>
-				</title>
-			</hover>
-			
-		</scheme-panels>	
-
 		<scheme-item>
 
 			<margin>
 				12 0
 			</margin>
+			<padding>
+				12
+			</padding>
 			<border>
 				<width>1px</width>
 				<color>bordercolor</color>
@@ -88,31 +77,70 @@
 			</text>
 			
 		</scheme-item>
-	
-		<scheme-test2>
+
+		<scheme-panels>
+			<padding>0</padding>
+			<title>
+				<background>
+					<color>panel-bg</color>
+				</background>
+				<color>panel-text</color>
+			</title>
+			<image>
+				<padding>12</padding>
+			</image>
+			<hover>
+				<title>
+					<color>panel-text</color>
+				</title>
+			</hover>
+			
+		</scheme-panels>	
+
+
+		<test1>
 			
 			<htop>true</htop>
-			<image-align>left"</image-align>
+			<image-align>left</image-align>
 			<border-width>0px</border-width>
 			<title>
 				<font-weight>bold</font-weight>
-				<padding>12px</padding>
-				<background-color>black</background-color>
-				<color>white</color>
 			</title>
 			<image>
 				<border-width>1px</border-width>
-				<border-color>teal</border-color>
-				<padding>2px</padding>
+				<border-color>imageborder</border-color>
 			</image>
 			
 			<mobile>
 				<htop>false</htop>
 				<image-align>center</image-align>
 			</mobile>
-		</scheme-test2>
+		</test1>
 
-		<scheme-test3>
+		<test2>
+			
+			<htop>true</htop>
+			<image-align>left</image-align>
+			<border-width>0px</border-width>
+			
+			<title>
+				<font-weight>bold</font-weight>
+				<background-color>black</background-color>
+				<color>white</color>
+			</title>
+
+			<image>
+				<border-width>1px</border-width>
+				<border-color>teal</border-color>
+			</image>
+			
+			<mobile>
+				<htop>false</htop>
+				<image-align>center</image-align>
+			</mobile>
+		</test2>
+
+		<test3>
 			<titletag>h2></titletag>
 			<htop>true</htop>
 			<image-align>right</image-align>
@@ -120,9 +148,9 @@
 			<mobile>
 				<image-align>center</image-align>
 			</mobile>
-		</scheme-test3>
+		</test3>
 
-		<scheme-test4>
+		<test4>
 		
 			<htop>true</htop>
 			<image-width>66%</image-width>
@@ -132,31 +160,32 @@
 			<mobile>
 				<image-align>center</image-align>
 			</mobile>
-		</scheme-test4>
+		</test4>
 
-		<scheme-test5>
+		<test5>
 			<image-width>40%</image-width>
 			<image-align>left</image-align>
 			<mobile>
 				<image-align>center</image-align>
 			</mobile>
-		</scheme-test5>
+		</test5>
 
-		<scheme-test7>
+		<test7>
 			<image-align>left</image-align>
 			<htop>false</htop>
 			<mobile>
 				
 				<image-align>center</image-align>
 			</mobile>
-		</scheme-test7>
-		<scheme-test8>
+		</test7>
+
+		<test8>
 			<image-align>right</image-align>
 			<htop>false</htop>
 			<mobile>
 				<image-align>center</image-align>
 			</mobile>
-		</scheme-test8>
+		</test8>
 
 
 	</content>

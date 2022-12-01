@@ -225,33 +225,29 @@ component {
 	/**
 	 * @hint Update settings for a content section
 	 *
-	 * NB this needs to work for containers as well. Do not break.
-	 * 
 	 */
 	public void function settings(required struct content, required struct styles, required struct media) {
 		
-		if (StructKeyExists(arguments.styles, arguments.content.id)) {
-			arguments.content["settings"] = Duplicate(arguments.styles[arguments.content.id]);
-		}
-		else {
-			arguments.content["settings"] = {};
-		}
-
-		StructAppend(arguments.content["settings"],{"main"={}},false);
+		var settings = {"main"={}};
+		// add default styling
+		deepStructAppend(settings,this.contentSections[arguments.content.type].defaultStyles);
 
 		// Add in settings from classes e.g. scheme-whatever, cs-type
 		if (StructKeyExists(arguments.content,"class")) {
-			// to do: some sort of sort order for this.
-			for (local.class in ListToArray(arguments.content.class," ")) {
-				if (StructKeyExists(arguments.styles, local.class)) {
-					deepStructAppend(arguments.content.settings,arguments.styles[local.class]);
+			// make sure we apply the styles in order.
+			for (local.section in arguments.styles) {
+				if (listFindNoCase(arguments.content.class, local.section, " ")) {
+					deepStructAppend(settings,arguments.styles[local.section]);
 				}
 				
 			}
 		}
-
-		// add default styling
-		deepStructAppend(arguments.content.settings.main,this.contentSections[arguments.content.type].defaultStyles,false);
+	
+		if (StructKeyExists(arguments.styles, arguments.content.id)) {
+			deepStructAppend(settings,arguments.styles[arguments.content.id]);
+		}
+		
+		arguments.content["settings"] = settings;
 			
 		try{
 			this.contentSections[arguments.content.type].inheritSettings(settings=arguments.content.settings, media=arguments.media);
@@ -260,7 +256,7 @@ component {
 			local.extendedinfo = {"tagcontext"=e.tagcontext,"content"=arguments.content};
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Error getting media settings" & e.message, 
+				message      = "Error inheriting settings:" & e.message, 
 				detail       = e.detail
 			);
 		}
@@ -277,6 +273,10 @@ component {
 		css &= this.settingsObj.fontVariablesCSS(arguments.styles);
 		css &=  "\n}\n";
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
+		
+		for (var id in arguments.site.containers) {
+			css &= "###id# {grid-area:#id#;}\n";
+		}
 		
 		for (local.layout in arguments.site.layouts) {
 			if (structKeyExists(arguments.styles.layouts,local.layout)) {

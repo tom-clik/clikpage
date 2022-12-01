@@ -81,7 +81,7 @@ for (test in tests) {
 		title=test.title,
 		content="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
 			tempor incididunt ut ",
-		class = "scheme-item scheme-title scheme-#test.id#",
+		class = "scheme-item scheme-title",
 		link = "general_cs.cfm"
 		);
 	if (NOT structKeyExists(test,"image") OR test.image) {
@@ -138,8 +138,10 @@ css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug
 
 	<cfscript>
 	for (id in cs) {
+		writeOutput( "<h1> test #id#</h1>");
 		pageData = contentObj.display(content=cs[id]);
 		writeOutput( pageData.html);
+		writeDump(cs[id].settings.main);
 	}
 	</cfscript>
 	

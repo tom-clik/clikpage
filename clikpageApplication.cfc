@@ -41,7 +41,7 @@ component {
 			application.site = application.siteObj.loadSite(application.config.siteDef);
 			application.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
-			loadStyling(application.config.styledef,true);
+			loadStyling(true);
 
 			application.pageObj.addCss(application.pageObj.content, "styles/styles.css");
 
@@ -60,7 +60,15 @@ component {
 	// Check whether a styling file has been modified. Just playing with this
 	// idea at the minute.
 	private boolean function checkStylesChanged() {
-		local.styleslastmodified = Getfileinfo(application.styleSheetFile).lastmodified;
+
+		local.fileslastmodified = [Getfileinfo(application.config.styledef).lastmodified];
+		arrayAppend(local.fileslastmodified, Getfileinfo(application.config.siteDef).lastmodified);
+
+		local.list = directoryList(application.config.layoutsFolder,true,"query","*.html");
+		
+		arrayAppend(local.fileslastmodified, local.list.columnData("dateLastModified") , true);
+
+		local.styleslastmodified = ArrayMax(local.fileslastmodified);
 
 		if (! StructKeyExists(application,"styleslastmodified" ) OR application.styleslastmodified < local.styleslastmodified) {
 			application.styleslastmodified = local.styleslastmodified;
@@ -76,15 +84,13 @@ component {
 	}
 
 	// TODO: formalise this. Add path for styles somehow
-	private void function loadStyling(styledef, boolean reload=false)	 {
+	private void function loadStyling(boolean reload=false)	 {
 		
-		application.styleSheetFile = arguments.styledef;
-
 		local.update = arguments.reload OR checkStylesChanged();
 
 		if (local.update) {
 			
-			application.styles = application.settingsObj.loadStyleSheet(application.styleSheetFile);
+			application.styles = application.settingsObj.loadStyleSheet(application.config.styledef);
 			
 			local.sitedata = application.layoutsObj.loadAll();
 
@@ -125,7 +131,7 @@ component {
 		  if (request.rc.reload) {
 		  	onApplicationStart();
 		  }
-		  loadStyling(styledef=application.styleSheetFile,reload=request.rc.reload);
+		  loadStyling(reload=request.rc.reload);
 		}
 
 		request.prc.pageContent = application.pageObj.getContent();
@@ -201,7 +207,6 @@ component {
 				request.prc.pageContent.css &= application.contentObj.css(cs[content]);
 
 				local.tag=request.prc.layout.layout.select("###content#").first();
-				local.tag.tagName("div");
 				
 				// shouldn't be needed
 				//local.tag.removeAttr("type");

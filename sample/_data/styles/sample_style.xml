@@ -42,10 +42,34 @@
 				</inner>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
-					<grid-template-areas>"topnav" "header" "content" "footer"</grid-template-areas>
-					<grid-template-rows>min-content min-content 1fr min-content</grid-template-rows>
+					<grid-template-areas>"header" "pagecontent" "footer"</grid-template-areas>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+					
 				</grid>
 			</ubercontainer>
+
+			<pagecontent>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"topnav content"</grid-template-areas>
+					<grid-template-columns>180px 1fr</grid-template-columns>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</pagecontent>
+
+			<topnav>
+				<mobile>
+					<show>0</show>
+				</mobile>
+			</topnav>
 
 			<header>
 				<inner>
@@ -91,23 +115,15 @@
 			<contentwrap>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
-					<grid-template-areas>"subcol maincol xcol"</grid-template-areas>
-					<grid-template-columns>180px 1fr 140px</grid-template-columns>
+					<grid-template-areas>"maincol xcol"</grid-template-areas>
+					<grid-template-columns>1fr 140px</grid-template-columns>
 				</grid>
 				<mid>
 					<grid>
-						<grid-mode>templateareas</grid-mode>
-						<grid-template-areas>"subcol maincol" "subcol xcol"</grid-template-areas>
-						<grid-template-columns>180px 1fr</grid-template-columns>
+						<grid-mode>none</grid-mode>
 					</grid>
 				</mid>
-				<mobile>
-					<grid>
-						<grid-mode>templateareas</grid-mode>
-						<grid-template-areas>"maincol" "subcol"  "xcol"</grid-template-areas>
-						<grid-template-columns>1fr</grid-template-columns>
-					</grid>
-				</mobile>
+				
 			</contentwrap>			
 
 			<scheme-spanning>
@@ -124,19 +140,22 @@
 			<footer>
 
 				<grid>
-					<grid-mode>fixedcols</grid-mode>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas> "footer_right footer_mid footer_left"</grid-template-areas>
+					<grid-template-columns>20% 30% 1fr</grid-template-columns>
 				</grid>
+
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
 
 				<inner>
 					<max-width>1200</max-width>
 					<align>center</align>
 				</inner>
 				
-				<mobile>
-					<grid>
-						<grid-mode>none</grid-mode>
-					</grid>
-				</mobile>
 
 			</footer>
 			
@@ -148,23 +167,12 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"subcol maincol"</grid-template-areas>
-					<grid-template-columns>20% 1fr</grid-template-columns>
+					<grid-template-columns>240px 1fr</grid-template-columns>
 				</grid>
 			</contentwrap>
 			
 		</double>
 
-		<single>
-
-			<contentwrap>
-				<grid>
-					<grid-mode>templateareas</grid-mode>
-					<grid-template-areas>"maincol"</grid-template-areas>
-					<grid-template-columns>1fr</grid-template-columns>
-				</grid>
-			</contentwrap>
-
-		</single>
 		
 	</layouts>
 
@@ -185,7 +193,7 @@
 
 		<sitetitle>
 			
-			<color>panel-text</color>		
+			<color>paneltext</color>		
 			<margin>12 12 12 0</margin>
 			<font-size>220%</font-size>
 		
@@ -215,12 +223,8 @@
 		</header>
 
 		<mainmenu>
-
-			<menu>
-				<orientation>vertical</orientation>
-				<align>left</align>
-			</menu>
-
+			<orientation>vertical</orientation>
+			<align>left</align>
 		</mainmenu>
 
 		<topmenu>
@@ -314,21 +318,16 @@
 
 		<footermenu>
 			
-			<menu>
-				<flex>true</flex>
-			</menu>
-
-			<border>
-				<width>1</width>
-				<color>myfavcolor</color>
-			</border>
-
-			<padding>2</padding>
-			
+			<flex>true</flex>
+			<align>right</align>
+			<border-type>dividers</border-type>
+			<menu-item-padding>4px 12px</menu-item-padding>
+			<menu-gap>0</menu-gap>
+			<menu-item-border>1px</menu-item-border>
+			<menu-border-color>myfavcolor</menu-border-color>
+			<stretch>0</stretch>
 			<mobile>
-				<menu>
-					<orientation>vertical</orientation>
-				</menu>
+				<orientation>vertical</orientation>
 			</mobile>
 
 		</footermenu>
@@ -394,7 +393,7 @@
 
 		<sectiontitle>
 			
-			<margin>0 0 1em 0</margin>
+			<margin>0 0 0.4em 0</margin>
 			
 		</sectiontitle>
 

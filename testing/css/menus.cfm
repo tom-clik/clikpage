@@ -46,13 +46,13 @@ menustyles.main = {
 
 menustyles.max = {
 	"menu-icon-display": "inline-block",
-	"menu-text-align": "right",
+	"align": "right",
 	"menu-item-padding": "4px 12px",
-	"border-type" :"boxes",
+	"border-type" :"dividers",
 	"menu-gap":"0",
 	"menu-item-border": "1px",
 	"flex": 1,
-	"stretch":1
+	"stretch":0
 }
 
 

@@ -21,6 +21,22 @@
 /*****************************************************************
 *                             Layouts                            *
 ******************************************************************/
+#content {grid-area:content;}
+#maincol {grid-area:maincol;}
+#maincol_left {grid-area:maincol_left;}
+#footer {grid-area:footer;}
+#topnav {grid-area:topnav;}
+#contentwrap {grid-area:contentwrap;}
+#maincol_right {grid-area:maincol_right;}
+#navbuttons {grid-area:navbuttons;}
+#maincol_top {grid-area:maincol_top;}
+#xcol {grid-area:xcol;}
+#ubercontainer {grid-area:ubercontainer;}
+#header {grid-area:header;}
+#subcol {grid-area:subcol;}
+#maincol_bottom {grid-area:maincol_bottom;}
+#contentfooter {grid-area:contentfooter;}
+#contentheader {grid-area:contentheader;}
 /* No styles defined for layout subfolder1.subsubfolder.testlayout5 */
 /* Layout subfolder1.testlayout4 */
 body.template-subfolder1.testlayout4 #contentwrap {

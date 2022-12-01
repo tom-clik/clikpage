@@ -11,12 +11,12 @@
 		<contacttel>+44 12345 545454</contacttel>
 	</meta>
 
-	<stylesheet></stylesheet>
 	<layout>homepage</layout>
 
 	<sections>
 		<section code="index">
 			<title>Home page</title>
+			
 			<copy>
 				<![CDATA[<p>Home page text copy edited as part of the section.</p>]]>
 			</copy>
@@ -37,11 +37,10 @@
 
 		<section code="about">
 			<title>About</title>
-			<layout>single</layout>
 			<intro>
 				<![CDATA[This is the section introduction. It's a separate field]]>
 			</intro>
-			<copy>
+			<copy> 
 				<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>
 
 				<p>We offer a range of mainly technical services, specialising in Adobe ColdFusion and SQL Server development. We are based in London's West End and work primarily with Central London based clients.</p>
@@ -51,14 +50,12 @@
 		</section>
 		<section code="contact">
 			<title>Contact us</title>
-			<layout>single</layout>
 			<intro>
 				<![CDATA[This form can be used to contact us]]>
 			</intro>
 		</section>
 		<section code="privacy">
 			<title>Privacy</title>
-			<layout>single</layout>
 			<copy>
 				<![CDATA[Your privacy statement must accurately reflect your site's data collection and use. Your privacy statement should be clear, direct and easy to understand. Keep technical jargon and legal terminology to a minimum. If you decide to modify how you use personal information, you must inform your users.]]>
 			</copy>

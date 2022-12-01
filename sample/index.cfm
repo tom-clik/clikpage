@@ -1,5 +1,3 @@
 <cfscript>
 
-
-
 </cfscript>
