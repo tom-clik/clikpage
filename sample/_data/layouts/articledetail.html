@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Test layout 6</title>
-	<meta name="description" content="A test layout to extend another">
+	<title>Article Detail</title>
+	<meta name="description" content="Shows standard article with navigation for previous and next">
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-extends="testlayout1/testlayout1" columns="S-M-X">
+<body data-extends="double">
 	
 	<div id="subcol">
 		<div id="navbuttons" class="scheme-navbuttons">
@@ -24,11 +24,11 @@
 				</href>
 				<content>
 					{{record.next_title}}				
-				</content>
-				
+				</content>				
 			</content>
 		</div>
 	</div>
+	
 	<div id="maincol">
 
 		<div id="maincol_top">
@@ -48,14 +48,14 @@
 			</content>
 
 			<content id="articleintro" class="scheme-intro" type="text">
-				<title>Section intro</title>
+				<title>Article intro</title>
 				<content>
 				{{record.intro}}
 				</content>
 			</content>
 
 			<content id="articlecopy" type="text" data-notes="Notes here">
-				<title>Section copy</title>
+				<title>Article copy</title>
 				<content>
 				{{record.copy}}
 				</content>
@@ -65,7 +65,7 @@
 
 
 		<div id="maincol_bottom">
-			 
+			<!-- flex-start flex-end flex-between flex-center flex-around] -->
 			
 		</div>	
 

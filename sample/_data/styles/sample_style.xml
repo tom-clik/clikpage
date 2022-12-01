@@ -29,14 +29,142 @@
 
 	<layouts>
 
-		<testlayout>
-			<inner-width>1200px</inner-width>
-		</testlayout>
+		<main>
+			
+			<body>
+				<padding>0</padding>
+			</body>
+	
+			<ubercontainer>
+				<height>100%</height>
+				<inner>
+					<height>100%</height>
+				</inner>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"topnav" "header" "content" "footer"</grid-template-areas>
+					<grid-template-rows>min-content min-content 1fr min-content</grid-template-rows>
+				</grid>
+			</ubercontainer>
+
+			<header>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+					<padding>12</padding>
+				</inner>
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+					<grid-template-columns>max-content 1fr</grid-template-columns>
+				</grid>
+				
+				<mobile>
+					<inner>
+						<max-width>auto</max-width>
+						<padding>4</padding>
+					</inner>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</header>
+
+			<content>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"contentheader" "contentwrap" "contentfooter"</grid-template-areas>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+				</grid>
+			</content>
+
+			<contentfooter>
+				<grid>
+					<grid-mode>auto</grid-mode>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</contentfooter>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"subcol maincol xcol"</grid-template-areas>
+					<grid-template-columns>180px 1fr 140px</grid-template-columns>
+				</grid>
+				<mid>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"subcol maincol" "subcol xcol"</grid-template-areas>
+						<grid-template-columns>180px 1fr</grid-template-columns>
+					</grid>
+				</mid>
+				<mobile>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"maincol" "subcol"  "xcol"</grid-template-areas>
+						<grid-template-columns>1fr</grid-template-columns>
+					</grid>
+				</mobile>
+			</contentwrap>			
+
+			<scheme-spanning>
+				<inner>
+					<max-width>1200px</max-width>
+					<align>center</align>
+					<padding>8px</padding>
+				</inner>
+				<mobile>
+					<padding>4px</padding>
+				</mobile>
+			</scheme-spanning>
+
+			<footer>
+
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+				</grid>
+
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+				
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+
+			</footer>
+			
+		</main>
 		
-		<testlayout3>
-			<subcolwidth>20%</subcolwidth>
-			<xcolwidth>0%</xcolwidth>
-		</testlayout3>
+		<double>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"subcol maincol"</grid-template-areas>
+					<grid-template-columns>20% 1fr</grid-template-columns>
+				</grid>
+			</contentwrap>
+			
+		</double>
+
+		<single>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"maincol"</grid-template-areas>
+					<grid-template-columns>1fr</grid-template-columns>
+				</grid>
+			</contentwrap>
+
+		</single>
 		
 	</layouts>
 
@@ -69,8 +197,9 @@
 				<max-width>1200</max-width>
 				<align>center</align>
 			</inner>
+			
 			<background>
-				<color>panel-bg</color>
+				<color>panelbg</color>
 			</background>
 			
 			<grid>

@@ -17,7 +17,7 @@ component {
 	 * @debug   Whether to use debug scripts/stylesheets. Note that this can be overridden on any given display function call.
 	 *
 	 */
-	public pageObj function init(string cssdef="local",string jsdef="local", boolean debug=false) {
+	public page function init(string cssdef="local",string jsdef="local", boolean debug=false) {
 		
 		this.content = {
 			"title"="Page object",
@@ -43,7 +43,7 @@ component {
 			}
 			local.jsDef = loadDefFile(arguments.jsdef);
 			variables.hasStaticJS = true;
-			this.jsStaticFiles =  CreateObject("component", "clikpage.staticFiles.staticFiles").init(local.jsDef);	
+			this.jsStaticFiles =  new clikpage.staticFiles.staticFiles(local.jsDef);
 		}
 		else {
 			variables.hasStaticJS = false;

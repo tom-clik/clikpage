@@ -22,11 +22,11 @@ component extends="clikpage.clikpageApplication" { //
 	this.debug = 1;
 	
 	public boolean function startApp(){
-
+		
 		application.config = {
-			layoutsFolder=ExpandPath("layouts"),
+			layoutsFolder=ExpandPath("_data/layouts"),
 			siteDef=ExpandPath("_data/sampleSite.xml"),
-			styledef=ExpandPath("styles/sample_style.xml")
+			styledef=ExpandPath("_data/styles/sample_style.xml")
 		};
 
 		return true;

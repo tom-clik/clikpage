@@ -22,35 +22,10 @@ fakesite = deserializeJSON(fileRead(ExpandPath("./testsite.json")));
 outfile = ExpandPath("test_settings.css");
 
 contentObj.debug = true;
-css = siteCSS(styles);
-css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
+css = contentObj.siteCSS(site=fakesite,styles=styles);
 
 fileWrite(outfile, css);
 
 WriteOutput("<pre>" & HtmlEditFormat(css) & "</pre>");
-
-string function siteCSS(required styles) {
-	
-	var css = "";
-	css &= ":root {\n";
-	css &= settingsObj.colorVariablesCSS(styles);
-	css &= settingsObj.fontVariablesCSS(styles);
-	css &=  "\n}\n";
-	css &= settingsObj.CSSCommentHeader("Layouts");
-		
-	for (local.layout in arguments.styles.layouts) {
-		css &= "/* Layout #local.layout# */\n"
-		css &= settingsObj.layoutCss(containers=fakesite.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");
-	}
-	css &= settingsObj.CSSCommentHeader("Container styling");
-	css &= settingsObj.layoutCss(containers=fakesite.containers, styles=arguments.styles.content,media=arguments.styles.media);
-
-	css &= settingsObj.CSSCommentHeader("Content styling");
-	
-	css &= contentObj.contentCSS(content_sections=fakesite.content,styles=arguments.styles.content,media=arguments.styles.media);
-	
-	return css;
-}
-
 
 </cfscript>

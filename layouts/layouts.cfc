@@ -57,26 +57,79 @@ component name="layouts" {
 			);
 		}
 		
+		this.cacheClear();
+
+		return this;
+
+	}
+	
+	public void function cacheClear() {
 		variables.cache = {};
 		variables.cache.layouts = {};
 		variables.cache.html = {};
+	}
 
-		return this;
+	public struct function loadAll() {
+
+		this.cacheClear();
+
+		var data = {
+			"layouts" = [=],
+			"content" = {},
+			"containers" = {}
+		};
+
+		local.list = directoryList(variables.layoutBase,true,"query","*.html");
+		
+		local.base = ArrayToList(ListToArray(variables.layoutBase,"\/"),".");
+		for (local.filedata in list) {
+			local.dir = ArrayToList(ListToArray(local.filedata.directory,"\/"),".");
+			
+			if (local.dir neq local.base) {
+				local.subfolder = replace(local.dir, local.base & ".", "") & ".";
+			}
+			else {
+				local.subfolder = "";
+			}
+
+			local.id = local.subfolder & ListFirst(local.filedata.name,".");
+
+			data.layouts[local.id] = 1;
+			local.layout = getLayout(local.id);
+			StructAppend(data.content,local.layout.content);
+			StructAppend(data.containers,local.layout.containers);
+		}
+
+		return data;
 
 	}
 
 	/**
 	 * @hint return layout struct
 	 *
-	 * 
-	 * @id    ID of layout to load (relative path of layout without file extension)
+	 * @id    ID of layout to load (paths should be dot paths.)
 	 *
-	 * 
 	 */
 	public struct function getLayout(required string id) {
 
+		local.layout = duplicate( loadLayout(arguments.id), true);
+		local.layout.layout = variables.cache.layouts[arguments.id].layout.clone();
+
+		return local.layout;
+
+	}
+
+	/**
+	 * @hint load layout from file and process
+	 *
+	 * Caches response but you must always use getLayout if you want to use the returned
+	 * value in any way.
+	 *
+	 */
+	private struct function loadLayout(required string id) {
 		if (! StructKeyExists(variables.cache.layouts, arguments.id)) {
-			local.filename = variables.layoutBase & "\" & arguments.id &".html";
+
+			local.filename = variables.layoutBase & "/" & Replace(arguments.id,".","/","all") & ".html";
 			
 			if (!FileExists(local.filename)) {
 				throw("Layout #arguments.id# not found [#local.filename#,#variables.layoutBase#,#arguments.id#]");
@@ -103,35 +156,35 @@ component name="layouts" {
 			}
 
 			// data attributes
-			local.body = this.coldsoup.XMLNode2Struct(local.layoutObj["layout"].select("body").first());
+			local.body = this.coldsoup.XMLNode2Struct(local.layoutObj.layout.select("body").first());
 			
 			if (StructKeyExists(local.body,"data")) {
 				if (StructKeyExists(local.body.data,"extends")) {
+					local.layoutObj["extends"] = local.body.data.extends;
 					extendLayout(local.layoutObj, local.body.data.extends);		
 				}
-				if (StructKeyExists(local.body.data,"columns")) {
-					local.layoutObj["columns"] = local.body.data.columns;	
-					local.layoutObj.layout.body().removeAttr("data-columns")	;
-				}
+				
 			}
 
-			// local.layoutObj["layout"].select("div[id]").addClass("container");
 			parseContainers(local.layoutObj);
 			parseContentSections(local.layoutObj);
 
 			variables.cache.layouts[arguments.id] = local.layoutObj;
 
+			variables.cache.layouts[arguments.id]["bodyClass"] = bodyClass(arguments.id);
+			
+
 		}
 
 		return variables.cache.layouts[arguments.id];
-
+		
 	}
 
 	public string function getHTML(required layoutObj) {
 
 		addInners(arguments.layoutObj);
 
-		return arguments.layoutObj.body().html();
+		return arguments.layoutObj.layout.body().html();
 
 	}
 
@@ -255,19 +308,53 @@ component name="layouts" {
 	TO DO: biggest outstanding question is what to do about inners
 	Do we only add them if they are spanning? If so how o we know whether to apply e.g. grid settings
 	to the inners
-
+	
 	*/
-	private void function addInners(required layoutObj) {
-		// inner divs applied to children of ubercontainer
-		// if you don't want this, don't use ubercontainer...
-		local.test = arguments.layoutObj.layout.select("##ubercontainer > div");
-		for (local.temp in local.test) {
-			local.temp.html("<div class='inner'>" & local.temp.html() & "</div>");
-			// writeDump(local.test2.outerHtml());
-			// writeOutput(htmlEditFormat(local.temp.outerHtml()));
-			//wrap("<div class='inner'></div>")
+	public void function addInners(required layoutObj) {
+		// add inners
+		local.divs = [];
+		local.test = arguments.layoutObj.layout.select("div");
+		
+		for (local.div in local.test) {
+			if (local.div.id() != "") {
+				arrayAppend(local.divs, local.div.id());
+			}
+		}
+		
+		for (local.div in local.divs) {
+			local.node = arguments.layoutObj.layout.select("###local.div#");
+			local.node.html("<div class='inner'>" & local.node.html() & "</div>");
 		}
 			
+	}
+
+	/**
+	 * @hint Generate css class name for body
+	 *
+	 * 
+	 */
+	public string function bodyClass(required string id) {
+		
+		var classes = {};
+		derivedBodyClass(arguments.id,classes);
+
+		local.names = "";
+		for (local.layout in classes) {
+			local.names = listAppend(local.names, "template-" & local.layout, " ");
+		}
+
+		return local.names;
+	}
+
+	private void function derivedBodyClass(required string id, required struct classes) {
+		
+		arguments.classes[arguments.id]= 1;
+
+		local.layout = loadLayout(arguments.id);
+		if (structKeyExists(local.layout, "extends")) {
+			derivedBodyClass(local.layout.extends,arguments.classes);
+		}
+
 	}
 
 }

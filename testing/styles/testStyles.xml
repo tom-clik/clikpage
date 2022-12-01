@@ -30,10 +30,9 @@
 	<layouts>
 
 		<testlayout1>
-
+			
 			<body>
 				<padding>0</padding>
-
 			</body>
 	
 			<ubercontainer>
@@ -122,6 +121,13 @@
 				</mobile>
 			</scheme-spanning>
 
+			<topnav>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</topnav>
+			
 			<footer>
 				<grid>
 					<grid-mode>fixedcols</grid-mode>
@@ -202,7 +208,7 @@
 
 		
 
-		<testlayout4>
+		<subfolder1.testlayout4>
 			
 			<xcol>
 				<show>0</show>
@@ -222,7 +228,7 @@
 					</grid>
 				</mobile>
 			</contentwrap>		
-		</testlayout4>
+		</subfolder1.testlayout4>
 		
 	</layouts>
 

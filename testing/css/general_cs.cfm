@@ -81,7 +81,8 @@ for (test in tests) {
 		title=test.title,
 		content="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
 			tempor incididunt ut ",
-		class = "scheme-item scheme-title scheme-#test.id#"
+		class = "scheme-item scheme-title scheme-#test.id#",
+		link = "general_cs.cfm"
 		);
 	if (NOT structKeyExists(test,"image") OR test.image) {
 		cs[test.id]["image"]="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg";

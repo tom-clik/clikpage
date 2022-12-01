@@ -6,13 +6,13 @@
 
 	<meta>
 		<description>A fine site indeed</description>
-		<copyright><![CDATA[&copy; 2021 Tom Peer]]></copyright>
+		<copyright><![CDATA[&copy; 2022 Tom Peer]]></copyright>
 		<author>Tom Peer</author>
 		<contacttel>+44 12345 545454</contacttel>
 	</meta>
 
 	<stylesheet></stylesheet>
-	<layout>main</layout>
+	<layout>homepage</layout>
 
 	<sections>
 		<section code="index">

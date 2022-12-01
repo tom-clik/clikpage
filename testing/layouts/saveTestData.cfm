@@ -1,6 +1,6 @@
 <cfscript>
-/* This function saves content and layout structs to JSON to allow
-testing of the styles independently 
+/* This script saves content and layout structs to JSON to allow
+testing of the styles independently of the layout object.
 
 ## Synopsis
 
@@ -13,23 +13,13 @@ Just run.
 
 */
 
-inputDir = getDirectoryFromPath(getCurrentTemplatePath());
-outDir = getCanonicalPath(inputDir & "../styles");
+inputDir = expandPath("testlayout1");
+outFile = ExpandPath("../styles/testsite.json");
 
 layoutsObj = new clikpage.layouts.layouts(inputDir);
+data = layoutsObj.loadAll();
 
-data = {
-	"content" = {},
-	"containers" = {}
-};
+fileWrite(outFile,serializeJSON(data));
 
-for (i = 1; i lte 6 ; i++) {
-	mylayout = layoutsObj.getLayout("testlayout1/testlayout#i#");
-	StructAppend(data.content,mylayout.content);
-	StructAppend(data.containers,mylayout.containers);
-}
-
-fileWrite(outDir & "testsite.json",serializeJSON(data));
-
-
+writeOutput("saved to " & outFile & "");
 </cfscript>

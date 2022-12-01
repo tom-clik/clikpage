@@ -25,29 +25,25 @@ component {
 		
 		startApp();
 
+		// TODO: some sort of check
+		//checkConfig();
+
 		try {
 			
 			application.settingsObj = new clikpage.settings.settings(debug=this.debug);
-			application.contentObj = new clikpage.content.content(settingsObj=application.settingsObj);
-
+			application.contentObj = new clikpage.content.content(settingsObj=application.settingsObj,debug=this.debug);
 			application.layoutsObj = new clikpage.layouts.layouts(application.config.layoutsFolder);
 			application.pageObj = new clikpage.page(debug=this.debug);
-			application.pageObj.content.static_css["columns"] = 1;
 			application.pageObj.content.static_css["fonts"] = 1;
+			application.pageObj.content.static_css["content"] = 1;
 			
-
 			application.siteObj = new clikpage.site.site(debug = this.debug);
-			application.siteObj.setdebug(this.debug);
-			application.siteObj.setpreviewurl("index.cfm");
 			application.site = application.siteObj.loadSite(application.config.siteDef);
 			application.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
 			loadStyling(application.config.styledef,true);
 
-			application.pageObj.addCss(application.pageObj.content,"/_assets/css/schemes/columns_schemes.css");
-			application.pageObj.addCss(application.pageObj.content, "styles.css");
-
-
+			application.pageObj.addCss(application.pageObj.content, "styles/styles.css");
 
 		}
 		catch (any e) {
@@ -63,7 +59,7 @@ component {
 
 	// Check whether a styling file has been modified. Just playing with this
 	// idea at the minute.
-	private boolean function checkStylesChanged()	 {
+	private boolean function checkStylesChanged() {
 		local.styleslastmodified = Getfileinfo(application.styleSheetFile).lastmodified;
 
 		if (! StructKeyExists(application,"styleslastmodified" ) OR application.styleslastmodified < local.styleslastmodified) {
@@ -79,7 +75,7 @@ component {
 
 	}
 
-	// complete mess. Get this into the siteObj somehow.
+	// TODO: formalise this. Add path for styles somehow
 	private void function loadStyling(styledef, boolean reload=false)	 {
 		
 		application.styleSheetFile = arguments.styledef;
@@ -87,14 +83,15 @@ component {
 		local.update = arguments.reload OR checkStylesChanged();
 
 		if (local.update) {
-
+			
 			application.styles = application.settingsObj.loadStyleSheet(application.styleSheetFile);
-				
-			// save site styling
-			// TO DO: a formal mechanism for this
-			// Possibly a site root in the siteObject?
-			local.css = application.settingsObj.siteCss(application.styles);
-			FileWrite(ExpandPath("styles.css"), local.css);
+			
+			local.sitedata = application.layoutsObj.loadAll();
+
+			local.css = application.contentObj.siteCSS(site=local.sitedata,styles=application.styles);
+
+			fileWrite(ExpandPath("styles/styles.css"), local.css);
+
 		}
 
 	}
@@ -107,10 +104,21 @@ component {
 		StructAppend(request.rc,url);
 		StructAppend(request.rc,form,true);
 
-		param name="request.rc.section" default="index";
-		param name="request.rc.action" default="index";
-		param name="request.rc.id" default="";
-
+		try {
+			param name="request.rc.section" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
+			param name="request.rc.action" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
+			param name="request.rc.id" default="";
+			if (NOT (request.rc.id eq "" OR IsValid("integer",request.rc.id))) {
+				throw("Invalid ID");
+			}
+		}
+		catch (any e) {
+			if (this.debug) {
+				throw(e);
+			}
+			/* throw a badrequest error on dodgy params */
+			throw(type="badrequest");
+		}
 
 		if (this.debug) {
 		  param name="request.rc.reload" default="false" type="boolean";
@@ -128,26 +136,23 @@ component {
 		application.site.sections[request.rc.section].location = application.siteObj.sectionLocation(site=application.site,section=request.rc.section);
 
 		request.prc.layoutname = application.siteObj.getLayoutName(section=request.prc.section,action=request.rc.action);
-		request.prc.mylayout = application.layoutsObj.getLayout(request.prc.layoutname);
+		request.prc.layout = application.layoutsObj.getLayout(request.prc.layoutname);
 
-		request.prc.pageContent.bodyClass =  application.siteObj.bodyClass(request.prc.mylayout);
+		request.prc.pageContent.bodyClass =  request.prc.layout.bodyClass;
 
 		var cs = {};
 
-		// to do: add as method of layout object
-		request.prc.pageLayout = request.prc.mylayout.layout.clone();
-
 		request.prc.record = {};
 		
-		for (var content in request.prc.mylayout.content) {
+		// todo: add as method of content object
+		for (var content in request.prc.layout.content) {
 			try {
-				var csdata = request.prc.mylayout.content[content];
+				var csdata = request.prc.layout.content[content];
 				
 				cs[content] =  application.contentObj.new(argumentCollection=csdata);
 				//writeDump(cs[content]);
-				application.contentObj.settings(cs[content],application.styles);
+				application.contentObj.settings(content=cs[content],styles=application.styles.content,media=application.styles.media);
 				
-
 				// hack for data
 				// TO DO: re do this when we have proper data set functionality
 				switch (content) {
@@ -175,7 +180,7 @@ component {
 					
 
 				}
-				else if (request.rc.id != "") {
+				else if (request.rc.id != "" AND request.rc.id != 0) {
 					throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
 				}
 
@@ -195,7 +200,7 @@ component {
 
 				request.prc.pageContent.css &= application.contentObj.css(cs[content]);
 
-				local.tag=request.prc.pageLayout.select("###content#").first();
+				local.tag=request.prc.layout.layout.select("###content#").first();
 				local.tag.tagName("div");
 				
 				// shouldn't be needed
@@ -228,7 +233,8 @@ component {
 		
 		try { 
 			request.prc.pageContent.css = application.settingsObj.outputFormat(css=request.prc.pageContent.css,media=application.styles.media);
-			request.prc.pageContent.body = application.layoutsObj.getHTML(request.prc.pageLayout);
+
+			request.prc.pageContent.body = application.layoutsObj.getHTML(request.prc.layout);
 
 			request.prc.pageContent.body = application.siteObj.dataReplace(site=application.site, html=request.prc.pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
 
@@ -247,7 +253,6 @@ component {
 	
 	}
 
-
 	public void function onSessionStart(){
 		
 	}
@@ -256,11 +261,20 @@ component {
 		
 	}
 
-
 	public void function onError(e) {
 		
-		var niceError = ["message"=e.message,"detail"=e.detail,"code"=e.errorcode,"ExtendedInfo"=deserializeJSON(e.ExtendedInfo)];
-		
+		var niceError = [
+			"usermessage"="Sorry, an error has occurred",
+			"message"=arguments.e.message,
+			"detail"=arguments.e.detail,
+			"code"=arguments.e.errorcode,
+			"ExtendedInfo"=deserializeJSON(arguments.e.ExtendedInfo),
+			"type"=arguments.e.type,
+			"statuscode"=500,
+			"statustext"="Error",
+			"report"=1
+		];
+
 		// supply original tag context in extended info
 		if (IsDefined("niceError.ExtendedInfo.tagcontext")) {
 			niceError["tagcontext"] =  niceError.ExtendedInfo.tagcontext;
@@ -270,25 +284,52 @@ component {
 			niceError["tagcontext"] =  e.TagContext;
 		}
 		
-	
-
+		switch ( niceError.type ) {
+			case  "badrequest": case "validation":
+				niceError.statuscode="400";
+				niceError.statustext="Bad Request";
+				niceError.report = 0;
+				break;
+			case  "forbidden":
+				niceError.statuscode="403";
+				niceError.statustext="Forbidden";
+				niceError.report = 0;
+				break;
+			case  "Unauthorized":
+				niceError.statuscode="401";
+				niceError.statustext="Unauthorized";
+				niceError.report = 0;
+				break;
+			case  "notfound": case  "notfounddetail":case "not found":
+				niceError.statuscode="410";
+				niceError.statustext="Page not found";
+				niceError.report = 0;
+				break;
+			case "ajaxerror":
+				// avoid throwing ajaxerror. better to set isAjaxRequest
+				// and throw normal error
+				request.prc.isAjaxRequest = 1;
+			case  "custom":
+				// custom error messages shopw thrown message
+				niceError.usermessage  = niceError.message;
+				break;
+		}
+		
 		// set to true in any API to always get JSON errors even when testing
 		param name="request.prc.isAjaxRequest" default="false" type="boolean";
 
-		if (e.type == "ajaxError" OR request.prc.isAjaxRequest) {
-			
-			local.errorCode = createUUID();
-			local.filename = this.errorFolder & "/" & local.errorCode & ".html";
-			
-			FileWrite(local.filename,local.errorDump,"utf-8");
-			
+		if (request.prc.isAjaxRequest) {
+
 			local.error = {
-				"status": 500,
-				"filename": local.filename,
-				"message" : e.message,
-				"code": local.errorCode
+				"statustext": niceError.statustext,
+				"statuscode": niceError.statuscode,
+				"message" : niceError.usermessage
+			}			
+
+			if (niceError.report) {
+				local.error["errorID"] = logError(niceError);
 			}
-			
+
 			WriteOutput(serializeJSON(local.error));
 		}
 		else {
@@ -296,14 +337,17 @@ component {
 				writeDump(niceError);
 			}
 			else {
-				handleError(niceError);
+				local.errorCode = logError(niceError);
 				
+				var errortext = "<h1>Error</h1>";
+				errortext &= "<p>Please contact support quoting ref #local.errorCode#</p>";
+				
+				// try to write nice page
 				local.pageWritten = false;
 				if (IsDefined("application.pageObj")) {
 
-					request.content.body = "<h1>Error</h1>";
-					request.content.body &= arguments.e.message;
 					try {
+						request.content.body = errortext;
 						writeOutput(application.pageObj.buildPage(request.content));
 						local.pageWritten = true;
 					}
@@ -312,7 +356,7 @@ component {
 					}
 				}
 				if (NOT local.pageWritten) {
-					writeOutput("Sorry, an error has occurred");
+					writeOutput(errortext);
 				}
 
 			}
@@ -321,9 +365,23 @@ component {
 		
 	}
 
-	// VIRTUAL
-	public void function handleError(struct error) {
-		// DO SOMETHING WITH THE ERROR
+	/**
+	 * Override this function with your own logger.
+	 */
+	public string function logError(required struct error) {
+		
+		local.errorCode = createUUID();
+		
+		try {
+			local.filename = this.errorFolder & "/" & local.errorCode & ".html";
+			writeDump(var=error,output=local.filename,format="html");
+		}
+		catch (any e) {
+			local.errorCode = "n/a";
+		}
+
+		return local.errorCode;
+
 	}
 
 }

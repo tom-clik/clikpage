@@ -1,6 +1,6 @@
 component  accessors="true" {
 
-	property name="cr" type="string" default="#chr(13)##chr(10)#";
+	property name="cr" type="string" default=newLine();
 	property name="debug" type="boolean" default=false;
 	property name="previewurl" type="string" default="index.cfm";
 	property name="mode" type="string" default="preview";
@@ -445,17 +445,6 @@ component  accessors="true" {
 		
 	}
 
-	/**
-	 * @hint Generate css class name for body
-	 *
-	 * 
-	 */
-	public string function bodyClass(required struct layout) {
-		
-		local.columnLayout = StructKeyExists(arguments.layout,"columns") ? arguments.layout.columns : "col-S-M-X mid-S-MX mob-SMX ";
-		local.spanning = true? " spanning": "";
-		// TO DO: MUST DO: inheritance of layout names isn't done!
-		return "layout-testlayout layout-#arguments.layout.id# #local.columnLayout#" & local.spanning;
-	}
+	
 
 }

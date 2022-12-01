@@ -14,7 +14,9 @@ Create a page struct and then output the links for debug mode and live mode.
 
 <cfscript>
 defFile = ExpandPath("test_js.json");
+
 local.tempData = FileRead(defFile);
+
 try {
 	local.jsonData = deserializeJSON(local.tempData);
 }
@@ -25,10 +27,12 @@ catch (Any e) {
 staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=local.jsonData);
 
 count = 1;
+
 for (js in [
-	{"testpackage":true,"main":true,"notdefined":1},
-	{"fuzzy":true},
-	{"menus":true}]
+		{"testpackage":true,"main":true,"notdefined":1},
+		{"fuzzy":true},
+		{"menus":true}
+	]
 	) {
 
 	writeOutput("<h2>Test ###count#</h2>");

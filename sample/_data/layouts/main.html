@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Basic layout</title>
+	<meta name="description" content="Basic three column layout">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+
+		<div id="header">
+			<content type="title" id="sitetitle">
+				{{site.title}}	
+			</content>
+			
+		</div>
+
+		<div id="topnav">
+			<content id="topmenu" type="menu"></content>
+		</div> 
+		
+		<div id="content">
+
+			<div id="contentheader">
+				
+			</div>
+			
+			<div id="contentwrap">
+
+				<div id="subcol">
+				</div>
+				<div id="maincol">
+				</div>
+				<div id="xcol">
+				</div>	
+			</div>
+
+		</div>
+
+		<div id="footer">
+			<content id="footermenu" type="menu"></content>
+			<content id="copyright">{{site.meta.copyright}}</content>
+			<content id="contactme">{{site.meta.contacttel}}</content>
+		</div>
+
+	</div>
+
+</body>
+</html>

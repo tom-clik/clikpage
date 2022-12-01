@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Test layout 5</title>
+	<title>My test layout</title>
 	<meta name="description" content="A test layout to extend another">
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-extends="main">
+<body data-extends="testlayout1" columns="S-M">
 		
 	<div id="maincol">
 
@@ -19,17 +19,19 @@
 				</content>
 			</content>
 
-			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here">
+			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here" class="scheme-intros">
 				<title>Section intro</title>
 				<content>
 				{{section.intro}}
 				</content>
 			</content>
-				
-			<content id="sectionlist" type="articlelist" data-notes="Notes here">
-				<title>Article list</title>
+
+			<content id="sectioncopy" type="text" data-notes="Notes here">
+				<title>Section copy</title>
+				<content>
+				{{section.copy}}
+				</content>
 			</content>
-			
 		</div>	
 
 

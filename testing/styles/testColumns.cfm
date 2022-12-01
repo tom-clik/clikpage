@@ -31,11 +31,22 @@ if (NOT isValid("integer",  url.template, 1, 6)) {
 
 request.prc.template = "testlayout" & url.template;
 
-layoutroot = expandPath("../layouts");
+// were playing around with sub folders for templates
+switch (url.template) {
+	case 5:
+		request.prc.template = "subfolder1.subsubfolder." & request.prc.template;
+	break;
+	case 4: case 6:
+		request.prc.template = "subfolder1." & request.prc.template;
+	break;
+
+}
+
+layoutroot = expandPath("../layouts/testlayout1");
 
 layoutsObj = new clikpage.layouts.layouts(layoutroot);
 
-mylayout = layoutsObj.getLayout("testlayout1/#request.prc.template#");
+mylayout = layoutsObj.getLayout("#request.prc.template#");
 
 mylayout.layout.head().append("<style></style>");
 

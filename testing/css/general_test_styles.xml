@@ -46,7 +46,14 @@
 				<margin>0</margin>
 				<font-size>1.4em</font-size>
 				<font-weight>bold</font-weight>
+
 			</title>
+			
+			<hover>
+				<title>
+					<color>panel-bg</color>
+				</title>
+			</hover>
 		</scheme-title>
 
 		<scheme-panels>
@@ -56,10 +63,16 @@
 				</background>
 				<color>panel-text</color>
 			</title>
+			<hover>
+				<title>
+					<color>panel-text</color>
+				</title>
+			</hover>
+			
 		</scheme-panels>	
 
 		<scheme-item>
-			
+
 			<margin>
 				12 0
 			</margin>

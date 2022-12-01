@@ -7,11 +7,12 @@ component {
 	*/
 	public content function init (
 		    required   any      settingsObj,
-			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button"
+			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button",
+					   boolean  debug=false
 		)  output=false {
 		
 		this.contentSections = {};
-		this.debug = false;
+		this.debug = arguments.debug;
 		
 		for (local.type in ListToArray(arguments.types)) {
 			load(local.type);
@@ -265,7 +266,38 @@ component {
 		}
 		
 
-	}	
+	}
+
+	string function siteCSS(required site, required styles) {
+	
+		var css = "";
+		
+		css &= ":root {\n";
+		css &= this.settingsObj.colorVariablesCSS(arguments.styles);
+		css &= this.settingsObj.fontVariablesCSS(arguments.styles);
+		css &=  "\n}\n";
+		css &= this.settingsObj.CSSCommentHeader("Layouts");
+		
+		for (local.layout in arguments.site.layouts) {
+			if (structKeyExists(arguments.styles.layouts,local.layout)) {
+				css &= "/* Layout #local.layout# */\n"
+				css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");
+			}
+			else {
+				css &= "/* No styles defined for layout #local.layout# */\n"
+			}
+		}
+
+		css &= this.settingsObj.CSSCommentHeader("Container styling");
+		css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.content,media=arguments.styles.media);
+
+		css &= this.settingsObj.CSSCommentHeader("Content styling");
+		
+		css &= contentCSS(content_sections=arguments.site.content,styles=arguments.styles.content,media=arguments.styles.media);
+		css = this.settingsObj.outputFormat(css=css,media=arguments.styles.media,debug=this.debug);
+		
+		return css;
+	}
 
 
 	/**
@@ -489,7 +521,9 @@ component {
 		return retVal;
 	}
 
-
+	/**
+	 * Return available options for a given type and setting value
+	 */
 	public array function options(required string type, required string setting) {
 		try {
 			

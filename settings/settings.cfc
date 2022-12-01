@@ -13,30 +13,43 @@
 	/** Load an XML settings definition */
 	public struct function loadStyleSheet(required string filename) output=false  {
 
-		if (!FileExists(arguments.filename)) {
-			throw("Stylesheet #arguments.filename# not found");
-		}
-
-		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-		local.styles = this.utilsXML.xml2data(local.xmlData);
-		
-		local.defaults = {
-				"colors" :[=],
-				"fonts" :[=],
-				"media" :[=],
-				"layouts" :[=],
-				"content" :[=]
-			};
-		
-		StructAppend(local.styles,local.defaults,false);
-		
-		for (local.default in local.defaults) {
-			if ( NOT IsStruct(local.styles[local.default]) ) {
-				local.styles[local.default] = [=];
+		try {
+			
+			if (!FileExists(arguments.filename)) {
+				throw("Stylesheet #arguments.filename# not found");
 			}
-		}
 
-		checkMedia(local.styles);
+			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
+			local.styles = this.utilsXML.xml2data(local.xmlData);
+			
+			local.defaults = {
+					"colors" :[=],
+					"fonts" :[=],
+					"media" :[=],
+					"layouts" :[=],
+					"content" :[=]
+				};
+			
+			StructAppend(local.styles,local.defaults,false);
+			
+			for (local.default in local.defaults) {
+				if ( NOT IsStruct(local.styles[local.default]) ) {
+					local.styles[local.default] = [=];
+				}
+			}
+
+			checkMedia(local.styles);
+			
+		}
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Unable to parse stylesheet #arguments.filename#:" & e.message, 
+				detail       = e.detail,
+				errorcode    = "settings.loadStyleSheet"		
+			);
+		}
 
 		return local.styles;
 

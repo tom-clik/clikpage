@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Single page</title>
-	<meta name="description" content="A test layout to extend another">
+	<title>Article list</title>
+	<meta name="description" content="">
 	<meta name="author" content="Tom peer">
 </head>
 
@@ -19,29 +19,31 @@
 				</content>
 			</content>
 
-			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here" class="scheme-intros">
+			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here">
 				<title>Section intro</title>
 				<content>
 				{{section.intro}}
 				</content>
 			</content>
-
-			<content id="sectioncopy" type="text" data-notes="Notes here">
-				<title>Section copy</title>
-				<content>
-				{{section.copy}}
-				</content>
-			</content>
+			
 		</div>	
 
-
 		<div id="maincol_bottom">
-			<!-- flex-start flex-end flex-between flex-center flex-around] -->
-			
+			<content id="sectionlist" type="articlelist" data-notes="Notes here">
+				<title>Article list</title>
+			</content>			
 		</div>	
 
 	</div>
 
+	<div id="xcol">
+		<content id="xcolsmaple" type="text">
+			<title>Xcol sample</title>
+			<content>
+				Any old content here
+			</content>
+		</content>	
+	</div>
 
 </body>
 </html>
