@@ -12,6 +12,7 @@ component {
 
 	public void function onApplicationStart()  output=false {
 		application.utils = new utils.utils();
+		application.XMLutils = new utils.XML();
 	}
 
 	public void function onRequestStart() output=false {
