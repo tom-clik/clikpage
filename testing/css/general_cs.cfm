@@ -62,31 +62,38 @@ contentObj.debug = 1;
 /*---*/
 
 tests = [
-	{id="test1",title="No formatting"},
-	{id="test2",title="Headline before image except in mobile"},
-	{id="test3",title="Larger image",class="scheme-panels"},
-	{id="test4",title="Larger image left"},
+	{id="test1",title="No formatting",class=""},
+	{id="test2",title="Headline before image except in mobile",caption=1},
+	{id="test3",title="Larger image with scheme 'panels'",class="scheme-panels"},
+	{id="test4",title="Larger image left",caption=1},
 	{id="test5",title="No image with space still showing",image=false},
-	{id="test6",title="No image with no space",image=false},
+	{id="test6",title="No image with no space [broken]",text="This won't work for listings. We need an option to show some with images and some without with the same styling",image=false},
 	{id="test7",title="Headline is inline"},
-	{id="test8",title="Headline is inline left"}
+	{id="test8",title="Headline is inline left"},
+	{id="test9",title="Flow left",text=lorem(1000)},
+	{id="test10",title="Flow right",text=lorem(1000)}
 ];
 
 cs = [=];
 
 for (test in tests) {
+
+	StructAppend(test,{"image":true,text=lorem(255),class="scheme-item scheme-title",caption=0},false)
 	
 	cs[test.id] = contentObj.new(
 		id=test.id,
 		title=test.title,
-		content="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
-			tempor incididunt ut ",
-		class = "scheme-item scheme-title",
+		content=test.text,
+		class = test.class,
 		link = "general_cs.cfm"
 		);
 	if (NOT structKeyExists(test,"image") OR test.image) {
 		cs[test.id]["image"]="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg";
-		cs[test.id]["caption"]="lorem ipsum";
+		if (test.caption) {
+			cs[test.id]["caption"]="lorem ipsum";
+		}
+		
+
 	}
 	// NB problem with order of schemes. This is in elegant but necessary at the minute
 	if (structKeyExists(test, "class")) {
@@ -141,7 +148,9 @@ css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug
 		writeOutput( "<h1> test #id#</h1>");
 		pageData = contentObj.display(content=cs[id]);
 		writeOutput( pageData.html);
-		writeDump(cs[id].settings.main);
+		// if (id eq "test3") {
+		// 	writeDump(cs[id].settings);
+		// }
 	}
 	</cfscript>
 	
@@ -150,3 +159,19 @@ css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug
 </body>
 
 </html>
+
+
+
+<cfscript>
+function lorem(len) {
+	return left(
+		"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+		, arguments.len);
+
+}
+</cfscript>

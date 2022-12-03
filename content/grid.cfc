@@ -1,15 +1,18 @@
 component extends="contentSection" {
+
+	variables.type = "grid";
+	variables.title = "grid";
+	variables.description = "CSS grid";
+	variables.defaults = {
+		"title"="Untitled grid container",
+		"content"="Undefined grid content",
+	};
+	
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
 
-		variables.type = "grid";
-		variables.title = "grid";
-		variables.description = "CSS grid";
-		variables.defaults = {
-			"title"="Untitled grid container",
-			"content"="Undefined grid content",
-		};
+		
 		// static css definitions
 		variables.static_css = {"grids"=1};
 		

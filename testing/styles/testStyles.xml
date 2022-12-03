@@ -27,10 +27,30 @@
 		<test family="broken"  weights="" styles="" variants="" stretch="" />
 	</fonts>
 
+	<vars>
+		<sitewidth title="Site width" description="Maximum width of site containers" value="1200px" />
+		<sitepadding title="Site padding" description="Added to all spanning elements like header, footer" value="4px 6px" />
+		<sitepaddingmobile title="Site padding (mobile)" description="Site padding in mobile" value="4px" />
+	</vars>
+
 	<layouts>
 
 		<testlayout1>
 			
+			<scheme-spanning>
+				<inner>
+					<max-width>var(--sitewidth)</max-width>
+					<align>center</align>
+					<padding>var(--sitepadding)</padding>
+					<mobile>
+						<inner>
+							<max-width>auto</max-width>
+							<padding>var(--sitepaddingmobile)</padding>
+						</inner>
+					</mobile>
+				</inner>
+			</scheme-spanning>
+		
 			<body>
 				<padding>0</padding>
 			</body>
@@ -48,21 +68,13 @@
 			</ubercontainer>
 
 			<header>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-					<padding>12</padding>
-				</inner>
+				
 				<grid>
 					<grid-mode>fixedcols</grid-mode>
 					<grid-template-columns>max-content 1fr</grid-template-columns>
 				</grid>
 				
 				<mobile>
-					<inner>
-						<max-width>auto</max-width>
-						<padding>4</padding>
-					</inner>
 					<grid>
 						<grid-mode>none</grid-mode>
 					</grid>
@@ -110,17 +122,6 @@
 				</mobile>
 			</contentwrap>			
 
-			<scheme-spanning>
-				<inner>
-					<max-width>1200px</max-width>
-					<align>center</align>
-					<padding>8px</padding>
-				</inner>
-				<mobile>
-					<padding>4px</padding>
-				</mobile>
-			</scheme-spanning>
-
 			<topnav>
 				<inner>
 					<max-width>1200</max-width>
@@ -146,17 +147,15 @@
 
 			</footer>
 
-			<!-- 
-			<inner-width>1090px</inner-width>
-			<column-layout>S-M-X</column-layout>
-			<columns-grid-gap>4</columns-grid-gap>
-			<mid>
-				<column-layout>S-MX</column-layout>
-			</mid>
-			<mobile>
-				<column-layout>SMX</column-layout>
-			</mobile>
-			<row-layout>HF-T-C-F</row-layout> -->
+			<bottomnav>
+				<position>fixed</position>
+				<bottom>0</bottom>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</bottomnav>
+
 		</testlayout1>
 		
 		<testlayout2>
@@ -367,9 +366,9 @@
 		</sectiontitle>
 
 		<list>
-			<articles>
-				<image-align>right</image-align>
-			</articles>
+			<item>
+				<image-align>left</image-align>
+			</item>
 		</list>
 
 		<sectionlist>

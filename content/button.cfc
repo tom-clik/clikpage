@@ -26,18 +26,20 @@
  *  Note you can combine the SVGs into a single file and it will still work. If you do this make sure the view box matches your elements. Use of e.g. bootstrap icons which all have the same viewBox is recommended.
  */
 
-
 component extends="contentSection" {
+	
+	variables.type = "button";
+	variables.title = "Button";
+	variables.description = "Display a navigation button and optional label";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		variables.type = "button";
-		variables.title = "Button";
-		variables.description = "Display a navigation button and optional label";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
+		
 		variables.static_css = {
 			"navbuttons"=1
 		}

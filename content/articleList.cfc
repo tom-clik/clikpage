@@ -1,15 +1,17 @@
 component extends="contentSection" {
 
+	variables.type = "articlelist";
+	variables.title = "Article list";
+	variables.description = "List of content items";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+	
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		variables.type = "articlelist";
-		variables.title = "Article list";
-		variables.description = "List of content items";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
+		
 		
 		variables.static_css = {"panels":1, "images":1};
 		

@@ -113,32 +113,14 @@ component {
 	}
 
 	/**
-	 * Add a class(es) to a content section
-	 * 
-	 * @content The content object
-	 * @class Class to add
-	 */
-	private void function addClass(required struct content, required string class) {
-		
-		var classstr = "cs-" & arguments.content.type;
-
-		ListAppend(classstr,arguments.content.class, " ");
-		
-		return classstr;
-	}
-		
-	/**
 	 * Get class html attribute for a content section
 	 * @content The content object
 	 * @return string to use as value of class attribute
 	 */
 	public string function getClassList(required struct content) {
 		
-		var classstr = "cs-" & arguments.content.type;
-		
-		classstr = ListAppend(classstr,arguments.content.class, " ");
-
-		return classstr;
+		return this.contentSections[arguments.content.type].classes;
+	
 	}
 
 	/**
@@ -230,7 +212,7 @@ component {
 		
 		var settings = {"main"={}};
 		// add default styling
-		deepStructAppend(settings,this.contentSections[arguments.content.type].defaultStyles);
+		deepStructAppend(settings.main,this.contentSections[arguments.content.type].defaultStyles);
 
 		// Add in settings from classes e.g. scheme-whatever, cs-type
 		if (StructKeyExists(arguments.content,"class")) {
@@ -260,8 +242,7 @@ component {
 				detail       = e.detail
 			);
 		}
-		
-
+	
 	}
 
 	string function siteCSS(required site, required styles) {
@@ -271,6 +252,7 @@ component {
 		css &= ":root {\n";
 		css &= this.settingsObj.colorVariablesCSS(arguments.styles);
 		css &= this.settingsObj.fontVariablesCSS(arguments.styles);
+		css &= this.settingsObj.variablesCSS(arguments.styles);
 		css &=  "\n}\n";
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
 		
@@ -278,8 +260,12 @@ component {
 			css &= "###id# {grid-area:#id#;}\n";
 		}
 		
-		for (local.layout in arguments.site.layouts) {
-			if (structKeyExists(arguments.styles.layouts,local.layout)) {
+		// CSS for layouts
+		// watch order -- must do in order they appear in stylesheet
+		// which must match the precendence for inheritance (known issue)
+		// TODO: create body classes that enforce precedence
+		for (local.layout in arguments.styles.layouts) {
+			if (structKeyExists(arguments.site.layouts,local.layout)) {
 				css &= "/* Layout #local.layout# */\n"
 				css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");
 			}
@@ -287,16 +273,19 @@ component {
 				css &= "/* No styles defined for layout #local.layout# */\n"
 			}
 		}
-
+		// CSS for containers
+		// Styling for containers can be defined in the content styling. They will
+		// apply with a simple specificity #id {}
 		css &= this.settingsObj.CSSCommentHeader("Container styling");
 		css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.content,media=arguments.styles.media);
 
+		// Main content section styling
 		css &= this.settingsObj.CSSCommentHeader("Content styling");
-		
 		css &= contentCSS(content_sections=arguments.site.content,styles=arguments.styles.content,media=arguments.styles.media);
 		css = this.settingsObj.outputFormat(css=css,media=arguments.styles.media,debug=this.debug);
 		
 		return css;
+
 	}
 
 
@@ -380,7 +369,7 @@ component {
 	 * @hint Return standard html for an item with a title, text, and image
 	 *
 	 * This can be used on its own (general) or as part of a listing. Accordingly we need a mechanism
-	 * to apply the necessary classes to the surrounding div. This *isn't* a vestigial remnant from
+	 * to apply the necessary classes to the surrounding div. This _isn't_ a vestigial remnant from
 	 * the old class based styling system, it is just to allow reuse of item html in different cases
 	 * 
 	 * @content  Content section
@@ -402,7 +391,7 @@ component {
 		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.content.title & linkEnd &  "</" & local.titletag & ">\n";
 		cshtml &= "\t<div class='imageWrap'>\n";
 		if (StructKeyExists(arguments.content,"image")) {
-			cshtml &= "\t\t<img src='" & arguments.content.image & "'>\n";
+			cshtml &= "\t\t#linkStart#<img src='" & arguments.content.image & "'>#linkEnd#\n";
 			if (StructKeyExists(arguments.content,"caption")) {
 				cshtml &= "\t\t<div class='caption'>" & arguments.content.caption & "</div>\n";
 			}

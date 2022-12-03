@@ -1,15 +1,18 @@
 component extends="contentSection" {
+
+	variables.type = "menu";
+	variables.title = "Menu";
+	variables.description = "CSS list with styling and interactive options";
+	variables.defaults = {
+		"title"="Untitled Menu",
+		"content"="Undefined menu",
+	};
+	
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
 
-		variables.type = "menu";
-		variables.title = "Menu";
-		variables.description = "CSS list with styling and interactive options";
-		variables.defaults = {
-			"title"="Untitled Menu",
-			"content"="Undefined menu",
-		};
+		
 		// static css definitions
 		variables.static_css = {"menus"=1};
 		variables.static_js ={"menus"=1};

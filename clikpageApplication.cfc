@@ -203,9 +203,7 @@ component {
 						
 						break;
 				}
-
-				request.prc.pageContent.css &= application.contentObj.css(cs[content]);
-
+				
 				local.tag=request.prc.layout.layout.select("###content#").first();
 				
 				// shouldn't be needed

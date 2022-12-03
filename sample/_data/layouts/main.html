@@ -9,15 +9,19 @@
 <body>
 
 	<div id="ubercontainer">
-
-		<div id="header">
+		
+		<div id="header" class="scheme-spanning">
 			<content type="title" id="sitetitle">
 				{{site.title}}	
+			</content>
+
+			<content type="title" id="sitedescription">
+				{{site.meta.description}}	
 			</content>
 			
 		</div>
 		
-		<div id="pagecontent">
+		<div id="pagecontent" class="scheme-spanning">
 			
 			<div id="topnav">
 				<content id="mainmenu" type="menu"></content>
@@ -45,10 +49,14 @@
 			</div>
 		</div>
 		
-		<div id="footer">
+		<div id="footer" class="scheme-spanning">
 			<div id="footer_left"><content id="footermenu" type="menu"></content></div>
 			<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
 			<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
+		</div>
+
+		<div id="bottomnav" class="scheme-spanning">
+			<content id="bottomnav1" type="text">Lorem ispum etc</content>
 		</div>
 
 	</div>

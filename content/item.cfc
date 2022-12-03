@@ -1,18 +1,26 @@
 component extends="contentSection" {
 	
+	variables.type = "item";
+	variables.title = "General content";
+	variables.description = "HTML with optional title and text";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+	
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
 
-		variables.type = "item";
-		variables.title = "General content";
-		variables.description = "HTML with optional title and text";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
-		
 		variables.static_css = {"panels":1, "images":1};
+		this.classes = "item clear";
+		
+		this.selectors = [
+			{"name"="main", "selector"=""},
+			{"name"="image", "selector"=" .imageWrap"},
+			{"name"="title", "selector"=" .title"},
+			{"name"="text", "selector"=" .textWrap"}
+		];
 
 		this.panels = [
 			{"name":"title","panel":"title","selector":" .title"},
@@ -23,18 +31,27 @@ component extends="contentSection" {
 		this.styleDefs = [
 			"htop":{"type":"boolean","description":"Put headline before image"},
 			"image-align":{"type":"halign"},
-			"image-gap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances"},
-			"image-width":{"type":"dimension"},
+			"flow":{"type":"boolean"},
+			"image-gap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances","default":"10px"},
+			"image-width":{"type":"dimension","default":"40%"},
 			"titletag":{"type":"list","list":"h1,h2,h3,h4,h5,h6"},
 			"showtitle":{"type":"boolean"},
 		];
 
 		this.settings = {
+			"flow":false,
 			"titletag":"h3",
 			"showtitle":true,
-			"htop": true,
-			"image-align": 'left'
-		}
+			"htop": false,
+			"image-align": 'center'
+		};
+
+		this.defaultStyles = {
+			"image-width":"40%",
+			"image-gap":"10px",
+			"htop": false,
+			"image-align": 'center'
+		};
 
 		return this;
 	}
@@ -65,7 +82,7 @@ component extends="contentSection" {
 		
 		arguments.content.class = ListAppend(arguments.content.class, "item"," ");
 
-		var cshtml = variables.contentObj.itemHtml(content=arguments.content, settings = arguments.content.settings, classes=classes);
+		var cshtml = variables.contentObj.itemHtml(content=arguments.content, settings = arguments.content.settings.main, classes=classes);
 		
 		return cshtml;
 
@@ -79,32 +96,51 @@ component extends="contentSection" {
 		local.widths = "";
 		local.rows = "";
 
-		//  htop  | adjust grid template rows to place title on top in spanning column
-		local.htop = false;
-		if (StructKeyExists(arguments.styles,"htop")) {
-			data.main &= "/* htop: #arguments.styles.htop#  */\n";
+		if (arguments.styles.flow) {
+			data.main &= "\tdisplay:block;\n";
+			data.image &= "\tmargin-bottom:var(--item-gridgap);\n";
+			switch (arguments.styles["image-align"]) {
+				case "left":
+					data.image &= "\tfloat:left;\n";
+					data.image &= "\twidth:var(--image-width);\n";
+					data.image &= "\tmargin-right:var(--item-gridgap);\n";
+					data.image &= "\tmargin-left:0;\n";
+					break;
+				case "right":
+					data.image &= "\tfloat:right;\n";
+					data.image &= "\twidth:var(--image-width);\n";
+					data.image &= "\tmargin-right:0;\n";
+					data.image &= "\tmargin-left:var(--item-gridgap);\n";
+					break;
+				case "center":	
+					data.image &= "\tfloat:none;\n";
+					data.image &= "\twidth:100%;\n";
+					data.image &= "\tmargin-left:0;\n";
+					data.image &= "\tmargin-right:0;\n";
+					break;
+
+			}
 			
+		}
+		//  htop  | adjust grid template rows to place title on top in spanning column
+		else {
+			data.image &= "\tfloat:none;\n";
+			data.image &= "\twidth:100%;\n";
+			data.main &= "\tdisplay:grid;\n";
 			if (arguments.styles.htop) {
-				local.htop = true;
 				local.areas = """title"" ""imageWrap"" ""textWrap""";
 			}
-		}
-		else {
-			data.main &= "/* no htop  */\n";
-		}
-
-		if (StructKeyExists(arguments.styles,"image-gap")) {
-			data.main &= "\t--image-gap: #arguments.styles["image-gap"]#;\n";	
-		}
-
-		// imagealign          | left|center|right
-		local.align = "center";
-		if (StructKeyExists(arguments.styles,"image-align")) {
 			
+			if (StructKeyExists(arguments.styles,"image-gap")) {
+				data.main &= "\t--item-gridgap: #arguments.styles["image-gap"]#;\n";	
+			}
+
+			// imagealign          | left|center|right
+				
 			switch (arguments.styles["image-align"]) {
 				case "left":
 					local.widths = "var(--image-width) auto";
-					if (local.htop) {
+					if (arguments.styles.htop) {
 						local.areas = """title title"" ""imageWrap textWrap""";	
 					}
 					else {
@@ -114,20 +150,21 @@ component extends="contentSection" {
 				break;
 				case "center":
 					local.widths = "1fr";
-					if (local.htop) {
+					if (arguments.styles.htop) {
 						local.areas = """title"" ""imageWrap"" ""textWrap""";	
 					}
 					else {
 						local.areas = """imageWrap"" ""title"" ""textWrap""";	
 					}
 					local.rows = "min-content min-content auto";
+					data.image &= "\tmargin-left:0;\n";
+					data.image &= "\tmargin-right:0;\n";
 
 				break;
 				case "right":
 					local.widths = "auto var(--image-width)";
 					local.rows = "min-content 1fr";
-					local.align = "right";
-					if (local.htop) {
+					if (arguments.styles.htop) {
 						local.areas = """title title"" ""textWrap imageWrap""";	
 					}
 					else {
@@ -137,6 +174,7 @@ component extends="contentSection" {
 			}
 			
 		}
+
 		if (local.areas != "") {
 			data.main &= "\t--item-grid-template-areas: #local.areas#;\n";
 		}

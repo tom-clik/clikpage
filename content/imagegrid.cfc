@@ -1,16 +1,17 @@
 component extends="contentSection" {
 
+	variables.type = "imagegrid";
+	variables.title = "Image grid";
+	variables.description = "Images in grid";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		variables.type = "imagegrid";
-		variables.title = "Image grid";
-		variables.description = "Images in grid";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
-
+		
 		variables.static_css = {"images"=1,"colorbox"=1};
 		variables.static_js = {"masonry"=1,"colorbox"=1};
 		

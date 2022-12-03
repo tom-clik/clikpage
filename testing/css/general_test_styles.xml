@@ -47,18 +47,18 @@
 				<margin>0</margin>
 				<font-size>1.4em</font-size>
 				<font-weight>bold</font-weight>
-
 			</title>
-			
+
 			<hover>
 				<title>
 					<color>panel-bg</color>
 				</title>
 			</hover>
+
 		</scheme-title>
 
 		<scheme-item>
-
+			<image-align>left</image-align>
 			<margin>
 				12 0
 			</margin>
@@ -70,68 +70,52 @@
 				<color>bordercolor</color>
 			</border>
 			<title>
-				<padding>12px</padding>
+				<padding>0</padding>
 			</title>
 			<text>
-				<padding>8px</padding>
+				<padding>0</padding>
 			</text>
+			<mobile>
+				<image-align>center</image-align>
+			</mobile>
 			
 		</scheme-item>
 
 		<scheme-panels>
 			<padding>0</padding>
+
 			<title>
 				<background>
 					<color>panel-bg</color>
 				</background>
 				<color>panel-text</color>
+				<padding>4</padding>
 			</title>
+			<text>
+				<padding>4</padding>
+			</text>
 			<image>
-				<padding>12</padding>
+				<padding>0</padding>
 			</image>
+			<morelink>...more</morelink>
 			<hover>
 				<title>
-					<color>panel-text</color>
+					<color>textcolor</color>
 				</title>
 			</hover>
 			
 		</scheme-panels>	
-
-
-		<test1>
-			
-			<htop>true</htop>
-			<image-align>left</image-align>
-			<border-width>0px</border-width>
-			<title>
-				<font-weight>bold</font-weight>
-			</title>
-			<image>
-				<border-width>1px</border-width>
-				<border-color>imageborder</border-color>
-			</image>
-			
-			<mobile>
-				<htop>false</htop>
-				<image-align>center</image-align>
-			</mobile>
-		</test1>
-
+	
 		<test2>
-			
 			<htop>true</htop>
-			<image-align>left</image-align>
-			<border-width>0px</border-width>
 			
-			<title>
-				<font-weight>bold</font-weight>
-				<background-color>black</background-color>
-				<color>white</color>
-			</title>
-
 			<image>
-				<border-width>1px</border-width>
-				<border-color>teal</border-color>
+				<margin>2px</margin>
+				<padding>2px</padding>
+				<border>
+					<width>1px</width>
+					<color>imageborder</color>
+				</border>
 			</image>
 			
 			<mobile>
@@ -141,52 +125,37 @@
 		</test2>
 
 		<test3>
-			<titletag>h2></titletag>
+			<titletag>h2</titletag>
 			<htop>true</htop>
-			<image-align>right</image-align>
 			<image-width>66%</image-width>
-			<mobile>
-				<image-align>center</image-align>
-			</mobile>
 		</test3>
 
 		<test4>
 		
 			<htop>true</htop>
 			<image-width>66%</image-width>
-			<image-align>left</image-align>
 			<image-gap>40px</image-gap>
 		
-			<mobile>
-				<image-align>center</image-align>
-			</mobile>
 		</test4>
 
-		<test5>
-			<image-width>40%</image-width>
-			<image-align>left</image-align>
-			<mobile>
-				<image-align>center</image-align>
-			</mobile>
-		</test5>
-
-		<test7>
-			<image-align>left</image-align>
-			<htop>false</htop>
-			<mobile>
-				
-				<image-align>center</image-align>
-			</mobile>
-		</test7>
-
+		<test6>
+			<image-align>center</image-align>
+		</test6>
+		
 		<test8>
 			<image-align>right</image-align>
-			<htop>false</htop>
-			<mobile>
-				<image-align>center</image-align>
-			</mobile>
 		</test8>
 
+		<test9>
+			<flow>1</flow>
+			<mobile><flow>0</flow></mobile>
+		</test9>
+
+		<test10>
+			<image-align>right</image-align>
+			<flow>1</flow>
+			<mobile><flow>0</flow></mobile>
+		</test10>
 
 	</content>
 

@@ -10,21 +10,20 @@
 
 	<div id="ubercontainer">
 
-		<div id="header">
+		<div id="header" class="scheme-spanning">
 			<content type="title" id="sitetitle">
 				{{site.title}}	
 			</content>
 			<content id="topmenu" type="menu"></content>
 		</div>
 
-		<div id="topnav">
+		<div id="topnav" class="scheme-spanning">
 			<content type="text" id="breadcrumb">
 				You are here: {{section.location}}	
 			</content>
 		</div> 
-		
 
-		<div id="content">
+		<div id="content" class="scheme-spanning">
 
 			<div id="contentheader">
 				
@@ -45,24 +44,25 @@
 
 				<div id="xcol">
 				</div>
+
 			</div>
 
 			<div id="contentfooter">
-				<content id="welcome1" data-notes="Notes here">
+				<content id="welcome1">
 					<title>Footer item 1</title>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 					<field-image>../images/harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg</field-image>
 				</content>
-				<content id="welcome2" data-notes="Notes here">
+				<content id="welcome2">
 					<title>Footer item 2</title>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 					<field-image>../images/mica-mota-Y1OUQTZRqMo-unsplash_thumb.jpg</field-image>
 				</content>
-				<content id="welcome3" data-notes="Notes here">
+				<content id="welcome3">
 					<title>Footer item 3</title>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -73,10 +73,16 @@
 
 		</div>
 
-		<div id="footer">
+		<div id="footer" class="scheme-spanning">
 			<content id="footermenu" type="menu"></content>
 			<content id="copyright">{{site.meta.copyright}}</content>
 			<content id="contactme">{{site.meta.contacttel}}</content>
+		</div>
+
+		<div id="bottomnav" class="scheme-spanning">
+			<content id="bottomnav1">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit
+			</content>
 		</div>
 
 	</div>

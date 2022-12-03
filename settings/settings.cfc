@@ -42,7 +42,7 @@
 			
 		}
 		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			local.extendedinfo = {"tagcontext"=e.tagcontext,styles=local.styles};
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
 				message      = "Unable to parse stylesheet #arguments.filename#:" & e.message, 
@@ -94,8 +94,14 @@
 
 			local.styles = arguments.section[local.cs];
 			local.tempStyles = {};
-
+	
 			for (local.medium in arguments.styles.media) {
+				if (NOT IsStruct(local.styles)) {
+					throw(
+						message      = "Styles not struct",
+						detail       = SerializeJSON(local.styles)
+					);
+				}
 				if (StructKeyExists(local.styles,local.medium)) {
 					local.tempStyles["#local.medium#"] = local.styles[local.medium];
 					structDelete(local.styles, local.medium);
@@ -128,7 +134,7 @@
 	 * Loop over a collection of containers and apply basic styling qualified by the template
 	 * name
 	 * 
-	 * @containers Struct of containers. Only IDs used.
+	 * @containers Struct of containers with optional key for class
 	 * @settings   settings (e.g. from layouts>templatename in stylesheet)
 	 * @media      struct of media settings
 	 * @selector   Settings qualififier e.g. body.templatename.
@@ -139,19 +145,35 @@
 
 		var css = "";
 
-		for (var medium in arguments.media ) {
+		for ( var medium in arguments.media ) {
 
 			var media = arguments.media[medium];
 			var section_css = "";
 
-			for (var id in arguments.containers) {
-				if (StructKeyExists(arguments.styles, id)) {
-					if (StructKeyExists(arguments.styles[id], medium)) {
-						local.select = ListAppend(arguments.selector, "###id#", " ");
-						section_css &= containerCss(settings=arguments.styles[id][medium],selector=local.select);
+			for ( var id in arguments.containers ) {
+				
+				local.cs = arguments.containers[id];
+				local.styles = {};
+
+				if ( StructKeyExists(local.cs,"class") ) {
+					// classes must be applied in order they appear in stylesheet
+					for (local.class in arguments.styles) {
+						if ( ListFindNoCase(local.cs.class, local.class, " ") AND 
+						 	StructKeyExists(arguments.styles[local.class], medium) ) {
+							this.utils.deepStructAppend(local.styles, arguments.styles[local.class][medium]);
+						}
 					}
 				}
+
+				if ( StructKeyExists(arguments.styles, id) AND
+					 StructKeyExists(arguments.styles[id], medium)) {
+						this.utils.deepStructAppend(local.styles, arguments.styles[local.id][medium]);
+				}
 				
+				if ( NOT structIsEmpty(local.styles) ) {
+					local.select = ListAppend(arguments.selector, "###id#", " ");
+						section_css &= containerCss(settings=local.styles,selector=local.select);
+				}
 			}
 
 			if (section_css NEQ "") {
@@ -167,7 +189,34 @@
 
 	}
 
-	
+	/**
+	 * CSS for variable definitions
+	 */
+	public string function variablesCSS(required struct settings, boolean debug=this.debug)  output=false {
+
+		local.css = CSSCommentHeader("Vars");
+
+		if (StructKeyExists(arguments.settings,"vars")) {
+			for (local.varname in arguments.settings.vars) {
+				local.var = arguments.settings.vars[local.varname];
+				if (! StructKeyExists(local.var,"value")) {
+					local.css &= "/* No value specified for var #local.varname# */\n";
+				}
+				else {
+					// A var can have a value of another var
+					local.varvalue = Left(local.var.value,2) eq "--" ? "var(#local.var.value#)" : local.var.value; 
+					local.css &= "--#local.varname#: #local.varvalue#;";
+					if (structKeyExists(local.var,"title")) {
+						local.css &= " /* #local.var.title# */";
+					}
+					local.css &= "\n";
+				}	
+			}
+		}
+		
+		return indent(local.css);
+
+	}	
 
 	/** 
 	 * @hint  Generate css for assigning font variable values
@@ -363,6 +412,10 @@
 			}
 		}
 
+		if (StructKeyExists(arguments.settings,"position")) {
+			local.css &= displayPosition(arguments.settings);
+		}
+
 		if (StructKeyExists(arguments.settings,"border")) {
 			local.settings = Duplicate(arguments.settings["border"]);
 			StructAppend(local.settings, {"style":"solid"}, false);
@@ -397,6 +450,58 @@
 
 	}
 
+	private string function displayPosition(required struct settings) {
+		
+		var retVal = ["position:" & arguments.settings.position];
+
+		// var hasPosition = structSome(arguments.settings,
+		// 	function(key,value) {
+		// 		return structKeyExists({"top":1,"bottom":1,"left":1,"right":1}, key);
+		// 	});		
+		
+		var retVal = ["\tposition:" & arguments.settings.position & ";"];
+
+		switch ( arguments.settings.position ) {
+			case "sticky":
+				local.positions = ['top','bottom','left','right'];
+				local.hasPosition = 0;
+				for ( local.position in local.positions ) {
+					if ( structKeyExists( arguments.settings, local.position ) ) {
+						retVal.append( local.position & ":" & displayDimension(arguments.settings[local.position] )  & ";" );
+						local.hasPosition = 1;
+						break;
+					}
+					if ( NOT local.hasPosition ) {
+						retVal.append( "top:0;" );
+					}
+				}
+				break;
+			case "fixed":case "absolute":case "relative":
+				local.ordinals = [['top','bottom'],['left','right']];
+				
+				for ( local.ordinal in local.ordinals ) {
+					local.hasPosition = 0;
+					for ( local.position in local.ordinal ) {
+						if ( structKeyExists( arguments.settings, local.position ) )  {
+							retVal.append( local.position & ":" & displayDimension( arguments.settings[local.position] ) & ";" );
+							local.hasPosition = 1;
+							break;
+						}
+					}
+
+					if ( NOT local.hasPosition ) {
+						retVal.append( local.ordinal[1] & ":0;" );
+					}
+					
+				}
+				break;
+
+		}
+		
+		return retVal.toList( "\n\t" ) & "\n";
+
+	}
+
 	private string function displayProperty(required string name, required string value, string scope="") {
 
 		var retVal = "";
@@ -419,12 +524,20 @@
 
 	}
 
+	/**
+	 * Add dimensions to plain number values and check vars
+	 */
 	private string function displayDimension(required string value) {
+		
 		var retVal = arguments.value;
-		// getting bug where 30.6666666667 <> 30.6666666667 presumably rounding error
-		if (retVal neq "auto" AND Left(val(retVal),6) eq Left(arguments.value,6))	{
+		
+		if (isValid("numeric", retVal)) {
 			retVal &= "px";
 		}
+		else if (Left(retVal,2) eq "--") {
+			retVal = "var(" & retVal & ")";
+		}
+		
 		return retVal;
 	}
 
@@ -454,22 +567,22 @@
 			},false);
 		switch (styles["grid-mode"]) {
 			case "none":
-				arguments.out.item &= "\ngrid-area:unset;\n;";
+				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:block;\n";
 				break;
 			case "auto":
-				arguments.out.item &= "\ngrid-area:unset;\n;";
+				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, minmax(#styles["grid-width"]#, #styles["grid-max-width"]#));\n";
 
 				break;	
 			case "fixedwidth":
-				arguments.out.item &= "\ngrid-area:unset;\n;";
+				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, #styles["grid-width"]#);\n";
 				break;	
 			case "fixedcols":
-				arguments.out.item &= "\ngrid-area:unset;\n;";
+				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
 				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
@@ -592,10 +705,10 @@
 	 * Create a comment box for a CSS page
 	 */
 	public string function CSSCommentHeader(required string title, numeric width=66) {
-	ret = "/*" & repeatString("*", arguments.width-2) & "\n";
-	ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*\n";
-	ret &= "" & repeatString("*", arguments.width) & "/\n";
-	return ret;
-}
+		ret = "/*" & repeatString("*", arguments.width-2) & "\n";
+		ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*\n";
+		ret &= "" & repeatString("*", arguments.width) & "/\n";
+		return ret;
+	}
 
 }

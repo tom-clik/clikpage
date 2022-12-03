@@ -10,18 +10,22 @@ A content section is created using the new() method and passed by reference to e
 
 component {
 
+	variables.type = "base";
+	variables.title = "Base component";
+	variables.description = "The base component shouldn't be used directly.";
+	variables.defaults = {
+		"title"="Untitled",
+		"data"={"text":"Undefined base component"}
+	};
+
 	function init(required content contentObj) {
 		
 		variables.contentObj = arguments.contentObj;
-		variables.type = "base";
-		variables.title = "Base component";
-		variables.description = "The base component shouldn't be used directly.";
-		variables.defaults = {
-			"title"="Untitled",
-			"data"={"text":"Undefined base component"}
-		};
+		
 		variables.static_css = {};
 		variables.static_js = {};
+
+		this.classes = "cs-" & variables.type;		
 
 		// See selectorQualifiedCSS. Shorthand to apply css to sub elements
 		this.selectors = [

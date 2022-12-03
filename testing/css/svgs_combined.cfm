@@ -1,24 +1,39 @@
 <cfscript>
 /*
-Fun with bootstrap icons. The actual file is 1mb so we need to do something to select only the ones
-we want
+Fun with bootstrap icons. 
 
-# Downloading icons
+The actual file is 1mb so we need to do something to select only the ones we want
+
+## Downloading icons
 
 Ensure you have downloaded the whole "sprite" (bootstrap-icons.svg). Don't put them in the repo.
- 
+
+## Synopsis
+
+The file is XML so we can read it and return an array of icons details.
+
+## CDN
+
+This seems to be broken. Can't get the CORS settings to work.
+
 */
-array function readFile(path) {
+mode = "cdn";// local|cdn -- cdn will show individual files.
+path = "graphics/bootstrap-icons.svg";
+cdn = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.2/icons/";
+icons = readFile(ExpandPath(path));
+
+// Read in the file to get list of icons
+array function readFile(filename) {
 	
 	local.res = [];
-	local.filename = ExpandPath(arguments.path);
-	if (! fileExists(local.filename)) {
-		throw(message="File #local.filename# not found. Please download the bootstrap icons (see notes)");
+	
+	if (! fileExists(arguments.filename)) {
+		throw(message="File #arguments.filename# not found. Please download the bootstrap icons (see notes)");
 	}
-	var data = FileRead(local.filename);
+	var data = FileRead(arguments.filename);
 	var coldSoup = new coldSoup();
 
-	var doc = coldSoup.parseXML(FileRead(ExpandPath(arguments.path)));
+	var doc = coldSoup.parseXML(data);
 	var symbols = doc.select("symbol");
 	for (var symbol in symbols) {
 
@@ -32,6 +47,7 @@ array function readFile(path) {
 function displayCode(html) {
 	WriteOutput("<pre>" & HtmlEditFormat(arguments.html) & "<pre>");
 }
+
 
 
 </cfscript>
@@ -119,11 +135,15 @@ function displayCode(html) {
 
 <div class="smallblue scheme-grid scheme-small">
 <cfscript>
-path = "graphics/bootstrap-icons.svg";
+count = 1;
+for (img in icons) {
 
-for (img in readFile(path)) {
-	writeOutput("<div class='cell'><div class='icon'><svg viewBox='0 0 16 16'><use xlink:href='#path####img.id#'></svg></div><h2>#img.id#</h2></div>");
-
+	iconURL = mode eq "local"? "#path####img.id#" : "#cdn##img.id#.svg###img.id#";
+	writeOutput("<div class='cell'><div class='icon'><svg viewBox='0 0 16 16'><use xlink:href='#iconurl#'></svg></div><h2>#img.id#</h2></div>");
+	count++;	
+	if (count gt 20) {
+		break;
+	}
 }
 </cfscript>
 </div>

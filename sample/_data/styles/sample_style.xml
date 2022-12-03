@@ -27,16 +27,37 @@
 		<test font-family="broken"  weights="" styles="" variants="" stretch="" />
 	</fonts>
 
+	<vars>
+		<sitewidth title="Site width" description="Maximum width of site containers" value="1200px" />
+		<sitepadding title="Site padding" description="Added to all spanning elements like header, footer" value="4px 6px" />
+		<sitepaddingmobile title="Site padding (mobile)" description="Site padding in mobile" value="4px" />
+	</vars>
+
 	<layouts>
 
 		<main>
 			
+			<scheme-spanning>
+				<inner>
+					<max-width>var(--sitewidth)</max-width>
+					<align>center</align>
+					<padding>var(--sitepadding)</padding>
+					<mobile>
+						<inner>
+							<max-width>auto</max-width>
+							<padding>var(--sitepaddingmobile)</padding>
+						</inner>
+					</mobile>
+				</inner>
+			</scheme-spanning>
+
 			<body>
 				<padding>0</padding>
 			</body>
 	
 			<ubercontainer>
 				<height>100%</height>
+				<padding>0 0 20px 0</padding>
 				<inner>
 					<height>100%</height>
 				</inner>
@@ -44,15 +65,16 @@
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"header" "pagecontent" "footer"</grid-template-areas>
 					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
-					
 				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
 			</ubercontainer>
 
 			<pagecontent>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-				</inner>
+				
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"topnav content"</grid-template-areas>
@@ -66,17 +88,14 @@
 			</pagecontent>
 
 			<topnav>
+				<padding>8 0</padding>
 				<mobile>
 					<show>0</show>
 				</mobile>
 			</topnav>
 
 			<header>
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-					<padding>12</padding>
-				</inner>
+				
 				<grid>
 					<grid-mode>fixedcols</grid-mode>
 					<grid-template-columns>max-content 1fr</grid-template-columns>
@@ -126,17 +145,6 @@
 				
 			</contentwrap>			
 
-			<scheme-spanning>
-				<inner>
-					<max-width>1200px</max-width>
-					<align>center</align>
-					<padding>8px</padding>
-				</inner>
-				<mobile>
-					<padding>4px</padding>
-				</mobile>
-			</scheme-spanning>
-
 			<footer>
 
 				<grid>
@@ -151,12 +159,6 @@
 					</grid>
 				</mobile>
 
-				<inner>
-					<max-width>1200</max-width>
-					<align>center</align>
-				</inner>
-				
-
 			</footer>
 			
 		</main>
@@ -166,8 +168,8 @@
 			<contentwrap>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
-					<grid-template-areas>"subcol maincol"</grid-template-areas>
-					<grid-template-columns>240px 1fr</grid-template-columns>
+					<grid-template-areas>"maincol xcol"</grid-template-areas>
+					<grid-template-columns>1fr 240px</grid-template-columns>
 				</grid>
 			</contentwrap>
 			
@@ -199,27 +201,21 @@
 		
 		</sitetitle>
 
+		<sitedescription>
+			<position>absolute</position>
+			<top>4px</top>
+			<right>0</right>
+			<mobile>
+				<position>static</position>
+			</mobile>
+		</sitedescription>
+
 		<header>
 		
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
-			
 			<background>
 				<color>panelbg</color>
 			</background>
-			
-			<grid>
-				<gap>0</gap>
-				<grid-template-columns>max-content auto</grid-template-columns>
-			</grid>
-			
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
+		
 		</header>
 
 		<mainmenu>
@@ -264,7 +260,8 @@
 
 			<mobile>
 				<show>0</show>
-			</mobile>			
+			</mobile>		
+
 		</topmenu>
 
 		<footer>
@@ -272,49 +269,24 @@
 			<background>
 				<color>panel-bg</color>
 			</background>
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
 			
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
 		</footer>
-
-		<contentfooter>
-			
-			<grid>
-				<grid>1</grid>
-				<columns>3</columns>
-			</grid>
-		
-			<mid>
-				<grid>
-					<columns>2</columns>
-				</grid>
-			</mid>
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
-		</contentfooter>
 
 		<topnav>
 			
 			<background>
 				<color>light-panel-bg</color>
 			</background>
-			<padding>8 0</padding>
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
-			
+
 		</topnav>
+
+		<bottomnav>
+			<position>fixed</position>
+			<bottom>0px</bottom>
+			<mobile>
+				<position>static</position>
+			</mobile>
+		</bottomnav>
 
 		<footermenu>
 			
@@ -326,7 +298,12 @@
 			<menu-item-border>1px</menu-item-border>
 			<menu-border-color>myfavcolor</menu-border-color>
 			<stretch>0</stretch>
+
 			<mobile>
+				<align>left</align>
+				<menu-item-padding>4px</menu-item-padding>
+				<flex>false</flex>
+				<stretch>1</stretch>
 				<orientation>vertical</orientation>
 			</mobile>
 
@@ -380,17 +357,6 @@
 		</imagegrid2>
 		
 
-		<content>
-
-			<padding>8 0</padding>
-			
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
-
-		</content>
-
 		<sectiontitle>
 			
 			<margin>0 0 0.4em 0</margin>
@@ -400,6 +366,19 @@
 		<sectionlist>
 			
 			<item>
+				<title>
+					<text-transform>uppercase</text-transform>
+				</title>
+				<image>
+					<padding>4px</padding>
+					<hover>
+						<padding>2px</padding>
+						<border>
+							<width>2px</width>
+							<color>panel-text</color>
+						</border>
+					</hover>
+				</image>
 				<padding>12px</padding>
 				<background>
 					<color>light-panel-bg</color>
@@ -414,22 +393,7 @@
 					</background>
 				</hover>
 			</item>
-
-			<title>
-				<text-transform>uppercase</text-transform>
-			</title>
-
-			<image>
-				<padding>4px</padding>
-				<hover>
-					<padding>2px</padding>
-					<border>
-						<width>2px</width>
-						<color>panel-text</color>
-					</border>
-				</hover>
-			</image>
-			
+	
 		</sectionlist>
 
 		<scheme-title>

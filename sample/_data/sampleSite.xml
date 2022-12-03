@@ -11,10 +11,13 @@
 		<contacttel>+44 12345 545454</contacttel>
 	</meta>
 
-	<layout>homepage</layout>
+	<layout>section</layout>
 
 	<sections>
 		<section code="index">
+
+			<layout>homepage</layout>
+
 			<title>Home page</title>
 			
 			<copy>
