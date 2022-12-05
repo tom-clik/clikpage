@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test layout 3</title>
+	<meta name="description" content="A test layout to extend another">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="main">
+		
+	<div id="contentwrap">
+		
+		<div id="maincol">
+
+			<div id="maincol_top">
+
+				<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+					<title>Section title</title>
+					<content>
+					{{section.title}}
+					</content>
+				</content>
+
+				
+				
+			</div>	
+
+
+			<div id="maincol_bottom">
+				<content id="imagegrid" data-notes="Notes here" type="imagegrid" class="fill scheme-overlay">
+					
+				</content>
+				
+			</div>	
+		</div>
+	</div>
+
+
+</body>
+</html>

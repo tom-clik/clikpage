@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Basic layout</title>
+	<meta name="description" content="Basic three column layout">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+		
+		<div id="header" class="scheme-spanning">
+			<content type="title" id="sitetitle">
+				{{site.title}}	
+			</content>
+
+			<content type="title" id="sitedescription">
+				{{site.meta.description}}	
+			</content>
+
+			<content id="hamburger" type="button" class="scheme-button">
+				<title>Next button</title>
+				<href>
+					#mainmenu.openclose
+				</href>
+				<content>
+						
+				</content>				
+			</content>
+			
+		</div>
+		
+		<div id="pagecontent" class="scheme-spanning">
+			
+			<div id="topnav">
+				<content id="mainmenu" type="menu"></content>
+			</div>
+
+			<div id="content">
+
+				<div id="contentheader">
+					
+				</div>
+				
+				<div id="contentwrap">
+
+					<div id="maincol">
+
+					</div>
+					<div id="xcol">
+						
+					</div>
+					
+				</div>
+				<div id="contentfooter">
+				
+				</div>
+			</div>
+		</div>
+		
+		<div id="footer" class="scheme-spanning">
+			<div id="footer_left"><content id="footermenu" type="menu"></content></div>
+			<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
+			<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
+		</div>
+
+		<div id="bottomnav" class="scheme-spanning">
+			<content id="bottomnav1" type="text">Lorem ispum etc</content>
+		</div>
+
+	</div>
+
+</body>
+</html>

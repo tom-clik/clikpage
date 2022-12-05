@@ -14,7 +14,9 @@ Create a page struct and then output the links for debug mode and live mode.
 
 <cfscript>
 defFile = ExpandPath("test_js.json");
+// defFile = ExpandPath("../../staticFiles/staticJS.json");
 local.tempData = FileRead(defFile);
+
 try {
 	local.jsonData = deserializeJSON(local.tempData);
 }
@@ -22,14 +24,16 @@ catch (Any e) {
 	throw("Unable to parse static files definition file #arguments.defFile#");	
 }
 
-staticFilesObj = createObject("component", "clikpage.staticFiles.staticFiles").init(staticDef=local.jsonData);
-
+staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=local.jsonData);
 
 count = 1;
+
 for (js in [
-	{"testpackage":true,"main":true,"notdefined":1},
-	{"fuzzy":true},
-	{"menus":true}]
+		{"testpackage":true,"main":true,"notdefined":1},
+		{"fuzzy":true},
+		{"menus":true},
+		{"clikForm":true}
+	]
 	) {
 
 	writeOutput("<h2>Test ###count#</h2>");

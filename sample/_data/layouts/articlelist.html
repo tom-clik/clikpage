@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Article list</title>
+	<meta name="description" content="">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="main">
+		
+	<div id="maincol">
+
+		<div id="maincol_top">
+
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+				<title>Section title</title>
+				<content>
+				{{section.title}}
+				</content>
+			</content>
+
+			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here">
+				<title>Section intro</title>
+				<content>
+				{{section.intro}}
+				</content>
+			</content>
+			
+		</div>	
+
+		<div id="maincol_bottom">
+			<content id="sectionlist" class="scheme-listings" type="articlelist" data-notes="Notes here">
+				<title>Article list</title>
+			</content>			
+		</div>	
+
+	</div>
+
+	<div id="xcol">
+		<content id="xcolsmaple" type="text">
+			<title>Xcol sample</title>
+			<content>
+				Any old content here
+			</content>
+		</content>	
+	</div>
+
+</body>
+</html>

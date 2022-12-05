@@ -13,13 +13,22 @@
 	grid-row-gap: var(--gridrowgap);
 }
 
+
 /*Set number of columns */
 .scheme-grid-fixedcols {
+	grid-template-areas: none;
 	grid-template-columns: repeat(var(--cols), 1fr);
+}
+
+/* Once a div has been assigned a template area, you can't then use it in a
+a normal grid (don't ask me why) */
+.scheme-grid-fixedcols > *, .scheme-grid-fixed > *  {
+	grid-area: unset !important;
 }
 
 /*Fixed width */
 .scheme-grid-fixed {
+	grid-template-areas: none;
 	grid-template-columns:  repeat(auto-fill, var(--mingridcol));
 }
 

@@ -2,99 +2,31 @@
 
 Currently a scratchpad. Working towards a complete method for saving a stylesheet.
 
+NEW SYSTEM: 
+
+We have the layout styles in a collection called layouts (a new key of the stylesheet). Each of these can have a set of styling for the layout containers.
+
+The main styles can also have styling for containers but these will apply to everything e.g. colors.
+
+Then we have to write out the styles for all the content sections. How we do this I'm not sure. We need to get every CS from every template.
+
 --->
 
 <cfscript>
+settingsObj = new clikpage.settings.settings(debug=1);
+contentObj  = new clikpage.content.content(settingsObj=settingsObj);
 
-settingsObj = CreateObject("component", "clikpage.settings.settingsObj").init(debug=1);
-contentObj = CreateObject("component", "clikpage.content.contentObj").init(settingsObj=settingsObj);
+// styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+styles = settingsObj.loadStyleSheet(ExpandPath("../../sample/_data/styles/sample_style.xml"));
+fakesite = deserializeJSON(fileRead(ExpandPath("./testsite.json")));
+
+outfile = ExpandPath("test_settings.css");
 
 contentObj.debug = true;
+css = contentObj.siteCSS(site=fakesite,styles=styles);
 
-styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+fileWrite(outfile, css);
 
-// writeDump(styles);
-// abort;
-
-containers = containersData(styles);
-media = settingsObj.getMedia(styles);
-
-// NB these are going to be replacements for the ones in the object.
-css = siteCSS(styles);
-css &= containersCSS(containers,media)
-
-WriteOutput("<pre>" & HtmlEditFormat(settingsObj.outputFormat(css,styles)) & "</pre>");
-
-string function siteCSS(required struct media) {
-	var css = "";
-	css &= ":root {\n ";
-	css &= settingsObj.fontVariablesCSS(styles);
-	css &= settingsObj.layoutCss(styles);
-	css &=  "\n}\n";
-	return css;
-}
-
-string  function containersCSS(required struct containers, required struct media) {
-	var css = "";
-
-	for (var medium in arguments.media ) {
-		var section_css = "";
-		for (var id in arguments.containers) {
-			var cs =  arguments.containers[id];
-			if ((medium EQ "main") OR (StructKeyExists(cs.settings, medium))) {
-				local.settings = medium EQ "main" ? cs.settings : cs.settings[medium];
-				section_css &= settingsObj.containerCss(settings=local.settings,selector="###id#");
-			}	
-		}
-		css &= "/* cSS for #medium# */\n";
-		if (section_css NEQ "") {
-			if (medium NEQ "main") {
-				css &= "@media.#medium# {\n " & section_css & "\n}\n";
-			}
-			else {
-				css &= section_css;
-			}
-		}
-	}
-	return css;
-}
-
-// fake container data
-struct function containersData(required struct styles) output=false {
-
-	var containers = [
-		
-		"body" = {
-			"id"="body"
-		},
-		"content" = {
-			"id"="content"
-		},
-		"contentfooter" = {
-			"id"="contentfooter"
-		},
-		"footer" = {
-			"id"="footer",
-			"class"="scheme-spanning"
-		},
-		"header" = {
-			"id"="header",
-			"class"="scheme-spanning"
-		},
-		"topnav" = {
-			"id"="topnav",
-			"class"="scheme-spanning"
-		}
-
-	];
-
-	for (var id in containers) {
-		containers[id]["type"] = "container";
-		contentObj.settings(containers[id],arguments.styles);
-	}
-
-	return containers;
-
-}
+WriteOutput("<pre>" & HtmlEditFormat(css) & "</pre>");
 
 </cfscript>

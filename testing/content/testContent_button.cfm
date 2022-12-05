@@ -5,7 +5,7 @@ defFile = ExpandPath("/_assets/images/buttons.xml");
 
 contentObj.loadButtonDefFile(defFile);
 
-button = contentObj.new(id="button",title="button",type="button");
+button = contentObj.new(id="hamburger",title="Test button",link="##mainmenu.open",type="button",class="scheme-buttons",content="");
 
 testCS(button);
 

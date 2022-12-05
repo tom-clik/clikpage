@@ -1,0 +1,63 @@
+[
+  {
+    "P": {
+      "title": "Project page",
+      "code": "projects"
+    }
+  },
+  {
+    "V": {
+      "title": "View",
+      "code": "view"
+    }
+  },
+  {
+    "E": {
+      "title": "Edit",
+      "code": "edit"
+    }
+  },
+  {
+    "C": {
+      "title": "Content",
+      "code": "content"
+    }
+  },
+  {
+    "W": {
+      "title": "Wireframe",
+      "code": "wireframe"
+    }
+  },
+  {
+    "L": {
+      "title": "Layouts",
+      "code": "layouts"
+    }
+  },
+  {
+    "S": {
+      "title": "Settings",
+      "code": "settings"
+    }
+  },
+  {
+    "H": {
+      "title": "Help",
+      "code": "help"
+    }
+  },
+  {
+    "K": {
+      "title": "Keyboard shortcuts",
+      "code": "keyboard"
+    }
+  },
+  {
+    "D": {
+      "title": "Data",
+      "code": "data"
+    }
+  }
+]
+

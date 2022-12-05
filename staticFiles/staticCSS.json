@@ -3,16 +3,20 @@
         {
             "scripts": [
                 "reset",
-                "columns",
-                "items",
-                "images",
-                "definitions",
-                "forms",
-                "title",
                 "breadcrumb",
+                "definitions",
                 "footnotes",
+                "forms",
+                "grids",
+                "icons",
+                "images",
                 "menus",
-                "navbuttons"
+                "panels",
+                "navbuttons",
+                "tables",
+                "tabs",
+                "text",
+                "title"
             ],
             "name":"content",
             "min":"/_assets/css/_min/mainpackage.0.3.min.css"
@@ -56,6 +60,10 @@
         {
             "min": "/_assets/css/definitions.css",
             "name": "definitions"
+        },
+        {
+            "min": "/_assets/css/forms.css",
+            "name": "forms"
         },
         {
             "min": "/_assets/css/title.css",

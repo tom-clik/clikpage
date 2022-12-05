@@ -2,68 +2,232 @@
 <stylesheet>
 
 	<colors>
-		<color name="textcolor" title="Main text color" value="#333333">
-			<description></description>
-		</color>
-		<color name="myfavcolor" title="My favourite colour" value="#ff0000">
-			<description></description>
-		</color>
-		<color name="panel-bg" title="Darker panel bg" value="#01798a">
-			<description></description>
-		</color>
-		<color name="accent" title="Accent colour" value="#38bbcd">
-			<description></description>
-		</color>
-		<color name="panel-text" title="Panel text" value="#ffffff">
+		<textcolor title="Main text color" value="#333333" />
+		<myfavcolor title="My favourite colour" value="#ff0000" />
+		<panel-bg name="panel-bg" title="Darker panel bg" value="#01798a" />
+		<accent name="accent" title="Accent colour" value="#38bbcd" />
+		<panel-text  title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>
-		</color>
-		<color name="light-panel-bg" title="Light panel packground" value="#eaeaea">
-			<description></description>
-		</color>
-		<color name="linkcolor" title="Link color" value="#38bbcd">
-			<description></description>
-		</color>
-		
+		</panel-text>
+		<light-panel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />
 	</colors>
 
 	<media>
-		<medium name="max" min="1200" description="Full size only" />
-		<medium name="mid" max="800"  description="Medium width for tablets"/>
-		<medium name="mobile" max="600" description="mobile" />
-		<medium name="print" media="print" description="Print only" />
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
 	</media>
 
 	<fonts>
-		<font name="titlefont" value="Lato" />
-		<font name="bodyfont" value="Open Sans" />
-		<font name="test" face="broken" />
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+		<subtitlefont title="Sub Title font" family="--titlefont" description="Used by sub titles" />
+		<test family="broken"  weights="" styles="" variants="" stretch="" />
 	</fonts>
+
+	<vars>
+		<sitewidth title="Site width" description="Maximum width of site containers" value="1200px" />
+		<sitepadding title="Site padding" description="Added to all spanning elements like header, footer" value="4px 6px" />
+		<sitepaddingmobile title="Site padding (mobile)" description="Site padding in mobile" value="4px" />
+	</vars>
 
 	<layouts>
 
 		<testlayout1>
-			<inner-width>1090px</inner-width>
-			<column-layout>S-M-X</column-layout>
-			<columns-grid-gap>4</columns-grid-gap>
-			<mid>
-				<column-layout>S-MX</column-layout>
-			</mid>
-			<mobile>
-				<column-layout>SMX</column-layout>
-			</mobile>
-			<row-layout>HF-T-C-F</row-layout>
+			
+			<scheme-spanning>
+				<inner>
+					<max-width>var(--sitewidth)</max-width>
+					<align>center</align>
+					<padding>var(--sitepadding)</padding>
+					<mobile>
+						<inner>
+							<max-width>auto</max-width>
+							<padding>var(--sitepaddingmobile)</padding>
+						</inner>
+					</mobile>
+				</inner>
+			</scheme-spanning>
+		
+			<body>
+				<padding>0</padding>
+			</body>
+	
+			<ubercontainer>
+				<height>100%</height>
+				<inner>
+					<height>100%</height>
+				</inner>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"topnav" "header" "content" "footer"</grid-template-areas>
+					<grid-template-rows>min-content min-content 1fr min-content</grid-template-rows>
+				</grid>
+			</ubercontainer>
+
+			<header>
+				
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+					<grid-template-columns>max-content 1fr</grid-template-columns>
+				</grid>
+				
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</header>
+
+			<content>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"contentheader" "contentwrap" "contentfooter"</grid-template-areas>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+				</grid>
+			</content>
+
+			<contentfooter>
+				<grid>
+					<grid-mode>auto</grid-mode>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</contentfooter>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"subcol maincol xcol"</grid-template-areas>
+					<grid-template-columns>180px 1fr 140px</grid-template-columns>
+				</grid>
+				<mid>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"subcol maincol" "subcol xcol"</grid-template-areas>
+						<grid-template-columns>180px 1fr</grid-template-columns>
+					</grid>
+				</mid>
+				<mobile>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"maincol" "subcol"  "xcol"</grid-template-areas>
+						<grid-template-columns>1fr</grid-template-columns>
+					</grid>
+				</mobile>
+			</contentwrap>			
+
+			<topnav>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</topnav>
+			
+			<footer>
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+				</grid>
+
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+				
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+
+			</footer>
+
+			<bottomnav>
+				<position>fixed</position>
+				<bottom>0</bottom>
+				<inner>
+					<max-width>1200</max-width>
+					<align>center</align>
+				</inner>
+			</bottomnav>
+
 		</testlayout1>
 		
+		<testlayout2>
+
+			<content>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"contentheader" "contentwrap"</grid-template-areas>
+					<grid-template-rows>min-content 1fr</grid-template-rows>
+				</grid>
+			</content>
+
+			<maincol>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"maincol_top maincol_top" "maincol_right maincol_left" "maincol_bottom maincol_bottom"</grid-template-areas>
+					<grid-template-rows>min-content min-content min-content</grid-template-rows>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</maincol>
+
+			<contentfooter>
+				<show>0</show>
+			</contentfooter>
+			
+		</testlayout2>
+
 		<testlayout3>
-			<column-layout>M</column-layout>
+
+			<subcol>
+				<show>0</show>
+			</subcol>
+			<xcol>
+				<show>0</show>
+			</xcol>
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"maincol"</grid-template-areas>
+					<grid-template-rows>1fr</grid-template-rows>
+				</grid>
+			</contentwrap>
+
 		</testlayout3>
 
-		<testlayout4>
-			<column-layout>S-M</column-layout>
-			<mobile>
-				<column-layout>SM</column-layout>
-			</mobile>
-		</testlayout4>
+		
+
+		<subfolder1.testlayout4>
+			
+			<xcol>
+				<show>0</show>
+			</xcol>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"subcol maincol"</grid-template-areas>
+					<grid-template-rows>180px 1fr</grid-template-rows>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>templateareas</grid-mode>
+						<grid-template-areas>"subcol" "maincol"</grid-template-areas>
+						<grid-template-rows>1fr</grid-template-rows>
+					</grid>
+				</mobile>
+			</contentwrap>		
+		</subfolder1.testlayout4>
 		
 	</layouts>
 
@@ -89,28 +253,11 @@
 		</sitetitle>
 
 		<header>
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-				<padding>12</padding>
-			</inner>
+			
 			<background>
 				<color>panel-bg</color>
 			</background>
-			<grid>
-				<gap>0</gap>
-				<grid-template-columns>max-content auto</grid-template-columns>
-			</grid>
-			
-			<mobile>
-				<inner>
-					<max-width>auto</max-width>
-					<padding>4</padding>
-				</inner>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
+
 		</header>
 
 		<mainmenu>
@@ -159,40 +306,6 @@
 			</mobile>			
 		</topmenu>
 
-		<footer>
-			
-			<inner>
-				<max-width>1200</max-width>
-				<align>center</align>
-			</inner>
-			
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
-
-		</footer>
-
-		<contentfooter>
-
-			<grid>
-				<grid>1</grid>
-				<columns>3</columns>
-			</grid>
-			
-			<mid>
-				<grid>
-					<columns>2</columns>
-				</grid>
-			</mid>
-			<mobile>
-				<grid>
-					<grid>0</grid>
-				</grid>
-			</mobile>
-		</contentfooter>
-
 		<topnav>
 			
 			<background>
@@ -221,24 +334,18 @@
 
 		<imagegrid>
 			
-			<imagegrid>
 				<masonry>true</masonry>
 				<popup>true</popup>
-				<max-width>24%</max-width>
-			</imagegrid>
+				<grid-max-width>24%</grid-max-width>
+			
 			
 			<mid>
-				
-				<imagegrid>
-					<masonry>false</masonry>
-					<max-width>33%</max-width>
-				</imagegrid>
+				<masonry>false</masonry>
+				<grid-max-width>33%</grid-max-width>
 			</mid>
 			<mobile>
-				<imagegrid>
-					<masonry>false</masonry>
-					<max-width>49%</max-width>
-				</imagegrid>
+				<masonry>false</masonry>
+				<grid-max-width>49%</grid-max-width>
 			</mobile>
 		</imagegrid>
 
@@ -254,13 +361,14 @@
 		</content>
 
 		<sectiontitle>
+			<tag>h4</tag>
 			<margin>0 0 1em 0</margin>
 		</sectiontitle>
 
 		<list>
-			<articles>
-				<image-align>right</image-align>
-			</articles>
+			<item>
+				<image-align>left</image-align>
+			</item>
 		</list>
 
 		<sectionlist>
@@ -317,36 +425,46 @@
 		</navbuttons>
 
 		<scheme-button>
-			<icon>
-				<padding>4</padding>
+			<padding>4</padding>
+			<background>
+				<color>light-panel-bg</color>
+			</background>
+			<hover>
 				<background>
-					<color>light-panel-bg</color>
+					<color>panel-bg</color>
 				</background>
-				<hover>
-					<background>
-						<color>panel-bg</color>
-					</background>
-				</hover>
-			</icon>
+			</hover>
 		</scheme-button>
 
-		<scheme-spanning>
-			<inner>
-				<max-width>1200px</max-width>
-				<align>center</align>
-				<padding>8px</padding>
-			</inner>
-			<mobile>
-				<padding>4px</padding>
-			</mobile>
-		</scheme-spanning>
-
 		<navnext>
-			<button>
-				<align>right</align>
-				<shape>right_arrow</shape>
-			</button>
+			
+			<show>0</show>
+			
+			<mobile>
+				<position>absolute</position>
+				<top>4px</top>
+				<right>0</right>
+				<show>1</show>
+			</mobile>
+			
+			<button-align>flex-end</button-align>
+			<shape>right_arrow</shape>
+			
 		</navnext>
+
+		<hamburger>
+
+			<show>0</show>
+			<shape>menu</shape>
+			
+			<mobile>
+				<position>absolute</position>
+				<top>4px</top>
+				<right>0</right>
+				<show>1</show>
+			</mobile>
+			
+		</hamburger>
 
 	</content>
 

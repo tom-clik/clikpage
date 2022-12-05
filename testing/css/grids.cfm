@@ -34,7 +34,8 @@ contentObj.debug = 1;
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 grid_cs = contentObj.new(id="grid",type="grid");
 
-// for page editing
+
+// for page editing -- doesn't seem right. Where are the defaults? use the contentObj for defaults etc.
 settings = {};
 
 for (setting in contentObj.contentSections["grid"].styleDefs) {
@@ -46,10 +47,16 @@ for (setting in contentObj.contentSections["grid"].styleDefs) {
 		settings[setting] = "";
 	}
 }
+// end page editing
 
 contentObj.settings(content=grid_cs,styles=styles);
 
+writeDump(grid_cs);
+
+abort;
+
 css = contentObj.css(grid_cs);
+
 // abort;
 </cfscript>
 

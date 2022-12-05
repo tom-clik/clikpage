@@ -1,4 +1,6 @@
 <cfscript>
+throw("Deprecated");
+
 cfinclude(template="testContent_include.cfm");
 
 columnsObj = new clikpage.content.columns(contentObj=contentObj);

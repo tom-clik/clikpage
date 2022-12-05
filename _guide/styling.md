@@ -1,4 +1,4 @@
-# Styling {#styling}
+# Styling { #styling}
 
 Styling in Clikpage allow a single stylesheet to define both standard styles like fonts, colors, or spacing, and also apply options to configurable components like menus and slideshows.
 
@@ -49,11 +49,3 @@ We define the .text as a "panel" and the h1 tag as a class.
 All content items are assigned a class according to their type. Some standard formatting from the static CSS will be applied, and you can also adjust the defaults (but this is rarely done).
 
 In a simple site, the _title_ type of content section could have the same styling applied to it whenever used. It would, though, usually be better to abstract this styling to a class and inherit it. Typically a _title_ scheme would be inherited by two or three title schemes such as _maintitle_ or _subtitle_.
-
-
-
-
-
-
-
-

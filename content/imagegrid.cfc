@@ -1,16 +1,17 @@
 component extends="contentSection" {
 
-	function init(required contentObj contentObj) {
+	variables.type = "imagegrid";
+	variables.title = "Image grid";
+	variables.description = "Images in grid";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+
+	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		variables.type = "imagegrid";
-		variables.title = "Image grid";
-		variables.description = "Images in grid";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
-
+		
 		variables.static_css = {"images"=1,"colorbox"=1};
 		variables.static_js = {"masonry"=1,"colorbox"=1};
 		
@@ -24,8 +25,9 @@ component extends="contentSection" {
 			"popup" : {"type":"boolean","default":0},
 			"grid-gap": {"type":"dimension"},
 			"row-gap": {"type":"dimension"},
-			"max-width": {"type":"dimension"},
-			"max-height": {"type":"dimension"},
+			"grid-width": {"type":"dimension"},
+			"grid-max-width": {"type":"dimension"},
+			"grid-max-height": {"type":"dimension"},
 			"justify-content": {"type":"valign"},
 			"align-items": {"type":"halign"}
 		];
@@ -40,46 +42,14 @@ component extends="contentSection" {
 
 	private string function css_settings(required string selector, required struct styles) {
 		
-		local.mode = StructKeyExists(arguments.styles, "grid-mode") ?  arguments.styles["grid-mode"] : "none" ;
-		
 		var data = getSelectorStruct();
-
-		StructAppend(arguments.styles,{"grid-mode":"auto","grid-fit":"auto-fit","grid-width":"180px","grid-max-width":"1fr","grid-columns":"2","grid-gap":"10px","grid-row-gap":"","grid-template-columns":"","justify-content":"flex-start","align-items":"flex-start","masonry":false,"popup":false},false);
-
-		switch (local.mode) {
-			case "none":
-				data.main &= "\tdisplay:block;\n";
-				break;
-			case "auto":
-				data.main &= "\tdisplay:grid;\n";
-				data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-fit"]#, minmax(#arguments.styles["grid-width"]#, #arguments.styles["grid-max-width"]#));\n";
-
-				break;	
-			case "fixedwidth":
-				data.main &= "\tdisplay:grid;\n";
-				data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-fit"]#, #arguments.styles["grid-width"]#);\n";
-				break;	
-			case "fixedcols":
-				data.main &= "\tdisplay:grid;\n";
-				if (StructKeyExists(arguments.styles,"grid-template-columns") AND  arguments.styles["grid-template-columns"] neq "") {
-					data.main &= "\tgrid-template-columns: " & arguments.styles["grid-template-columns"] & ";\n";
-				}
-				else {
-					data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-columns"]#, 1fr);\n";
-				}
-				
-				break;	
-
-			case "templateareas":
-				data.main &= "\tgrid-template-areas:""" & arguments.styles["grid-template-areas"] & """;\n";
-				break;
-			case "flex": case "flexstretch":
-				data.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n\tflex-direction: row;\n";
-				if (local.mode eq "flexstretch") {
-					data.item &= "\n\tflex-grow:1;\n;";
-				}
-				break;
-
+		
+		if (arguments.styles.masonry) {
+			data.main &= "\tdisplay:block;\n";
+			data.item &= "\twidth:var(--grid-width);\n";
+		}
+		else {
+			variables.contentObj.settingsObj.grid(arguments.styles,data)
 		}
 
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
@@ -98,7 +68,7 @@ component extends="contentSection" {
 			);
 		}
 
-		local.html = "<div class='grid'>";
+		local.html = "";
 
 		for (local.image in arguments.content.data) {
 		
@@ -118,12 +88,6 @@ component extends="contentSection" {
 
 		}		
 		
-		local.html &= "</div>";
-
-		if (arguments.content.settings.masonry) {
-			variables.contentObj.addClass(arguments.content,"masonry");
-		}
-
 
 		return local.html;
 		
@@ -133,15 +97,15 @@ component extends="contentSection" {
 
 		var js = "";
 
-		if (arguments.content.settings.masonry) {
-			js &= "$#arguments.content.id#Grid = $('###arguments.content.id# .grid').masonry({\n";
+		if (arguments.content.settings.main.masonry) {
+			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').masonry({\n";
 			js &= "\t/* options*/\n";
 			// js &= "\titemSelector: 'figure',\n";
 			js &= "\tcolumnWidth: '###arguments.content.id# figure',\n";
 			js &= "\tinitLayout: false,\n";
 			js &= "\tpercentPosition: true\n";
-			if (StructKeyExists(arguments.content.settings.main.imagegrid,"gridgap")) {
-				js &= "\tgutter: #arguments.content.settings.main.imagegrid.gridgap#\n";
+			if (StructKeyExists(arguments.content.settings.main,"gridgap")) {
+				js &= "\tgutter: #Val(arguments.content.settings.main.gridgap)#\n";
 			}
 			js &= "});\n";
 
@@ -152,7 +116,7 @@ component extends="contentSection" {
 			js &= "});\n";
 		}
 
-		if (arguments.content.settings.popup) {
+		if (arguments.content.settings.main.popup) {
 
 			js &= "$(""###arguments.content.id# figure a"").colorbox({rel:'group#arguments.content.id#'});";
 		}

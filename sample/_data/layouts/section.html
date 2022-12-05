@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Single page section</title>
+	<meta name="description" content="Show just section data">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="main">
+		
+	<div id="maincol">
+
+		<div id="maincol_top">
+
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+				<title>Section title</title>
+				<content>
+				{{section.title}}
+				</content>
+			</content>	
+
+			<content id="sectioncopy" type="text">
+				<title>Section copy</title>
+				<content>
+				{{section.copy}}
+				</content>
+			</content>
+			
+		</div>	
+
+
+		<div id="maincol_bottom">
+			
+			
+		</div>	
+	</div>
+
+</body>
+</html>

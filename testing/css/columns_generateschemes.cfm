@@ -23,11 +23,10 @@ Loop over the complete range of permutations for columns and rows in each media 
 <cfscript>
 fileout = ExpandPath("_styles/css-autoschemes.css");
 columns = deserializeJSON(fileRead("columns_data.json"));
-// writeDump(columns);
+
+// Get the media sizes from out test styles.
 settingsObj = new clikpage.settings.settingsObj(debug=1);
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
-// writeDump(styles);
-
 
 css = "
 :root {
@@ -35,15 +34,24 @@ css = "
 	--xcolwidth:120px;
 }
 ";
+//
+for (div in "header,subcol,maincol,xcol,content,content_top,content_bottom,footer,topnav,bottomnav,maincol_top,maincol_left,maincol_right,maincol_grid,maincol_bottom,footer_left,footer_right,footer_middle") {
+	css &= "###div# {grid-area:#div#}\n";
+}
 
-mediaStr = settingsObj.getMedia(styles);
-for (media_name in mediaStr) {
-	media = mediaStr[media_name];
-	if (media_name != "main") {
-		css &= "@media.#media_name# {\n";
+css &= staticCSS();
+
+medialist = structKeyArray(styles.media);
+ArrayPrepend(medialist,"main");
+
+for (medium in medialist) {
+	
+	if (medium != "main") {
+		css &= "@media.#medium# {\n";
 	}
+
 	for (scheme_id in columns) {
-		css &= "." & getClass(media_name) & "-" & scheme_id & " ##columns {\n";
+		css &= "." & getClass(medium) & "-" & scheme_id & " ##columns {\n";
 		scheme = columns[scheme_id];
 		local.areas = scheme.areas;
 		if (left(local.areas,1) neq """") {
@@ -54,7 +62,7 @@ for (media_name in mediaStr) {
 		css &= "}\n";
 	}
 	
-	if (media_name != "main") {
+	if (medium != "main") {
 		css &= "}\n";
 	}	
 }
@@ -62,6 +70,8 @@ for (media_name in mediaStr) {
 css = settingsObj.outputFormat(css=css,styles=styles);
 
 fileWrite(fileout, css);
+
+writeOutput("written to #fileout#");
 </cfscript>
 
 <cfscript>
@@ -79,6 +89,19 @@ string function getClass(string medium) {
 
 	}
 
+}
+
+/** WIP Static css required. */
+string function staticCSS() {
+	return "
+		##columns {
+				min-height: 100%;
+				display: grid;
+				grid-template-areas: ""subcol maincol xcol"";
+				grid-gap:5px;
+				grid-template-columns: 220px 1fr 140px;
+			}
+		";
 }
 
 </cfscript>

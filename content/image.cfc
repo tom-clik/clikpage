@@ -1,16 +1,17 @@
 component extends="contentSection" {
 
-	function init(required contentObj contentObj) {
+	variables.type = "image";
+	variables.title = "Image";
+	variables.description = "Simple image with option for rollover";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+
+	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		variables.type = "image";
-		variables.title = "Image";
-		variables.description = "Simple image with option for rollover";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
-
+		
 		// static css definitions
 		variables.static_css = {"images"=1};
 		variables.static_js = {};

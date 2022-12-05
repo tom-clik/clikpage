@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Photo detail page</title>
+	<meta name="description" content="">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="double">
+	
+	<div id="xcol">
+		<content id="caption" type="text">
+			<title>Photo information</title>
+			<content>{{record.caption}}</content>
+		</content>
+		
+		<div id="navbuttons" class="scheme-navbuttons">
+			<content id="navprev" type="button" class="scheme-button">
+				<title>Previous button</title>
+				<content>
+					{{record.previous_title}}				
+				</content>
+				<href>{{record.previous_link}}</href>
+			</content>
+			<content id="navnext" type="button" class="scheme-button">
+				<title>Next button</title>
+				<href>
+					{{record.next_link}}
+				</href>
+				<content>
+					{{record.next_title}}				
+				</content>				
+			</content>
+		</div>
+
+	</div>
+
+	<div id="contentheader">
+		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+			<title>Section title</title>
+			<content>
+			{{section.title}}
+			</content>
+		</content>			
+	</div>
+				
+
+	<div id="maincol">
+
+		<div id="maincol_top">
+			<div id="photogrid">	
+				<content id="image" type="image" class="scheme-box">
+					<title>Image tests</title>
+					<field-image>/images/{{record.image}}</field-image>
+				</content>
+				
+			</div>
+			
+		</div>	
+
+
+		<div id="maincol_bottom">
+			
+		</div>
+
+	
+
+	</div>
+
+
+
+
+</body>
+</html>

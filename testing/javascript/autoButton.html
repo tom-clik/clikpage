@@ -6,11 +6,9 @@ See autoButton.js for details of the JS
 
 ## Synopsis
 
-There are two samples. One is a three state button and the other is a single button with the openclose action
-specified.
+There are two samples. One is a three state button and the other is a single button with the openclose action specified.
 
-In both tests, the "target" is a an html container with methods that chnage the text to indicate the method called.
-
+In both tests, the "target" is a an html container with methods that change the text to indicate the method called.
 
 -->
 
@@ -38,13 +36,33 @@ In both tests, the "target" is a an html container with methods that chnage the 
 		max-width: 660px;
 	}
 
-	.section {
+	.panel {
 		margin:20px;
 		border: 1px solid #000;
+	}
+
+	.panel  h2 {
+		margin:0;
+		padding:8px;
+		background-color: black;
+		color:white;
+		font-size: 12px;
+	}
+
+	.panelGrid {
 		padding:20px;
+		--button-align:flex-start;
+		display: grid;
+		grid-gap: 10px;
+		grid-template-columns: max-content 1fr
+	}
+
+	.target {
+		justify-self:end;
+		align-self: center;
 	}
 	
-	.cs-button.scheme-rotate.state_open a .icon {
+	.button.scheme-rotate.state_open a .icon {
 		transform: rotate(90deg);
 	}
 
@@ -54,42 +72,62 @@ In both tests, the "target" is a an html container with methods that chnage the 
 <body>
 
 	<div id="ubercontainer">
-		<div class="scheme-grid">
-			<div class="cs-button button auto" id="mainmenu_button">
-				<a href="#mainmenu.open">
-					<div class="icon">
-						<svg   viewBox="0 0 32 32"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
-					</div>
-				</a>
-				<a href="#mainmenu.close">
-					<div class="icon">
-						<svg   viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
-					</div>
-				</a>
-				<a href="#mainmenu.random">
-					<div class="icon">
-						<svg   viewBox="0 0 408 408"><use xlink:href="/_assets/images/thumbnails.svg#thumbnails"></svg>
-					</div>
-				</a>
-			</div>
+		
+		<h1>Auto button functionality</h1>
 
-			<div id="mainmenu" class="target">
-				
+		<p>This page demonstrates auto buttons in use.</p>
+
+		<div class="panel  middle">
+			<h2>Triple state button</h2>
+			<div class="panelGrid">
+				<div class="button auto" id="mainmenu_button">
+					<a href="#mainmenu.open">
+						<svg  class="icon"  viewBox="0 0 32 32"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
+						<label>Open Menu</label>
+					</a>
+					<a href="#mainmenu.close">
+						<svg class="icon"  viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
+						<label>Close Menu</label>
+					</a>
+					<a href="#mainmenu.random">
+						<svg class="icon" viewBox="0 0 408 408"><use xlink:href="/_assets/images/thumbnails.svg#thumbnails" /></svg>
+						<label>Random action</label>
+					</a>
+				</div>
+
+				<div id="mainmenu" class="target" title="First container">
+					
+				</div>
 			</div>
 		</div>
 
-		<div class="scheme-grid">
-			<div class="cs-button button auto scheme-rotate" data-target="">
-				<a href="#mainmenu2.openclose">
-					<div class="icon">
-						<svg   viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right"></svg>
-					</div>
-				</a>
-				
-			</div>
+		<div class="panel  middle">
+			<h2>Two state button</h2>
+			<div class="panelGrid">
+				<div class="button auto scheme-rotate">
+					<a href="#mainmenu2.openclose">
+						<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+					</a>					
+				</div>
 
-			<div id="mainmenu2" class="target">
-				
+				<div id="mainmenu2" class="target" title="Second target">
+					
+				</div>
+			</div>
+		</div>
+
+		<div class="panel  middle">
+			<h2>Two state button open by default</h2>
+			<div class="panelGrid">
+				<div class="button auto scheme-rotate state_open" data-state="open">
+					<a href="#mainmenu3.openclose">
+						<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+					</a>					
+				</div>
+
+				<div id="mainmenu3" class="target" title="Third target">
+					
+				</div>
 			</div>
 		</div>
 
@@ -105,16 +143,16 @@ In both tests, the "target" is a an html container with methods that chnage the 
 	$(document).ready(function() {
 		$(".target").on("open",function() {
 			console.log("Opening");
-			$(this).html("Open method called");
+			$(this).html($(this).attr("title") + " open method called");
 		}).on("close",function() {
-			$(this).html("Close method called");
+			$(this).html($(this).attr("title") + " close method called");
 			console.log("Closing");
 		}).on("random",function() {
-			$(this).html("Custom method");
+			$(this).html($(this).attr("title") + " random method called");
 			console.log("Random method called");
 		});
 
-		$(".cs-button").button();
+		$(".button").button();
 	});
 
 </script>

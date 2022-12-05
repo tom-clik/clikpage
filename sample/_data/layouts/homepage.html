@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home page layout</title>
+	<meta name="description" content="A test layout to extend another">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="main">
+		
+	<div id="maincol">
+
+		<div id="maincol_top">
+
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+				<title>Section title</title>
+				<content>
+				{{section.title}}
+				</content>
+			</content>	
+
+			<content id="sectioncopy" type="text">
+				<title>Section copy</title>
+				<content>
+				{{section.copy}}
+				</content>
+			</content>
+			
+		</div>	
+
+
+		<div id="maincol_bottom">
+			
+			
+		</div>	
+	</div>
+
+	<div id="contentfooter">
+		<content id="welcome1" data-notes="Notes here">
+			<title>Footer item 1</title>
+			<content>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			</content>
+			<image>http://localpreview.clikpic.com/sampleimages/harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg</image>
+		</content>
+		<content id="welcome2" data-notes="Notes here">
+			<title>Footer item 2</title>
+			<content>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			</content>
+			<image>http://localpreview.clikpic.com/sampleimages/harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg</image>
+		</content>
+		<content id="welcome3" data-notes="Notes here">
+			<title>Footer item 3</title>
+			<content>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			</content>
+			<image>http://localpreview.clikpic.com/sampleimages/harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg</image>
+		</content>
+	</div>
+	
+
+
+</body>
+</html>

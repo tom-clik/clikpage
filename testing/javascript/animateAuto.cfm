@@ -44,10 +44,6 @@ Only the vertical menu uses animate auto. A side menu is shown using CSS transit
 		padding:20px;
 	}
 
-	.form {
-		
-	}
-
 	#mainmenu {
 		overflow: hidden;
 		height:0px;
@@ -69,33 +65,20 @@ Only the vertical menu uses animate auto. A side menu is shown using CSS transit
 	#sidemenu.open {
 		transform: translate(0);
 	}
+
+	#popmenu_button {
+		position: absolute;
+		top:20px;
+		left:20px;
+	}
 	</style>
 </head>
 
 <body>
 
-	<div class="cs-button button scheme-hamburger scheme-headerbutton" id="popmenu_button">
-		<a href="#sidemenu.open">
-			<div class="icon">
-				<svg   viewBox="0 0 32 32"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
-			</div>
-		</a>
-	</div>
-
-	<div id="sidemenu">
-		<div class="cs-button button scheme-hamburger scheme-headerbutton" id="popmenu_close_button">
-			<a href="#sidemenu.close">
-				<div class="icon">
-					<svg   viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
-				</div>
-			</a>
-		</div>
-		<cfoutput>#menuText(10)#</cfoutput>
-	</div>
-
 	<div id="ubercontainer">
 
-		<div class="cs-button button scheme-hamburger scheme-headerbutton" id="mainmenu_button">
+		<div class="button scheme-hamburger scheme-headerbutton" id="mainmenu_button">
 			<a href="#mainmenu.open">
 				<div class="icon">
 					<svg   viewBox="0 0 32 32"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
@@ -113,6 +96,21 @@ Only the vertical menu uses animate auto. A side menu is shown using CSS transit
 		</div>	
 	</div>
 
+	<div class="button scheme-hamburger scheme-headerbutton" id="popmenu_button">
+		<a href="#sidemenu.open">
+			<svg class="icon" viewBox="0 0 32 32"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
+		</a>
+	</div>
+
+	<div id="sidemenu">
+		<div class="button scheme-hamburger scheme-headerbutton" id="popmenu_close_button">
+			<a href="#sidemenu.close">
+				<svg class="icon" viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
+			</a>
+		</div>
+		<cfoutput>#menuText(10)#</cfoutput>
+	</div>
+
 </body>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
@@ -124,10 +122,11 @@ Only the vertical menu uses animate auto. A side menu is shown using CSS transit
 
 	$(document).ready(function() {
 
-		$(".cs-button").button();
+		$(".button").button();
 		
 		menuAnimationTime = 500;
 
+		// auto func note the classes don't do anything.
 		$("#mainmenu").on("open",function() {
 			console.log("opening " + $(this).attr("id"));
 			$(this).addClass("open").animateAuto("height", menuAnimationTime, function() {

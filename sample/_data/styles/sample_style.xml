@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stylesheet>
+ 
+	<colors>
+		<textcolor title="Main text color" value="#333333" />
+		<myfavcolor title="My favourite colour" value="#ff0000" />
+		<panelbg title="Darker panel bg" value="#01798a" />
+		<accent title="Accent colour" value="#38bbcd" />
+		<paneltext title="Panel text" value="#ffffff">
+			<description>To stand out against darker panel or accent</description>
+		</paneltext>
+		<lightpanel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />		
+	</colors>
+
+	<media>
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
+	</media>
+
+	<fonts>
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+		<subtitlefont title="Sub Title font" family="--titlefont" description="Used by sub titles" />
+		<test font-family="broken"  weights="" styles="" variants="" stretch="" />
+	</fonts>
+
+	<vars>
+		<sitewidth title="Site width" description="Maximum width of site containers" value="1200px" />
+		<sitepadding title="Site padding" description="Added to all spanning elements like header, footer" value="4px 6px" />
+		<sitepaddingmobile title="Site padding (mobile)" description="Site padding in mobile" value="4px" />
+	</vars>
+
+	<layouts>
+
+		<main>
+			
+			<scheme-spanning>
+				<inner>
+					<max-width>var(--sitewidth)</max-width>
+					<align>center</align>
+					<padding>var(--sitepadding)</padding>
+					<mobile>
+						<inner>
+							<max-width>auto</max-width>
+							<padding>var(--sitepaddingmobile)</padding>
+						</inner>
+					</mobile>
+				</inner>
+			</scheme-spanning>
+
+			<body>
+				<padding>0</padding>
+			</body>
+	
+			<ubercontainer>
+				<height>100%</height>
+				<padding>0 0 20px 0</padding>
+				<inner>
+					<height>100%</height>
+				</inner>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"header" "pagecontent" "footer"</grid-template-areas>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</ubercontainer>
+
+			<pagecontent>
+				
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"topnav content"</grid-template-areas>
+					<grid-template-columns>180px 1fr</grid-template-columns>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+					<inner>
+						<padding>0</padding>
+					</inner>
+				</mobile>
+				
+			</pagecontent>
+
+			<topnav>
+				<padding>8 0</padding>
+				<mobile>
+					<padding>0</padding>
+				</mobile>
+			</topnav>
+
+			<header>
+				
+				<grid>
+					<grid-mode>fixedcols</grid-mode>
+					<grid-template-columns>max-content 1fr</grid-template-columns>
+				</grid>
+				
+				<mobile>
+					<inner>
+						<max-width>auto</max-width>
+						<padding>4</padding>
+					</inner>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</header>
+
+			<content>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"contentheader" "contentwrap" "contentfooter"</grid-template-areas>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+				</grid>
+				<mobile>
+					<padding>8</padding>
+				</mobile>
+			</content>
+
+			<contentfooter>
+				<grid>
+					<grid-mode>auto</grid-mode>
+				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+			</contentfooter>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas>"maincol xcol"</grid-template-areas>
+					<grid-template-columns>1fr 140px</grid-template-columns>
+				</grid>
+				<mid>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mid>
+				
+			</contentwrap>			
+
+			<footer>
+
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-template-areas> "footer_right footer_mid footer_left"</grid-template-areas>
+					<grid-template-columns>20% 30% 1fr</grid-template-columns>
+				</grid>
+
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+				</mobile>
+
+			</footer>
+
+			<bottomnav>
+				<position>fixed</position>
+				<bottom>0px</bottom>
+				<mobile>
+					<position>static</position>
+				</mobile>
+			</bottomnav>
+			
+		</main>
+		
+		<double>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>templateareas</grid-mode>
+					<grid-gap>10px</grid-gap>
+					<grid-template-areas>"maincol xcol"</grid-template-areas>
+					<grid-template-columns>1fr 240px</grid-template-columns>
+				</grid>
+			</contentwrap>
+			
+		</double>
+
+		<articledetail>
+
+			<contentwrap>
+				<grid>
+					<grid-gap>10px</grid-gap>
+					<grid-template-columns>1fr 33%</grid-template-columns>
+				</grid>
+			</contentwrap>
+			
+		</articledetail>
+
+		<gallery>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>none</grid-mode>
+				</grid>
+			</contentwrap>
+			<xcol>
+				<show>0</show>
+			</xcol>
+			
+		</gallery>
+
+		
+	</layouts>
+
+	<images>
+		
+	</images>
+
+	<content>
+
+		<body>
+			
+			<color>textcolor</color>
+			<font-family>bodyfont</font-family>
+			<font-size>80%</font-size>
+			<padding>0</padding>
+			
+		</body>
+
+		<sitetitle>
+			
+			<color>paneltext</color>		
+			<margin>12 12 12 0</margin>
+			<font-size>220%</font-size>
+		
+		</sitetitle>
+
+		<hamburger>
+
+			<show>0</show>
+			
+			<shape>menu</shape>
+			
+			<mobile>
+				<position>absolute</position>
+				<top>4px</top>
+				<right>0</right>
+				<show>1</show>
+			</mobile>
+			
+		</hamburger>
+
+		<sitedescription>
+			<position>absolute</position>
+			<top>4px</top>
+			<right>0</right>
+			<mobile>
+				<position>static</position>
+			</mobile>
+		</sitedescription>
+
+		<header>
+		
+			<background>
+				<color>panelbg</color>
+			</background>
+		
+		</header>
+
+		<mainmenu>
+			<position>sticky</position>
+			<orientation>vertical</orientation>
+			<align>left</align>
+			<mobile>
+				<background>
+					<color>lightpanel-bg</color>
+				</background>
+				<height>0</height>
+				<show>0</show>
+				<padding>8</padding>
+				<position>static</position>
+			</mobile>
+		</mainmenu>
+
+		<topmenu>
+		
+			<menu>
+				<flex>true</flex>
+				<align>right</align>
+				<min-height>100%</min-height>
+				<link-color>panel-text</link-color>
+				<hi><link-color>panel-text</link-color></hi>
+				<hover><link-color>panel-text</link-color></hover>
+			</menu>
+
+			<height>100%</height>
+
+			<item>
+				<font-size>120%</font-size>
+				<text-transform>uppercase</text-transform>
+				<color>panel-text</color>
+				<hover>
+					<background><color>accent</color></background>
+				</hover>
+				<hi>
+					<background><color>accent</color></background>
+				</hi>
+				<padding>20</padding>
+
+			</item>
+			
+			<mid>
+				<menu>
+					<align>left</align>
+					<height>auto</height>
+				</menu>
+				<height>auto</height>
+			</mid>
+
+			<mobile>
+				<show>0</show>
+			</mobile>		
+
+		</topmenu>
+
+		<footer>
+			
+			<background>
+				<color>panel-bg</color>
+			</background>
+			
+		</footer>
+
+		<topnav>
+			
+			<background>
+				<color>light-panel-bg</color>
+			</background>
+
+		</topnav>
+
+		
+
+		<footermenu>
+			
+			<flex>true</flex>
+			<align>right</align>
+			<border-type>dividers</border-type>
+			<menu-item-padding>4px 12px</menu-item-padding>
+			<menu-gap>0</menu-gap>
+			<menu-item-border>1px</menu-item-border>
+			<menu-border-color>myfavcolor</menu-border-color>
+			<stretch>0</stretch>
+
+			<mobile>
+				<align>left</align>
+				<menu-item-padding>4px</menu-item-padding>
+				<flex>false</flex>
+				<stretch>1</stretch>
+				<orientation>vertical</orientation>
+			</mobile>
+
+		</footermenu>
+
+		<imagegrid>
+			
+			<masonry>true</masonry>
+			<popup>true</popup>
+			<grid-width>24%</grid-width>
+			
+			<mid>
+				
+				<grid-width>48%</grid-width>
+				
+			</mid>
+
+			<mobile>
+				
+				<masonry>false</masonry>
+				<grid-width>100%</grid-width>
+				
+			</mobile>
+
+		</imagegrid>
+
+		<imagegrid2>
+			
+			<grid-mode>auto</grid-mode>
+			<grid-width>220px</grid-width>
+			
+			<mid>
+				
+				<grid-mode>auto</grid-mode>
+				<grid-width>180px</grid-width>
+				
+			</mid>
+
+			<mobile>
+				
+				<grid-mode>none</grid-mode>
+				<grid-width>100%</grid-width>
+				
+			</mobile>
+
+		</imagegrid2>
+		
+
+		<sectiontitle>
+			
+			<margin>0 0 0.4em 0</margin>
+			
+		</sectiontitle>
+
+		<sectionlist>
+			
+			<item>
+				<title>
+					<text-transform>uppercase</text-transform>
+				</title>
+				<image>
+					<padding>4px</padding>
+					<hover>
+						<padding>2px</padding>
+						<border>
+							<width>2px</width>
+							<color>panel-text</color>
+						</border>
+					</hover>
+				</image>
+				<padding>12px</padding>
+				<background>
+					<color>light-panel-bg</color>
+				</background>
+				<align>left</align>
+				<imagewidth>33%</imagewidth>
+				<margin>0 0 12px 0</margin>
+				<hover>
+					<color>panel-text</color>
+					<background>
+						<color>panel-bg</color>
+					</background>
+				</hover>
+			</item>
+	
+		</sectionlist>
+
+		<scheme-title>
+			
+			<color>accent</color>
+			<font-family>bodyfont</font-family>
+			<font-size>2.4em</font-size>
+			<font-weight>300</font-weight>
+		
+		</scheme-title>
+
+		<scheme-intros>
+			
+			<font-weight>bold</font-weight>
+			<font-style>italic</font-style>
+			<margin>0 0 1em 0</margin>
+		
+		</scheme-intros>
+
+		<navbuttons>
+			<grid>
+				<columns>2</columns>
+			</grid>
+			
+		</navbuttons>
+
+		<scheme-button>
+			<icon-width>16</icon-width>
+			
+			<hover>
+				<link-color>var(--accent)</link-color>
+			</hover>
+			<shape>left_arrow</shape>
+		</scheme-button>
+
+		<navnext>
+			
+			<button-direction>row-reverse</button-direction>
+			<shape>right_arrow</shape>
+			
+		</navnext>
+
+		<welcome>
+			
+			<image-align>left</image-align>
+
+			<padding>4px</padding>
+
+			<border>
+				<width>1</width>
+				<color>panel-bg</color>
+			</border>
+			
+			<title>
+				<padding>4px</padding>
+				<margin>-4px -4px 0 -4px</margin>
+				<font-size>160%</font-size>
+				<background>
+					<color>panel-bg</color>
+				</background>
+				<color>panel-text</color>	
+			</title>
+			
+		</welcome>
+
+		<scheme-listings>
+			<image-align>left</image-align>
+			<item>
+				<margin>
+					12 0
+				</margin>
+				<padding>
+					12
+				</padding>
+				<border>
+					<width>1px</width>
+					<color>bordercolor</color>
+				</border>
+			</item>
+			<title>
+				<padding>0</padding>
+			</title>
+			<text>
+				<padding>0</padding>
+			</text>
+			<mobile>
+				<image-align>center</image-align>
+			</mobile>
+			
+		</scheme-listings>
+
+	</content>
+
+</stylesheet>
+
+
+

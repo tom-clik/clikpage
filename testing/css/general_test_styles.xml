@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stylesheet>
+
+	<colors>
+		<textcolor title="Main text color" value="#333333" />
+		<panel-bg name="panel-bg" title="Darker panel bg" value="#01798a" />
+		<accent name="accent" title="Accent colour" value="#38bbcd" />
+		<panel-text  title="Panel text" value="#ffffff">
+			<description>To stand out against darker panel or accent</description>
+		</panel-text>
+		<light-panel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />
+		<bordercolor title="Border color" value="#333" />
+		<imageborder title="Image border color" value="teal" />
+	</colors>
+
+	<media>
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
+	</media>
+
+	<fonts>
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+	</fonts>
+
+	<layouts>
+		
+		
+	</layouts>
+
+	<content>
+
+		<body>
+			<color>textcolor</color>
+			<font-family>bodyfont</font-family>
+			<font-size>80%</font-size>
+			<padding>0</padding>
+		</body>
+
+		<scheme-title>
+			<title>
+				<color>accent</color>
+				<font-family>titlefont</font-family>
+				<margin>0</margin>
+				<font-size>1.4em</font-size>
+				<font-weight>bold</font-weight>
+			</title>
+
+			<hover>
+				<title>
+					<color>panel-bg</color>
+				</title>
+			</hover>
+
+		</scheme-title>
+
+		<scheme-item>
+			<image-align>left</image-align>
+			<margin>
+				12 0
+			</margin>
+			<padding>
+				12
+			</padding>
+			<border>
+				<width>1px</width>
+				<color>bordercolor</color>
+			</border>
+			<title>
+				<padding>0</padding>
+			</title>
+			<text>
+				<padding>0</padding>
+			</text>
+			<mobile>
+				<image-align>center</image-align>
+			</mobile>
+			
+		</scheme-item>
+
+		<scheme-panels>
+			<padding>0</padding>
+
+			<title>
+				<background>
+					<color>panel-bg</color>
+				</background>
+				<color>panel-text</color>
+				<padding>4</padding>
+			</title>
+			<text>
+				<padding>4</padding>
+			</text>
+			<image>
+				<padding>0</padding>
+			</image>
+			<morelink>...more</morelink>
+			<hover>
+				<title>
+					<color>textcolor</color>
+				</title>
+			</hover>
+			
+		</scheme-panels>	
+	
+		<test2>
+			<htop>true</htop>
+			
+			<image>
+				<margin>2px</margin>
+				<padding>2px</padding>
+				<border>
+					<width>1px</width>
+					<color>imageborder</color>
+				</border>
+			</image>
+			
+			<mobile>
+				<htop>false</htop>
+				<image-align>center</image-align>
+			</mobile>
+		</test2>
+
+		<test3>
+			<titletag>h2</titletag>
+			<htop>true</htop>
+			<image-width>66%</image-width>
+		</test3>
+
+		<test4>
+		
+			<htop>true</htop>
+			<image-width>66%</image-width>
+			<image-gap>40px</image-gap>
+		
+		</test4>
+
+		<test6>
+			<image-align>center</image-align>
+		</test6>
+		
+		<test8>
+			<image-align>right</image-align>
+		</test8>
+
+		<test9>
+			<flow>1</flow>
+			<mobile><flow>0</flow></mobile>
+		</test9>
+
+		<test10>
+			<image-align>right</image-align>
+			<flow>1</flow>
+			<mobile><flow>0</flow></mobile>
+		</test10>
+
+	</content>
+
+</stylesheet>
+
+
+

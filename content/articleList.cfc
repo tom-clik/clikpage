@@ -1,25 +1,26 @@
-component extends="contentSection" {
+component extends="item" {
 
-	function init(required contentObj contentObj) {
+	variables.type = "articlelist";
+	variables.title = "Article list";
+	variables.description = "List of content items";
+	variables.defaults = {
+		"title"="Untitled",
+		"content"="Undefined content",
+	};
+	
+	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		variables.type = "articlelist";
-		variables.title = "Article list";
-		variables.description = "List of content items";
-		variables.defaults = {
-			"title"="Untitled",
-			"content"="Undefined content",
-		};
 		
-		variables.static_css = {"panels":1, "images":1};
-		
-		this.panels = [
-			{"name":"Title","panel":"title","selector":" .title"},
-			{"name":"Item","panel":"item","selector":" .item", "type":"item"},
-			{"name":"Image","panel":"image","selector":" .imageWrap"},
-			{"name":"Text","panel":"text","selector":" .textWrap"}
+		this.selectors = [
+			{"name"="item", "selector"=" .item"},
+			{"name"="image", "selector"=" .imageWrap"},
+			{"name"="title", "selector"=" .title"},
+			{"name"="text", "selector"=" .textWrap"}
 		];
-		
+
+		this.panels.prepend({"name":"Item","panel":"item","selector":" .item"});
+
 		return this;
 
 	}
