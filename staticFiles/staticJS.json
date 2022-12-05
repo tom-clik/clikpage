@@ -6,7 +6,9 @@
         "jqueryui",
         "validate",
         "fuzzy",
-        "select2"
+        "clikForm",
+        "autoButton",
+        "animateAuto"
       ],
       "pack": false,
       "name": "main"
@@ -120,6 +122,36 @@
       "documentation": "https://github.com/janl/mustache.js",
       "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js",
       "name": "mustache"
+    },
+    {
+      "min": "/_assets/js/jquery.form.js",
+      "description": "Legacy ajax form thing",
+      "name": "forms",
+      "requires": "jquery"
+    },
+    {
+      "min": "/_assets/js/jquery.elastic.1.6.11.js",
+      "description": "Elastic text form control",
+      "name": "elastic",
+      "requires": "jquery"
+    },
+    {
+      "min": "/_assets/js/jquery.clikForm.js",
+      "description": "",
+      "name": "clikForm",
+      "requires": "jquery,forms,elastic,select2,validate"
+    },
+    {
+      "min": "/_assets/js/jquery.autoButton.js",
+      "description": "",
+      "name": "autoButton",
+      "requires": "jquery"
+    },
+    {
+      "min": "/_assets/js/jquery.animateAuto.js",
+      "description": "",
+      "name": "animateAuto",
+      "requires": "jquery"
     }
   ]
 }

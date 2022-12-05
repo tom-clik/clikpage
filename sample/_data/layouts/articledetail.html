@@ -8,19 +8,34 @@
 
 <body data-extends="double">
 	
+	<div id="contentheader">
+		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+			<title>Section title</title>
+			<content>
+			{{section.title}}
+			</content>
+		</content>			
+	</div>
+	
 	<div id="xcol">
+		<content id="image" type="image" class="scheme-box">
+			<title>Image tests</title>
+			<field-image>/images/{{record.image}}</field-image>
+		</content>
+
 		<div id="navbuttons" class="scheme-navbuttons">
+			
 			<content id="navprev" type="button" class="scheme-button">
 				<title>Previous button</title>
 				<content>
 					{{record.previous_title}}				
 				</content>
-				<href>{{record.previous}}</href>
+				<href>{{record.previous_link}}</href>
 			</content>
 			<content id="navnext" type="button" class="scheme-button">
 				<title>Next button</title>
 				<href>
-					{{record.next}}
+					{{record.next_link}}
 				</href>
 				<content>
 					{{record.next_title}}				
@@ -33,12 +48,7 @@
 
 		<div id="maincol_top">
 
-			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-				<title>Section title</title>
-				<content>
-				{{section.title}}
-				</content>
-			</content>
+			
 
 			<content id="articletitle" type="title" data-notes="Notes here" class="scheme-title scheme-articletitle">
 				<title>Article title</title>

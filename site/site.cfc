@@ -1,20 +1,29 @@
-component  accessors="true" {
+component accessors="true" {
 
 	property name="cr" type="string" default=newLine();
-	property name="debug" type="boolean" default=false;
+	property name="debug" type="boolean" default=true;
 	property name="previewurl" type="string" default="index.cfm";
 	property name="mode" type="string" default="preview";
 
-	public site function init(string mode="preview") {
+	public site function init(
+		required string layoutsFolder
+		         ) {
 
+		this.settingsObj = new clikpage.settings.settings(debug=getdebug());
+		
+		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj,debug=getdebug());
+		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
+		this.pageObj = new clikpage.page(debug=getdebug());
+		
 		this.utils = CreateObject("component", "utils.utils");	
 		this.utilsXML = CreateObject("component", "utils.xml");	
 		local.patternObj = createObject( "java", "java.util.regex.Pattern");
 		
 		variables.pattern = patternObj.compile("\{\{\w+?\.([\w\.]+)?\}\}" ,local.patternObj.MULTILINE + local.patternObj.CASE_INSENSITIVE);
 
-		variables.mode = checkMode(arguments.mode);
-
+		
+		setmode( checkMode( getmode() )  );
+		
 		return this;
 	}
 
@@ -37,7 +46,7 @@ component  accessors="true" {
 	 * @hint Set site mode for site
 	 *
 	 */
-	public void function setMode(struct site, string mode) {
+	public void function setSiteMode(struct site, string mode) {
 		arguments.site["mode"] = checkMode(arguments.mode);
 	}
 
@@ -50,9 +59,10 @@ component  accessors="true" {
 		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
 		local.site = this.utilsXML.xml2data(local.xmlData);
 		
-		local.site["mode"] = variables.mode;
+		local.site["mode"] = getmode();
 
 		parseSections(local.site);
+
 		loadData(site=local.site,directory=getDirectoryFromPath(arguments.filename));
 
 		return local.site;
@@ -189,7 +199,7 @@ component  accessors="true" {
 		// TODO: dynamic data parsing
 		// 
 		local.data = [];
-
+		
 		for (local.id in arguments.site.data[arguments.type]) {
 			local.record = arguments.site.data[arguments.type][local.id];
 			
@@ -266,7 +276,7 @@ component  accessors="true" {
 	 * @dataSet     array of tags (see getDataSet())
 	 * @type data type
 	 */
-	public struct function getRecordSetInfo(required struct site, required any ID, required array dataset, string type="articles") {
+	public struct function getRecordSetInfo(required struct site, required any ID, required array dataset) {
 		local.info = {};
 		local.info["pos"] = ArrayFind(arguments.dataset, arguments.ID);
 		if (local.info.pos) {
@@ -274,16 +284,40 @@ component  accessors="true" {
 			local.info["count"] = ArrayLen(arguments.dataset);
 			local.info["next"] = (local.info.pos < local.info.count) ? local.info.pos + 1: "";
 		}
+		else {
+			throw("#arguments.ID# not found in dataset");
+		}
 		return local.info;
 	}
 
 
 	public void function addLinks(required array data, required struct site, required string section, string action="index") {
-
+		
 		for (local.article in arguments.data) {
 			local.article["link"] = pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = local.article.id)
 		}	
 	}
+	public void function addPageLinks(required struct record, required array dataset, required struct site, required string section, string action="index", string type="articles") {
+		var info = getRecordSetInfo(site=arguments.site,dataset=arguments.dataset,id=arguments.record.id);
+		
+
+		arguments.record["next_link"] = info.next neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.next) : "";
+
+		arguments.record["previous_link"] = info.previous neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.previous) : "";
+		
+		// to do: formal definitio of title 
+		local.field = arguments.type eq "images" ? "caption" : "title";
+		if (info.next neq "") {
+			arguments.record["next_title"] = getRecord(site=arguments.site, ID=info.next, type=arguments.type)[local.field ];
+		}
+
+		if (info.previous neq "") {
+			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=info.previous, type=arguments.type)[local.field ];
+		}
+
+
+	}
+	
 
 
 	public string function dataReplace(required struct site, required string html, required string sectioncode, string action="index", string id="", struct record={}) {
@@ -445,6 +479,106 @@ component  accessors="true" {
 		
 	}
 
-	
+	public struct function page(required struct pageRequest, required struct site) {
 
+		var pageContent = this.pageObj.getContent();
+		
+		local.rc = {};
+		local.rc.sectionObj = getSection(site=arguments.site,section=arguments.pageRequest.section);
+
+		// WTF. TO DO: sort this
+		arguments.site.sections[arguments.pageRequest.section].location = sectionLocation(site=arguments.site,section=arguments.pageRequest.section);
+
+		pageContent.layoutname = getLayoutName(section=local.rc.sectionObj,action=arguments.pageRequest.action);
+
+		local.rc.layout = this.layoutsObj.getLayout(pageContent.layoutname);
+
+		pageContent.bodyClass =  local.rc.layout.bodyClass;
+
+		arguments.site.cs = {};
+
+		local.rc.record = {};
+		
+		// todo: add as method of content object
+		for (var content in local.rc.layout.content) {
+			try {
+				var csdata = local.rc.layout.content[content];
+				
+				arguments.site.cs[content] =  this.contentObj.new(argumentCollection=csdata);
+				//writeDump(cs[content]);
+				this.contentObj.settings(content=arguments.site.cs[content],styles=arguments.site.styles.content,media=arguments.site.styles.media);
+				
+				// hack for data
+				// TO DO: re do this when we have proper data set functionality
+				switch (content) {
+					case "mainmenu":case "topmenu":
+						arguments.site.cs[content]["data"] = menuData(site=arguments.site,sections=arguments.site.sectionlist);
+						break;
+					case "footermenu":
+						arguments.site.cs[content]["data"] = menuData(site=arguments.site,sections="about,contact,privacy");
+						break;
+				}
+
+				// first stab at dataset functionality. 
+				if (StructKeyExists(local.rc.sectionObj,"dataset")) {
+					if (! StructKeyExists(local.rc.sectionObj.dataset,"tag")) {
+						throw("tag must be defined for dataset at this time");
+					}
+					local.type = local.rc.sectionObj.dataset.type ? : "articles";
+					local.rc.sectionObj["data"] = getDataSet(site=arguments.site,tag=local.rc.sectionObj.dataset.tag, type=local.type);
+					// first stab at data functionality. 
+					if (arguments.pageRequest.id != "") {
+						local.rc.record = getRecord(site=arguments.site,id=arguments.pageRequest.id,type=local.type);
+						
+						addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.type);
+					}
+					
+
+				}
+				else if (arguments.pageRequest.id != "" AND arguments.pageRequest.id != 0) {
+					throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
+				}
+
+				// hardwired for list types at the minute. what to do???
+				// reasonably easy to define data sets but waht about the links
+				switch (arguments.site.cs[content].type) {
+					case "articlelist":
+						arguments.site.cs[content]["data"] = getRecords(site=arguments.site,dataset=local.rc.sectionObj.data, type=local.type);
+						addLinks(data=arguments.site.cs[content]["data"],site=arguments.site,section=arguments.pageRequest.section,action="view");
+						break;
+					case "imagegrid":
+
+						arguments.site.cs[content]["data"] = getRecords(site=arguments.site,dataset=local.rc.sectionObj["data"], type=local.type);
+						
+						addLinks(data=arguments.site.cs[content]["data"],site=arguments.site,section=arguments.pageRequest.section,action="view");
+						
+						break;
+				}
+				
+				local.tag=local.rc.layout.layout.select("###content#").first();
+				
+				// TO do: use display method
+				// and cache results
+				local.tag.html(this.contentObj.html(arguments.site.cs[content]));
+				
+				local.tag.attr("class",this.contentObj.getClassList(arguments.site.cs[content]));
+				
+				this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.cs[content],true));
+				
+			}
+
+			catch (Any e) {
+				writeOutput("<h2>issue with #content#</h2>");
+				writeDump(e);
+			}
+
+		}
+		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styles.media);
+
+		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
+
+		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
+		return pageContent;
+	}	
+	
 }

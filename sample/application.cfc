@@ -9,7 +9,6 @@
 
 */
 
-
 component extends="clikpage.clikpageApplication" { //
 	// Application properties
 	this.name = "clikpagesample";

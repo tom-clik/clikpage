@@ -18,7 +18,8 @@
 			if (!FileExists(arguments.filename)) {
 				throw("Stylesheet #arguments.filename# not found");
 			}
-
+			
+			local.styles = {};// see catch below
 			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
 			local.styles = this.utilsXML.xml2data(local.xmlData);
 			
@@ -404,10 +405,10 @@
 		if (StructKeyExists(arguments.settings,"show")) {
 			if (isBoolean(arguments.settings.show)) {
 				if (NOT arguments.settings.show ) {
-					local.css &= "\tdisplay:" & "none";
+					local.css &= "\tdisplay:" & "none;\n";
 				}
 				else if (NOT structKeyExists(arguments.settings, "grid")) {
-					local.css &= "\tdisplay:" & "block";
+					local.css &= "\tdisplay:" & "block;\n";
 				}
 			}
 		}
@@ -452,8 +453,6 @@
 
 	private string function displayPosition(required struct settings) {
 		
-		var retVal = ["position:" & arguments.settings.position];
-
 		// var hasPosition = structSome(arguments.settings,
 		// 	function(key,value) {
 		// 		return structKeyExists({"top":1,"bottom":1,"left":1,"right":1}, key);
@@ -551,7 +550,7 @@
 	 * somehow.
 	 * 
 	 */
-	private void function grid(required struct settings, required struct out) {
+	public void function grid(required struct settings, required struct out) {
 
 		var styles = arguments.settings;
 		
@@ -559,12 +558,15 @@
 		arguments.out["item"] = "";
 
 		structAppend(styles, {
+			"grid-gap":"0",
 			"grid-mode":"auto",
 			"grid-fit":"auto-fit",
 			"grid-width":"180px",
 			"grid-max-width":"1fr",
 			"grid-columns":"2"
 			},false);
+		arguments.out.main &= "\tgrid-gap:#styles["grid-gap"]#;\n;";
+		
 		switch (styles["grid-mode"]) {
 			case "none":
 				arguments.out.item &= "\tgrid-area:unset;\n;";

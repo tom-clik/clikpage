@@ -39,21 +39,47 @@ component extends="contentSection" {
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
+
+		this.classes = "button";
 		
 		variables.static_css = {
 			"navbuttons"=1
-		}
+		};
+		variables.static_js = {
+			"autoButton"=1
+		};
+		this.states = [
+			{"state"="main", "selector"="","name":"Main","description":"The main state"},
+			{"state"="hover", "selector"=":hover","name":"Hover","description":"The hover state for buttons"}
+		];		
+
+		this.selectors = [
+			{"name"="main", "selector"=".button"},
+			{"name"="label", "selector"=" label"},
+			{"name"="icon", "selector"=" .icon"}
+		];
+
+		this.styleDefs = [
+			"align":{"type":"halign"},
+			"label-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}]},
+			"icon-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}]},
+			"shape" = {"type":"text"},
+			"gap" = {"type":"dimension"},
+			"button-direction" = {"type":"list","options"=[{"value":"row"},{"value":"row-reverse"}]},
+			"button-align" = {"type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}]},
+			"link-color" = {"type":"color"},
+			"icon-width" = {"type":"dimension"},
+			"icon" = {"type":"dimension"}
+		];
+
 		this.settings = {
-			"button" = {
-				"showlabel" = 1,
-				"align" = "left"
-			}
+			"shape" = "left_arrow"
 		}
 		
 		variables.shapes = {};
 
 		this.panels = [
-			{"name":"item","panel":"item", "selector": " a"},
+			{"name":"label","panel":"label", "selector": " label"},
 			{"name":"icon","panel":"icon", "selector": " .icon"}
 		];
 
@@ -88,34 +114,27 @@ component extends="contentSection" {
 		
 		if (! StructKeyExists(variables.shapes, arguments.id)) {
 			throw(message="Shape #arguments.id# not found",detail="To reference a shape by name it must first be defined in the component via addShape or addShapes");
-
 		}
 
 		local.shape = variables.shapes[arguments.id];
-		var html = "<svg  xmlns=""http://www.w3.org/2000/svg"" viewBox=""#local.shape.viewBox#"" preserveAspectRatio=""none""><use href=""#local.shape.src####arguments.id#""/></svg>";
+		var html = "<svg class=""icon"" xmlns=""http://www.w3.org/2000/svg"" viewBox=""#local.shape.viewBox#"" preserveAspectRatio=""none""><use href=""#local.shape.src####arguments.id#""/></svg>";
 
 		return html;
 
 	}
 
-
 	public string function html(required struct content) {
 		
-		local.hasLink = StructKeyExists(arguments.content,"link");
+		local.Link = StructKeyExists(arguments.content,"link") ? arguments.content.link : "##";
 
-		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#' title='#ListFirst(arguments.content.link,"{}")#'>" : "";
+		var linkStart = "<a href='#local.Link#'>";
+		var linkEnd = "</a>";
+		var cshtml = linkStart;
 
-		var linkEnd = (local.hasLink) ? "</a>" : "";
-
-		var cshtml = "";
-
-		cshtml &= linkStart;
+		// TO DO: check this is handle by the settings and remove
+		local.shape = StructKeyExists(arguments.content.settings.main,"shape") ? arguments.content.settings.main.shape : "left_arrow";
 		
-		// TO DO: broken
-		local.shape = "left_arrow";
-		
-		// local.shape = StructKeyExists(arguments.content.settings.button,"shape") ? arguments.content.settings.button.shape : "left_arrow";
-		cshtml &= "<div class='icon'>" & displayShape(local.shape) & "</div>";
+		cshtml &= displayShape(local.shape);
 
 		if (arguments.content.content !="") {
 			cshtml &= "<label>#arguments.content.content#</label>";
@@ -127,5 +146,9 @@ component extends="contentSection" {
 
 	}
 
+	public string function onready(required struct content) {
+		var js = "$(""###arguments.content.id#"").button();\n";
+		return js;
+	}
 
 }

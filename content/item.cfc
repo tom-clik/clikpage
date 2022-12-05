@@ -16,7 +16,7 @@ component extends="contentSection" {
 		this.classes = "item clear";
 		
 		this.selectors = [
-			{"name"="main", "selector"=""},
+			{"name"="item", "selector"=""},
 			{"name"="image", "selector"=" .imageWrap"},
 			{"name"="title", "selector"=" .title"},
 			{"name"="text", "selector"=" .textWrap"}
@@ -35,7 +35,7 @@ component extends="contentSection" {
 			"image-gap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances","default":"10px"},
 			"image-width":{"type":"dimension","default":"40%"},
 			"titletag":{"type":"list","list":"h1,h2,h3,h4,h5,h6"},
-			"showtitle":{"type":"boolean"},
+			"showtitle":{"type":"boolean"}
 		];
 
 		this.settings = {
@@ -97,7 +97,7 @@ component extends="contentSection" {
 		local.rows = "";
 
 		if (arguments.styles.flow) {
-			data.main &= "\tdisplay:block;\n";
+			data.item &= "\tdisplay:block;\n";
 			data.image &= "\tmargin-bottom:var(--item-gridgap);\n";
 			switch (arguments.styles["image-align"]) {
 				case "left":
@@ -126,13 +126,13 @@ component extends="contentSection" {
 		else {
 			data.image &= "\tfloat:none;\n";
 			data.image &= "\twidth:100%;\n";
-			data.main &= "\tdisplay:grid;\n";
+			data.item &= "\tdisplay:grid;\n";
 			if (arguments.styles.htop) {
 				local.areas = """title"" ""imageWrap"" ""textWrap""";
 			}
 			
 			if (StructKeyExists(arguments.styles,"image-gap")) {
-				data.main &= "\t--item-gridgap: #arguments.styles["image-gap"]#;\n";	
+				data.item &= "\t--item-gridgap: #arguments.styles["image-gap"]#;\n";	
 			}
 
 			// imagealign          | left|center|right
@@ -176,13 +176,13 @@ component extends="contentSection" {
 		}
 
 		if (local.areas != "") {
-			data.main &= "\t--item-grid-template-areas: #local.areas#;\n";
+			data.item &= "\t--item-grid-template-areas: #local.areas#;\n";
 		}
 		if (local.widths != "") {
-			data.main &= "\t--item-grid-template-columns: #local.widths#;\n";
+			data.item &= "\t--item-grid-template-columns: #local.widths#;\n";
 		}
 		if (local.rows != "") {
-			data.main &= "\t--item-grid-template-rows: #local.rows#;\n";
+			data.item &= "\t--item-grid-template-rows: #local.rows#;\n";
 		}
 
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);

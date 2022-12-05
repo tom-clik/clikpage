@@ -4,10 +4,10 @@
 	******************************************************************/
 	--textcolor: #333333; /* Main text color */
 	--myfavcolor: #ff0000; /* My favourite colour */
-	--panel-bg: #01798a; /* Darker panel bg */
+	--panelbg: #01798a; /* Darker panel bg */
 	--accent: #38bbcd; /* Accent colour */
-	--panel-text: #ffffff; /* Panel text */
-	--light-panel-bg: #eaeaea; /* Light panel packground */
+	--paneltext: #ffffff; /* Panel text */
+	--lightpanel-bg: #eaeaea; /* Light panel packground */
 	--linkcolor: #38bbcd; /* Link color */
 	/*****************************************************************
 	*                              Fonts                             *
@@ -15,7 +15,7 @@
 	--bodyfont: Open Sans; /* Body font */
 	--titlefont: Lato; /* Title font */
 	--subtitlefont: var(--titlefont); /* Sub Title font */
-	--test: broken;
+	/* No family specified for font test */
 	/*****************************************************************
 	*                               Vars                             *
 	******************************************************************/
@@ -44,210 +44,24 @@
 #contentfooter {grid-area:contentfooter;}
 #maincol_bottom {grid-area:maincol_bottom;}
 #contentheader {grid-area:contentheader;}
-/* Layout testlayout1 */
-body.template-testlayout1 #content {
-}
-body.template-testlayout1 #content > .inner {
-	padding:var(--sitepadding);
-	max-width:var(--sitewidth);
-	margin-left:auto;
-	margin-right:auto;
-	display:grid;
-	grid-template-areas:"contentheader" "contentwrap" "contentfooter";
-	grid-template-rows: min-content 1fr min-content;
-}
-body.template-testlayout1 #bottomnav {
-	position:fixed
-	bottom:0px
-	left:0;
-}
-body.template-testlayout1 #bottomnav > .inner {
-	padding:var(--sitepadding);
-	max-width:1200px;
-	margin-left:auto;
-	margin-right:auto;
-}
-body.template-testlayout1 #footer {
-}
-body.template-testlayout1 #footer > .inner {
-	padding:var(--sitepadding);
-	max-width:1200px;
-	margin-left:auto;
-	margin-right:auto;
-	display:grid;
-	grid-template-columns: repeat(2,1fr);
-}
-body.template-testlayout1 #footer .inner > * {
-	grid-area:unset;
-;}
-body.template-testlayout1 #topnav {
-}
-body.template-testlayout1 #topnav > .inner {
-	padding:var(--sitepadding);
-	max-width:1200px;
-	margin-left:auto;
-	margin-right:auto;
-}
-body.template-testlayout1 #contentwrap {
-}
-body.template-testlayout1 #contentwrap > .inner {
-	display:grid;
-	grid-template-areas:"subcol maincol xcol";
-	grid-template-columns: 180px 1fr 140px;
-}
-body.template-testlayout1 #header {
-}
-body.template-testlayout1 #header > .inner {
-	padding:var(--sitepadding);
-	max-width:var(--sitewidth);
-	margin-left:auto;
-	margin-right:auto;
-	display:grid;
-	grid-template-columns: max-content 1fr;
-}
-body.template-testlayout1 #header .inner > * {
-	grid-area:unset;
-;}
-body.template-testlayout1 #ubercontainer {
-	height:100%;
-}
-body.template-testlayout1 #ubercontainer > .inner {
-	height:100%;
-	display:grid;
-	grid-template-areas:"topnav" "header" "content" "footer";
-	grid-template-rows: min-content min-content 1fr min-content;
-}
-body.template-testlayout1 #contentfooter {
-}
-body.template-testlayout1 #contentfooter > .inner {
-	display:grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-body.template-testlayout1 #contentfooter .inner > * {
-	grid-area:unset;
-;}
-@media only screen and (max-width: 800px) {
-	body.template-testlayout1 #contentwrap {
-	}
-	body.template-testlayout1 #contentwrap > .inner {
-		display:grid;
-		grid-template-areas:"subcol maincol" "subcol xcol";
-		grid-template-columns: 180px 1fr;
-	}
-
-}
-@media only screen and (max-width: 600px) {
-	body.template-testlayout1 #footer {
-	}
-	body.template-testlayout1 #footer > .inner {
-		display:block;
-	}
-	body.template-testlayout1 #footer .inner > * {
-		grid-area:unset;
-	;}
-	body.template-testlayout1 #contentwrap {
-	}
-	body.template-testlayout1 #contentwrap > .inner {
-		display:grid;
-		grid-template-areas:"maincol" "subcol"  "xcol";
-		grid-template-columns: 1fr;
-	}
-	body.template-testlayout1 #header {
-	}
-	body.template-testlayout1 #header > .inner {
-		display:block;
-	}
-	body.template-testlayout1 #header .inner > * {
-		grid-area:unset;
-	;}
-	body.template-testlayout1 #contentfooter {
-	}
-	body.template-testlayout1 #contentfooter > .inner {
-		display:block;
-	}
-	body.template-testlayout1 #contentfooter .inner > * {
-		grid-area:unset;
-	;}
-
-}
-/* Layout testlayout2 */
-body.template-testlayout2 #maincol {
-}
-body.template-testlayout2 #maincol > .inner {
-	display:grid;
-	grid-template-areas:"maincol_top maincol_top" "maincol_right maincol_left" "maincol_bottom maincol_bottom";
-	grid-template-rows: min-content min-content min-content;
-}
-body.template-testlayout2 #content {
-}
-body.template-testlayout2 #content > .inner {
-	display:grid;
-	grid-template-areas:"contentheader" "contentwrap";
-	grid-template-rows: min-content 1fr;
-}
-body.template-testlayout2 #contentfooter {
-	display:none}
-body.template-testlayout2 #contentfooter > .inner {
-}
-@media only screen and (max-width: 600px) {
-	body.template-testlayout2 #maincol {
-	}
-	body.template-testlayout2 #maincol > .inner {
-		display:block;
-	}
-	body.template-testlayout2 #maincol .inner > * {
-		grid-area:unset;
-	;}
-
-}
-/* Layout testlayout3 */
-body.template-testlayout3 #contentwrap {
-}
-body.template-testlayout3 #contentwrap > .inner {
-	display:grid;
-	grid-template-areas:"maincol";
-	grid-template-rows: 1fr;
-}
-body.template-testlayout3 #xcol {
-	display:none}
-body.template-testlayout3 #xcol > .inner {
-}
-body.template-testlayout3 #subcol {
-	display:none}
-body.template-testlayout3 #subcol > .inner {
-}
-/* Layout subfolder1.testlayout4 */
-body.template-subfolder1.testlayout4 #contentwrap {
-}
-body.template-subfolder1.testlayout4 #contentwrap > .inner {
-	display:grid;
-	grid-template-areas:"subcol maincol";
-	grid-template-rows: 180px 1fr;
-}
-body.template-subfolder1.testlayout4 #xcol {
-	display:none}
-body.template-subfolder1.testlayout4 #xcol > .inner {
-}
-@media only screen and (max-width: 600px) {
-	body.template-subfolder1.testlayout4 #contentwrap {
-	}
-	body.template-subfolder1.testlayout4 #contentwrap > .inner {
-		display:grid;
-		grid-template-areas:"subcol" "maincol";
-		grid-template-rows: 1fr;
-	}
-
-}
+/* No styles defined for layout main */
+/* No styles defined for layout double */
+/* No styles defined for layout articledetail */
+/* No styles defined for layout gallery */
 /*****************************************************************
 *                        Container styling                       *
 ******************************************************************/
-#content {
-	padding:8px 0px;
+#bottomnav {
+	position:fixed;
+	bottom:0px;
+	left:0;
 }
-#content > .inner {
-	max-width:1200px;
-	margin-left:auto;
-	margin-right:auto;
+#bottomnav > .inner {
+}
+#footer {
+	background-color:var(--panel-bg);
+}
+#footer > .inner {
 }
 #topnav {
 	background-color:var(--light-panel-bg);
@@ -257,16 +71,25 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 #navbuttons {
 }
 #navbuttons > .inner {
-	display:grid;
+	grid-gap:0;
+;	display:grid;
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 #navbuttons .inner > * {
 	grid-area:unset;
 ;}
 #header {
-	background-color:var(--panel-bg);
+	background-color:var(--panelbg);
 }
 #header > .inner {
+}
+@media only screen and (max-width: 600px) {
+	#bottomnav {
+		position:static;
+	}
+	#bottomnav > .inner {
+	}
+
 }
 /*****************************************************************
 *                         Content styling                        *
@@ -324,7 +147,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 #sectionintro {
 	/* Main CSS goes here */
 }
-/* {"height":"100%","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":"0 20"},"align":"left","menu":{"flex":true,"align":"right","min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+/* {"height":"100%","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":20},"align":"left","menu":{"flex":true,"align":"right","min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
 /* writing styles for state main */
 #topmenu {
 	/* no style for link-color */
@@ -347,7 +170,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	font-size:120%;
 	text-transform:uppercase;
 	/* Dimensions */
-	padding:0px 20px;
+	padding:20px;
 }
 #topmenu {
 	--menu-text-align: left;
@@ -409,51 +232,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		margin-left:0;
 		margin-right:0;
 }
-/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"left","showlabel":1}} */
+/* {"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"left_arrow"} */
 /* writing styles for state main */
 #navprev {
+	/* no style for align */
+	/* no style for label-display */
+	/* no style for icon-display */
+	/* no style for gap */
+	/* no style for button-direction */
+	/* no style for button-align */
+	/* no style for link-color */
+	--icon-width: 16;
+	/* no style for icon */
 	/* Font */
 	/* Dimensions */
 }
-#navprev  .icon {
+/* {"link-color":"var(--accent)"} */
+/* writing styles for state hover */
+#navprev:hover {
+	/* no style for align */
+	/* no style for label-display */
+	/* no style for icon-display */
+	/* no style for gap */
+	/* no style for button-direction */
+	/* no style for button-align */
+	--link-color: var(--accent);
+	/* no style for icon-width */
+	/* no style for icon */
 	/* Font */
 	/* Dimensions */
-	background-color:var(--light-panel-bg);
-	padding:4px;
 }
-#navprev {
+#navprev.button {
 	/* Main CSS goes here */
 }
-/* {"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
+/* {"border":{"width":1,"color":"panel-bg"},"image-gap":"10px","padding":"4px","showtitle":true,"flow":false,"image-width":"40%","title":{"padding":"4px","margin":"-4px -4px 0 -4px","font-size":"160%","background":{"color":"panel-bg"},"color":"panel-text"},"htop":false,"image-align":"left","titletag":"h3"} */
 /* writing styles for state main */
 #welcome {
 	--image-gap: 10px;
 	--image-width: 40%;
 	/* Font */
 	/* Dimensions */
+	border-width:1px;
+	border-color:var(--panel-bg);
+	border-style:solid;
+	padding:4px;
+}
+#welcome  .title {
+	/* Font */
+	color:var(--panel-text);
+	font-size:160%;
+	/* Dimensions */
+	background-color:var(--panel-bg);
+	padding:4px;
+	margin:-4px -4px 0px -4px;
 }
 #welcome {
 		display:grid;
 		--item-gridgap: 10px;
-		--item-grid-template-areas: "imageWrap" "title" "textWrap";
-		--item-grid-template-columns: 1fr;
-		--item-grid-template-rows: min-content min-content auto;
+		--item-grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+		--item-grid-template-columns: var(--image-width) auto;
+		--item-grid-template-rows: min-content 1fr;
 }
 #welcome .imageWrap {
 		float:none;
 		width:100%;
-		margin-left:0;
-		margin-right:0;
 }
-/* {"font-size":"200%","color":"panel-text","tag":"h2","margin":"12 0 12 12"} */
+/* {"font-size":"220%","color":"paneltext","tag":"h2","margin":"12 12 12 0"} */
 /* writing styles for state main */
 #sitetitle {
 	--tag: h2;
 	/* Font */
-	color:var(--panel-text);
-	font-size:200%;
+	color:var(--paneltext);
+	font-size:220%;
 	/* Dimensions */
-	margin:12px 0px 12px 12px;
+	margin:12px 12px 12px 0px;
 }
 #sitetitle {
 	/* Main CSS goes here */
@@ -467,45 +319,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 #bottomnav1 {
 	/* Main CSS goes here */
 }
-/* {"border":{"width":1,"color":"myfavcolor"},"align":"left","padding":2,"menu":{"flex":true},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+/* {"show":0,"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"menu"} */
+/* writing styles for state main */
+#hamburger {
+	/* no style for align */
+	/* no style for label-display */
+	/* no style for icon-display */
+	/* no style for gap */
+	/* no style for button-direction */
+	/* no style for button-align */
+	/* no style for link-color */
+	--icon-width: 16;
+	/* no style for icon */
+	/* Font */
+	/* Dimensions */
+	display:none;
+}
+/* {"link-color":"var(--accent)"} */
+/* writing styles for state hover */
+#hamburger:hover {
+	/* no style for align */
+	/* no style for label-display */
+	/* no style for icon-display */
+	/* no style for gap */
+	/* no style for button-direction */
+	/* no style for button-align */
+	--link-color: var(--accent);
+	/* no style for icon-width */
+	/* no style for icon */
+	/* Font */
+	/* Dimensions */
+}
+#hamburger.button {
+	/* Main CSS goes here */
+}
+/* {"align":"right","menu-gap":0,"popup":"false","stretch":0,"menu-border-color":"myfavcolor","menu-item-border":"1px","border-type":"dividers","flex":true,"menu-item-padding":"4px 12px","orientation":"horizontal","padding-adjust":true} */
 /* writing styles for state main */
 #footermenu {
 	/* no style for link-color */
-	/* no style for menu-border-color */
+	--menu-border-color: myfavcolor;
 	/* no style for menu-background */
-	/* no style for menu-gap */
-	/* no style for menu-item-padding */
-	/* no style for menu-item-border */
+	--menu-gap: 0;
+	--menu-item-padding: 4px 12px;
+	--menu-item-border: 1px;
 	/* no style for menu-text-align */
 	/* no style for menu-anim-time */
 	/* no style for menu-label-display */
 	/* no style for menu-icon-display */
 	/* Font */
 	/* Dimensions */
-	border-width:1px;
-	border-color:var(--myfavcolor);
-	border-style:solid;
-	padding:2px;
 }
 #footermenu {
-	--menu-text-align: left;
+	--menu-text-align: right;
 	/* popup styling */
 }
 #footermenu > ul {
 	/* orientation: horizontal  */
-	justify-content: flex-start;
+	justify-content: flex-end;
 	/* flex */
-	display: grid;
+	display: flex;
 }
 #footermenu > ul > li {
-	/* stretch false */
+	/* stretch 0 */
 	flex-grow: 0;
+}
+#footermenu > ul > li > a {
+	border-width:0;
+	border-right-width:var(--menu-item-border);
 }
 #footermenu > ul > li:first-of-type > a {
 	/* padding-adjust  */
 	padding-left:0;
 }
 #footermenu > ul > li:last-of-type > a {
+	border-width:0;
 	/* padding-adjust  */
 	padding-right:0;
 }
@@ -559,7 +446,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		margin-left:0;
 		margin-right:0;
 }
-/* {"align":"left","menu":{"orientation":"vertical"},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+/* {"position":"sticky","align":"left","popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"vertical","padding-adjust":true} */
 /* writing styles for state main */
 #mainmenu {
 	/* no style for link-color */
@@ -574,14 +461,19 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	/* no style for menu-icon-display */
 	/* Font */
 	/* Dimensions */
+	position:sticky;
+	top:0;
+	top:0;
+	top:0;
+	top:0;
 }
 #mainmenu {
 	--menu-text-align: left;
 	/* popup styling */
 }
 #mainmenu > ul {
-	/* orientation: horizontal  */
-	justify-content: flex-start;
+	/* orientation: vertical  */
+	grid-template-columns: 1fr;
 	/* flex */
 	display: grid;
 }
@@ -623,12 +515,13 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 #image {
 	/* Main CSS goes here */
 }
-/* {"masonry":true,"grid-max-width":"24%","popup":true} */
+/* {"masonry":true,"grid-width":"24%","popup":true} */
 /* writing styles for state main */
 #imagegrid {
 	/* no style for grid-gap */
 	/* no style for row-gap */
-	--grid-max-width: 24%;
+	--grid-width: 24%;
+	/* no style for grid-max-width */
 	/* no style for grid-max-height */
 	/* no style for justify-content */
 	/* no style for align-items */
@@ -638,9 +531,14 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 #imagegrid {
 		display:block;
 }
-/* {"item":{"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"},"image":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"title":{"text-transform":"uppercase"},"image":{"padding":"4px"}}} */
+#imagegrid > * {
+		width:var(--grid-width);
+}
+/* {"item":{"title":{"text-transform":"uppercase"},"image":{"padding":"4px","hover":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"}}},"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
 /* writing styles for state main */
 #sectionlist {
+	--image-gap: 10px;
+	--image-width: 40%;
 	/* Font */
 	/* Dimensions */
 }
@@ -651,35 +549,63 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	padding:12px;
 	margin:0px 0px 12px 0px;
 }
-#sectionlist {
-	/* Main CSS goes here */
+#sectionlist .item {
+		display:grid;
+		--item-gridgap: 10px;
+		--item-grid-template-areas: "imageWrap" "title" "textWrap";
+		--item-grid-template-columns: 1fr;
+		--item-grid-template-rows: min-content min-content auto;
 }
-/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"right","shape":"right_arrow","showlabel":1}} */
+#sectionlist .imageWrap {
+		float:none;
+		width:100%;
+		margin-left:0;
+		margin-right:0;
+}
+/* {"button-direction":"row-reverse","hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"right_arrow"} */
 /* writing styles for state main */
 #navnext {
+	/* no style for align */
+	/* no style for label-display */
+	/* no style for icon-display */
+	/* no style for gap */
+	--button-direction: row-reverse;
+	/* no style for button-align */
+	/* no style for link-color */
+	--icon-width: 16;
+	/* no style for icon */
 	/* Font */
 	/* Dimensions */
 }
-#navnext  .icon {
+/* {"link-color":"var(--accent)"} */
+/* writing styles for state hover */
+#navnext:hover {
+	/* no style for align */
+	/* no style for label-display */
+	/* no style for icon-display */
+	/* no style for gap */
+	/* no style for button-direction */
+	/* no style for button-align */
+	--link-color: var(--accent);
+	/* no style for icon-width */
+	/* no style for icon */
 	/* Font */
 	/* Dimensions */
-	background-color:var(--light-panel-bg);
-	padding:4px;
 }
-#navnext {
+#navnext.button {
 	/* Main CSS goes here */
 }
-/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h4","margin":"0 0 1em 0"} */
+/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h2","margin":"0 0 0.4em 0"} */
 /* writing styles for state main */
 #sectiontitle {
-	--tag: h4;
+	--tag: h2;
 	/* Font */
 	font-family:var(--bodyfont);
 	color:var(--accent);
 	font-size:2.4em;
 	font-weight:300;
 	/* Dimensions */
-	margin:0px 0px 1em 0px;
+	margin:0px 0px 0.4em 0px;
 }
 #sectiontitle {
 	/* Main CSS goes here */
@@ -777,7 +703,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#sectionintro {
 		/* Main CSS goes here */
 	}
-	/* {"height":"100%","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":"0 20"},"align":"left","menu":{"flex":true,"align":"right","min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"height":"100%","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":20},"align":"left","menu":{"flex":true,"align":"right","min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
 	/* writing styles for state main */
 	#topmenu {
 		/* no style for link-color */
@@ -800,7 +726,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		font-size:120%;
 		text-transform:uppercase;
 		/* Dimensions */
-		padding:0px 20px;
+		padding:20px;
 	}
 	#topmenu {
 		--menu-text-align: left;
@@ -862,51 +788,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"left","showlabel":1}} */
+	/* {"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"left_arrow"} */
 	/* writing styles for state main */
 	#navprev {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navprev  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navprev:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navprev {
+	#navprev.button {
 		/* Main CSS goes here */
 	}
-	/* {"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
+	/* {"border":{"width":1,"color":"panel-bg"},"image-gap":"10px","padding":"4px","showtitle":true,"flow":false,"image-width":"40%","title":{"padding":"4px","margin":"-4px -4px 0 -4px","font-size":"160%","background":{"color":"panel-bg"},"color":"panel-text"},"htop":false,"image-align":"left","titletag":"h3"} */
 	/* writing styles for state main */
 	#welcome {
 		--image-gap: 10px;
 		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
+		border-width:1px;
+		border-color:var(--panel-bg);
+		border-style:solid;
+		padding:4px;
+	}
+	#welcome  .title {
+		/* Font */
+		color:var(--panel-text);
+		font-size:160%;
+		/* Dimensions */
+		background-color:var(--panel-bg);
+		padding:4px;
+		margin:-4px -4px 0px -4px;
 	}
 	#welcome {
 			display:grid;
 			--item-gridgap: 10px;
-			--item-grid-template-areas: "imageWrap" "title" "textWrap";
-			--item-grid-template-columns: 1fr;
-			--item-grid-template-rows: min-content min-content auto;
+			--item-grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			--item-grid-template-columns: var(--image-width) auto;
+			--item-grid-template-rows: min-content 1fr;
 	}
 	#welcome .imageWrap {
 			float:none;
 			width:100%;
-			margin-left:0;
-			margin-right:0;
 	}
-	/* {"font-size":"200%","color":"panel-text","tag":"h2","margin":"12 0 12 12"} */
+	/* {"font-size":"220%","color":"paneltext","tag":"h2","margin":"12 12 12 0"} */
 	/* writing styles for state main */
 	#sitetitle {
 		--tag: h2;
 		/* Font */
-		color:var(--panel-text);
-		font-size:200%;
+		color:var(--paneltext);
+		font-size:220%;
 		/* Dimensions */
-		margin:12px 0px 12px 12px;
+		margin:12px 12px 12px 0px;
 	}
 	#sitetitle {
 		/* Main CSS goes here */
@@ -920,45 +875,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#bottomnav1 {
 		/* Main CSS goes here */
 	}
-	/* {"border":{"width":1,"color":"myfavcolor"},"align":"left","padding":2,"menu":{"flex":true},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"show":0,"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"menu"} */
+	/* writing styles for state main */
+	#hamburger {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+		display:none;
+	}
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#hamburger:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+	}
+	#hamburger.button {
+		/* Main CSS goes here */
+	}
+	/* {"align":"right","menu-gap":0,"popup":"false","stretch":0,"menu-border-color":"myfavcolor","menu-item-border":"1px","border-type":"dividers","flex":true,"menu-item-padding":"4px 12px","orientation":"horizontal","padding-adjust":true} */
 	/* writing styles for state main */
 	#footermenu {
 		/* no style for link-color */
-		/* no style for menu-border-color */
+		--menu-border-color: myfavcolor;
 		/* no style for menu-background */
-		/* no style for menu-gap */
-		/* no style for menu-item-padding */
-		/* no style for menu-item-border */
+		--menu-gap: 0;
+		--menu-item-padding: 4px 12px;
+		--menu-item-border: 1px;
 		/* no style for menu-text-align */
 		/* no style for menu-anim-time */
 		/* no style for menu-label-display */
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
-		border-width:1px;
-		border-color:var(--myfavcolor);
-		border-style:solid;
-		padding:2px;
 	}
 	#footermenu {
-		--menu-text-align: left;
+		--menu-text-align: right;
 		/* popup styling */
 	}
 	#footermenu > ul {
 		/* orientation: horizontal  */
-		justify-content: flex-start;
+		justify-content: flex-end;
 		/* flex */
-		display: grid;
+		display: flex;
 	}
 	#footermenu > ul > li {
-		/* stretch false */
+		/* stretch 0 */
 		flex-grow: 0;
+	}
+	#footermenu > ul > li > a {
+		border-width:0;
+		border-right-width:var(--menu-item-border);
 	}
 	#footermenu > ul > li:first-of-type > a {
 		/* padding-adjust  */
 		padding-left:0;
 	}
 	#footermenu > ul > li:last-of-type > a {
+		border-width:0;
 		/* padding-adjust  */
 		padding-right:0;
 	}
@@ -1012,7 +1002,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"align":"left","menu":{"orientation":"vertical"},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"position":"sticky","align":"left","popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"vertical","padding-adjust":true} */
 	/* writing styles for state main */
 	#mainmenu {
 		/* no style for link-color */
@@ -1027,14 +1017,19 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
+		position:sticky;
+		top:0;
+		top:0;
+		top:0;
+		top:0;
 	}
 	#mainmenu {
 		--menu-text-align: left;
 		/* popup styling */
 	}
 	#mainmenu > ul {
-		/* orientation: horizontal  */
-		justify-content: flex-start;
+		/* orientation: vertical  */
+		grid-template-columns: 1fr;
 		/* flex */
 		display: grid;
 	}
@@ -1076,12 +1071,13 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#image {
 		/* Main CSS goes here */
 	}
-	/* {"masonry":true,"grid-max-width":"24%","popup":true} */
+	/* {"masonry":true,"grid-width":"24%","popup":true} */
 	/* writing styles for state main */
 	#imagegrid {
 		/* no style for grid-gap */
 		/* no style for row-gap */
-		--grid-max-width: 24%;
+		--grid-width: 24%;
+		/* no style for grid-max-width */
 		/* no style for grid-max-height */
 		/* no style for justify-content */
 		/* no style for align-items */
@@ -1091,9 +1087,14 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#imagegrid {
 			display:block;
 	}
-	/* {"item":{"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"},"image":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"title":{"text-transform":"uppercase"},"image":{"padding":"4px"}}} */
+	#imagegrid > * {
+			width:var(--grid-width);
+	}
+	/* {"item":{"title":{"text-transform":"uppercase"},"image":{"padding":"4px","hover":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"}}},"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
 	/* writing styles for state main */
 	#sectionlist {
+		--image-gap: 10px;
+		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
 	}
@@ -1104,35 +1105,63 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		padding:12px;
 		margin:0px 0px 12px 0px;
 	}
-	#sectionlist {
-		/* Main CSS goes here */
+	#sectionlist .item {
+			display:grid;
+			--item-gridgap: 10px;
+			--item-grid-template-areas: "imageWrap" "title" "textWrap";
+			--item-grid-template-columns: 1fr;
+			--item-grid-template-rows: min-content min-content auto;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"right","shape":"right_arrow","showlabel":1}} */
+	#sectionlist .imageWrap {
+			float:none;
+			width:100%;
+			margin-left:0;
+			margin-right:0;
+	}
+	/* {"button-direction":"row-reverse","hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"right_arrow"} */
 	/* writing styles for state main */
 	#navnext {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		--button-direction: row-reverse;
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navnext  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navnext:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navnext {
+	#navnext.button {
 		/* Main CSS goes here */
 	}
-	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h4","margin":"0 0 1em 0"} */
+	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h2","margin":"0 0 0.4em 0"} */
 	/* writing styles for state main */
 	#sectiontitle {
-		--tag: h4;
+		--tag: h2;
 		/* Font */
 		font-family:var(--bodyfont);
 		color:var(--accent);
 		font-size:2.4em;
 		font-weight:300;
 		/* Dimensions */
-		margin:0px 0px 1em 0px;
+		margin:0px 0px 0.4em 0px;
 	}
 	#sectiontitle {
 		/* Main CSS goes here */
@@ -1232,7 +1261,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#sectionintro {
 		/* Main CSS goes here */
 	}
-	/* {"menu":{"align":"left","height":"auto","flex":true,"min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"height":"auto","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":"0 20"},"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"menu":{"align":"left","height":"auto","flex":true,"min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"height":"auto","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":20},"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
 	/* writing styles for state main */
 	#topmenu {
 		/* no style for link-color */
@@ -1255,7 +1284,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		font-size:120%;
 		text-transform:uppercase;
 		/* Dimensions */
-		padding:0px 20px;
+		padding:20px;
 	}
 	#topmenu {
 		--menu-text-align: left;
@@ -1317,51 +1346,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"left","showlabel":1}} */
+	/* {"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"left_arrow"} */
 	/* writing styles for state main */
 	#navprev {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navprev  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navprev:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navprev {
+	#navprev.button {
 		/* Main CSS goes here */
 	}
-	/* {"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
+	/* {"border":{"width":1,"color":"panel-bg"},"image-gap":"10px","padding":"4px","showtitle":true,"flow":false,"image-width":"40%","title":{"padding":"4px","margin":"-4px -4px 0 -4px","font-size":"160%","background":{"color":"panel-bg"},"color":"panel-text"},"htop":false,"image-align":"left","titletag":"h3"} */
 	/* writing styles for state main */
 	#welcome {
 		--image-gap: 10px;
 		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
+		border-width:1px;
+		border-color:var(--panel-bg);
+		border-style:solid;
+		padding:4px;
+	}
+	#welcome  .title {
+		/* Font */
+		color:var(--panel-text);
+		font-size:160%;
+		/* Dimensions */
+		background-color:var(--panel-bg);
+		padding:4px;
+		margin:-4px -4px 0px -4px;
 	}
 	#welcome {
 			display:grid;
 			--item-gridgap: 10px;
-			--item-grid-template-areas: "imageWrap" "title" "textWrap";
-			--item-grid-template-columns: 1fr;
-			--item-grid-template-rows: min-content min-content auto;
+			--item-grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			--item-grid-template-columns: var(--image-width) auto;
+			--item-grid-template-rows: min-content 1fr;
 	}
 	#welcome .imageWrap {
 			float:none;
 			width:100%;
-			margin-left:0;
-			margin-right:0;
 	}
-	/* {"font-size":"200%","color":"panel-text","tag":"h2","margin":"12 0 12 12"} */
+	/* {"font-size":"220%","color":"paneltext","tag":"h2","margin":"12 12 12 0"} */
 	/* writing styles for state main */
 	#sitetitle {
 		--tag: h2;
 		/* Font */
-		color:var(--panel-text);
-		font-size:200%;
+		color:var(--paneltext);
+		font-size:220%;
 		/* Dimensions */
-		margin:12px 0px 12px 12px;
+		margin:12px 12px 12px 0px;
 	}
 	#sitetitle {
 		/* Main CSS goes here */
@@ -1375,45 +1433,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#bottomnav1 {
 		/* Main CSS goes here */
 	}
-	/* {"border":{"width":1,"color":"myfavcolor"},"align":"left","padding":2,"menu":{"flex":true},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"show":0,"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"menu"} */
+	/* writing styles for state main */
+	#hamburger {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+		display:none;
+	}
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#hamburger:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+	}
+	#hamburger.button {
+		/* Main CSS goes here */
+	}
+	/* {"align":"right","menu-gap":0,"popup":"false","stretch":0,"menu-border-color":"myfavcolor","menu-item-border":"1px","border-type":"dividers","flex":true,"menu-item-padding":"4px 12px","orientation":"horizontal","padding-adjust":true} */
 	/* writing styles for state main */
 	#footermenu {
 		/* no style for link-color */
-		/* no style for menu-border-color */
+		--menu-border-color: myfavcolor;
 		/* no style for menu-background */
-		/* no style for menu-gap */
-		/* no style for menu-item-padding */
-		/* no style for menu-item-border */
+		--menu-gap: 0;
+		--menu-item-padding: 4px 12px;
+		--menu-item-border: 1px;
 		/* no style for menu-text-align */
 		/* no style for menu-anim-time */
 		/* no style for menu-label-display */
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
-		border-width:1px;
-		border-color:var(--myfavcolor);
-		border-style:solid;
-		padding:2px;
 	}
 	#footermenu {
-		--menu-text-align: left;
+		--menu-text-align: right;
 		/* popup styling */
 	}
 	#footermenu > ul {
 		/* orientation: horizontal  */
-		justify-content: flex-start;
+		justify-content: flex-end;
 		/* flex */
-		display: grid;
+		display: flex;
 	}
 	#footermenu > ul > li {
-		/* stretch false */
+		/* stretch 0 */
 		flex-grow: 0;
+	}
+	#footermenu > ul > li > a {
+		border-width:0;
+		border-right-width:var(--menu-item-border);
 	}
 	#footermenu > ul > li:first-of-type > a {
 		/* padding-adjust  */
 		padding-left:0;
 	}
 	#footermenu > ul > li:last-of-type > a {
+		border-width:0;
 		/* padding-adjust  */
 		padding-right:0;
 	}
@@ -1467,7 +1560,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"align":"left","menu":{"orientation":"vertical"},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"position":"sticky","align":"left","popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"vertical","padding-adjust":true} */
 	/* writing styles for state main */
 	#mainmenu {
 		/* no style for link-color */
@@ -1482,14 +1575,19 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
+		position:sticky;
+		top:0;
+		top:0;
+		top:0;
+		top:0;
 	}
 	#mainmenu {
 		--menu-text-align: left;
 		/* popup styling */
 	}
 	#mainmenu > ul {
-		/* orientation: horizontal  */
-		justify-content: flex-start;
+		/* orientation: vertical  */
+		grid-template-columns: 1fr;
 		/* flex */
 		display: grid;
 	}
@@ -1531,12 +1629,13 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#image {
 		/* Main CSS goes here */
 	}
-	/* {"masonry":false,"grid-max-width":"33%","popup":true} */
+	/* {"grid-width":"48%","masonry":true,"popup":true} */
 	/* writing styles for state main */
 	#imagegrid {
 		/* no style for grid-gap */
 		/* no style for row-gap */
-		--grid-max-width: 33%;
+		--grid-width: 48%;
+		/* no style for grid-max-width */
 		/* no style for grid-max-height */
 		/* no style for justify-content */
 		/* no style for align-items */
@@ -1546,9 +1645,14 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#imagegrid {
 			display:block;
 	}
-	/* {"item":{"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"},"image":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"title":{"text-transform":"uppercase"},"image":{"padding":"4px"}}} */
+	#imagegrid > * {
+			width:var(--grid-width);
+	}
+	/* {"item":{"title":{"text-transform":"uppercase"},"image":{"padding":"4px","hover":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"}}},"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
 	/* writing styles for state main */
 	#sectionlist {
+		--image-gap: 10px;
+		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
 	}
@@ -1559,35 +1663,63 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		padding:12px;
 		margin:0px 0px 12px 0px;
 	}
-	#sectionlist {
-		/* Main CSS goes here */
+	#sectionlist .item {
+			display:grid;
+			--item-gridgap: 10px;
+			--item-grid-template-areas: "imageWrap" "title" "textWrap";
+			--item-grid-template-columns: 1fr;
+			--item-grid-template-rows: min-content min-content auto;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"right","shape":"right_arrow","showlabel":1}} */
+	#sectionlist .imageWrap {
+			float:none;
+			width:100%;
+			margin-left:0;
+			margin-right:0;
+	}
+	/* {"button-direction":"row-reverse","hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"right_arrow"} */
 	/* writing styles for state main */
 	#navnext {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		--button-direction: row-reverse;
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navnext  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navnext:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navnext {
+	#navnext.button {
 		/* Main CSS goes here */
 	}
-	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h4","margin":"0 0 1em 0"} */
+	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h2","margin":"0 0 0.4em 0"} */
 	/* writing styles for state main */
 	#sectiontitle {
-		--tag: h4;
+		--tag: h2;
 		/* Font */
 		font-family:var(--bodyfont);
 		color:var(--accent);
 		font-size:2.4em;
 		font-weight:300;
 		/* Dimensions */
-		margin:0px 0px 1em 0px;
+		margin:0px 0px 0.4em 0px;
 	}
 	#sectiontitle {
 		/* Main CSS goes here */
@@ -1687,7 +1819,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#sectionintro {
 		/* Main CSS goes here */
 	}
-	/* {"show":0,"menu":{"align":"left","height":"auto","flex":true,"min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"height":"auto","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":"0 20"},"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"show":0,"menu":{"align":"left","height":"auto","flex":true,"min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"height":"auto","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":20},"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
 	/* writing styles for state main */
 	#topmenu {
 		/* no style for link-color */
@@ -1702,7 +1834,8 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
-		display:none	height:auto;
+		display:none;
+		height:auto;
 	}
 	#topmenu  li a {
 		/* Font */
@@ -1710,7 +1843,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		font-size:120%;
 		text-transform:uppercase;
 		/* Dimensions */
-		padding:0px 20px;
+		padding:20px;
 	}
 	#topmenu {
 		--menu-text-align: left;
@@ -1772,51 +1905,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"left","showlabel":1}} */
+	/* {"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"left_arrow"} */
 	/* writing styles for state main */
 	#navprev {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navprev  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navprev:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navprev {
+	#navprev.button {
 		/* Main CSS goes here */
 	}
-	/* {"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
+	/* {"border":{"width":1,"color":"panel-bg"},"image-gap":"10px","padding":"4px","showtitle":true,"flow":false,"image-width":"40%","title":{"padding":"4px","margin":"-4px -4px 0 -4px","font-size":"160%","background":{"color":"panel-bg"},"color":"panel-text"},"htop":false,"image-align":"left","titletag":"h3"} */
 	/* writing styles for state main */
 	#welcome {
 		--image-gap: 10px;
 		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
+		border-width:1px;
+		border-color:var(--panel-bg);
+		border-style:solid;
+		padding:4px;
+	}
+	#welcome  .title {
+		/* Font */
+		color:var(--panel-text);
+		font-size:160%;
+		/* Dimensions */
+		background-color:var(--panel-bg);
+		padding:4px;
+		margin:-4px -4px 0px -4px;
 	}
 	#welcome {
 			display:grid;
 			--item-gridgap: 10px;
-			--item-grid-template-areas: "imageWrap" "title" "textWrap";
-			--item-grid-template-columns: 1fr;
-			--item-grid-template-rows: min-content min-content auto;
+			--item-grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			--item-grid-template-columns: var(--image-width) auto;
+			--item-grid-template-rows: min-content 1fr;
 	}
 	#welcome .imageWrap {
 			float:none;
 			width:100%;
-			margin-left:0;
-			margin-right:0;
 	}
-	/* {"font-size":"200%","color":"panel-text","tag":"h2","margin":"12 0 12 12"} */
+	/* {"font-size":"220%","color":"paneltext","tag":"h2","margin":"12 12 12 0"} */
 	/* writing styles for state main */
 	#sitetitle {
 		--tag: h2;
 		/* Font */
-		color:var(--panel-text);
-		font-size:200%;
+		color:var(--paneltext);
+		font-size:220%;
 		/* Dimensions */
-		margin:12px 0px 12px 12px;
+		margin:12px 12px 12px 0px;
 	}
 	#sitetitle {
 		/* Main CSS goes here */
@@ -1830,45 +1992,83 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#bottomnav1 {
 		/* Main CSS goes here */
 	}
-	/* {"menu":{"orientation":"vertical","flex":true},"border":{"width":1,"color":"myfavcolor"},"padding":2,"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"position":"absolute","top":"4px","right":0,"show":1,"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"menu"} */
+	/* writing styles for state main */
+	#hamburger {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+		display:block;
+		position:absolute;
+		top:4px;
+		right:0px;
+	}
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#hamburger:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+	}
+	#hamburger.button {
+		/* Main CSS goes here */
+	}
+	/* {"align":"left","menu-item-padding":"4px","flex":false,"stretch":1,"orientation":"vertical","menu-gap":0,"popup":"false","menu-border-color":"myfavcolor","border-type":"dividers","menu-item-border":"1px","padding-adjust":true} */
 	/* writing styles for state main */
 	#footermenu {
 		/* no style for link-color */
-		/* no style for menu-border-color */
+		--menu-border-color: myfavcolor;
 		/* no style for menu-background */
-		/* no style for menu-gap */
-		/* no style for menu-item-padding */
-		/* no style for menu-item-border */
+		--menu-gap: 0;
+		--menu-item-padding: 4px;
+		--menu-item-border: 1px;
 		/* no style for menu-text-align */
 		/* no style for menu-anim-time */
 		/* no style for menu-label-display */
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
-		border-width:1px;
-		border-color:var(--myfavcolor);
-		border-style:solid;
-		padding:2px;
 	}
 	#footermenu {
 		--menu-text-align: left;
 		/* popup styling */
 	}
 	#footermenu > ul {
-		/* orientation: horizontal  */
-		justify-content: flex-start;
+		/* orientation: vertical  */
+		grid-template-columns: 1fr;
 		/* flex */
 		display: grid;
 	}
 	#footermenu > ul > li {
-		/* stretch false */
-		flex-grow: 0;
+		/* stretch 1 */
+		flex-grow: 1;
+	}
+	#footermenu > ul > li > a {
+		border-width:0;
+		border-bottom-width:var(--menu-item-border);
 	}
 	#footermenu > ul > li:first-of-type > a {
 		/* padding-adjust  */
 		padding-left:0;
 	}
 	#footermenu > ul > li:last-of-type > a {
+		border-width:0;
 		/* padding-adjust  */
 		padding-right:0;
 	}
@@ -1922,7 +2122,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"align":"left","menu":{"orientation":"vertical"},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"position":"sticky","align":"left","popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"vertical","padding-adjust":true} */
 	/* writing styles for state main */
 	#mainmenu {
 		/* no style for link-color */
@@ -1937,14 +2137,19 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
+		position:sticky;
+		top:0;
+		top:0;
+		top:0;
+		top:0;
 	}
 	#mainmenu {
 		--menu-text-align: left;
 		/* popup styling */
 	}
 	#mainmenu > ul {
-		/* orientation: horizontal  */
-		justify-content: flex-start;
+		/* orientation: vertical  */
+		grid-template-columns: 1fr;
 		/* flex */
 		display: grid;
 	}
@@ -1986,12 +2191,13 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#image {
 		/* Main CSS goes here */
 	}
-	/* {"masonry":false,"grid-max-width":"49%","popup":true} */
+	/* {"masonry":false,"grid-width":"100%","popup":true} */
 	/* writing styles for state main */
 	#imagegrid {
 		/* no style for grid-gap */
 		/* no style for row-gap */
-		--grid-max-width: 49%;
+		--grid-width: 100%;
+		/* no style for grid-max-width */
 		/* no style for grid-max-height */
 		/* no style for justify-content */
 		/* no style for align-items */
@@ -1999,11 +2205,18 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* Dimensions */
 	}
 	#imagegrid {
-			display:block;
+			grid-gap:0;
+		;	display:grid;
+			grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
 	}
-	/* {"item":{"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"},"image":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"title":{"text-transform":"uppercase"},"image":{"padding":"4px"}}} */
+	#imagegrid > * {
+			grid-area:unset;
+		;}
+	/* {"item":{"title":{"text-transform":"uppercase"},"image":{"padding":"4px","hover":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"}}},"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
 	/* writing styles for state main */
 	#sectionlist {
+		--image-gap: 10px;
+		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
 	}
@@ -2014,35 +2227,63 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		padding:12px;
 		margin:0px 0px 12px 0px;
 	}
-	#sectionlist {
-		/* Main CSS goes here */
+	#sectionlist .item {
+			display:grid;
+			--item-gridgap: 10px;
+			--item-grid-template-areas: "imageWrap" "title" "textWrap";
+			--item-grid-template-columns: 1fr;
+			--item-grid-template-rows: min-content min-content auto;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"right","shape":"right_arrow","showlabel":1}} */
+	#sectionlist .imageWrap {
+			float:none;
+			width:100%;
+			margin-left:0;
+			margin-right:0;
+	}
+	/* {"button-direction":"row-reverse","hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"right_arrow"} */
 	/* writing styles for state main */
 	#navnext {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		--button-direction: row-reverse;
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navnext  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navnext:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navnext {
+	#navnext.button {
 		/* Main CSS goes here */
 	}
-	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h4","margin":"0 0 1em 0"} */
+	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h2","margin":"0 0 0.4em 0"} */
 	/* writing styles for state main */
 	#sectiontitle {
-		--tag: h4;
+		--tag: h2;
 		/* Font */
 		font-family:var(--bodyfont);
 		color:var(--accent);
 		font-size:2.4em;
 		font-weight:300;
 		/* Dimensions */
-		margin:0px 0px 1em 0px;
+		margin:0px 0px 0.4em 0px;
 	}
 	#sectiontitle {
 		/* Main CSS goes here */
@@ -2142,7 +2383,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#sectionintro {
 		/* Main CSS goes here */
 	}
-	/* {"show":0,"menu":{"align":"left","height":"auto","flex":true,"min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"height":"auto","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":"0 20"},"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"show":0,"menu":{"align":"left","height":"auto","flex":true,"min-height":"100%","link-color":"panel-text","hi":{"link-color":"panel-text"},"hover":{"link-color":"panel-text"}},"height":"auto","item":{"font-size":"120%","text-transform":"uppercase","color":"panel-text","hover":{"background":{"color":"accent"}},"hi":{"background":{"color":"accent"}},"padding":20},"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
 	/* writing styles for state main */
 	#topmenu {
 		/* no style for link-color */
@@ -2157,7 +2398,8 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
-		display:none	height:auto;
+		display:none;
+		height:auto;
 	}
 	#topmenu  li a {
 		/* Font */
@@ -2165,7 +2407,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		font-size:120%;
 		text-transform:uppercase;
 		/* Dimensions */
-		padding:0px 20px;
+		padding:20px;
 	}
 	#topmenu {
 		--menu-text-align: left;
@@ -2227,51 +2469,80 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"left","showlabel":1}} */
+	/* {"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"left_arrow"} */
 	/* writing styles for state main */
 	#navprev {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navprev  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navprev:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navprev {
+	#navprev.button {
 		/* Main CSS goes here */
 	}
-	/* {"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
+	/* {"border":{"width":1,"color":"panel-bg"},"image-gap":"10px","padding":"4px","showtitle":true,"flow":false,"image-width":"40%","title":{"padding":"4px","margin":"-4px -4px 0 -4px","font-size":"160%","background":{"color":"panel-bg"},"color":"panel-text"},"htop":false,"image-align":"left","titletag":"h3"} */
 	/* writing styles for state main */
 	#welcome {
 		--image-gap: 10px;
 		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
+		border-width:1px;
+		border-color:var(--panel-bg);
+		border-style:solid;
+		padding:4px;
+	}
+	#welcome  .title {
+		/* Font */
+		color:var(--panel-text);
+		font-size:160%;
+		/* Dimensions */
+		background-color:var(--panel-bg);
+		padding:4px;
+		margin:-4px -4px 0px -4px;
 	}
 	#welcome {
 			display:grid;
 			--item-gridgap: 10px;
-			--item-grid-template-areas: "imageWrap" "title" "textWrap";
-			--item-grid-template-columns: 1fr;
-			--item-grid-template-rows: min-content min-content auto;
+			--item-grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			--item-grid-template-columns: var(--image-width) auto;
+			--item-grid-template-rows: min-content 1fr;
 	}
 	#welcome .imageWrap {
 			float:none;
 			width:100%;
-			margin-left:0;
-			margin-right:0;
 	}
-	/* {"font-size":"200%","color":"panel-text","tag":"h2","margin":"12 0 12 12"} */
+	/* {"font-size":"220%","color":"paneltext","tag":"h2","margin":"12 12 12 0"} */
 	/* writing styles for state main */
 	#sitetitle {
 		--tag: h2;
 		/* Font */
-		color:var(--panel-text);
-		font-size:200%;
+		color:var(--paneltext);
+		font-size:220%;
 		/* Dimensions */
-		margin:12px 0px 12px 12px;
+		margin:12px 12px 12px 0px;
 	}
 	#sitetitle {
 		/* Main CSS goes here */
@@ -2285,45 +2556,83 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#bottomnav1 {
 		/* Main CSS goes here */
 	}
-	/* {"menu":{"orientation":"vertical","flex":true},"border":{"width":1,"color":"myfavcolor"},"padding":2,"align":"left","stretch":"false","popup":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"position":"absolute","top":"4px","right":0,"show":1,"hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"menu"} */
+	/* writing styles for state main */
+	#hamburger {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+		display:block;
+		position:absolute;
+		top:4px;
+		right:0px;
+	}
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#hamburger:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
+		/* Font */
+		/* Dimensions */
+	}
+	#hamburger.button {
+		/* Main CSS goes here */
+	}
+	/* {"align":"left","menu-item-padding":"4px","flex":false,"stretch":1,"orientation":"vertical","menu-gap":0,"popup":"false","menu-border-color":"myfavcolor","border-type":"dividers","menu-item-border":"1px","padding-adjust":true} */
 	/* writing styles for state main */
 	#footermenu {
 		/* no style for link-color */
-		/* no style for menu-border-color */
+		--menu-border-color: myfavcolor;
 		/* no style for menu-background */
-		/* no style for menu-gap */
-		/* no style for menu-item-padding */
-		/* no style for menu-item-border */
+		--menu-gap: 0;
+		--menu-item-padding: 4px;
+		--menu-item-border: 1px;
 		/* no style for menu-text-align */
 		/* no style for menu-anim-time */
 		/* no style for menu-label-display */
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
-		border-width:1px;
-		border-color:var(--myfavcolor);
-		border-style:solid;
-		padding:2px;
 	}
 	#footermenu {
 		--menu-text-align: left;
 		/* popup styling */
 	}
 	#footermenu > ul {
-		/* orientation: horizontal  */
-		justify-content: flex-start;
+		/* orientation: vertical  */
+		grid-template-columns: 1fr;
 		/* flex */
 		display: grid;
 	}
 	#footermenu > ul > li {
-		/* stretch false */
-		flex-grow: 0;
+		/* stretch 1 */
+		flex-grow: 1;
+	}
+	#footermenu > ul > li > a {
+		border-width:0;
+		border-bottom-width:var(--menu-item-border);
 	}
 	#footermenu > ul > li:first-of-type > a {
 		/* padding-adjust  */
 		padding-left:0;
 	}
 	#footermenu > ul > li:last-of-type > a {
+		border-width:0;
 		/* padding-adjust  */
 		padding-right:0;
 	}
@@ -2377,7 +2686,7 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 			margin-left:0;
 			margin-right:0;
 	}
-	/* {"align":"left","menu":{"orientation":"vertical"},"popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"horizontal","padding-adjust":true} */
+	/* {"position":"sticky","align":"left","popup":"false","stretch":"false","border-type":"none","flex":"false","orientation":"vertical","padding-adjust":true} */
 	/* writing styles for state main */
 	#mainmenu {
 		/* no style for link-color */
@@ -2392,14 +2701,19 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* no style for menu-icon-display */
 		/* Font */
 		/* Dimensions */
+		position:sticky;
+		top:0;
+		top:0;
+		top:0;
+		top:0;
 	}
 	#mainmenu {
 		--menu-text-align: left;
 		/* popup styling */
 	}
 	#mainmenu > ul {
-		/* orientation: horizontal  */
-		justify-content: flex-start;
+		/* orientation: vertical  */
+		grid-template-columns: 1fr;
 		/* flex */
 		display: grid;
 	}
@@ -2441,12 +2755,13 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 	#image {
 		/* Main CSS goes here */
 	}
-	/* {"masonry":false,"grid-max-width":"49%","popup":true} */
+	/* {"masonry":false,"grid-width":"100%","popup":true} */
 	/* writing styles for state main */
 	#imagegrid {
 		/* no style for grid-gap */
 		/* no style for row-gap */
-		--grid-max-width: 49%;
+		--grid-width: 100%;
+		/* no style for grid-max-width */
 		/* no style for grid-max-height */
 		/* no style for justify-content */
 		/* no style for align-items */
@@ -2454,11 +2769,18 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		/* Dimensions */
 	}
 	#imagegrid {
-			display:block;
+			grid-gap:0;
+		;	display:grid;
+			grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
 	}
-	/* {"item":{"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"},"image":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"title":{"text-transform":"uppercase"},"image":{"padding":"4px"}}} */
+	#imagegrid > * {
+			grid-area:unset;
+		;}
+	/* {"item":{"title":{"text-transform":"uppercase"},"image":{"padding":"4px","hover":{"padding":"2px","border":{"width":"2px","color":"panel-text"}}},"padding":"12px","background":{"color":"light-panel-bg"},"align":"left","imagewidth":"33%","margin":"0 0 12px 0","hover":{"color":"panel-text","background":{"color":"panel-bg"}}},"image-gap":"10px","showtitle":true,"flow":false,"image-width":"40%","htop":false,"image-align":"center","titletag":"h3"} */
 	/* writing styles for state main */
 	#sectionlist {
+		--image-gap: 10px;
+		--image-width: 40%;
 		/* Font */
 		/* Dimensions */
 	}
@@ -2469,35 +2791,63 @@ body.template-subfolder1.testlayout4 #xcol > .inner {
 		padding:12px;
 		margin:0px 0px 12px 0px;
 	}
-	#sectionlist {
-		/* Main CSS goes here */
+	#sectionlist .item {
+			display:grid;
+			--item-gridgap: 10px;
+			--item-grid-template-areas: "imageWrap" "title" "textWrap";
+			--item-grid-template-columns: 1fr;
+			--item-grid-template-rows: min-content min-content auto;
 	}
-	/* {"icon":{"padding":4,"background":{"color":"light-panel-bg"},"hover":{"background":{"color":"panel-bg"}}},"button":{"align":"right","shape":"right_arrow","showlabel":1}} */
+	#sectionlist .imageWrap {
+			float:none;
+			width:100%;
+			margin-left:0;
+			margin-right:0;
+	}
+	/* {"button-direction":"row-reverse","hover":{"link-color":"var(--accent)"},"icon-width":16,"shape":"right_arrow"} */
 	/* writing styles for state main */
 	#navnext {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		--button-direction: row-reverse;
+		/* no style for button-align */
+		/* no style for link-color */
+		--icon-width: 16;
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
 	}
-	#navnext  .icon {
+	/* {"link-color":"var(--accent)"} */
+	/* writing styles for state hover */
+	#navnext:hover {
+		/* no style for align */
+		/* no style for label-display */
+		/* no style for icon-display */
+		/* no style for gap */
+		/* no style for button-direction */
+		/* no style for button-align */
+		--link-color: var(--accent);
+		/* no style for icon-width */
+		/* no style for icon */
 		/* Font */
 		/* Dimensions */
-		background-color:var(--light-panel-bg);
-		padding:4px;
 	}
-	#navnext {
+	#navnext.button {
 		/* Main CSS goes here */
 	}
-	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h4","margin":"0 0 1em 0"} */
+	/* {"font-weight":300,"font-size":"2.4em","font-family":"bodyfont","color":"accent","tag":"h2","margin":"0 0 0.4em 0"} */
 	/* writing styles for state main */
 	#sectiontitle {
-		--tag: h4;
+		--tag: h2;
 		/* Font */
 		font-family:var(--bodyfont);
 		color:var(--accent);
 		font-size:2.4em;
 		font-weight:300;
 		/* Dimensions */
-		margin:0px 0px 1em 0px;
+		margin:0px 0px 0.4em 0px;
 	}
 	#sectiontitle {
 		/* Main CSS goes here */

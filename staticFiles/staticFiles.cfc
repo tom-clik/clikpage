@@ -207,8 +207,6 @@ component {
 			}
 		}
 
-		
-		
 		for (local.script in variables.scripts) {
 			//writeDump(local.script);
 			if (StructKeyExists(arguments.scripts, local.script.name)) {
@@ -220,10 +218,8 @@ component {
 				else if (! StructKeyExists(local.scriptsInPackage, local.script.name) || local.script.packageExclude) {
 					local.ret &= variables.prefix & variables.scriptCache[local.script.name]["min"] & variables.suffix;
 				}
-				else if (arguments.debug) {
-					local.ret &= "<!--#local.script.name#  not found -->";
-				}
 			}
+			
 			
 		}
 

@@ -254,7 +254,6 @@ component extends="contentSection" {
 	
 	public string function onready(required struct content) {
 		var js = "$(""###arguments.content.id#"").menu();\n";
-
 		return js;
 	}
 

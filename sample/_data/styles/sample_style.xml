@@ -168,12 +168,37 @@
 			<contentwrap>
 				<grid>
 					<grid-mode>templateareas</grid-mode>
+					<grid-gap>10px</grid-gap>
 					<grid-template-areas>"maincol xcol"</grid-template-areas>
 					<grid-template-columns>1fr 240px</grid-template-columns>
 				</grid>
 			</contentwrap>
 			
 		</double>
+
+		<articledetail>
+
+			<contentwrap>
+				<grid>
+					<grid-gap>10px</grid-gap>
+					<grid-template-columns>1fr 33%</grid-template-columns>
+				</grid>
+			</contentwrap>
+			
+		</articledetail>
+
+		<gallery>
+
+			<contentwrap>
+				<grid>
+					<grid-mode>none</grid-mode>
+				</grid>
+			</contentwrap>
+			<xcol>
+				<show>0</show>
+			</xcol>
+			
+		</gallery>
 
 		
 	</layouts>
@@ -201,6 +226,21 @@
 		
 		</sitetitle>
 
+		<hamburger>
+
+			<show>0</show>
+			
+			<shape>menu</shape>
+			
+			<mobile>
+				<position>absolute</position>
+				<top>4px</top>
+				<right>0</right>
+				<show>1</show>
+			</mobile>
+			
+		</hamburger>
+
 		<sitedescription>
 			<position>absolute</position>
 			<top>4px</top>
@@ -219,6 +259,7 @@
 		</header>
 
 		<mainmenu>
+			<position>sticky</position>
 			<orientation>vertical</orientation>
 			<align>left</align>
 		</mainmenu>
@@ -311,47 +352,42 @@
 
 		<imagegrid>
 			
-			<imagegrid>
-				<masonry>true</masonry>
-				<popup>true</popup>
-				<max-width>24%</max-width>
-			</imagegrid>
-		
+			<masonry>true</masonry>
+			<popup>true</popup>
+			<grid-width>24%</grid-width>
+			
 			<mid>
-				<imagegrid>
-					<masonry>false</masonry>
-					<max-width>48%</max-width>
-				</imagegrid>
+				
+				<grid-width>48%</grid-width>
+				
 			</mid>
 
 			<mobile>
-				<imagegrid>
-					<masonry>false</masonry>
-					<max-width>100%</max-width>
-				</imagegrid>
+				
+				<masonry>false</masonry>
+				<grid-width>100%</grid-width>
+				
 			</mobile>
 
 		</imagegrid>
 
 		<imagegrid2>
 			
-			<imagegrid>
-				<grid-mode>auto</grid-mode>
-				<max-width>220px</max-width>
-			</imagegrid>
+			<grid-mode>auto</grid-mode>
+			<grid-width>220px</grid-width>
 			
 			<mid>
-				<imagegrid>
-					<grid-mode>auto</grid-mode>
-					<max-width>180px</max-width>
-				</imagegrid>
+				
+				<grid-mode>auto</grid-mode>
+				<grid-width>180px</grid-width>
+				
 			</mid>
 
 			<mobile>
-				<imagegrid>
-					<grid-mode>none</grid-mode>
-					<max-width>100%</max-width>
-				</imagegrid>
+				
+				<grid-mode>none</grid-mode>
+				<grid-width>100%</grid-width>
+				
 			</mobile>
 
 		</imagegrid2>
@@ -414,7 +450,6 @@
 		</scheme-intros>
 
 		<navbuttons>
-			
 			<grid>
 				<columns>2</columns>
 			</grid>
@@ -422,30 +457,18 @@
 		</navbuttons>
 
 		<scheme-button>
+			<icon-width>16</icon-width>
 			
-			<icon>
-				<padding>4</padding>
-				<background>
-					<color>light-panel-bg</color>
-				</background>
-				<hover>
-					<background>
-						<color>panel-bg</color>
-					</background>
-				</hover>
-			</icon>
-			<button>
-				<shape>left_arrow</shape>
-			</button>
-		
+			<hover>
+				<link-color>var(--accent)</link-color>
+			</hover>
+			<shape>left_arrow</shape>
 		</scheme-button>
 
 		<navnext>
 			
-			<button>
-				<align>right</align>
-				<shape>right_arrow</shape>
-			</button>
+			<button-direction>row-reverse</button-direction>
+			<shape>right_arrow</shape>
 			
 		</navnext>
 
@@ -471,6 +494,32 @@
 			</title>
 			
 		</welcome>
+
+		<scheme-listings>
+			<image-align>left</image-align>
+			<item>
+				<margin>
+					12 0
+				</margin>
+				<padding>
+					12
+				</padding>
+				<border>
+					<width>1px</width>
+					<color>bordercolor</color>
+				</border>
+			</item>
+			<title>
+				<padding>0</padding>
+			</title>
+			<text>
+				<padding>0</padding>
+			</text>
+			<mobile>
+				<image-align>center</image-align>
+			</mobile>
+			
+		</scheme-listings>
 
 	</content>
 

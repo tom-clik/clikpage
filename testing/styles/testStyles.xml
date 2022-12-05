@@ -425,25 +425,46 @@
 		</navbuttons>
 
 		<scheme-button>
-			<icon>
-				<padding>4</padding>
+			<padding>4</padding>
+			<background>
+				<color>light-panel-bg</color>
+			</background>
+			<hover>
 				<background>
-					<color>light-panel-bg</color>
+					<color>panel-bg</color>
 				</background>
-				<hover>
-					<background>
-						<color>panel-bg</color>
-					</background>
-				</hover>
-			</icon>
+			</hover>
 		</scheme-button>
 
 		<navnext>
-			<button>
-				<align>right</align>
-				<shape>right_arrow</shape>
-			</button>
+			
+			<show>0</show>
+			
+			<mobile>
+				<position>absolute</position>
+				<top>4px</top>
+				<right>0</right>
+				<show>1</show>
+			</mobile>
+			
+			<button-align>flex-end</button-align>
+			<shape>right_arrow</shape>
+			
 		</navnext>
+
+		<hamburger>
+
+			<show>0</show>
+			<shape>menu</shape>
+			
+			<mobile>
+				<position>absolute</position>
+				<top>4px</top>
+				<right>0</right>
+				<show>1</show>
+			</mobile>
+			
+		</hamburger>
 
 	</content>
 

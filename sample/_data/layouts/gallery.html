@@ -6,32 +6,33 @@
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-extends="double">
-	
-	
-	<div id="maincol">
+<body data-extends="main">
+		
+	<div id="contentwrap">
+		
+		<div id="maincol">
 
-		<div id="maincol_top">
+			<div id="maincol_top">
 
-			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-				<title>Section title</title>
-				<content>
-				{{section.title}}
+				<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+					<title>Section title</title>
+					<content>
+					{{section.title}}
+					</content>
 				</content>
-			</content>
 
-			
-			
-		</div>	
-
-
-		<div id="maincol_bottom">
-			<content id="imagegrid" data-notes="Notes here" type="imagegrid" class="fill scheme-overlay">
 				
-			</content>
-			
-		</div>	
+				
+			</div>	
 
+
+			<div id="maincol_bottom">
+				<content id="imagegrid" data-notes="Notes here" type="imagegrid" class="fill scheme-overlay">
+					
+				</content>
+				
+			</div>	
+		</div>
 	</div>
 
 

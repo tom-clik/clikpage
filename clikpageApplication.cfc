@@ -30,20 +30,18 @@ component {
 
 		try {
 			
-			application.settingsObj = new clikpage.settings.settings(debug=this.debug);
-			application.contentObj = new clikpage.content.content(settingsObj=application.settingsObj,debug=this.debug);
-			application.layoutsObj = new clikpage.layouts.layouts(application.config.layoutsFolder);
-			application.pageObj = new clikpage.page(debug=this.debug);
-			application.pageObj.content.static_css["fonts"] = 1;
-			application.pageObj.content.static_css["content"] = 1;
+			application.siteObj = new clikpage.site.site(argumentcollection=application.config,debug = this.debug);
+			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
+			application.siteObj.pageObj.content.static_css["fonts"] = 1;
+			application.siteObj.pageObj.content.static_css["content"] = 1;
 			
-			application.siteObj = new clikpage.site.site(debug = this.debug);
 			application.site = application.siteObj.loadSite(application.config.siteDef);
-			application.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+
+			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
 			loadStyling(true);
 
-			application.pageObj.addCss(application.pageObj.content, "styles/styles.css");
+			
 
 		}
 		catch (any e) {
@@ -90,11 +88,11 @@ component {
 
 		if (local.update) {
 			
-			application.styles = application.settingsObj.loadStyleSheet(application.config.styledef);
+			application.site.styles = application.siteObj.settingsObj.loadStyleSheet(application.config.styledef);
 			
-			local.sitedata = application.layoutsObj.loadAll();
+			local.sitedata = application.siteObj.layoutsObj.loadAll();
 
-			local.css = application.contentObj.siteCSS(site=local.sitedata,styles=application.styles);
+			local.css = application.siteObj.contentObj.siteCSS(site=local.sitedata,styles=application.site.styles);
 
 			fileWrite(ExpandPath("styles/styles.css"), local.css);
 
@@ -134,114 +132,21 @@ component {
 		  loadStyling(reload=request.rc.reload);
 		}
 
-		request.prc.pageContent = application.pageObj.getContent();
-		
-		request.prc.section = application.siteObj.getSection(site=application.site,section=request.rc.section);
+		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 
-		// WTF. TO DO: sort this
-		application.site.sections[request.rc.section].location = application.siteObj.sectionLocation(site=application.site,section=request.rc.section);
-
-		request.prc.layoutname = application.siteObj.getLayoutName(section=request.prc.section,action=request.rc.action);
-		request.prc.layout = application.layoutsObj.getLayout(request.prc.layoutname);
-
-		request.prc.pageContent.bodyClass =  request.prc.layout.bodyClass;
-
-		var cs = {};
-
-		request.prc.record = {};
-		
-		// todo: add as method of content object
-		for (var content in request.prc.layout.content) {
-			try {
-				var csdata = request.prc.layout.content[content];
-				
-				cs[content] =  application.contentObj.new(argumentCollection=csdata);
-				//writeDump(cs[content]);
-				application.contentObj.settings(content=cs[content],styles=application.styles.content,media=application.styles.media);
-				
-				// hack for data
-				// TO DO: re do this when we have proper data set functionality
-				switch (content) {
-					case "mainmenu":case "topmenu":
-						cs[content]["data"] = application.siteObj.menuData(site=application.site,sections=application.site.sectionlist);
-						break;
-					case "footermenu":
-						cs[content]["data"] = application.siteObj.menuData(site=application.site,sections="about,contact,privacy");
-						break;
-				}
-
-				// first stab at dataset functionality. 
-				if (StructKeyExists(request.prc.section,"dataset")) {
-					if (! StructKeyExists(request.prc.section.dataset,"tag")) {
-						throw("tag must be defined for dataset at this time");
-					}
-					local.type = request.prc.section.dataset.type ? : "articles";
-					request.prc.section["data"] = application.siteObj.getDataSet(site=application.site,tag=request.prc.section.dataset.tag, type=local.type);
-					// first stab at data functionality. 
-					if (request.rc.id != "") {
-						request.prc.record = application.siteObj.getRecord(site=application.site,id=request.rc.id,type=local.type);
-					
-						StructAppend(request.prc.record,application.siteObj.getRecordSetInfo(site=application.site,dataset=request.prc.section["data"],id=request.rc.id,type=local.type));
-					}
-					
-
-				}
-				else if (request.rc.id != "" AND request.rc.id != 0) {
-					throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
-				}
-
-				// hardwired for list types at the minute. what to do???
-				// reasonably easy to define data sets but waht about the links
-				switch (cs[content].type) {
-					case "articlelist":
-						cs[content]["data"] = application.siteObj.getRecords(site=application.site,dataset=request.prc.section["data"], type=local.type);
-						application.siteObj.addLinks(data=cs[content]["data"],data=cs[content]["data"],site=application.site,section=request.rc.section,action="view");
-						break;
-					case "imagegrid":
-						cs[content]["data"] = application.siteObj.getRecords(site=application.site,dataset=request.prc.section["data"], type=local.type);
-						application.siteObj.addLinks(data=cs[content]["data"],data=cs[content]["data"],site=application.site,section=request.rc.section,action="view");
-						
-						break;
-				}
-				
-				local.tag=request.prc.layout.layout.select("###content#").first();
-				
-				// shouldn't be needed
-				//local.tag.removeAttr("type");
-				try {
-					local.tag.html(application.contentObj.html(cs[content]));
-				}
-				catch (Any e) {
-					writeOutput("Unable to render cs<br>");
-					writeOutput(e.message);
-					writeDump(e);
-					writeDump(cs[content]);
-					abort;
-				}
-				local.tag.attr("class",application.contentObj.getClassList(cs[content]));
-				
-				application.contentObj.addPageContent(request.prc.pageContent,application.contentObj.getPageContent(cs[content],true));
-				
-			}
-
-			catch (Any e) {
-				writeOutput("<h2>issue with #content#</h2>");
-				writeDump(e);
-			}
-
-		}
 	}
 
 	public void function onRequestEnd(){
 		
 		try { 
-			request.prc.pageContent.css = application.settingsObj.outputFormat(css=request.prc.pageContent.css,media=application.styles.media);
-
-			request.prc.pageContent.body = application.layoutsObj.getHTML(request.prc.layout);
-
-			request.prc.pageContent.body = application.siteObj.dataReplace(site=application.site, html=request.prc.pageContent.body, sectioncode=request.rc.section, record=request.prc.record);
-
-			writeOutput(application.pageObj.buildPage(request.prc.pageContent));
+			
+			// pending formal mechanism for partial content
+			if (Left(request.prc.pageContent.layoutname,5) eq "popup") {
+				writeOutput(request.prc.pageContent.body);
+			}
+			else {
+				writeOutput(application.siteObj.pageObj.buildPage(request.prc.pageContent));
+			}
 
 		}
 		catch (any e) {

@@ -2,6 +2,14 @@
 settingsObj = new clikpage.settings.settings(debug=1);
 contentObj = new clikpage.content.content(settingsObj=settingsObj);
 
+pageObjOk = 1;
+try {
+	pageObj = new clikpage.page(debug=1);
+}
+catch (any e) {
+	pageObjOk = 0;
+}
+
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 contentObj.debug = 1;
 
@@ -28,11 +36,29 @@ function testCS(required struct cs, boolean getSettings=1) {
 
 	writeOutput( HTMLEditFormat(local.cs.html));
 	writeDump(var=local.cs.pagecontent,label="Page content");
+
+	staticContent(local.cs.pagecontent);
 }
 
-
 function displayCSS(required struct cs) {
-	writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(arguments.cs),media=styles.media) & "</pre>");
+	local.site_data = { "#arguments.cs.id#" = arguments.cs};
+	
+	local.css = contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media, loadsettings=0);
+
+	writeOutput("<pre>" & local.css & "</pre>");
+}
+
+function staticContent(required struct pagecontent) {
+	if (pageObjOk) {
+		var page = "";
+		writeDump(arguments.pagecontent);
+		page &= pageObj.cssStaticFiles.getLinks(arguments.pagecontent.static_css,1);
+		page &= pageObj.jsStaticFiles.getLinks(arguments.pagecontent.static_js,1);
+
+		writeOutput("<h2>Static links</h2>");
+		writeOutput("<pre>" & HTMLEditFormat( page ) & "</pre>");
+
+	}
 }
 
 </cfscript>

@@ -7,7 +7,7 @@ component {
 	*/
 	public content function init (
 		    required   any      settingsObj,
-			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button",
+			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button,form",
 					   boolean  debug=false
 		)  output=false {
 		
@@ -147,14 +147,16 @@ component {
 		}
 		
 		for (var medium in arguments.media ) {
-
+			
 			var media = arguments.media[medium];
 			var media_css = "";
 
 			for (var id in arguments.content_sections) {
-				
-				cs = arguments.content_sections[id];
-				
+				cs = arguments.content_sections[id];				
+				if (medium eq "mobile") {
+					media_css &= "\nMobile settings for #id#\n";
+					media_css &= SerializeJSON(cs.settings[medium]);
+				}
 				media_css &= css(cs,medium,false);
 				
 			}
@@ -221,10 +223,9 @@ component {
 				if (listFindNoCase(arguments.content.class, local.section, " ")) {
 					deepStructAppend(settings,arguments.styles[local.section]);
 				}
-				
 			}
 		}
-	
+
 		if (StructKeyExists(arguments.styles, arguments.content.id)) {
 			deepStructAppend(settings,arguments.styles[arguments.content.id]);
 		}

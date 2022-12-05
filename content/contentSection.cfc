@@ -229,7 +229,12 @@ component {
 				// ignore complex settings
 				if (NOT StructKeyExists(this.settings, local.style)) {
 					if (StructKeyExists(local.state_styles,local.style)) {
-						ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
+						if (isStruct(local.state_styles[local.style])) {
+							throw("incorrect value for #local.style#");
+						}
+						else {
+							ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
+						}
 					}
 					else {
 						ret &= "\t/* no style for #local.style# */\n";	
@@ -375,10 +380,19 @@ component {
 		for (local.medium in arguments.media) {
 			
 			if (NOT StructKeyExists(arguments.settings,local.medium)) {
-				arguments.settings[local.medium] = Duplicate(currentSettings);
+				arguments.settings[local.medium] = {};
+				for (local.setting in this.settings) {
+					arguments.settings[local.medium][local.setting] = currentSettings[local.setting];
+					
+				}
+				
 			}
 			else {
-				variables.contentObj.DeepStructAppend(arguments.settings[local.medium],currentSettings,false);
+				for (local.setting in this.settings) {
+					if (NOT StructKeyExists(arguments.settings[local.medium],local.setting) ) {
+						arguments.settings[local.medium][local.setting] = currentSettings[local.setting];
+					}
+				}
 				currentSettings = duplicate(arguments.settings[local.medium]);
 			}
 

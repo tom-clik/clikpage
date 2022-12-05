@@ -28,6 +28,7 @@
 		<section code="gallery">
 			<title>Gallery</title>
 			<layout>gallery</layout>
+			<layout action="view">popup</layout>
 			<dataset tag="gallery" type="images"></dataset>
 		</section>
 
@@ -53,6 +54,7 @@
 		</section>
 		<section code="contact">
 			<title>Contact us</title>
+			<layout>contact</layout>
 			<intro>
 				<![CDATA[This form can be used to contact us]]>
 			</intro>

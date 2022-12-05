@@ -62,6 +62,10 @@
             "name": "definitions"
         },
         {
+            "min": "/_assets/css/forms.css",
+            "name": "forms"
+        },
+        {
             "min": "/_assets/css/title.css",
             "name": "title"
         },

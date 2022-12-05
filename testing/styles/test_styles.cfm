@@ -16,7 +16,8 @@ Then we have to write out the styles for all the content sections. How we do thi
 settingsObj = new clikpage.settings.settings(debug=1);
 contentObj  = new clikpage.content.content(settingsObj=settingsObj);
 
-styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+// styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+styles = settingsObj.loadStyleSheet(ExpandPath("../../sample/_data/styles/sample_style.xml"));
 fakesite = deserializeJSON(fileRead(ExpandPath("./testsite.json")));
 
 outfile = ExpandPath("test_settings.css");
