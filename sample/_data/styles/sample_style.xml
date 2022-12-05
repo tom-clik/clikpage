@@ -84,13 +84,17 @@
 					<grid>
 						<grid-mode>none</grid-mode>
 					</grid>
+					<inner>
+						<padding>0</padding>
+					</inner>
 				</mobile>
+				
 			</pagecontent>
 
 			<topnav>
 				<padding>8 0</padding>
 				<mobile>
-					<show>0</show>
+					<padding>0</padding>
 				</mobile>
 			</topnav>
 
@@ -118,6 +122,9 @@
 					<grid-template-areas>"contentheader" "contentwrap" "contentfooter"</grid-template-areas>
 					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
 				</grid>
+				<mobile>
+					<padding>8</padding>
+				</mobile>
 			</content>
 
 			<contentfooter>
@@ -160,6 +167,14 @@
 				</mobile>
 
 			</footer>
+
+			<bottomnav>
+				<position>fixed</position>
+				<bottom>0px</bottom>
+				<mobile>
+					<position>static</position>
+				</mobile>
+			</bottomnav>
 			
 		</main>
 		
@@ -262,6 +277,15 @@
 			<position>sticky</position>
 			<orientation>vertical</orientation>
 			<align>left</align>
+			<mobile>
+				<background>
+					<color>lightpanel-bg</color>
+				</background>
+				<height>0</height>
+				<show>0</show>
+				<padding>8</padding>
+				<position>static</position>
+			</mobile>
 		</mainmenu>
 
 		<topmenu>
@@ -321,13 +345,7 @@
 
 		</topnav>
 
-		<bottomnav>
-			<position>fixed</position>
-			<bottom>0px</bottom>
-			<mobile>
-				<position>static</position>
-			</mobile>
-		</bottomnav>
+		
 
 		<footermenu>
 			

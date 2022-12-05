@@ -85,7 +85,7 @@
       "debug": "/_assets/js/jquery.menu.js",
       "min": "/_assets/js/jquery.menu.js",
       "name": "menus",
-      "requires": "jquery"
+      "requires": "jquery,animateAuto"
     },
     {
       "debug": "/_assets/js/imagesloaded.pkgd.js",
