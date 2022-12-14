@@ -65,12 +65,10 @@ component {
 		return local.cs;
 	}
 
-
 	/* generate html for a content section */
-	public string function html(required struct content) {
+	public string function html(required struct content, struct data={}) {
 		
-		var ret = this.contentSections[arguments.content.type].html(arguments.content);
-		//ret = wrapHTML(arguments.content,ret);
+		var ret = this.contentSections[arguments.content.type].html(arguments.content, arguments.data);
 		
 		ret = this.settingsObj.outputFormat(css=ret,media={},debug=this.debug);
 		
@@ -106,8 +104,8 @@ component {
 	 * TODO: start using this in prefence to the separate elements
 	 * 
 	 */
-	public struct function display(required struct content) {
-		local.ret["html"] = wrapHTML(arguments.content,html(arguments.content));
+	public struct function display(required struct content, struct data={}) {
+		local.ret["html"] = wrapHTML(arguments.content,html(arguments.content,data));
 		local.ret["pagecontent"] = getPageContent(arguments.content);
 		return local.ret;
 	}
@@ -119,7 +117,7 @@ component {
 	 */
 	public string function getClassList(required struct content) {
 		
-		return this.contentSections[arguments.content.type].classes;
+		return this.contentSections[arguments.content.type].getClasses(arguments.content);
 	
 	}
 
@@ -271,7 +269,7 @@ component {
 				css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");
 			}
 			else {
-				css &= "/* No styles defined for layout #local.layout# */\n"
+				css &= "/* Layout #local.layout# not defined in site */\n"
 			}
 		}
 		// CSS for containers
@@ -403,7 +401,7 @@ component {
 		cshtml &= "\t</div>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
-		cshtml &= arguments.content.content;
+		cshtml &= arguments.content.description;
 		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
 			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
 		}

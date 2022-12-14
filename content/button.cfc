@@ -69,11 +69,16 @@ component extends="contentSection" {
 			"button-align" = {"type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}]},
 			"link-color" = {"type":"color"},
 			"icon-width" = {"type":"dimension"},
-			"icon" = {"type":"dimension"}
+			"icon" = {"type":"dimension"},
+			"auto" = {"type":"boolean"}
 		];
 
 		this.settings = {
 			"shape" = "left_arrow"
+		}
+
+		this.defaultStyles = {
+			"auto": false
 		}
 		
 		variables.shapes = {};
@@ -147,8 +152,23 @@ component extends="contentSection" {
 	}
 
 	public string function onready(required struct content) {
-		var js = "$(""###arguments.content.id#"").button();\n";
-		return js;
+		
+		if (arguments.content.settings.main.auto) {
+			local.js = "$(""###arguments.content.id#"").button();\n";
+		}
+		else {
+			local.js = "";
+		}
+
+		return local.js;
+	}
+
+	public string function getClasses(required struct content) {
+		var classList = this.classes;
+		if (arguments.content.settings.main.auto) {
+			classList = listAppend(classList, "auto"," ");
+		}
+		return classList;
 	}
 
 }

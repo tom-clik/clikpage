@@ -6,71 +6,106 @@
 
 	<meta>
 		<description>A fine site indeed</description>
-		<copyright><![CDATA[&copy; 2022 Tom Peer]]></copyright>
+		<detailright><![CDATA[&detail; 2022 Tom Peer]]></detailright>
 		<author>Tom Peer</author>
 		<contacttel>+44 12345 545454</contacttel>
 	</meta>
 
+	<links>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="true" />
+		<link href="https://fonts.googleapis.com/css2?family=Arvo:ital@0;1&amp;family=Lora:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+	</links>
+
 	<layout>section</layout>
 
 	<sections>
-		<section code="index">
 
+		<section id="index">
 			<layout>homepage</layout>
-
-			<title>Home page</title>
-			
-			<copy>
-				<![CDATA[<p>Home page text copy edited as part of the section.</p>]]>
-			</copy>
+			<title>Home page</title>			
+			<detail>
+				<![CDATA[<p>Home page text detail edited as part of the section.</p>]]>
+			</detail>
+			<tags>mainmenu</tags>
 		</section>
 		
-		<section code="gallery">
+		<section id="gallery">
 			<title>Gallery</title>
 			<layout>gallery</layout>
 			<layout action="view">popup</layout>
 			<dataset tag="gallery" type="images"></dataset>
+			<tags>mainmenu</tags>
 		</section>
 
-		<section code="gallery2">
+		<section id="gallery2">
 			<title>Gallery 2</title>
 			<layout>gallerylayout2</layout>
 			<layout action="view">photolayout</layout>
 			<dataset tag="gallery" type="images"></dataset>
+			<tags>mainmenu</tags>
 		</section>
 
-		<section code="about">
+		<section id="about">
 			<title>About</title>
-			<intro>
-				<![CDATA[This is the section introduction. It's a separate field]]>
-			</intro>
-			<copy> 
+			<description>
+				<![CDATA[This is the section descriptionduction. It's a separate field]]>
+			</description>
+			<detail> 
 				<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>
 
 				<p>We offer a range of mainly technical services, specialising in Adobe ColdFusion and SQL Server development. We are based in London's West End and work primarily with Central London based clients.</p>
 
 				<p>In addition to our technical services, we provide strategic consulting for publishers establishing digital work flows and subscription management.</p>]]>
-			</copy>
+			</detail>
+			<tags>footermenu</tags>
 		</section>
-		<section code="contact">
+
+		<section id="contact">
 			<title>Contact us</title>
 			<layout>contact</layout>
-			<intro>
+			<description>
 				<![CDATA[This form can be used to contact us]]>
-			</intro>
+			</description>
+			<tags>footermenu</tags>
 		</section>
-		<section code="privacy">
+
+		<section id="privacy">
 			<title>Privacy</title>
-			<copy>
+			<detail>
 				<![CDATA[Your privacy statement must accurately reflect your site's data collection and use. Your privacy statement should be clear, direct and easy to understand. Keep technical jargon and legal terminology to a minimum. If you decide to modify how you use personal information, you must inform your users.]]>
-			</copy>
+			</detail>
+			<tags>footermenu</tags>
 		</section>
 		
-		<section code="news">
+		<section id="news">
 			<title>News</title>
 			<layout>articlelist</layout>
 			<layout action="view">articledetail</layout>
 			<dataset tag="test" sort="pubdate desc"></dataset>
+			<tags>mainmenu</tags>
+		</section>
+
+		<section id="news">
+			<title>News carousel</title>
+			<layout>articlecarousel</layout>
+			<layout action="view">articledetail</layout>
+			<dataset tag="test" sort="pubdate desc"></dataset>
+			<tags>mainmenu</tags>
+		</section>
+
+		<section id="images">
+			<title>Images</title>
+			<layout>imagelist</layout>
+			<dataset tag="gallery" type="images" recorddef="imagelist"></dataset>
+			<tags>mainmenu</tags>
+		</section>
+
+		<section id="singlearticle">
+			<title>Single article</title>
+			<layout>articlesingle</layout>
+			<dataset tag="singlearticle" sort="pubdate desc"></dataset>
+			<tags>mainmenu</tags>
 		</section>
 
 	</sections>
@@ -79,6 +114,5 @@
 		<data src="photos.xml" type="images" />
 		<data src="articles.xml" />
 	</data>
-
 
 </site>

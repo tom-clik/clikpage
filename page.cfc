@@ -135,7 +135,7 @@ component {
 		page &= "	<title>#arguments.content.title#</title>#cr#";
 		
 		page &= "	<meta charset=""#arguments.content.charset#"">#cr#";
-		
+		page &= "	<meta name=""viewport"" content=""width=device-width,initial-scale=1.0"">#cr#";
 		// array of meta data
 		for (local.meta in arguments.content.meta) {
 			page &= "	<meta #local.meta.type#=""#local.meta.name#"" content=""#local.meta.value#"">#cr#";

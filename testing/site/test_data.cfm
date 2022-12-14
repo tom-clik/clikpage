@@ -1,30 +1,48 @@
 <cfscript>
-siteObj = new clikpage.site.site();
+path = ExpandPath("./preview/config.json");
+fileData = fileRead(path );
+config = deserializeJSON(fileData);
+siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
+site = siteObj.loadSite(config.siteDef);
 
-siteObj.debug = true;
+dataset = {
+	tag="mainmenu",type="sections"
+};
 
 param name="request.rc.section" default="index";
 
-site = siteObj.loadSite(ExpandPath("../../sample/_data/sampleSite.xml"));
+WriteDump(dataset);
+menu =siteObj.getDataSet(site=site,dataset=dataset);
+WriteDump(menu);
 
-dataset1 = siteObj.getDataSet(site=site,tag="test");
+dataset.tag = "";
+menu =siteObj.getDataSet(site=site,dataset=dataset); 
+WriteDump(menu);
 
-WriteDump(dataset1);
-data = siteObj.getRecords(site=site,dataset=dataset1);
+dataset = {
+	tag="test"
+};
+
+records1 = siteObj.getDataSet(site=site,dataset=dataset);
+
+WriteDump(records1);
+data = siteObj.getRecords(site=site,dataset=records1);
 WriteDump(data);
 
+dataset = {
+	tag="gallery",type="images"
+};
 
-
-dataset2 =siteObj.getDataSet(site=site,tag="gallery",type="images"); 
-WriteDump(dataset2);
-data = siteObj.getRecords(site=site,dataset=dataset2,type="images");
+records2 =siteObj.getDataSet(site=site,dataset=dataset); 
+WriteDump(records2);
+data = siteObj.getRecords(site=site,dataset=records2,type="images");
 WriteDump(data);
 
-record = siteObj.getRecord(site=site,id = dataset2[1],type="images");
+record = siteObj.getRecord(site=site,id = records2[2],type="images");
 WriteDump(record);
 
-siteObj.addPageLinks(record=record, dataset=dataset2, site=site, section="gallery");
-writeDump(record);
+info = siteObj.getRecordSetInfo(site=site,dataset=records2,id=record.id);
 
+writeDump(info);
 
 </cfscript>

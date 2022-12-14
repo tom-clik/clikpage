@@ -16,6 +16,12 @@ component extends="contentSection" {
 		variables.static_css = {"images"=1};
 		variables.static_js = {};
 		
+		this.panels = [
+			{"name":"image","panel":"image", "selector": " img"},
+			{"name":"frame","panel":"frame", "selector": " figure"},
+			{"name":"Caption","panel":"caption", "selector": " figcaption"}
+		];
+
 		return this;
 	}
 

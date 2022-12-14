@@ -453,7 +453,7 @@
 		</navnext>
 
 		<hamburger>
-
+			<auto>1</auto>	
 			<show>0</show>
 			<shape>menu</shape>
 			
@@ -465,6 +465,15 @@
 			</mobile>
 			
 		</hamburger>
+
+		<articlesingletitle>
+			<tag>h3</tag>
+			<font>
+				<weight>bold</weight>
+				<size>1.2em</size>
+			</font>
+			<margin>0 0 12 0</margin>
+		</articlesingletitle>
 
 	</content>
 

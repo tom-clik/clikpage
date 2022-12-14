@@ -413,6 +413,12 @@ component {
 
 		return js;
 	}
+	
+	public string function getClasses(required struct content) {
+		
+		return this.classes;
+	}
+	
 
 
 }

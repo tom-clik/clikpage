@@ -37,6 +37,12 @@ component {
 			
 			application.site = application.siteObj.loadSite(application.config.siteDef);
 
+			if (StructKeyExists(application.site,"links")) {
+				for (local.link in application.site.links) {
+					application.siteObj.pageObj.addLink(content=application.siteObj.pageObj.content,argumentcollection=local.link);	
+				}
+			}
+
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
 			loadStyling(true);
@@ -123,15 +129,15 @@ component {
 			/* throw a badrequest error on dodgy params */
 			throw(type="badrequest");
 		}
-
+			
 		if (this.debug) {
-		  param name="request.rc.reload" default="false" type="boolean";
-		  if (request.rc.reload) {
-		  	onApplicationStart();
-		  }
-		  loadStyling(reload=request.rc.reload);
+			param name="request.rc.reload" default="false" type="boolean";
+		  	if (request.rc.reload) {
+		  		onApplicationStart();
+		  	}
+			loadStyling(reload=request.rc.reload);
 		}
-
+		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 
 	}

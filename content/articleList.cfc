@@ -12,6 +12,9 @@ component extends="item" {
 		
 		super.init(arguments.contentObj);
 		
+		variables.static_css = {"flickity":1};
+		variables.static_js = {"flickity":1};
+
 		this.selectors = [
 			{"name"="item", "selector"=" .item"},
 			{"name"="image", "selector"=" .imageWrap"},
@@ -19,18 +22,23 @@ component extends="item" {
 			{"name"="text", "selector"=" .textWrap"}
 		];
 
+		this.styleDefs["carousel"] = {"type":"boolean","description":"use carousel for list"};
+		this.settings["carousel"] = false;
+		
 		this.panels.prepend({"name":"Item","panel":"item","selector":" .item"});
 
 		return this;
 
 	}
 
-	public string function html(required struct content) {
+	public string function html(required struct content,required struct data) {
+		
 		
 		var cshtml = "<div class='list'>\n";
 		var classes = {};
 		
-		for (local.item in arguments.content.data) {
+		for (local.id in arguments.content.data) {
+			local.item = arguments.data[local.id];
 			classes = {};
 			local.tmpHTML = variables.contentObj.itemHtml(content=local.item);
 			cshtml &= "<div class='item'>";
@@ -44,5 +52,23 @@ component extends="item" {
 
 	}
 
+	public string function onready(required struct content) {
+		var js = "";
+
+		if (arguments.content.settings.main.carousel) {
+			js = ["$carousel = $('###arguments.content.id# .list');"]
+			.append("$carousel.flickity({")
+		  	.append("  // options")
+		  	.append("  contain: true,")
+		  	.append("  freeScroll: false,")
+		  	.append("  wrapAround: true")
+			.append("});").toList(newLine());
+		}
+
+		return js;
+	}
+
+		
+		
 	
 }

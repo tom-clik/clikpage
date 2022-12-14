@@ -19,7 +19,7 @@ Working ok. Named positions doesn't work. Otherwise ok. Flex options meaningless
 
 ## TODO 
 
--[] Same as the others -- needs formalising with move to clikpiage.content components
+-[ ] Same as the others -- needs formalising with move to clikpage.content components
 
 ## History
 

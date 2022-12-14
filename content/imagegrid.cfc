@@ -12,8 +12,8 @@ component extends="contentSection" {
 		
 		super.init(arguments.contentObj);
 		
-		variables.static_css = {"images"=1,"colorbox"=1};
-		variables.static_js = {"masonry"=1,"colorbox"=1};
+		variables.static_css = {"images"=1,"jbox"=1};
+		variables.static_js = {"masonry"=1,"jbox"=1};
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
@@ -57,7 +57,7 @@ component extends="contentSection" {
 	}
 	
 
-	public string function html(required struct content) {
+	public string function html(required struct content,required struct data) {
 		
 		if (! StructKeyExists(arguments.content,"data")) {
 			local.extendedinfo = {"content"=arguments.content};
@@ -70,15 +70,15 @@ component extends="contentSection" {
 
 		local.html = "";
 
-		for (local.image in arguments.content.data) {
-		
+		for (local.id in arguments.content.data) {
+			local.image = arguments.data[local.id];
 			local.html &= "<figure>";
 			if (StructKeyExists(local.image, "link")) {
-				local.html &= "<a href='#local.image.link#'>";
+				local.html &= "<a data-jbox-image='gallery1'  href='#local.image.image#' title='#encodeForHTMLAttribute(local.image.title)#'>";
 			}
-			local.html &= "<img src='#local.image.src#'>";
-			if (StructKeyExists(local.image, "caption")) {
-				local.html &= "<figcaption>#local.image.caption#</figcaption>";
+			local.html &= "<img src='#local.image.image#'>";
+			if (local.image.title NEQ "") {
+				local.html &= "<figcaption>#local.image.title#</figcaption>";
 			}
 			if (StructKeyExists(local.image, "link")) {
 				local.html &= "</a>";
@@ -118,7 +118,7 @@ component extends="contentSection" {
 
 		if (arguments.content.settings.main.popup) {
 
-			js &= "$(""###arguments.content.id# figure a"").colorbox({rel:'group#arguments.content.id#'});";
+			js &= "new jBox('Image');";
 		}
 		
 		return js;

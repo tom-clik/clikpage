@@ -49,6 +49,12 @@ component extends="contentSection" {
 				{"name"="Start","code"="flex-start","description"=""},
 				{"name"="Center","code"="center","description"=""},
 				{"name"="End","code"="flex-end","description"=""}
+			]},
+			"flex-direction":{"type"="list","default"="row","options"=[
+				{"name"="Row","code"="row","description"=""},
+				{"name"="Row reverse","code"="row-reverse","description"=""},
+				{"name"="Column","code"="column","description"=""},
+				{"name"="Column reverse","code"="column-reverse","description"=""}
 			]}
 		];
 		
@@ -105,7 +111,8 @@ component extends="contentSection" {
 				}
 				break;
 			case "flex": case "flexstretch":
-				data.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n\tflex-direction: row;\n";
+				data.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n";
+				data.main &= "\tflex-direction:" & arguments.styles["flex-direction"] & "\n";
 				if (arguments.styles["grid-mode"] eq "flexstretch") {
 					data.item &= "\n\tflex-grow:1;\n;";
 				}
