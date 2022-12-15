@@ -73,14 +73,29 @@ component extends="contentSection" {
 		for (local.id in arguments.content.data) {
 			local.image = arguments.data[local.id];
 			local.html &= "<figure>";
-			if (StructKeyExists(local.image, "link")) {
-				local.html &= "<a data-jbox-image='gallery1'  href='#local.image.image#' title='#encodeForHTMLAttribute(local.image.title)#'>";
+			
+			// TODO: this is all a mess
+			// 1. specify image type e.g. thumbnail
+			// 2. Popups proper target for open
+			// 3. Link types: none, gallery etc
+			local.hasLink = 1;
+			if (arguments.content.settings.main.popup) {
+				local.link = local.image.image;
 			}
-			local.html &= "<img src='#local.image.image#'>";
+			else {
+				local.link = "{link.{section.id}.view.#local.id#}";
+			}
+
+			local.image_src = local.image.image_thumb ? : local.image.image;
+			
+			if (local.hasLink) {
+				local.html &= "<a data-jbox-image='gallery1'  href='#local.link#' title='#encodeForHTMLAttribute(local.image.title)#'>";
+			}
+			local.html &= "<img src='#local.image_src#'>";
 			if (local.image.title NEQ "") {
 				local.html &= "<figcaption>#local.image.title#</figcaption>";
 			}
-			if (StructKeyExists(local.image, "link")) {
+			if (local.hasLink) {
 				local.html &= "</a>";
 			}
 

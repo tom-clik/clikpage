@@ -94,10 +94,11 @@ component extends="contentSection" {
 	 * recursable method to generate html list for menu.
 	 * 
 	 * @menu          Array of menu items
+	 * @data          Site data (sections key required)
 	 * @class         css class name to apply to ul element.
 	 */
 	private string function menuHTML(required array items,required struct data, string class="menu" ) {
-		
+
 		switch (arguments.class) {
 			default:
 				local.subclass = "submenu";
@@ -106,6 +107,12 @@ component extends="contentSection" {
 		local.menu = "<ul class='#arguments.class#'>";
 		
 		for (local.id in arguments.items) {
+			if ( NOT StructKeyExists( arguments.data,local.id ) ) {
+				writeDump(arguments.data);
+				abort;
+				local.menu &= "<!-- #local.id# section not found -->";
+				continue;
+			}
 			local.item = arguments.data[local.id];
 			local.class = "  class='menu_#local.id#'";
 			local.menu &= "<li><a href='{link.#local.item.id#}'#local.class#><b></b><span>#local.item.title#</span></a>";

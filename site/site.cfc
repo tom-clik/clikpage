@@ -80,6 +80,8 @@ component accessors="true" extends="utils.baseutils" {
 				throw(message="No src defined for data entry", detail="Each data record in a site definition must have an src tag pointing to a valid xml data file");	
 			}
 			local.filepath = arguments.directory & local.data.src;
+			local.image_path = local.data.image_path ? : "";
+
 			try {
 				local.xmlData = variables.utils.utils.fnReadXML(local.filepath,"utf-8");
 				local.records = variables.utils.xml.xml2data(local.xmlData);
@@ -89,7 +91,7 @@ component accessors="true" extends="utils.baseutils" {
 				if (NOT StructKeyExists(local.data,"type")) {
 					local.data.type = "articles";
 				}
-				parseData(site=arguments.site,data=local.records,type=local.data.type);
+				parseData(site=arguments.site,data=local.records,type=local.data.type,image_path=local.image_path);
 			}
 			catch (any e) {
 				if (e.type eq "filenotfound") {
@@ -114,19 +116,19 @@ component accessors="true" extends="utils.baseutils" {
 	 * @data Array of data records
 	 * @type Data type (key from site.data)
 	 */
-	private void function parseData(required struct site, required array data, required string type) {
+	private void function parseData(required struct site, required array data, required string type, string image_path="") {
 		
 		arguments.site[arguments.type] = [=];
 
 		for (local.data in arguments.data) {
-			
+
 			switch(arguments.type) {
-				case "section":
-					StructAppend(arguments.data,{"layout":arguments.site.layout},false);
+				case "sections":
+					StructAppend(local.data,{"layout":arguments.site.layout},false);
 					break;
 			}
 			try {
-				checkFields(local.data,arguments.type);
+				checkFields(data=local.data,type=arguments.type,image_path=arguments.image_path);
 			}
 			catch (any e) {
 				local.extendedinfo = {"data"=local.data,"type"=arguments.type};
@@ -137,7 +139,6 @@ component accessors="true" extends="utils.baseutils" {
 				);
 			}
 
-
 			arguments.site[arguments.type][local.data.id] = local.data; 
 			
 		}
@@ -145,7 +146,7 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 	// TODO: formal definition of records with checking, defaults etc
-	private void function checkFields(required struct data, string type) {
+	private void function checkFields(required struct data, string type, string image_path="") {
 		
 		if (!StructKeyExists(arguments.data,"id")) {
 			throw(message="No id defined for data record");
@@ -165,6 +166,14 @@ component accessors="true" extends="utils.baseutils" {
 			}
 		}
 
+		if (arguments.image_path NEQ "" ) {
+			for (local.field in ['image','image_thumb']) {
+				if (structKeyExists(arguments.data, local.field) AND arguments.data[local.field]  NEQ "" ) {
+					arguments.data[local.field] = arguments.image_path & arguments.data[local.field];					
+				}
+			}
+		}
+
 		StructAppend(arguments.data,{"tags":"","detail":"","description":"","live":true,"pubdate":nullValue(),"sort_order":0,"image":""},false);
 
 		if (!isBoolean(arguments.data.live)) {
@@ -175,9 +184,9 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		switch(arguments.type) {
-			case "section":
+			case "sections":
 				if (!StructKeyExists(arguments.data,"layout")) {
-					throw("No layout defined for section #arguments.data.code#");
+					throw("No layout defined for section #arguments.data.id#");
 				}
 				break;
 		}
@@ -314,14 +323,12 @@ component accessors="true" extends="utils.baseutils" {
 
 		arguments.record["previous_link"] = info.previous neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.previous) : "";
 		
-		// to do: formal definitio of title 
-		local.field = arguments.type eq "images" ? "caption" : "title";
 		if (info.next neq "") {
-			arguments.record["next_title"] = getRecord(site=arguments.site, ID=info.next, type=arguments.type)[local.field ];
+			arguments.record["next_title"] = getRecord(site=arguments.site, ID=info.next, type=arguments.type)["title"];
 		}
 
 		if (info.previous neq "") {
-			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=info.previous, type=arguments.type)[local.field ];
+			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=info.previous, type=arguments.type)["title"];
 		}
 
 
@@ -341,43 +348,66 @@ component accessors="true" extends="utils.baseutils" {
 			local.text =  ListFirst(local.tag,"{}");
 			local.scope = ListFirst(local.text,".");
 			local.field = ListRest(local.text,".");
-
-			local.data = {};
+			local.hasScope = 0;
+			local.val = "";
 			
-			if (local.scope == "link") {
-				// todo: action and id
-				local.linkParams = listToArray(local.field,".");
-				local.val = pageLink(section=local.linkParams[1]);
-			}
-			else {
-				if (local.scope == "site") {
-					local.data = arguments.site;				
-				}
-
-				else if (local.scope == "section") {
-					if (StructKeyExists(arguments.site.sections, arguments.sectioncode)) {
-						local.data = arguments.site.sections[arguments.sectioncode];
-					}
-
-				}
-
-				else if (local.scope == "record") {
-					local.data = arguments.record;
-				}
-
-				local.val = getDataValue(local.data,local.field);
+			if (local.scope == "site") {
+				local.val = getDataValue(arguments.site,local.field);
+				local.hasScope = 1;			
 			}
 
-			arguments.html = Replace(arguments.html, local.tag, local.val,"all");
+			else if (local.scope == "section") {
+				if (StructKeyExists(arguments.site.sections, arguments.sectioncode)) {
+					local.val = getDataValue(arguments.site.sections[arguments.sectioncode],local.field);
+				}
+				local.hasScope = 1;	
+			}
+
+			else if (local.scope == "record") {
+				local.val = getDataValue(arguments.record,local.field);
+				local.hasScope = 1;	
+			}
+
+			if (local.hasScope)	{
+				arguments.html = Replace(arguments.html, local.tag, local.val,"all");
+			}
 
 		}
 
+		// do it again for links
+		local.tags = variables.pattern.matcher(arguments.html);
+		local.tagMatches = {};
+		while (local.tags.find()) {
+			local.tagMatches[ListFirst(local.tags.group())] = 1;
+		}
+		
+		for ( local.tag in local.tagMatches ) {
+			local.text =  ListFirst(local.tag,"{}");
+			local.scope = ListFirst(local.text,".");
+			local.field = ListRest(local.text,".");	
+			if ( local.scope == "link" ) {
+				local.linkParams = listToArray(local.field,".");
+				local.linkArgs= {
+					site=arguments.site,
+					section=local.linkParams[1]	
+				};
+				if ( ArrayLen( local.linkParams ) GT 1 ) {
+					local.linkArgs["action"] = local.linkParams[2]	;
+				}
+				if ( ArrayLen( local.linkParams ) GT 2 ) {
+					local.linkArgs["id"] = local.linkParams[3]	;
+				}
+				local.val = pageLink(argumentcollection=local.linkArgs);
+				arguments.html = Replace(arguments.html, local.tag, local.val,"all");
+			}
+		}
 		return arguments.html;
 
 	}
 
 	private string function getDataValue(data,field) {
-		local.val = "<!-- #arguments.field# not found -->";
+		local.val = "<!-- field #arguments.field# not found -->";
+		
 		if (ListLen(arguments.field,".") gt 1) {
 			local.subscope = ListFirst(arguments.field,".");
 			local.subfield = ListRest(arguments.field,".");
@@ -462,8 +492,20 @@ component accessors="true" extends="utils.baseutils" {
 		</section>
 	 * 
 	 */
-	public string function getLayoutName(required struct section, string action="index") {
+	public string function getLayoutName(
+		required struct section, 
+				 string action="index",
+		required struct site
+		) {
 
+		if ( NOT structKeyExists( arguments.section,"layout" ) ) {
+			if ( NOT structKeyExists( arguments.site,"layout" ) ) {
+				throw("No default layout defined for site");
+			}
+			else {
+				return arguments.site.layout;
+			}
+		}
 
 		if (isSimpleValue(arguments.section.layout)) {
 			local.layoutName =  arguments.section.layout;	
@@ -510,7 +552,7 @@ component accessors="true" extends="utils.baseutils" {
 		// WTF. TO DO: sort this
 		arguments.site.sections[arguments.pageRequest.section].location = sectionLocation(site=arguments.site,section=arguments.pageRequest.section);
 
-		pageContent.layoutname = getLayoutName(section=local.rc.sectionObj,action=arguments.pageRequest.action);
+		pageContent.layoutname = getLayoutName(section=local.rc.sectionObj,action=arguments.pageRequest.action,site=arguments.site);
 
 		local.rc.layout = this.layoutsObj.getLayout(pageContent.layoutname);
 
@@ -544,11 +586,11 @@ component accessors="true" extends="utils.baseutils" {
 				arguments.pageRequest.id = local.rc.sectionObj["data"][1];
 			}
 
-			local.rc.record = getRecord(site=arguments.site,id=arguments.pageRequest.id,type=local.type);
+			local.rc.record = Duplicate(getRecord(site=arguments.site,id=arguments.pageRequest.id,type=local.rc.sectionObj.dataset.type));
 
-			// addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.type);
+			addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.rc.sectionObj.dataset.type);
 		}
-		else if (arguments.pageRequest.id != "" AND arguments.pageRequest.id != 0) {
+		else if ( arguments.pageRequest.id != "" ) {
 			throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
 		}
 		
@@ -556,43 +598,64 @@ component accessors="true" extends="utils.baseutils" {
 		for (var content in local.rc.layout.content) {
 			try {
 				var csdata = local.rc.layout.content[content];
-				
-				if (! StructKeyExists(arguments.site.cs, content)) {
+				// TODO: remove true
+				if (TRUE OR ! StructKeyExists(arguments.site.cs, content)) {
 					arguments.site.cs[content] =  this.contentObj.new(argumentCollection=csdata);
 					//writeDump(cs[content]);
 					this.contentObj.settings(content=arguments.site.cs[content],styles=arguments.site.styles.content,media=arguments.site.styles.media);
 					
+					local.data = {};
+					local.datatype = "sections";
 					// hardwired for list types at the minute. what to do???
 					// reasonably easy to define data sets but waht about the links
 					switch (arguments.site.cs[content].type) {
 						case "articlelist":
-							arguments.site.cs[content].data = local.rc.sectionObj["data"];
-							local.data = arguments.site.articles;
 						case "imagegrid":
-							arguments.site.cs[content].data = local.rc.sectionObj["data"];
-							local.data = arguments.site.images;
+							;
+							if ( StructKeyExists( arguments.site.cs[content] , "dataset") )  {
+								arguments.site.cs[content].data = getDataSet(
+									site=arguments.site,
+									dataset=arguments.site.cs[content].dataset
+								);
+								local.datatype = arguments.site.cs[content].dataset.type;
+								
+			
+							}
+							else if ( StructKeyExists( local.rc.sectionObj,"dataset" ) ) {
+								local.datatype = local.rc.sectionObj.dataset.type;
+								arguments.site.cs[content].data = local.rc.sectionObj["data"];
+							}
+							else {
+								throw("No data set defined");
+							}
+
 							break;
 						case "menu":
-							arguments.site.cs[content].data = getDataSet(site=arguments.site,dataset={"tag"=content,type="sections"});;
-							local.data = arguments.site.sections;
+							if ( StructKeyExists( arguments.site.cs[content] , "dataset") )  {
+								arguments.site.cs[content].data = getDataSet(
+									site=arguments.site,
+									dataset=arguments.site.cs[content].dataset
+								);
+								local.datatype = arguments.site.cs[content].dataset.type;
+							}
+							else {
+								arguments.site.cs[content].data = getDataSet(site=arguments.site,dataset={"tag"=content,type="sections"});;
+								local.datatype = "sections";
+							}
+							
 							break;
 						
 					}
 
-					// if (StructKeyExists(arguments.site.cs[content],["dataset"])) {
-					// 	local.set = arguments.site.cs[content]["dataset"];
+					local.data = arguments.site[local.datatype];
 
-					// 	if (NOT StructKeyExists(arguments.site.data,local.set.name)) {
-					// 		arguments.site.data[local.set.name] = getRecords(site=arguments.site,dataset=local.set, type=local.type);
-					// 	}
-					// }
 				}
 				
 				local.tag=local.rc.layout.layout.select("###content#").first();
 				
 				// TO do: use display method
 				// and cache results
-				local.tag.html(this.contentObj.html(arguments.site.cs[content]));
+				local.tag.html(this.contentObj.html(content=arguments.site.cs[content],data=local.data));
 				
 				local.tag.attr("class",this.contentObj.getClassList(arguments.site.cs[content]));
 				

@@ -572,11 +572,11 @@
 			<carousel>1</carousel>
 		</imagelist>
 
-		<articlecarousel>
+		<scheme-carousel>
 			<htop>1</htop>
 			<image-align>left</image-align>
 			<carousel>1</carousel>
-		</articlecarousel>
+		</scheme-carousel>
 
 		<photolayout-details>
 			<width>90%</width>

@@ -86,7 +86,7 @@
 			<tags>mainmenu</tags>
 		</section>
 
-		<section id="news">
+		<section id="newscarousel">
 			<title>News carousel</title>
 			<layout>articlecarousel</layout>
 			<layout action="view">articledetail</layout>
@@ -97,7 +97,7 @@
 		<section id="images">
 			<title>Images</title>
 			<layout>imagelist</layout>
-			<dataset tag="gallery" type="images" recorddef="imagelist"></dataset>
+			<dataset tag="gallery" type="images"></dataset>
 			<tags>mainmenu</tags>
 		</section>
 
@@ -111,8 +111,8 @@
 	</sections>
 
 	<data>
-		<data src="photos.xml" type="images" />
-		<data src="articles.xml" />
+		<data src="photos.xml" type="images" image_path="/images/" />
+		<data src="articles.xml" image_path="/images/" />
 	</data>
 
 </site>

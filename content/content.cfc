@@ -132,7 +132,13 @@ component {
 	 * @return CSS stylesheet
 	 */
 	
-	public string function contentCSS(required struct styles, required struct content_sections, required struct media, boolean loadsettings=1, boolean format=true) {
+	public string function contentCSS(
+		required struct  styles, 
+		required struct  content_sections, 
+		required struct  media, 
+				 boolean loadsettings=true, 
+				 boolean format=true
+		) {
 		
 		var css_out = "";
 		var cs = false;
@@ -151,10 +157,6 @@ component {
 
 			for (var id in arguments.content_sections) {
 				cs = arguments.content_sections[id];				
-				if (medium eq "mobile") {
-					media_css &= "\nMobile settings for #id#\n";
-					media_css &= SerializeJSON(cs.settings[medium]);
-				}
 				media_css &= css(cs,medium,false);
 				
 			}
@@ -371,28 +373,28 @@ component {
 	 * to apply the necessary classes to the surrounding div. This _isn't_ a vestigial remnant from
 	 * the old class based styling system, it is just to allow reuse of item html in different cases
 	 * 
-	 * @content  Content section
+	 * @item  Item with keys title, description, image, link, caption, 
 	 * @settings  item settings. Required are the settings that adjust the html
 	 * @classes  Pass in struct by reference to return required classes for the wrapping div.
 	 */
-	public string function itemHtml(required struct content, struct settings={}, struct classes) {
+	public string function itemHtml(required struct item, string link="", struct settings={}, struct classes) {
 
 		local.titletag = arguments.settings.titletag ? : "h3"; 
-		local.hasLink = StructKeyExists(arguments.content,"link");
+		local.hasLink = arguments.link != "";
 
-		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
+		var linkStart = (local.hasLink) ? "<a href='#arguments.link#'>" : "";
 		var linkEnd = (local.hasLink) ? "</a>" : "";
 
 		arguments.classes["item"] = 1;
 		
-		var cshtml = "";
+		 var cshtml = "";
 
-		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.content.title & linkEnd &  "</" & local.titletag & ">\n";
+		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & ">\n";
 		cshtml &= "\t<div class='imageWrap'>\n";
-		if (StructKeyExists(arguments.content,"image")) {
-			cshtml &= "\t\t#linkStart#<img src='" & arguments.content.image & "'>#linkEnd#\n";
-			if (StructKeyExists(arguments.content,"caption")) {
-				cshtml &= "\t\t<div class='caption'>" & arguments.content.caption & "</div>\n";
+		if (StructKeyExists(arguments.item,"image")) {
+			cshtml &= "\t\t#linkStart#<img src='" & arguments.item.image & "'>#linkEnd#\n";
+			if (StructKeyExists(arguments.item,"caption")) {
+				cshtml &= "\t\t<div class='caption'>" & arguments.item.caption & "</div>\n";
 			}
 		}
 		else {
@@ -401,7 +403,7 @@ component {
 		cshtml &= "\t</div>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
-		cshtml &= arguments.content.description;
+		cshtml &= arguments.item.description ? : "";
 		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
 			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
 		}

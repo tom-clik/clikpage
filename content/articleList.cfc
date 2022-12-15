@@ -40,7 +40,8 @@ component extends="item" {
 		for (local.id in arguments.content.data) {
 			local.item = arguments.data[local.id];
 			classes = {};
-			local.tmpHTML = variables.contentObj.itemHtml(content=local.item);
+			local.link = "{link.{section.id}.view.#local.id#}";
+			local.tmpHTML = variables.contentObj.itemHtml(item=local.item,link=local.link);
 			cshtml &= "<div class='item'>";
 			cshtml &= local.tmpHTML;
 			cshtml &= "</div>";
