@@ -1,0 +1,77 @@
+<!--
+
+# Jquery Plug in Demo
+
+## Synopsis
+
+See the boiler plate js for creating plug ins.
+
+Has init method, options, public method, and private method.
+
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<style>
+	body {
+		padding:20px;
+		background-color: #ccc;
+	}
+
+	#ubercontainer {
+		background-color: #fff;
+		border: 1px solid #000;
+		padding:20px;
+		margin: 0 auto;
+		max-width: 660px;
+	}
+
+	</style>
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+
+		<div id="test">
+			
+		</div>	
+
+		
+	</div>
+
+</body>
+
+<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/mustache.js"></script>
+<script src="swipeDetector.js"></script>
+<script src="plugin-boiler-plate.js"></script>
+
+
+<script>
+
+$(document).ready(function() {
+	$(window).on("keydown.anotherScope", function( event ) {
+		console.log("event.key");
+	});
+	$('#test').pluginName(
+		{
+			data:<cfoutput>#photosJS#</cfoutput>,
+			onFoo: function() {
+				console.log("Test callback");
+			}
+		}
+	);
+
+	$('#test').data('pluginName').foo_public_method();
+	$('#test').trigger("Foo");
+
+});
+
+</script>
+
+</html>

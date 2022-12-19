@@ -28,11 +28,15 @@ component extends="contentSection" {
 	public string function html(required struct content) {
 		
 		if (StructKeyExists(arguments.content, "image")) {
-				local.img = "<figure><img src='#arguments.content.image#'>";
-				if (StructKeyExists(arguments.content, "caption")) {
-					local.img &= "<figcaption>#arguments.content.caption#</figcaption>";
-				}
-				local.img &= "</figure>";
+			local.hasLink = StructKeyExists(arguments.content,"link");
+
+			var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
+			var linkEnd = (local.hasLink) ? "</a>" : "";
+			local.img = "#linkStart#<figure><img src='#arguments.content.image#'>";
+			if (StructKeyExists(arguments.content, "caption")) {
+				local.img &= "<figcaption>#arguments.content.caption#</figcaption>";
+			}
+			local.img &= "</figure>#linkEnd#";
 		}		
 		
 

@@ -27,7 +27,7 @@ component extends="clikpage.clikpageApplication" { //
 		if (NOT FileExists(local.path )) {
 			throw(
 				message="File ./config.json not found",
-				detail="To use the preview app, copy the sample config to config.json and configure. This is gtiignored as
+				detail="To use the preview app, copy the sample config to config.json and configure. This is gitignored as
 					you edit it according to your current project"
 
 			);

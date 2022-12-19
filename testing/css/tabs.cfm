@@ -36,10 +36,20 @@ Different ideas for tabs. Working nicely.
 			--tab-font-size:.8em;
 			--tab-border-radius:0;
 		}
+
+		#test1 {
+			--tab-border-radius:4px;
+			background-color: transparent;
+		}
+
+		#test1.cs-tabs .item {
+			border: 1px solid #9c9c9c;
+		}
 		.cs-tabs .item {
 			border-top: 1px solid #9c9c9c;
 			--tab-border-color: #9c9c9c;
 			--tab-border-width: 1px 0 0 0;
+			padding:6px;
 		}
 		.cs-tabs .title {
 			--tab-border-color: #9c9c9c;
@@ -74,7 +84,7 @@ Tab/Accordion/info panel Testing
 <script src="/_assets/js/jquery.throttledresize.js"></script>
 <script>
 $( document ).ready(function() {
-	$(".cs-tabs").tabs({"resize":"throttledresize"});
+	$(".cs-tabs").tabs({"resize":"throttledresize","fixedheight":false,"allowClosed":false});
 });
 </script>
 </body>

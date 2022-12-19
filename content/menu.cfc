@@ -108,14 +108,13 @@ component extends="contentSection" {
 		
 		for (local.id in arguments.items) {
 			if ( NOT StructKeyExists( arguments.data,local.id ) ) {
-				writeDump(arguments.data);
-				abort;
 				local.menu &= "<!-- #local.id# section not found -->";
 				continue;
 			}
 			local.item = arguments.data[local.id];
+			local.title = local.item.short_title ? : local.item.title;
 			local.class = "  class='menu_#local.id#'";
-			local.menu &= "<li><a href='{link.#local.item.id#}'#local.class#><b></b><span>#local.item.title#</span></a>";
+			local.menu &= "<li><a href='{link.#local.item.id#}'#local.class#><b></b><span>#local.title#</span></a>";
 			if (StructKeyExists(local.item,"submenu")) {
 				local.menu &= menuHTML(items=local.item.submenu,data=arguments.data,class=local.subclass);
 			}

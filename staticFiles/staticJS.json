@@ -9,7 +9,8 @@
         "clikForm",
         "autoButton",
         "animateAuto",
-        "jBox",
+        "popup",
+        "swipeDetector",
         "flickity"
       ],
       "pack": false,
@@ -35,10 +36,11 @@
       "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
     },
     {
-      "debug": "/_assets/js/query-ui.min.js",
+      "debug": "/_assets/js/jquery-ui.min.js",
       "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
       "name": "jqueryui",
       "packageExclude": 1,
+      "description": "We were using this just for the widget factory but should now be deprecated. See plugin bioiler plate for alternative",
       "requires": "jquery",
       "hash": "sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
     },
@@ -51,23 +53,16 @@
       "hash": "sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
     },
     {
-      "min": "/_assets/js/fts_fuzzy_match.js",
-      "debug": "/_assets/js/fts_fuzzy_match.js",
-      "name": "fuzzy",
+      "min": "/_assets/js/jquery.throttledresize.js",
+      "name": "throttledresize",
+      "description": "Resize event with throtttling to stop it firing too many time",
       "requires": "jquery"
     },
     {
       "min": "/_assets/js/search.js",
-      "debug": "/_assets/js/search.js",
       "name": "search",
-      "requires": "jquery"
-    },
-    {
-      "debug": "/_assets/js/jquery.dataTables.min.js",
-      "min": "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js",
-      "name": "datatables",
-      "packageExclude": 1,
-      "requires": "jquery"
+      "description": "search symbol definitions with fuzzy logic",
+      "requires": "fuzzy"
     },
     {
       "debug": "/_assets/js/select2.min.js",
@@ -78,21 +73,22 @@
       "hash": "sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
     },
     {
-      "debug": "/_assets/js/menuScroll.js",
-      "min": "/_assets/js/menuScroll.js",
+      "min": "/_assets/js/_min/menuScroll.js",
       "name": "menuScroll",
+      "description": "Highlight location in side menu according to headings in text",
       "requires": "jquery"
     },
     {
-      "debug": "/_assets/js/jquery.menu.js",
       "min": "/_assets/js/jquery.menu.js",
       "name": "menus",
+      "description": "Submenus and animations for menus",
       "requires": "jquery,animateAuto"
     },
     {
       "debug": "/_assets/js/imagesloaded.pkgd.js",
       "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
       "name": "imagesloaded",
+      "description": "Legacy lazy load function. Still used by flickity",
       "packageExclude": 1,
       "requires": "jquery"
     },
@@ -100,14 +96,9 @@
       "debug": "/_assets/js/masonry.pkgd.js",
       "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
       "name": "masonry",
+      "description" : "Gallery layout script",
       "packageExclude": 1,
       "requires": "imagesloaded,jquery"
-    },
-    {
-      "debug": "/_assets/js/jbox.all.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jBox/1.3.3/jBox.all.min.js",
-      "name": "jBox",
-      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/flickity.pkgd.min.js",
@@ -152,16 +143,25 @@
     },
     {
       "min": "/_assets/js/jquery.autoButton.js",
-      "description": "",
+      "description": "Simple button mechanism for toggling and using an href of #target.action",
       "name": "autoButton",
       "requires": "jquery"
     },
     {
       "min": "/_assets/js/jquery.animateAuto.js",
-      "description": "",
+      "description": "Simulates jquery animate but allows auto height",
       "name": "animateAuto",
       "requires": "jquery"
     },
+    {
+      "debug":"/_assets/js/jquery.mCustomScrollbar.min.js",
+      "min":"https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js",
+      "description": "Custom scroll bar library.",
+      "name": "scrollbar",
+      "requires": "jquery",
+      "packageExclude": 1
+    }
+    ,
     {
       "debug":"/_assets/js/jquery.mCustomScrollbar.min.js",
       "min":"https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js",

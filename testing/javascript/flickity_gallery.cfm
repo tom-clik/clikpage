@@ -111,9 +111,6 @@ request.prc.config = {
 </head>
 <body>
 
-
-	
-
 	<div class="main-carousel">
 		<cfloop array="#myData#" index="image">
 			<cfoutput>

@@ -28,8 +28,8 @@ Working ok. Named positions doesn't work. Otherwise ok. Flex options meaningless
 --->
 
 <cfscript>
-settingsObj = new clikpage.settings.settingsObj(debug=1);
-contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
+settingsObj = new clikpage.settings.settings(debug=1);
+contentObj = new clikpage.content.content(settingsObj=settingsObj);
 contentObj.debug = 1;
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
 grid_cs = contentObj.new(id="grid",type="grid");
@@ -49,11 +49,11 @@ for (setting in contentObj.contentSections["grid"].styleDefs) {
 }
 // end page editing
 
-contentObj.settings(content=grid_cs,styles=styles);
+contentObj.settings(content=grid_cs,styles=styles,media=styles.media);
 
-writeDump(grid_cs);
+// writeDump(grid_cs);
 
-abort;
+// abort;
 
 css = contentObj.css(grid_cs);
 

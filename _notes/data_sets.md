@@ -1,12 +1,12 @@
 # Data Sets
-
+ 
 To generate the data for menus, lists, and other content with multiple values, "data sets" define the type of data and the search criteria.
 
 Usually the criteria is a just a tag, but it can be more complicated.
 
 ## Data types
 
-A "data type" defines the fields available to show on a page. Some fields are standard. They are all based on a standard data record, and can extend this with custom field definitions.
+A "data type" defines the fields available to show on a page. They are all based on a standard data record, and can extend this with custom field definitions.
 
 ### Standard fields
 

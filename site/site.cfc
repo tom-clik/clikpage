@@ -542,6 +542,12 @@ component accessors="true" extends="utils.baseutils" {
 		
 	}
 
+	/**
+	 * @hint Display a page.
+	 *
+	 * WIP at the minute. Much needs to be sorted here.
+	 * 
+	 */
 	public struct function page(required struct pageRequest, required struct site) {
 
 		var pageContent = this.pageObj.getContent();

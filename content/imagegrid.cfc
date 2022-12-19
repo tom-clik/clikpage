@@ -80,7 +80,7 @@ component extends="contentSection" {
 			// 3. Link types: none, gallery etc
 			local.hasLink = 1;
 			if (arguments.content.settings.main.popup) {
-				local.link = local.image.image;
+				local.link = arguments.content.link ? : local.image.image;
 			}
 			else {
 				local.link = "{link.{section.id}.view.#local.id#}";
@@ -89,12 +89,15 @@ component extends="contentSection" {
 			local.image_src = local.image.image_thumb ? : local.image.image;
 			
 			if (local.hasLink) {
-				local.html &= "<a data-jbox-image='gallery1'  href='#local.link#' title='#encodeForHTMLAttribute(local.image.title)#'>";
+				local.html &= "<a href='#local.link#' title='#encodeForHTMLAttribute(local.image.title)#'>";
 			}
+
 			local.html &= "<img src='#local.image_src#'>";
+
 			if (local.image.title NEQ "") {
 				local.html &= "<figcaption>#local.image.title#</figcaption>";
 			}
+
 			if (local.hasLink) {
 				local.html &= "</a>";
 			}
