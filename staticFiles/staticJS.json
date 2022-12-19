@@ -120,7 +120,7 @@
       "debug": "/_assets/js/mustache.js",
       "description": "Mustache implemnetation for JS",
       "documentation": "https://github.com/janl/mustache.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js",
       "name": "mustache"
     },
     {

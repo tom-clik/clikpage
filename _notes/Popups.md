@@ -14,3 +14,13 @@ For a standard popup, the container itself is the backdrop and any content just 
 
 See for examples `testings/css/popup.html`
 
+If you want a close button, you need a wrapper to put it into (see also the example page).
+
+## Image popup
+
+An image popup needs to generate some of the content automatically. This includes the backdrop and the buttons.
+
+It also needs to be able to "follow" any linked image set. To do this, we set a field of "controls" on the images component. When the an image is selected in that (either a carousel or plain grid), this calls "goTo" on the main image set.
+
+The popup also needs to call goTo on the controlling content section if it's e.g. a carousel. 
+

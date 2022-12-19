@@ -176,7 +176,6 @@ request.prc.config = {
 		}).on( 'change.flickity', function( event, index ) {
 		  console.log( 'Slide changed to ' + index );
 		  var cellElements = $(this).flickity('getCellElements')
-		  
 		}).on( 'staticClick.flickity', function( event, pointer, cellElement, cellIndex ) {
 		  // dismiss if cell was not clicked
 		  if ( !cellElement ) {

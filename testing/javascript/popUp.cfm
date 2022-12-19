@@ -1,10 +1,10 @@
 <!--
 
-# Animate Auto Demo Page
+# Image popup Demo Page
 
 ## Synopsis
 
-WIP not yet working
+Working of a fashion
 
 -->
 
@@ -158,20 +158,3 @@ photosJS = serializeJSON(myData);
 </script>
 
 </html>
-
-<!--- - 
-<cffunction name="loadPhotos" output="false">
-
-	<cfdirectory directory="D:/unsplash" name="photos">
-
-	<cfset retVal = "photos = {};">
-	<cfset i = 1>
-	<cfloop query="photos">
-		<cfset retVal &= "photos[#i#] = {""photo"":""#photos.name#"",""caption"":""#photos.name#""};"> 
-		<cfset i++>
-	</cfloop>
-
-	<cfreturn retVal>
-
-</cffunction>
- --->
