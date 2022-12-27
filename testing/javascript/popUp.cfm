@@ -20,6 +20,8 @@ photosJS = serializeJSON(myData);
 <head>
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/images.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<style>
 	body {
@@ -41,10 +43,13 @@ photosJS = serializeJSON(myData);
 		padding:20px;
 	}
 
-	img {
-		max-width: 100%;
-		max-height: 100%;
-		margin:0 auto;
+	#images {
+	    --frame-flex-direction: column;
+	    --image-grow: 1;
+	    grid-gap: 20px;
+	    --grid-max-height: auto;
+	    display: grid;
+	    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 	}
 
 	#popuptest {
@@ -70,6 +75,7 @@ photosJS = serializeJSON(myData);
 	}
 
 	#popuptest img {
+		margin:0 auto;
 		box-shadow: 10px 10px 15px -4px rgba(0,0,0,0.72);
 	}
 
@@ -106,15 +112,28 @@ photosJS = serializeJSON(myData);
 <body>
 
 	<div id="ubercontainer">
-		<div id="image" class="cs-image">
-			<img src="/images/matt-moloney-OAzh2bBN110-unsplash_thumb.jpg">
+		<div id="images" class="grid cs-imagegrid ">
+			<cfset count = 0>
+			<cfloop index="image" array="#myData#">
+				<cfoutput>
+					<a data-index='#count#' class='frame' href="##">
+						<div class='image'><img src="../images/#image.image_thumbnail#"> 
+						</div>
+						<div class='caption'>
+						#image.caption#
+						</div>
+					</a>
+				</cfoutput>
+				<cfset count++>
+			</cfloop>
 		</div>
-		<div id="openButton" class="button auto">
+		
+		<!--- <div id="openButton" class="button auto">
 			<a href="#popuptest.open">
 				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
 				<label>Open Popup</label>
 			</a>
-		</div>
+		</div> --->
 	</div>
 
 	<div id="popuptest">
@@ -151,8 +170,17 @@ photosJS = serializeJSON(myData);
 		$("#popuptest").popup({
 			imagepath : "/images/",
 			data:<cfoutput>#photosJS#</cfoutput>,
+			onGoTo:function() {'Going to '}
 		});
+		$popup = $("#popuptest").data('popup');
 		$(".button.auto").button();
+
+		$("#images a").on("click",function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			$popup.goTo($(this).data("index"));
+			$popup.open();
+		});
 	});
 
 </script>

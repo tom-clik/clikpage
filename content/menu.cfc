@@ -85,20 +85,27 @@ component extends="contentSection" {
 		
 	}		
 
+	/**
+	 * Note data for menu must be full data array. Sub menus
+	 * can be generated from articles or sub sections.
+	 */
 	public string function html(required struct content, required struct data, class="menu") {
-		return menuHTML(items=arguments.content.data,data=arguments.data);
+		return menuHTML(items=arguments.content.data);
 		
 	}
 
 	/**
-	 * recursable method to generate html list for menu.
+	 * @hint recursable method to generate html list for menu.
+	 *
+	 * *menu items have keys id, link, title, and optional submenu
 	 * 
-	 * @menu          Array of menu items
-	 * @data          Site data (sections key required)
+	 * @items         Menu items*
 	 * @class         css class name to apply to ul element.
+	 *
 	 */
-	private string function menuHTML(required array items,required struct data, string class="menu" ) {
+	private string function menuHTML(required array items, string class="menu" ) {
 
+		// functionality reserved
 		switch (arguments.class) {
 			default:
 				local.subclass = "submenu";
@@ -106,17 +113,11 @@ component extends="contentSection" {
 		
 		local.menu = "<ul class='#arguments.class#'>";
 		
-		for (local.id in arguments.items) {
-			if ( NOT StructKeyExists( arguments.data,local.id ) ) {
-				local.menu &= "<!-- #local.id# section not found -->";
-				continue;
-			}
-			local.item = arguments.data[local.id];
-			local.title = local.item.short_title ? : local.item.title;
-			local.class = "  class='menu_#local.id#'";
-			local.menu &= "<li><a href='{link.#local.item.id#}'#local.class#><b></b><span>#local.title#</span></a>";
+		for (local.item in arguments.items) {
+			local.class = "  class='menu_#local.item.id#'";
+			local.menu &= "<li><a href='#local.item.link#'#local.class#><b></b><span>#local.item.title#</span></a>";
 			if (StructKeyExists(local.item,"submenu")) {
-				local.menu &= menuHTML(items=local.item.submenu,data=arguments.data,class=local.subclass);
+				local.menu &= menuHTML(items=local.item.submenu,class=local.subclass);
 			}
 			local.menu &= "</li>\n";
 		}

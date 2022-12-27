@@ -11,13 +11,17 @@ dataset = {
 
 param name="request.rc.section" default="index";
 
-WriteDump(dataset);
+WriteDump(var=dataset,label="Dataset definition");
 menu =siteObj.getDataSet(site=site,dataset=dataset);
-WriteDump(menu);
+WriteDump(var=menu,label="Dataset 1");
 
 dataset.tag = "";
 menu =siteObj.getDataSet(site=site,dataset=dataset); 
-WriteDump(menu);
+WriteDump(var=menu,label="Dataset with no tag");
+
+menudata = siteObj.menuData(site,menu);
+WriteDump(menudata);
+abort;
 
 dataset = {
 	tag="test"
@@ -25,24 +29,23 @@ dataset = {
 
 records1 = siteObj.getDataSet(site=site,dataset=dataset);
 
-WriteDump(records1);
+WriteDump(var=records1,label="Articles with tag test");
 data = siteObj.getRecords(site=site,dataset=records1);
-WriteDump(data);
+WriteDump(var=data,label="Data for last data set");
 
 dataset = {
 	tag="gallery",type="images"
 };
 
 records2 =siteObj.getDataSet(site=site,dataset=dataset); 
-WriteDump(records2);
+WriteDump(var=records2,label="Image data set");
 data = siteObj.getRecords(site=site,dataset=records2,type="images");
-WriteDump(data);
+WriteDump(var=data,label="Data from previous query");
 
 record = siteObj.getRecord(site=site,id = records2[2],type="images");
-WriteDump(record);
+WriteDump(var=record,label="Individual record");
 
 info = siteObj.getRecordSetInfo(site=site,dataset=records2,id=record.id);
-
-writeDump(info);
+writeDump(var=info,label="Record set info");
 
 </cfscript>

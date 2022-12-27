@@ -11,7 +11,8 @@
         "animateAuto",
         "popup",
         "swipeDetector",
-        "flickity"
+        "flickity",
+        "scrollfix"
       ],
       "pack": false,
       "name": "main"
@@ -93,12 +94,18 @@
       "requires": "jquery"
     },
     {
-      "debug": "/_assets/js/masonry.pkgd.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+      "debug": "/_assets/js/isotope.pkgd.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js",
       "name": "masonry",
       "description" : "Gallery layout script",
       "packageExclude": 1,
       "requires": "imagesloaded,jquery"
+    },
+    {
+      "min": "/_assets/js/masonry-horizontal.js",
+      "name": "masonry-horizontal",
+      "description" : "Horizontal mode for masonry",
+      "requires": "masonry"
     },
     {
       "debug": "/_assets/js/flickity.pkgd.min.js",
@@ -160,15 +167,19 @@
       "name": "scrollbar",
       "requires": "jquery",
       "packageExclude": 1
+    },
+    {
+      "min":"/_assets/js/scroll-fix.js",
+      "description": "Fix a div in place when the page is scrolled",
+      "name": "scrollfix",
+      "requires": "jquery"
     }
     ,
     {
-      "debug":"/_assets/js/jquery.mCustomScrollbar.min.js",
-      "min":"https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js",
-      "description": "",
-      "name": "scrollbar",
-      "requires": "jquery",
-      "packageExclude": 1
+      "min":"/_assets/js/popup.js",
+      "description": "Basic image popup script",
+      "name": "popup",
+      "requires": "jquery"
     }
     
   ]

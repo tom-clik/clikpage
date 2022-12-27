@@ -18,44 +18,56 @@ component extends="contentSection" {
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
-			{"name"="item", "selector"="> *"}
+			{"name"="item", "selector"=" > *"}
+		];
+
+		this.panels = [
+			{"name":"Item","panel":"item","selector":" > *"},
+			{"name":"Caption","panel":"caption","selector":" .caption"}
 		];
 
 		this.styleDefs = [
-			"grid-mode":{"type"="list","default"="auto","inherit":1,"options":[
-					{"name"="None","code"="none","description"=""},
-					{"name"="Auto fit","code"="auto","description"=""},
-					{"name"="Fixed width","code"="fixedwidth","description"=""},
-					{"name"="Fixed columns","code"="fixedcols","description"=""},
-					{"name"="Named positions","code"="templateareas","description"=""},
-					{"name"="Flex","code"="flex","description"=""},
-					{"name"="Flex with stretch","code"="flexstretch","description"=""}
-				]
+			"grid-mode":{"name"="Grid mode","type"="list","default"="auto","inherit":1,"options":[
+					{"name"="None","value"="none","description"="Don't use a grid. Use this setting to turn off a grid in smaller screen sizes."},
+					{"name"="Auto fit","value"="auto","description"="Fit as many items as possible into the grid according to the minimum column size."},
+					{"name"="Fixed width","value"="fixedwidth","description"="A legacy mode in which all columns have the same width"},
+					{"name"="Fixed columns","value"="fixedcols","description"="A grid with a fixed number of columns. Set either a number of columns or a width definition e.g. 20% auto 30%"},
+					{"name"="Named positions","value"="templateareas","description"="An advanced mode in which you specify the specific order of the content items."},
+					{"name"="Flex","value"="flex","description"="The items in the grid will be as wide/high as their content"},
+					{"name"="Flex with stretch","value"="flexstretch","description"="The items in the grid will be sized in proportion to the size of their content, but the grid will stretch out to fit the container"}
+				],
+				"description":"Select the way your grid is laid out"
 			},
-			"grid-fit":{"type"="list","default"="auto-fit","inherit":1,"options"=[]},
-			"grid-width":{"type"="dimension","default"="180px"},
-			"grid-max-width":{"type"="list","default"="1fr","note"="Note sure this should be exposed"},
-			"grid-columns":{"type"="integer","default"="2"},
-			"grid-gap":{"type"="dimension"},
-			"grid-template-columns":{"type"="dimensionlist"},
-			"grid-template-rows":{"type"="dimensionlist"},
-			"grid-template-areas":{"type"="dimensionlist"},
-			"justify-content":{"type"="list","options"=[
-				{"name"="Start","code"="flex-start","description"=""},
-				{"name"="Center","code"="center","description"=""},
-				{"name"="End","code"="flex-end","description"=""}
-			]},
-			"align-items":{"type"="list","options"=[
-				{"name"="Start","code"="flex-start","description"=""},
-				{"name"="Center","code"="center","description"=""},
-				{"name"="End","code"="flex-end","description"=""}
-			]},
-			"flex-direction":{"type"="list","default"="row","options"=[
-				{"name"="Row","code"="row","description"=""},
-				{"name"="Row reverse","code"="row-reverse","description"=""},
-				{"name"="Column","code"="column","description"=""},
-				{"name"="Column reverse","code"="column-reverse","description"=""}
-			]}
+			"grid-fit":{"name"="Auto fill mode","type"="list","default"="auto-fit","inherit":1,"options"=[
+					{"name"="Fit","value"="auto-fit","description"=""},
+					{"name"="Fill","value"="auto-fill","description"=""}
+				],
+				"description":"How an auto grid is filled up. Use `Fit` unless you know you want fill."
+			},
+			"grid-width":{"name":"Item width","type"="dimension","default"="180px","description":"Minimum width of columns for an auto grid."},
+			"grid-max-width":{"name":"max width","type"="dimension","default"="1fr","note"="Not sure this should be exposed","hidden":1,"description":""},
+			
+			"grid-columns":{"name"="Columns","type"="integer","default"="2","description"="Number of columns for a fixed column grid (only used if Template columns is not specified"},
+			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items"},
+			"grid-template-columns":{"name":"Template columns","type"="dimensionlist","description":"Column sizes when using an named items mode","dependson":"grid-mode","dependvalue":"templateareas"},
+			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using an named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":"templateareas"},
+			"grid-template-areas":{"name"="template areas","type"="dimensionlist","dependson":"grid-mode","dependvalue":"templateareas","description":""},
+			"justify-content":{"name"="Alignment","type"="list","options"=[
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""}
+			],"description":"Orientation in the same axis to the grid direction. This usually means horiztonal."},
+			"align-items":{"name"="Cross align","type"="list","options"=[
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""}
+			],"description":"Orientation in the opposite axis to the grid direction. This usually means vertical."},
+			"flex-direction":{"name":"Flexible grid direction","type"="list","default"="row","options"=[
+				{"name"="Row","value"="row","description"=""},
+				{"name"="Row reverse","value"="row-reverse","description"=""},
+				{"name"="Column","value"="column","description"=""},
+				{"name"="Column reverse","value"="column-reverse","description"=""}
+			],"dependson":"grid-mode","dependvalue":"flex,flexstretch","description":"The direction in which a flexible grid is shown"}
 		];
 		
 		updateDefaults();
@@ -68,57 +80,59 @@ component extends="contentSection" {
 		
 		var data = getSelectorStruct();
 		
-		switch (arguments.styles["grid-mode"]) {
-			case "none":
-				data.main &= "\tdisplay:block;\n";
-				break;
-			case "auto":
-				data.main &= "\tdisplay:grid;\n";
-				data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-fit"]#, minmax(#arguments.styles["grid-width"]#, #arguments.styles["grid-max-width"]#));\n";
+		variables.contentObj.settingsObj.grid(settings=arguments.styles,out=data);
 
-				break;	
-			case "fixedwidth":
-				data.main &= "\tdisplay:grid;\n";
-				data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-fit"]#, #arguments.styles["grid-width"]#);\n";
-				break;	
-			case "fixedcols":
-				data.main &= "\tdisplay:grid;\n";
-				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
-				if (StructKeyExists(arguments.styles,"grid-template-columns") AND arguments.styles["grid-template-columns"] neq "") {
-					data.main &= "\tgrid-template-columns: " & arguments.styles["grid-template-columns"] & ";\n";
-				}
-				// specified number of columns
-				else if (StructKeyExists(arguments.styles,"grid-columns") AND isValid("integer", arguments.styles["grid-columns"])) {
-					data.main &= "\tgrid-template-columns: repeat(" & arguments.styles["grid-columns"] & ",1fr);\n";
-				}
-				// All columns in one row -- not a very good idea.
-				else {
-					data.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
-				}
+		// switch (arguments.styles["grid-mode"]) {
+		// 	case "none":
+		// 		data.main &= "\tdisplay:block;\n";
+		// 		break;
+		// 	case "auto":
+		// 		data.main &= "\tdisplay:grid;\n";
+		// 		data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-fit"]#, minmax(#arguments.styles["grid-width"]#, #arguments.styles["grid-max-width"]#));\n";
+
+		// 		break;	
+		// 	case "fixedwidth":
+		// 		data.main &= "\tdisplay:grid;\n";
+		// 		data.main &= "\tgrid-template-columns: repeat(#arguments.styles["grid-fit"]#, #arguments.styles["grid-width"]#);\n";
+		// 		break;	
+		// 	case "fixedcols":
+		// 		data.main &= "\tdisplay:grid;\n";
+		// 		// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
+		// 		if (StructKeyExists(arguments.styles,"grid-template-columns") AND arguments.styles["grid-template-columns"] neq "") {
+		// 			data.main &= "\tgrid-template-columns: " & arguments.styles["grid-template-columns"] & ";\n";
+		// 		}
+		// 		// specified number of columns
+		// 		else if (StructKeyExists(arguments.styles,"grid-columns") AND isValid("integer", arguments.styles["grid-columns"])) {
+		// 			data.main &= "\tgrid-template-columns: repeat(" & arguments.styles["grid-columns"] & ",1fr);\n";
+		// 		}
+		// 		// All columns in one row -- not a very good idea.
+		// 		else {
+		// 			data.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
+		// 		}
 				
-				break;	
+		// 		break;	
 
-			case "templateareas":
-				if (NOT StructKeyExists(arguments.styles,"grid-template-areas")) {
-					throw("Grid mode templateareas requires grid-template-areas to be set");
-				}
-				data.main &= "\tgrid-template-areas:" & arguments.styles["grid-template-areas"] & ";\n";
-				if (StructKeyExists(arguments.styles,"grid-template-columns") AND arguments.styles["grid-template-columns"] neq "") {
-					data.main &= "\tgrid-template-columns: " & arguments.styles["grid-template-columns"] & ";\n";
-				}
-				if (StructKeyExists(arguments.styles,"grid-template-rows") AND arguments.styles["grid-template-rows"] neq "") {
-					data.main &= "\tgrid-template-rows: " & arguments.styles["grid-template-rows"] & ";\n";
-				}
-				break;
-			case "flex": case "flexstretch":
-				data.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n";
-				data.main &= "\tflex-direction:" & arguments.styles["flex-direction"] & "\n";
-				if (arguments.styles["grid-mode"] eq "flexstretch") {
-					data.item &= "\n\tflex-grow:1;\n;";
-				}
-				break;
+		// 	case "templateareas":
+		// 		if (NOT StructKeyExists(arguments.styles,"grid-template-areas")) {
+		// 			throw("Grid mode templateareas requires grid-template-areas to be set");
+		// 		}
+		// 		data.main &= "\tgrid-template-areas:" & arguments.styles["grid-template-areas"] & ";\n";
+		// 		if (StructKeyExists(arguments.styles,"grid-template-columns") AND arguments.styles["grid-template-columns"] neq "") {
+		// 			data.main &= "\tgrid-template-columns: " & arguments.styles["grid-template-columns"] & ";\n";
+		// 		}
+		// 		if (StructKeyExists(arguments.styles,"grid-template-rows") AND arguments.styles["grid-template-rows"] neq "") {
+		// 			data.main &= "\tgrid-template-rows: " & arguments.styles["grid-template-rows"] & ";\n";
+		// 		}
+		// 		break;
+		// 	case "flex": case "flexstretch":
+		// 		data.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n";
+		// 		data.main &= "\tflex-direction:" & arguments.styles["flex-direction"] & "\n";
+		// 		if (arguments.styles["grid-mode"] eq "flexstretch") {
+		// 			data.item &= "\n\tflex-grow:1;\n;";
+		// 		}
+		// 		break;
 
-		}
+		// }
 		
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
 	}	

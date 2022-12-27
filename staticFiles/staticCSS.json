@@ -16,8 +16,7 @@
                 "tables",
                 "tabs",
                 "text",
-                "title",
-                "jBox"
+                "title"
             ],
             "name":"content",
             "min":"/_assets/css/_min/mainpackage.0.3.min.css"

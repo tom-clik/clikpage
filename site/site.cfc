@@ -194,7 +194,10 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 	/**
-	 * Get array of data for using in menu components
+	 * @hint Get array of data for using in menu components
+	 *
+	 * Use normal dataset functionality to get array of section 
+	 * codes. The call this to get menu data.
 	 * 
 	 * @site         Site struct
 	 * @sections     Array or list of section codes
@@ -208,8 +211,23 @@ component accessors="true" extends="utils.baseutils" {
 		local.menuData = [];
 		for (local.sectioncode in arguments.sections) {
 			local.section = arguments.site.sections[local.sectioncode];
-			local.menu = {"link"="?section=#local.sectioncode#","section"="#local.sectioncode#","title"=local.section.menu_title};
-			ArrayAppend(local.menuData,local.menu);
+			local.menuitem = {"link"="?section=#local.sectioncode#","id"="#local.sectioncode#","title"=local.section.title};
+			if (StructKeyExists(local.section,"dataset")) {
+				local.data = getDataSet(site=arguments.site,dataset=local.section.dataset);
+				if (ArrayLen(local.data)) {
+					local.menuitem["submenu"] = [];
+					local.records = getRecords(
+						site=arguments.site,
+						dataset=local.data,
+						type=local.section.dataset.type
+					);
+					for (local.record in local.records) {
+						local.submenuitem = {"link"="?section=#local.sectioncode#&action=view&id=#local.record.id#","id"="submenu_#local.sectioncode#_#local.record.id#","title"=local.record.title};
+						ArrayAppend(local.menuitem.submenu, local.submenuitem);
+					}
+				}
+			}
+			ArrayAppend(local.menuData,local.menuitem);
 		}
 
 		return local.menuData;
@@ -227,11 +245,11 @@ component accessors="true" extends="utils.baseutils" {
 		required struct dataset
 		) {
 
-		StructAppend(arguments.dataset,{"tag":"","type":"articles"},false);
+		StructAppend(arguments.dataset,{"tag":"","parent":"","type":"articles"},false);
 
 		local.data = [];
 
-		if (arguments.dataset.tag eq "") {
+		if (arguments.dataset.tag eq "" AND arguments.dataset.parent eq "") {
 			return structKeyArray(arguments.site[arguments.dataset.type]);
 		}
 
@@ -240,8 +258,13 @@ component accessors="true" extends="utils.baseutils" {
 		for (local.id in local.ref) {
 			
 			local.record = local.ref[local.id];
-			
-			if (ListFindNoCase(local.record.tags, arguments.dataset.tag)) {
+			if (arguments.dataset.tag neq "") {
+				if (ListFindNoCase(local.record.tags, arguments.dataset.tag)) {
+					ArrayAppend(local.data,local.id);
+				}
+			}
+			else if (StructKeyExists(local.record,"parent") AND
+					local.record.parent eq arguments.dataset.parent) {
 				ArrayAppend(local.data,local.id);
 			}
 		}
@@ -638,16 +661,18 @@ component accessors="true" extends="utils.baseutils" {
 							break;
 						case "menu":
 							if ( StructKeyExists( arguments.site.cs[content] , "dataset") )  {
-								arguments.site.cs[content].data = getDataSet(
+								
+								local.menuDataSet = getDataSet(
 									site=arguments.site,
 									dataset=arguments.site.cs[content].dataset
 								);
 								local.datatype = arguments.site.cs[content].dataset.type;
 							}
 							else {
-								arguments.site.cs[content].data = getDataSet(site=arguments.site,dataset={"tag"=content,type="sections"});;
+								local.menuDataSet = arguments.site.cs[content].data = getDataSet(site=arguments.site,dataset={"tag"=content,type="sections"});
 								local.datatype = "sections";
 							}
+							arguments.site.cs[content].data = menuData(arguments.site,local.menuDataSet);
 							
 							break;
 						

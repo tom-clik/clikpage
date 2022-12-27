@@ -62,7 +62,7 @@ function displayCSS(required struct cs) {
 function staticContent(required struct pagecontent) {
 	if (pageObjOk) {
 		var page = "";
-		writeDump(arguments.pagecontent);
+		
 		page &= pageObj.cssStaticFiles.getLinks(arguments.pagecontent.static_css,1);
 		page &= pageObj.jsStaticFiles.getLinks(arguments.pagecontent.static_js,1);
 

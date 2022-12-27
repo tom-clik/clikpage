@@ -49,16 +49,43 @@
 		<section id="about">
 			<title>About</title>
 			<description>
-				<![CDATA[This is the section descriptionduction. It's a separate field]]>
+				<![CDATA[This is the section description. It's a separate field]]>
+			</description>
+			<dataset parent="about" type="sections"></dataset>
+			<tags>mainmenu,footermenu</tags>
+		</section>
+
+		<section id="about1">
+			<title>About sub 1</title>
+			<parent>about</parent>
+			<description>
+				<![CDATA[This is the section description. It's a separate field]]>
 			</description>
 			<detail> 
-				<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>
-
-				<p>We offer a range of mainly technical services, specialising in Adobe ColdFusion and SQL Server development. We are based in London's West End and work primarily with Central London based clients.</p>
-
-				<p>In addition to our technical services, we provide strategic consulting for publishers establishing digital work flows and subscription management.</p>]]>
+				<![CDATA[<p>Simple sub section 1</p>]]>
 			</detail>
-			<tags>footermenu</tags>
+		</section>
+
+		<section id="about2">
+			<title>About sub 2</title>
+			<parent>about</parent>
+			<description>
+				<![CDATA[This is the section description. It's a separate field]]>
+			</description>
+			<detail> 
+				<![CDATA[<p>Simple sub section 2</p>]]>
+			</detail>
+		</section>
+
+		<section id="about3">
+			<title>About sub 3</title>
+			<parent>about</parent>
+			<description>
+				<![CDATA[This is the section description. It's a separate field]]>
+			</description>
+			<detail> 
+				<![CDATA[<p>Simple sub section 3</p>]]>
+			</detail>
 		</section>
 
 		<section id="contact">

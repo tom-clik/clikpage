@@ -85,30 +85,18 @@ Testing scroll fix
 </div>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/scroll-fix.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		
-		// check where the shoppingcart-div is 
-		$scrollfixed = $('#topnav'); 
-		var offset = $scrollfixed.offset();
-		var width = $scrollfixed.outerWidth();
-		var $body = $('body');  
-
-		$(window).on("scroll", function () {  
-			var scrollTop = $(window).scrollTop(); // check the visible top of the browser  
-			if (offset.top < scrollTop) {
-				$body.addClass('scroll');
-				$scrollfixed.css("width",width + "px");
-			}
-			else {
-				$body.removeClass('scroll');  
-			}
-		});
+$(document).ready(function() {
+	$('#topnav').scrollFix({
+		resize: "throttledresize",
+		onFix: function() {console.log("fix")},
+		onUnfix: function() {console.log("unfix")}
 	});
-	
+});
 </script>
-
 
 </body>
 </html>

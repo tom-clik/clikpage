@@ -54,7 +54,7 @@ css &= settingsObj.CSSCommentHeader("Content styling");
 css &= contentObj.contentCSS(content_sections=cs,styles=styles.content,media=styles.media);
 css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
 
-writeDump(cs.test1);
+// writeDump(cs.test1);
 
 // WriteOutput("<pre>" & HtmlEditFormat(css) & "</pre>");
 

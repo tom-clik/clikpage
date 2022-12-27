@@ -441,7 +441,7 @@
 				local.css &= "\t#local.property#:" & displayProperty(local.property,arguments.settings[local.property]) & ";\n";
 			}
 		}
-		for (local.property in ['object-fit','z-index','overflow','overflow-x','overflow-y']) {
+		for (local.property in ['object-fit','z-index','overflow','overflow-x','overflow-y','box-shadow']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
 			}
@@ -531,7 +531,7 @@
 		return retVal;
 
 	}
-
+	
 	/**
 	 * Add dimensions to plain number values and check vars
 	 */
@@ -571,12 +571,14 @@
 			"grid-fit":"auto-fit",
 			"grid-width":"180px",
 			"grid-max-width":"1fr",
+			"grid-max-height":"auto",
 			"grid-columns":"2",
 			"flex-direction":"row",
 			"justify-content":"flex-start",
 			"align-items":"center"
 			},false);
 		arguments.out.main &= "\tgrid-gap:" & displayDimension(styles["grid-gap"]) & ";\n;";
+		arguments.out.main &= "\t--grid-max-height:" & displayDimension(styles["grid-max-height"]) & ";\n;";
 		
 		switch (styles["grid-mode"]) {
 			case "none":

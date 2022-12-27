@@ -143,9 +143,19 @@ component {
 		var css_out = "";
 		var cs = false;
 
-		if (arguments.loadsettings) {
-			for (var id in arguments.content_sections) {
-				cs = arguments.content_sections[id];
+		for (var id in arguments.content_sections) {
+			cs = arguments.content_sections[id];
+			if (NOT StructKeyExists(this.contentSections, cs.type)) {
+				local.extendedinfo = {"cs"=cs};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Undefined content type (#cs.type#) ",
+					detail       = "See content object for details of available content types",
+					errorcode    = "content.001"		
+				);
+				
+			}
+			if (arguments.loadsettings) {
 				settings(cs,arguments.styles,arguments.media);
 			}
 		}
