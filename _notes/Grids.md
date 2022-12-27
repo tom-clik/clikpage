@@ -1,6 +1,6 @@
 # CSS Grids
 
-Clik offers fiv flavours of grid.
+Clik offers five flavours of grid.
 
 ## 1. Plain
 
@@ -8,13 +8,13 @@ Minimum width applied to items and the grid will fill as many as it can, balanci
 
 ## 2. Flexible
 
-Flexbox with either stretch=0 or 1 to allow the items to expand.
+Flexbox with either stretch=0 or 1 to allow the items to expand. The items will take as much space as they need for their content. Good choice for hoirzontal menus.
 
 ## 3. Fixed Columns
 
 Specified number of columns divided equally. Usually for containers.
 
-You can also specify the widths (e.g. 25% auto 25%) which overrides the columns settings.
+You can also specify the widths (e.g. 25% auto 25%) which overrides the number setting.
 
 ### 3.5 Auto columns
 

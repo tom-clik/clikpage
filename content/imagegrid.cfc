@@ -12,8 +12,8 @@ component extends="grid" {
 		
 		super.init(arguments.contentObj);
 		
-		variables.static_css = {"images"=1,"jbox"=1};
-		variables.static_js = {"masonry"=1,"jbox"=1};
+		variables.static_css = {"images"=1};
+		variables.static_js = {"masonry"=1,"popup"=1};
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
@@ -69,8 +69,8 @@ component extends="grid" {
 		StructAppend(this.settings, {
 			"masonry" :0,
 			"popup" : 0,
-			"caption-position": "top",
-			"justify-frame":"top"
+			"caption-position": "bottom",
+			"justify-frame":"start"
 		});
 
 		return this;
@@ -181,7 +181,7 @@ component extends="grid" {
 			
 			local.image_src = local.image.image_thumb ? : local.image.image;
 			
-			local.html &= "<img src='#local.image_src#'>";
+			local.html &= "<div class='image'><img src='#local.image_src#'></div>";
 
 			if (local.image.title NEQ "") {
 				local.html &= "<div class='caption'>#local.image.title#</div>";
@@ -190,41 +190,77 @@ component extends="grid" {
 			local.html &= "</a>";
 
 		}		
-		
+		if (arguments.content.settings.main.popup) {
+			local.html &= variables.contentObj.popupHTML("#arguments.content.id#_popUp");
+		}
 
 		return local.html;
 		
 	}
 
-	public string function onready(required struct content) {
+	public string function onready(
+		required struct content, 
+		required struct pageContent,
+		required struct data) {
 
 		var js = "";
-
+			
+			
 		if (arguments.content.settings.main.masonry) {
-			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').masonry({\n";
+			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').isotope({\n";
 			js &= "\t/* options*/\n";
 			// js &= "\titemSelector: 'figure',\n";
-			js &= "\tcolumnWidth: '###arguments.content.id# figure',\n";
-			js &= "\tinitLayout: false,\n";
-			js &= "\tpercentPosition: true\n";
+			js &= "layoutMode: 'masonry',\n";
+			js &= "itemSelector: '.frame',\n";
+			js &= "masonry: {\n";
+			js &= "	columnWidth: '##imagegrid .frame'";
 			if (StructKeyExists(arguments.content.settings.main,"gridgap")) {
-				js &= "\tgutter: #Val(arguments.content.settings.main.gridgap)#\n";
+				js &= ",\n\tgutter: #Val(arguments.content.settings.main.gridgap)#";
 			}
+			js &= "\n\t},\n";
 			js &= "});\n";
 
 			js &= "/* layout Masonry after each image loads*/\n";
 			// js &= "$#arguments.content.id#Grid.imagesLoaded().progress( function() {\n";
 			js &= "$#arguments.content.id#Grid.imagesLoaded( function() {\n";
-			js &= "\t$#arguments.content.id#Grid.masonry('layout');\n";
+			js &= "\t$#arguments.content.id#Grid.isotope();\n";
 			js &= "});\n";
 		}
 
-		// if (arguments.content.settings.main.popup) {
-
-		// 	js &= "new jBox('Image');";
-		// }
+		if (arguments.content.settings.main.popup) {
+			js &= "$('###arguments.content.id#_popUp').popup({\n";
+			js &= "	imagepath : '',\n";
+			js &= "	data:#Replace(SerializeJSON(getData(cs_data=arguments.content.data, data=arguments.data ) ),"\n","","all")#,\n";
+			js &= "});\n";
+			js &= "$popup = $('###arguments.content.id#_popUp').data('popup');\n";
+			js &= "$('.popup .button.auto').button();\n";
+			js &= "count = 0;\n";
+			js &= "$('###arguments.content.id# a').each(function() {\n";
+			js &= "	$(this).data('index', count++);\n";
+			js &= "})\n";
+			js &= "$('###arguments.content.id# > a').on('click',function(e) {\n";
+			js &= "	console.log('clikced');";
+			js &= "	e.preventDefault();\n";
+			js &= "	e.stopPropagation();\n";
+			js &= "	$popup.goTo($(this).data('index'));\n";
+			js &= "	$popup.open();\n";
+			js &= "});\n";
+		}
 		
 		return js;
+	}
+
+	// the pass data by reference thing isn't working for the popups
+	// we need to somehow extend this client side possibly with options
+	// for lazy load.
+	// In the meantime, for a popup, create an array of data to
+	// supply to the js plug in.
+	private array function getData(required array cs_data, required struct data) {
+		local.dataRet = [];
+		for (local.id in arguments.cs_data) {
+			ArrayAppend(local.dataRet, arguments.data[local.id]);
+		}
+		return local.dataRet;
 	}
 	
 }

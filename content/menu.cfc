@@ -216,6 +216,7 @@ component extends="contentSection" {
 			data.li &= "flex-grow: " & (arguments.styles.stretch ? "1" : "0") & ";\n";
 		}
 		//popup          | boolean               | height: 0   NB &.open  applies height:auto
+		// to check functionality here.
 		if (StructKeyExists(arguments.styles,"popup")) {
 			data.main &= "/* popup styling */\n";
 			// expects decreasing media width
@@ -224,6 +225,7 @@ component extends="contentSection" {
 				data.main &= "overflow: hidden;";
 			}
 		}
+
 		// submenu position | inline|relative    | position:absolute or static no ul.submenu
 		local.submenu_position =  arguments.styles.submenu_position ?: "absolute";
 		data.submenu &= "/* submenu styling */\n";

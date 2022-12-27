@@ -44,7 +44,7 @@ The default type is a text field. This should be used for most data unless you n
 | Boolean  | yes/no field     
 | date     | Date time field
 | list     | One of a list of options as specified in "values"
-| multi    | Multiple selectins from a list of options as specified in "values"   
+| multi    | Multiple selections from a list of options as specified in "values"   
 | image    | Image field   
 
 #### Image fields

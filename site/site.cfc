@@ -162,7 +162,7 @@ component accessors="true" extends="utils.baseutils" {
 		for (local.field in ['detail','description']) {
 			if (structKeyExists(arguments.data, local.field)) {
 				arguments.data[local.field] = variables.utils.flexmark.toHtml(arguments.data[local.field]);
-				
+				arguments.data[local.field] = Trim(arguments.data[local.field])	;
 			}
 		}
 
@@ -213,17 +213,30 @@ component accessors="true" extends="utils.baseutils" {
 			local.section = arguments.site.sections[local.sectioncode];
 			local.menuitem = {"link"="?section=#local.sectioncode#","id"="#local.sectioncode#","title"=local.section.title};
 			if (StructKeyExists(local.section,"dataset")) {
-				local.data = getDataSet(site=arguments.site,dataset=local.section.dataset);
-				if (ArrayLen(local.data)) {
-					local.menuitem["submenu"] = [];
-					local.records = getRecords(
-						site=arguments.site,
-						dataset=local.data,
-						type=local.section.dataset.type
-					);
-					for (local.record in local.records) {
-						local.submenuitem = {"link"="?section=#local.sectioncode#&action=view&id=#local.record.id#","id"="submenu_#local.sectioncode#_#local.record.id#","title"=local.record.title};
-						ArrayAppend(local.menuitem.submenu, local.submenuitem);
+				local.useSubmenu = ListFindNoCase("articles,sections",getDataSetType(local.section.dataset));
+				if ( local.useSubmenu ) {
+					local.data = getDataSet(site=arguments.site,dataset=local.section.dataset);
+
+					if ( ArrayLen(local.data) GT 1) {
+						local.menuitem["submenu"] = [];
+						local.records = getRecords(
+							site=arguments.site,
+							dataset=local.data,
+							type=local.section.dataset.type
+						);
+						for (local.record in local.records) {
+							switch (local.section.dataset.type)	{
+								case "articles":
+									local.link = "{link.#local.sectioncode#.view.#local.record.id#}";
+									break;
+								case "sections":
+									local.link = "{link.#local.record.id#}";
+									break;
+
+							}
+							local.submenuitem = {"link"="#local.link#","id"="submenu_#local.sectioncode#_#local.record.id#","title"=local.record.title};
+							ArrayAppend(local.menuitem.submenu, local.submenuitem);
+						}
 					}
 				}
 			}
@@ -232,6 +245,13 @@ component accessors="true" extends="utils.baseutils" {
 
 		return local.menuData;
 
+	}
+
+
+	public string function getDataSetType(
+		required struct dataset
+		) {
+		return dataset.type ? : "articles";
 	}
 
 	/**
@@ -332,14 +352,27 @@ component accessors="true" extends="utils.baseutils" {
 		return local.info;
 	}
 
-
+	/**
+	 * wip ADDING LINKS. All this func tbc
+	 */
 	public void function addLinks(required array data, required struct site, required string section, string action="index") {
 		
 		for (local.article in arguments.data) {
 			local.article["link"] = pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = local.article.id)
 		}	
 	}
-	public void function addPageLinks(required struct record, required array dataset, required struct site, required string section, string action="index", string type="articles") {
+	/**
+	 * add links to a single record for next,previous etc
+	 */
+	public void function addPageLinks(
+		required struct record, 
+		required array  dataset, 
+		required struct site, 
+		required string section, 
+				 string action="index", 
+				 string type="articles"
+		) {
+
 		var info = getRecordSetInfo(site=arguments.site,dataset=arguments.dataset,id=arguments.record.id);
 		
 		arguments.record["next_link"] = info.next neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.next) : "";
@@ -473,7 +506,12 @@ component accessors="true" extends="utils.baseutils" {
 		return html;
 	}
 
-	public string function pageLink(required struct site, required string section, string action="index", string id="") {
+	/**
+	 * Generate page link according to whether we are in live or cache mode
+	 * 
+	 * @return {[type]}          [description]
+	 */
+	private string function pageLink(required struct site, required string section, string action="index", string id="") {
 		local.sectionStr = getSection(site=arguments.site,section=arguments.section);
 		if (arguments.site.mode == "preview") {
 			local.link = variables.previewurl & "?section=" & local.sectionStr.id;
@@ -690,7 +728,7 @@ component accessors="true" extends="utils.baseutils" {
 				
 				local.tag.attr("class",this.contentObj.getClassList(arguments.site.cs[content]));
 				
-				this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.cs[content],true));
+				this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.cs[content],local.data));
 				
 			}
 

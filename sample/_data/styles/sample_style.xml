@@ -65,7 +65,7 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"header" "pagecontent" "footer"</grid-template-areas>
-					<grid-template-rows>min-content minmax(0, 1fr) min-content</grid-template-rows>
+					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
 				</grid>
 				<mobile>
 					<grid>

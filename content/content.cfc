@@ -106,7 +106,7 @@ component {
 	 */
 	public struct function display(required struct content, struct data={}) {
 		local.ret["html"] = wrapHTML(arguments.content,html(arguments.content,data));
-		local.ret["pagecontent"] = getPageContent(arguments.content);
+		local.ret["pagecontent"] = getPageContent(arguments.content,data);
 		return local.ret;
 	}
 
@@ -309,13 +309,13 @@ component {
 	 * @return struct on page content keys (static_css,static_js,onready)
 	 * @see addPageContent
 	 */
-	public struct function getPageContent(required struct content) {
+	public struct function getPageContent(required struct content, struct data={}) {
 		
 		var pageContent = {};
 		
 		pageContent["static_css"] = getStaticCSS(arguments.content);
 		pageContent["static_js"] = getStaticJS(arguments.content);
-		pageContent["onready"] = getOnready(arguments.content);
+		pageContent["onready"] = getOnready(arguments.content,pageContent,data);
 		
 		return pageContent;
 		
@@ -358,8 +358,8 @@ component {
 		return this.contentSections[arguments.content.type].getStaticJs();
 	}
 
-	public String function getOnready(required struct content) {
-		var js =this.contentSections[arguments.content.type].onReady(arguments.content);
+	public String function getOnready(required struct content, required struct pageContent, struct data={}) {
+		var js =this.contentSections[arguments.content.type].onReady(arguments.content,pageContent,data);
 		
 		if (this.debug) {
 			js = "console.log('onready for #arguments.content.id#');"& NewLine() & js;
@@ -421,6 +421,34 @@ component {
 
 		return cshtml;
 
+	}
+
+	// putting this here not until I can think of a better
+	// way of doing this.
+	public string function popupHTML(required string id) {
+		return replace("
+		    <div id='{id}' class='popup'>
+				<div class='popup_inner'>
+				</div>
+				<div id='{id}closeButton' class='closeButton button auto'>
+					<a href='##{id}.close'>
+						<svg  class='icon'  viewBox='0 0 357 357'><use xlink:href='/_assets/images/close47.svg##close'></svg>
+						<label>Close</label>
+					</a>
+				</div>
+				<div id='{id}nextButton' class='nextButton button auto'>
+					<a href='##{id}.next'>
+						<svg  class='icon' preserveAspectRatio='none' viewBox='0 0 16 16'><use xlink:href='/_assets/images/chevron-right.svg##chevron-right'></svg>
+						<label>Next</label>
+					</a>
+				</div>
+				<div id='{id}previousButton' class='previousButton button auto'>
+					<a href='##{id}.previous'>
+						<svg  class='icon' preserveAspectRatio='none' viewBox='0 0 16 16' viewBox='0 0 16 16'><use xlink:href='/_assets/images/chevron-left.svg##chevron-left'></svg>
+						<label>Previous</label>
+					</a>
+				</div>
+			</div>","{id}",arguments.id, "all");
 	}
 
 	/**
