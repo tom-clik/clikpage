@@ -37,6 +37,12 @@ component {
 			
 			application.site = application.siteObj.loadSite(application.config.siteDef);
 
+			if (StructKeyExists(application.site,"links")) {
+				for (local.link in application.site.links) {
+					application.siteObj.pageObj.addLink(content=application.siteObj.pageObj.content,argumentcollection=local.link);	
+				}
+			}
+
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
 			loadStyling(true);
@@ -45,7 +51,15 @@ component {
 
 		}
 		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			throw(e);
+			local.extendedinfo = {};
+			local.existing = deserializeJSON(e.extendedinfo);
+			if (IsStruct(local.existing)) {
+				StructAppend(local.extendedinfo,local.existing);
+			}
+			
+			local.extendedinfo["tagcontext"] = e.tagcontext;
+
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
 				message      = "error loading application:" & e.message, 
@@ -123,15 +137,16 @@ component {
 			/* throw a badrequest error on dodgy params */
 			throw(type="badrequest");
 		}
-
+		
 		if (this.debug) {
-		  param name="request.rc.reload" default="false" type="boolean";
-		  if (request.rc.reload) {
-		  	onApplicationStart();
-		  }
-		  loadStyling(reload=request.rc.reload);
-		}
+			param name="request.rc.reload" default="false" type="boolean";
+		  	if (request.rc.reload) {
 
+		  		onApplicationStart();
+		  	}
+			loadStyling(reload=request.rc.reload);
+		}
+		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 
 	}
@@ -242,7 +257,7 @@ component {
 		}
 		else {
 			if (this.debug) {
-				writeDump(niceError);
+				writeDump(var=niceError,label="Error");
 			}
 			else {
 				local.errorCode = logError(niceError);

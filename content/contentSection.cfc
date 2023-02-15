@@ -97,7 +97,7 @@ component {
 	 *
 	 * Some cs still do this manually. This is deprecated
 	 */
-	private void function updateDefaults() {
+	public void function updateDefaults() {
 		// settings inherit across media
 		this.settings = {};
 		// defaults only need applying to root
@@ -413,6 +413,12 @@ component {
 
 		return js;
 	}
+	
+	public string function getClasses(required struct content) {
+		
+		return this.classes;
+	}
+	
 
 
 }

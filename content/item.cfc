@@ -81,8 +81,9 @@ component extends="contentSection" {
 		var classes = {};
 		
 		arguments.content.class = ListAppend(arguments.content.class, "item"," ");
-
-		var cshtml = variables.contentObj.itemHtml(content=arguments.content, settings = arguments.content.settings.main, classes=classes);
+		arguments.content.description = arguments.content.content;
+		local.link = arguments.content.link ? : "";
+		var cshtml = variables.contentObj.itemHtml(item=arguments.content, link=local.link, settings = arguments.content.settings.main, classes=classes);
 		
 		return cshtml;
 

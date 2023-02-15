@@ -11,6 +11,7 @@
 		</panel-text>
 		<light-panel-bg title="Light panel packground" value="#eaeaea" />
 		<linkcolor title="Link color" value="#38bbcd" />
+		<overlaybg value="rgba(0,0,0,0.2)" />
 	</colors>
 
 	<media>
@@ -453,7 +454,7 @@
 		</navnext>
 
 		<hamburger>
-
+			<auto>1</auto>	
 			<show>0</show>
 			<shape>menu</shape>
 			
@@ -465,6 +466,42 @@
 			</mobile>
 			
 		</hamburger>
+
+		<articlesingletitle>
+			<tag>h3</tag>
+			<font>
+				<weight>bold</weight>
+				<size>1.2em</size>
+			</font>
+			<margin>0 0 12 0</margin>
+		</articlesingletitle>
+
+		<scheme-overlay>
+			<caption>
+				<background>
+					<color>overlaybg</color>
+				</background>
+				<color>panel-text</color>
+				
+			</caption>
+		</scheme-overlay>
+		<testgrid>
+			<justify-frame>center</justify-frame>
+			<item>
+				<background>
+					<color>panel-text</color>
+				</background>
+				<padding>4px</padding>
+				<box-shadow>0 4px 4px rgb(0 0 0 / 10%)</box-shadow>
+			</item>
+			<caption>
+				<text-transform>uppercase</text-transform>
+				<font-weight>bold</font-weight>
+				<padding>4px</padding>
+				<text-align>center</text-align>
+			</caption>
+			<grid-gap>20px</grid-gap>
+		</testgrid>
 
 	</content>
 

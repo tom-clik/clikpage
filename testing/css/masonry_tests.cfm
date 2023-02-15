@@ -20,7 +20,7 @@ When using percentage styling, some adjustment has to be made for the gutter set
 myXML = application.utils.fnReadXML(ExpandPath("../images/photos.xml"));
 myData = application.XMLutils.xml2Data(myXML);
 
-// fixed sets the image widths a set size (see .fixed #imagegrid figure)
+// fixed sets the image widths a set size (see .fixed #imagegrid .frame)
 // gutter-sizer uses a CSS element to set the gutter size (see .gutter-sizer )
 // if gutter-sizer is false, uses the gutter-size value
 // percentPosition is like a grid auto fit. You probably want this
@@ -45,39 +45,39 @@ request.prc.config = {
 		.gutter-sizer {
 			width:1%;
 		}
-		#imagegrid figure {
+		#imagegrid .frame {
 			width:19%;
 			margin-bottom: 12px;
 		}
 
-		#imagegrid figure.wide {
+		#imagegrid .frame.wide {
 			width:39%;
 		}
 
 		@media screen and (max-width: 1000px) {
-			#imagegrid figure {
+			#imagegrid .frame {
 				width:24%;
 			}
-			#imagegrid figure.wide {
+			#imagegrid .frame.wide {
 				width:49%;
 			}
 		}
 
 		@media screen and (max-width: 800px) {
-			#imagegrid figure {
+			#imagegrid .frame {
 				width:32%;
 			}
-			#imagegrid figure.wide {
+			#imagegrid .frame.wide {
 				width:65%;
 			}
 		}
 
-		figure img {
+		.frame img {
 			max-width: 100%;
 			height:auto;
 		}
 
-		.fixed #imagegrid figure {
+		.fixed #imagegrid .frame {
 			width:260px;
 		}
 		
@@ -107,15 +107,19 @@ request.prc.config = {
 	   			<cfif request.prc.config["gutter-sizer"]>
 	   				<div class='gutter-sizer'></div>
 	   			</cfif>
+	   			<cfset count=1>
 				<cfloop index="image" array="#myData#">
-					<figure>
-						<cfoutput>
-							<a href="../images/#image.image#"><img src="../images/#image.image_thumbnail#"> 
-							<figcaption>
+					<cfset class = count mod 3 eq 0 ? " wide" : "">
+					<cfoutput>
+						<a class='frame#class#' href="../images/#image.image#">
+							<div class='image'><img src="../images/#image.image_thumbnail#"> 
+							</div>
+							<div class='caption'>
 							#image.caption#
-							</figcaption></a>
-						</cfoutput>
-					</figure>					
+							</div>
+						</a>
+					</cfoutput>
+					<cfset count++>			
 				</cfloop>
 	   		</div> 
 	  	</div> 
@@ -124,21 +128,27 @@ request.prc.config = {
 
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/imagesloaded.pkgd.js"></script>
-	<script src="/_assets/js/masonry.pkgd.js"></script>
+	<script src="/_assets/js/isotope.pkgd.min.js"></script>
+	<script src="/_assets/js/masonry-horizontal.js"></script>
+
 	<cfset gutter = request.prc.config["gutter-sizer"] ? "'.gutter-sizer'" : Val( request.prc.config["gutter-size"] )>
 	<cfoutput>
 	<script>	
 	$( document ).ready( function() {
-		$imagegridGrid = $('##imagegrid .grid').masonry( {
-			itemSelector: 'figure', 
-			columnWidth: '##imagegrid figure',
+		$imagegridGrid = $('##imagegrid .grid').isotope( {
+			layoutMode: 'masonry',
+			itemSelector: '.frame',
+			masonry: {
+				columnWidth: '##imagegrid .frame',
+				gutter: #gutter#
+			},
 			initLayout: #(request.prc.config.initLayout ? 'true' : 'false')#,
 			percentPosition: #(request.prc.config.percentPosition ? 'true' : 'false')#, 
-			gutter: #gutter#
+			
 		} );
 		<cfif NOT request.prc.config.initLayout>
 		$imagegridGrid.imagesLoaded().progress( function() {
-			$imagegridGrid.masonry('layout');
+			$imagegridGrid.isotope('layout');
 			$imagegridGrid.show();
 		} );
 		</cfif>

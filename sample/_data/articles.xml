@@ -2,61 +2,65 @@
 <articles>
 	<article id="1">
 		<title>Article test 1</title>
-		<strapline>Duis aute irure dolor in reprehenderit in voluptate velit esse
+		<description>Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</strapline>
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
 		<intro></intro>
-		<copy>
+		<pubdate>2022-12-10</pubdate>
+		<detail>
 			<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>
 
 			<p>We offer a range of mainly technical services, specialising in Adobe ColdFusion and SQL Server development. We are based in London's West End and work primarily with Central London based clients.</p>
 
 			<p>In addition to our technical services, we provide strategic consulting for publishers establishing digital work flows and subscription management.</p>]]>
-		</copy>
+		</detail>
 		<image>emil-widlund-Fyxq6Paxskw-unsplash.jpg</image>
 		<caption></caption>
-		<tags>test</tags>
+		<tags>test,singlearticle</tags>
 	</article>	
 	<article id="2">
 		<title>Article test 2</title>
-		<strapline>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. .</strapline>
+		<description>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. .</description>
 		<intro></intro>
-		<copy>
+		<pubdate>2022-12-06</pubdate>
+		<detail>
 			<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>
 
 			<p>We offer a range of mainly technical services, specialising in Adobe ColdFusion and SQL Server development. We are based in London's West End and work primarily with Central London based clients.</p>
 
 			<p>In addition to our technical services, we provide strategic consulting for publishers establishing digital work flows and subscription management.</p>]]>
-		</copy>
+		</detail>
 		<image>matt-moloney-OAzh2bBN110-unsplash.jpg</image>
 		<caption>Hello world</caption>
 		<tags>test,test2</tags>
 	</article>
 	<article id="3">
 		<title>Article test 3</title>
-		<strapline>Ut enim ad minim veniam,
+		<description>Ut enim ad minim veniam,
 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. </strapline>
+cillum dolore eu fugiat nulla pariatur. </description>
 		<intro></intro>
-		<copy>
+		<detail>
 			<![CDATA[<p>Digital Method was founded in 1999 by Tom Peer to provide consulting services to publishing companies migrating from print to digital.</p>
 
 			<p>We offer a range of mainly technical services, specialising in Adobe ColdFusion and SQL Server development. We are based in London's West End and work primarily with Central London based clients.</p>
 
 			<p>In addition to our technical services, we provide strategic consulting for publishers establishing digital work flows and subscription management.</p>]]>
-		</copy>
+		</detail>
+		<pubdate>2022-12-08</pubdate>
 		<image>nate-johnston-cK_1Q_e5FfU-unsplash.jpg</image>
 		<caption></caption>
 		<tags>test</tags>
 	</article>	
 	<article id="4">
 		<title>Article test 4</title>
-		<strapline> Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</strapline>
+		<description> Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
 		<intro></intro>
-		<copy></copy>
+		<pubdate>2022-12-07</pubdate>
+		<detail></detail>
 		<image></image>
 		<caption></caption>
 		<tags>test,test2</tags>

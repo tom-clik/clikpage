@@ -30,7 +30,11 @@ component extends="contentSection" {
 	}
 
 	public string function html(required struct content) {
-		return "<#arguments.content.settings.main.tag#>" & arguments.content.content & "</#arguments.content.settings.main.tag#>";
+		local.hasLink = StructKeyExists(arguments.content,"link") AND  NOT IsNull(arguments.content.link);
+
+		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
+		var linkEnd = (local.hasLink) ? "</a>" : "";
+		return "<#arguments.content.settings.main.tag#>#linkStart#" & arguments.content.content & "#linkEnd#</#arguments.content.settings.main.tag#>";
 	}
 
 	

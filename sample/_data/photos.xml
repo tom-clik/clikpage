@@ -1,87 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <images>
   <image id='1'>
-    <image_thumbnail>nate-johnston-cK_1Q_e5FfU-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>nate-johnston-cK_1Q_e5FfU-unsplash_thumb.jpg</image_thumb>
     <image>nate-johnston-cK_1Q_e5FfU-unsplash.jpg</image>
-    <caption>nate johnston</caption>
+    <title>nate johnston</title>
+    <description>Image taken from Unspash, photographer nate johnston</description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='2'>
-    <image_thumbnail>emil-widlund-Fyxq6Paxskw-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>emil-widlund-Fyxq6Paxskw-unsplash_thumb.jpg</image_thumb>
     <image>emil-widlund-Fyxq6Paxskw-unsplash.jpg</image>
-    <caption>emil widlund</caption>
+    <title>emil widlund</title>
+    <description>Image taken from Unspash, photographer emil widlund</description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='3'>
-    <image_thumbnail>larisa-birta-h9kODfOsyOU-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>larisa-birta-h9kODfOsyOU-unsplash_thumb.jpg</image_thumb>
     <image>larisa-birta-h9kODfOsyOU-unsplash.jpg</image>
-    <caption>larisa birta</caption>
+    <title>larisa birta</title>
+    <description>Image taken from Unspash, photographer larisa birta</description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='4'>
-    <image_thumbnail>mak-ipkw44S_LHM-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>mak-ipkw44S_LHM-unsplash_thumb.jpg</image_thumb>
     <image>mak-ipkw44S_LHM-unsplash.jpg</image>
-    <caption>mak</caption>
+    <title>mak</title>
+    <description>Image taken from Unspash, photographer description></description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='5'>
-    <image_thumbnail>nathan-dumlao-ljbqCDlAhjY-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>nathan-dumlao-ljbqCDlAhjY-unsplash_thumb.jpg</image_thumb>
     <image>nathan-dumlao-ljbqCDlAhjY-unsplash.jpg</image>
-    <caption>nathan dumlao</caption>
+    <title>nathan dumlao</title>
+    <description>Image taken from Unspash, photographer nathan dumlao</description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='6'>
-    <image_thumbnail>scott-evans-NiOAwBuV8f4-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>scott-evans-NiOAwBuV8f4-unsplash_thumb.jpg</image_thumb>
     <image>scott-evans-NiOAwBuV8f4-unsplash.jpg</image>
-    <caption>scott evans</caption>
+    <title>scott evans</title>
+    <description>Image taken from Unspash, photographer scott evans</description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='7'>
-    <image_thumbnail>matt-moloney-OAzh2bBN110-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>matt-moloney-OAzh2bBN110-unsplash_thumb.jpg</image_thumb>
     <image>matt-moloney-OAzh2bBN110-unsplash.jpg</image>
-    <caption>matt moloney</caption>
+    <title>matt moloney</title>
+    <description>Image taken from Unspash, photographer matt moloney</description>
     <tags>gallery,gallery1</tags>
   </image>
   <image id='8'>
-    <image_thumbnail>waldemar-brandt-p70S-sgZtVI-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>waldemar-brandt-p70S-sgZtVI-unsplash_thumb.jpg</image_thumb>
     <image>waldemar-brandt-p70S-sgZtVI-unsplash.jpg</image>
-    <caption>waldemar brandt</caption>
+    <title>waldemar brandt</title>
+    <description>Image taken from Unspash, photographer waldemar brandt</description>
     <tags>gallery,gallery2</tags>
   </image>
   <image id='9'>
-    <image_thumbnail>joshua-fernandez-Q4SCuuKtSDU-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>joshua-fernandez-Q4SCuuKtSDU-unsplash_thumb.jpg</image_thumb>
     <image>joshua-fernandez-Q4SCuuKtSDU-unsplash.jpg</image>
-    <caption>joshua fernandez</caption>
+    <title>joshua fernandez</title>
+    <description>Image taken from Unspash, photographer joshua fernandez</description>
     <tags>gallery,gallery2</tags>
   </image>
   <image id='10'>
-    <image_thumbnail>earthly-beauties-V3W8Lknvhq8-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>earthly-beauties-V3W8Lknvhq8-unsplash_thumb.jpg</image_thumb>
     <image>earthly-beauties-V3W8Lknvhq8-unsplash.jpg</image>
-    <caption>earthly beauties</caption>
+    <title>earthly beauties</title>
+    <description>Image taken from Unspash, photographer earthly beauties</description>
     <tags>gallery,gallery2</tags>
   </image>
   <image id='11'>
-    <image_thumbnail>ozy-dozzy-wlNh84JRb2M-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>ozy-dozzy-wlNh84JRb2M-unsplash_thumb.jpg</image_thumb>
     <image>ozy-dozzy-wlNh84JRb2M-unsplash.jpg</image>
-    <caption>ozy dozzy</caption>
+    <title>ozy dozzy</title>
+    <description>Image taken from Unspash, photographer ozy dozzy</description>
     <tags>gallery,gallery2</tags>
   </image>
   <image id='12'>
-    <image_thumbnail>harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>harley-davidson-XnhmpwEbv5I-unsplash_thumb.jpg</image_thumb>
     <image>harley-davidson-XnhmpwEbv5I-unsplash.jpg</image>
-    <caption>harley davidson</caption>
+    <title>harley davidson</title>
+    <description>Image taken from Unspash, photographer harley davidson</description>
     <tags>gallery,gallery2</tags>
   </image>
   <image id='13'>
-    <image_thumbnail>mica-mota-Y1OUQTZRqMo-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>mica-mota-Y1OUQTZRqMo-unsplash_thumb.jpg</image_thumb>
     <image>mica-mota-Y1OUQTZRqMo-unsplash.jpg</image>
-    <caption>mica mota</caption>
+    <title>mica mota</title>
+    <description>Image taken from Unspash, photographer mica mota</description>
     <tags>gallery,gallery2</tags>
   </image>
   <image id='14'>
-    <image_thumbnail>kalis-munggaran-Z89kRdt8wFE-unsplash_thumb.jpg</image_thumbnail>
+    <image_thumb>kalis-munggaran-Z89kRdt8wFE-unsplash_thumb.jpg</image_thumb>
     <image>kalis-munggaran-Z89kRdt8wFE-unsplash.jpg</image>
-    <caption>kalis munggaran</caption>
+    <title>kalis munggaran</title>
+    <description>Image taken from Unspash, photographer kalis munggaran</description>
     <tags>gallery,gallery2</tags>
   </image>
 </images>

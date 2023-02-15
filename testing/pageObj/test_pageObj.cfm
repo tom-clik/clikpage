@@ -7,14 +7,12 @@ The pageObject can just be used on its own (requires static files)
 
 The body content is just set as a text string.
 
-
-
 */
 
 pageObj = new clikpage.page(debug=1);
 
-// add to default content
 pageObj.addLink(pageObj.content,"icon","/favicon.ico","image/x-icon");
+pageObj.addLink(content=pageObj.content,rel="preconnect",href="https://fonts.googleapis.com");
 pageObj.addMeta(pageObj.content,"rating","very good");
 
 content = pageObj.getContent();

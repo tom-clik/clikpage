@@ -3,10 +3,10 @@
 
 */
 
-inputDir = expandPath("testlayout1");
-outFile = ExpandPath("../styles/testsite.json");
+//inputDir = expandPath("testlayout1");
+inputDir = expandPath("../../sample/_data/layouts");
 
 layoutsObj = new clikpage.layouts.layouts(inputDir);
-data = layoutsObj.getLayout("testlayout1");
+data = layoutsObj.getLayout("main");
 writeDump(data);
 </cfscript>

@@ -16,17 +16,27 @@ component extends="contentSection" {
 		variables.static_css = {"images"=1};
 		variables.static_js = {};
 		
+		this.panels = [
+			{"name":"image","panel":"image", "selector": " img"},
+			{"name":"frame","panel":"frame", "selector": " figure"},
+			{"name":"Caption","panel":"caption", "selector": " figcaption"}
+		];
+
 		return this;
 	}
 
 	public string function html(required struct content) {
 		
 		if (StructKeyExists(arguments.content, "image")) {
-				local.img = "<figure><img src='#arguments.content.image#'>";
-				if (StructKeyExists(arguments.content, "caption")) {
-					local.img &= "<figcaption>#arguments.content.caption#</figcaption>";
-				}
-				local.img &= "</figure>";
+			local.hasLink = StructKeyExists(arguments.content,"link");
+
+			var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
+			var linkEnd = (local.hasLink) ? "</a>" : "";
+			local.img = "#linkStart#<figure><img src='#arguments.content.image#'>";
+			if (StructKeyExists(arguments.content, "caption")) {
+				local.img &= "<figcaption>#arguments.content.caption#</figcaption>";
+			}
+			local.img &= "</figure>#linkEnd#";
 		}		
 		
 

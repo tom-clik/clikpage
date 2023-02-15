@@ -12,7 +12,8 @@
 		
 		<div id="header" class="scheme-spanning">
 			<content type="title" id="sitetitle">
-				{{site.title}}	
+				<content>{{site.title}}</content>
+				<field-link>{{link.index}}</field-link>
 			</content>
 
 			<content type="title" id="sitedescription">
@@ -20,13 +21,11 @@
 			</content>
 
 			<content id="hamburger" type="button" class="scheme-button">
-				<title>Next button</title>
+				<title>Hamburger icon</title>
 				<href>
-					#mainmenu.openclose
+					#mobilemenu.openclose
 				</href>
-				<content>
-						
-				</content>				
+							
 			</content>
 			
 		</div>
@@ -35,6 +34,9 @@
 			
 			<div id="topnav">
 				<content id="mainmenu" type="menu"></content>
+				<content id="mobilemenu" type="menu">
+					<dataset tag="" type="sections"></dataset>
+				</content>
 			</div>
 
 			<div id="content">

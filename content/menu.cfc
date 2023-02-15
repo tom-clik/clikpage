@@ -55,7 +55,8 @@ component extends="contentSection" {
 			]},
 			"flex": {"type":"boolean","name":"Flex mode","description":"Flexible grid that adjusts to the size of the items","default":false},
 			"stretch": {"type":"boolean","name":"Stretch","description":"Stretch out the menu in flex mode. Equal padding will be added to the items","default":false},
-			"popup": {"type":"boolean","name":"Popup","description":"Show as popup (you will need to ensure a button is present that opens the menu","default":false}
+			"popup": {"type":"boolean","name":"Popup","description":"Show as popup (you will need to ensure a button is present that opens the menu","default":false},
+			"padding-adjust":{"type":"boolean","name":"Padding adjust","description":"adjust padding for first and last item (only flex"}
 		];
 		// ## Settings
 
@@ -76,7 +77,7 @@ component extends="contentSection" {
 			"flex":"false",
 			"stretch":"false",
 			"popup":"false",
-			"padding-adjust": true
+			"padding-adjust": false
 		];
 
 		return this;
@@ -84,52 +85,27 @@ component extends="contentSection" {
 		
 	}		
 
-	/** TODO: remove */
-	private array function getFakeData(boolean submenu=false) {
-		
-		local.data = [];
-		for (local.i = 1; local.i <= 5; local.i++ ) {
-			local.menu = {"link"="link#local.i#.html","section"="link#local.i#","title"="Item #local.i#"};
-			if (!arguments.submenu && local.i % 2 == 1) {
-				local.menu["submenu"] = getFakeData(submenu=true);
-			}
-			ArrayAppend(local.data,local.menu);
-
-
-		}
-
-		return local.data;
-	}
-
-	private array function sampleData(boolean submenu=false) {
-		
-		local.data = [];
-		for (local.i = 1; local.i <= 5; local.i++ ) {
-			local.menu = {"link"="link#local.i#.html","section"="link#local.i#","title"="Item #local.i#"};
-			ArrayAppend(local.data,local.menu);
-		}
-
-		return local.data;
-	}
-
-	public string function html(required struct content, class="menu") {
-
-		if (! StructKeyExists(arguments.content,"data")) {
-			arguments.content.data = getFakeData();
-		}
-
-		return menuHTML(menu=arguments.content.data);
+	/**
+	 * Note data for menu must be full data array. Sub menus
+	 * can be generated from articles or sub sections.
+	 */
+	public string function html(required struct content, required struct data, class="menu") {
+		return menuHTML(items=arguments.content.data);
 		
 	}
 
 	/**
-	 * recursable method to generate html list for menu.
+	 * @hint recursable method to generate html list for menu.
+	 *
+	 * *menu items have keys id, link, title, and optional submenu
 	 * 
-	 * @menu          Array of menu items
+	 * @items         Menu items*
 	 * @class         css class name to apply to ul element.
+	 *
 	 */
-	private string function menuHTML(required array menu, string class="menu" ) {
-		
+	private string function menuHTML(required array items, string class="menu" ) {
+
+		// functionality reserved
 		switch (arguments.class) {
 			default:
 				local.subclass = "submenu";
@@ -137,11 +113,11 @@ component extends="contentSection" {
 		
 		local.menu = "<ul class='#arguments.class#'>";
 		
-		for (local.item in arguments.menu) {
-			local.class = StructKeyExists(local.item,"code") ? "  class='menu_#local.item.code#'" : "";
+		for (local.item in arguments.items) {
+			local.class = "  class='menu_#local.item.id#'";
 			local.menu &= "<li><a href='#local.item.link#'#local.class#><b></b><span>#local.item.title#</span></a>";
 			if (StructKeyExists(local.item,"submenu")) {
-				local.menu &= menuHTML(menu=local.item.submenu,class=local.subclass);
+				local.menu &= menuHTML(items=local.item.submenu,class=local.subclass);
 			}
 			local.menu &= "</li>\n";
 		}
@@ -215,13 +191,20 @@ component extends="contentSection" {
 		}
 
 		//padding-adjust | boolean               | adjust padding for first and last items (only makes sense for flex)
-		if (StructKeyExists(arguments.styles,"padding-adjust") AND arguments.styles["padding-adjust"]) {
+		if (arguments.styles["padding-adjust"] AND NOT local.isVertical) {
 			// TODO: check we don't have  specificity nightmare
 			data.first &= "/* padding-adjust  */\n";
 			data.first &= "padding-left:0;\n";
 			data.last &= "/* padding-adjust  */\n";
 			data.last &= "padding-right:0;\n";
 		}
+		else {
+			data.first &= "/* padding-adjust  */\n";
+			data.first &= "padding:var(--menu-item-padding);\n";
+			data.last &= "/* padding-adjust  */\n";
+			data.last &= "padding:var(--menu-item-padding);\n";
+		}
+
 		//flex           | boolean               | ul display flex
 		if (StructKeyExists(arguments.styles,"flex")) {
 			data.ul &= "/* flex */\n";
@@ -233,6 +216,7 @@ component extends="contentSection" {
 			data.li &= "flex-grow: " & (arguments.styles.stretch ? "1" : "0") & ";\n";
 		}
 		//popup          | boolean               | height: 0   NB &.open  applies height:auto
+		// to check functionality here. Don't think this is used.
 		if (StructKeyExists(arguments.styles,"popup")) {
 			data.main &= "/* popup styling */\n";
 			// expects decreasing media width
@@ -241,6 +225,7 @@ component extends="contentSection" {
 				data.main &= "overflow: hidden;";
 			}
 		}
+
 		// submenu position | inline|relative    | position:absolute or static no ul.submenu
 		local.submenu_position =  arguments.styles.submenu_position ?: "absolute";
 		data.submenu &= "/* submenu styling */\n";

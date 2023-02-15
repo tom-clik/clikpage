@@ -10,7 +10,8 @@
 			<description>To stand out against darker panel or accent</description>
 		</paneltext>
 		<lightpanel-bg title="Light panel packground" value="#eaeaea" />
-		<linkcolor title="Link color" value="#38bbcd" />		
+		<linkcolor title="Link color" value="#38bbcd" />
+		<popupbg title="Popup overlay" value="#ffffff" />		
 	</colors>
 
 	<media>
@@ -78,7 +79,7 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"topnav content"</grid-template-areas>
-					<grid-template-columns>180px 1fr</grid-template-columns>
+					<grid-template-columns>180px minmax(0, 1fr)</grid-template-columns>
 				</grid>
 				<mobile>
 					<grid>
@@ -102,7 +103,7 @@
 				
 				<grid>
 					<grid-mode>fixedcols</grid-mode>
-					<grid-template-columns>max-content 1fr</grid-template-columns>
+					<grid-template-columns>max-content minmax(0, 1fr)</grid-template-columns>
 				</grid>
 				
 				<mobile>
@@ -120,7 +121,7 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"contentheader" "contentwrap" "contentfooter"</grid-template-areas>
-					<grid-template-rows>min-content 1fr min-content</grid-template-rows>
+					<grid-template-rows>min-content minmax(0, 1fr) min-content</grid-template-rows>
 				</grid>
 				<mobile>
 					<padding>8</padding>
@@ -142,7 +143,7 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas>"maincol xcol"</grid-template-areas>
-					<grid-template-columns>1fr 140px</grid-template-columns>
+					<grid-template-columns>minmax(0, 1fr) 140px</grid-template-columns>
 				</grid>
 				<mid>
 					<grid>
@@ -157,7 +158,7 @@
 				<grid>
 					<grid-mode>templateareas</grid-mode>
 					<grid-template-areas> "footer_right footer_mid footer_left"</grid-template-areas>
-					<grid-template-columns>20% 30% 1fr</grid-template-columns>
+					<grid-template-columns>20% 30% minmax(0, 1fr)</grid-template-columns>
 				</grid>
 
 				<mobile>
@@ -185,10 +186,18 @@
 					<grid-mode>templateareas</grid-mode>
 					<grid-gap>10px</grid-gap>
 					<grid-template-areas>"maincol xcol"</grid-template-areas>
-					<grid-template-columns>1fr 240px</grid-template-columns>
+					<grid-template-columns>minmax(0, 1fr) 240px</grid-template-columns>
 				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+					<xcol>
+						<margin>10 0 0 0</margin>
+					</xcol>
+				</mobile>
 			</contentwrap>
-			
+
 		</double>
 
 		<articledetail>
@@ -196,8 +205,16 @@
 			<contentwrap>
 				<grid>
 					<grid-gap>10px</grid-gap>
-					<grid-template-columns>1fr 33%</grid-template-columns>
+					<grid-template-columns>minmax(0, 1fr) 33%</grid-template-columns>
 				</grid>
+				<mobile>
+					<grid>
+						<grid-mode>none</grid-mode>
+					</grid>
+					<xcol>
+						<margin>10 0 0 0</margin>
+					</xcol>
+				</mobile>
 			</contentwrap>
 			
 		</articledetail>
@@ -215,7 +232,11 @@
 			
 		</gallery>
 
-		
+		<photolayout>
+			<ubercontainer>
+				<max-height>100vh</max-height>
+			</ubercontainer>
+		</photolayout>
 	</layouts>
 
 	<images>
@@ -244,7 +265,7 @@
 		<hamburger>
 
 			<show>0</show>
-			
+			<auto>1</auto>
 			<shape>menu</shape>
 			
 			<mobile>
@@ -255,6 +276,39 @@
 			</mobile>
 			
 		</hamburger>
+
+		<popup>
+			<position>fixed</position>
+			<height>100vh</height>
+			<width>100vw</width>
+			<background>
+				<color>popupbg</color>
+			</background>
+		</popup>
+
+		<popup_prev>
+			<auto>1</auto>
+			<shape>chevron-left</shape>
+			<top>240px</top>
+			<left>0</left>
+		</popup_prev>
+		<popup_next>
+			<top>240px</top>
+			<auto>1</auto>
+			<shape>chevron-right</shape>			
+		</popup_next>
+		<popup_close>
+			<right>4</right>
+			<auto>1</auto>
+			<shape>close</shape>				
+		</popup_close>
+
+		<scheme-popupbutton>
+			<position>fixed</position>
+			<top>4px</top>
+		</scheme-popupbutton>
+
+
 
 		<sitedescription>
 			<position>absolute</position>
@@ -278,15 +332,24 @@
 			<orientation>vertical</orientation>
 			<align>left</align>
 			<mobile>
+				<show>0</show>
+			</mobile>
+		</mainmenu>
+
+		<mobilemenu>
+			<show>0</show>
+			<orientation>vertical</orientation>
+			<align>left</align>
+			<mobile>
 				<background>
 					<color>lightpanel-bg</color>
 				</background>
 				<height>0</height>
-				<show>0</show>
 				<padding>8</padding>
 				<position>static</position>
 			</mobile>
-		</mainmenu>
+		</mobilemenu>
+
 
 		<topmenu>
 		
@@ -538,6 +601,24 @@
 			</mobile>
 			
 		</scheme-listings>
+
+		<imagelist>
+			<carousel>1</carousel>
+		</imagelist>
+
+		<scheme-carousel>
+			<htop>1</htop>
+			<image-align>left</image-align>
+			<carousel>1</carousel>
+		</scheme-carousel>
+
+		<photolayout-details>
+			<width>90%</width>
+			<max-height>100%</max-height>
+			<frame><max-height>100%</max-height></frame>
+			<image><object-fit>contain</object-fit></image>
+
+		</photolayout-details>
 
 	</content>
 

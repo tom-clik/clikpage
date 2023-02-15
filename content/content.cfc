@@ -65,12 +65,10 @@ component {
 		return local.cs;
 	}
 
-
 	/* generate html for a content section */
-	public string function html(required struct content) {
+	public string function html(required struct content, struct data={}) {
 		
-		var ret = this.contentSections[arguments.content.type].html(arguments.content);
-		//ret = wrapHTML(arguments.content,ret);
+		var ret = this.contentSections[arguments.content.type].html(arguments.content, arguments.data);
 		
 		ret = this.settingsObj.outputFormat(css=ret,media={},debug=this.debug);
 		
@@ -106,9 +104,9 @@ component {
 	 * TODO: start using this in prefence to the separate elements
 	 * 
 	 */
-	public struct function display(required struct content) {
-		local.ret["html"] = wrapHTML(arguments.content,html(arguments.content));
-		local.ret["pagecontent"] = getPageContent(arguments.content);
+	public struct function display(required struct content, struct data={}) {
+		local.ret["html"] = wrapHTML(arguments.content,html(arguments.content,data));
+		local.ret["pagecontent"] = getPageContent(arguments.content,data);
 		return local.ret;
 	}
 
@@ -119,7 +117,7 @@ component {
 	 */
 	public string function getClassList(required struct content) {
 		
-		return this.contentSections[arguments.content.type].classes;
+		return this.contentSections[arguments.content.type].getClasses(arguments.content);
 	
 	}
 
@@ -134,14 +132,30 @@ component {
 	 * @return CSS stylesheet
 	 */
 	
-	public string function contentCSS(required struct styles, required struct content_sections, required struct media, boolean loadsettings=1, boolean format=true) {
+	public string function contentCSS(
+		required struct  styles, 
+		required struct  content_sections, 
+		required struct  media, 
+				 boolean loadsettings=true, 
+				 boolean format=true
+		) {
 		
 		var css_out = "";
 		var cs = false;
 
-		if (arguments.loadsettings) {
-			for (var id in arguments.content_sections) {
-				cs = arguments.content_sections[id];
+		for (var id in arguments.content_sections) {
+			cs = arguments.content_sections[id];
+			if (NOT StructKeyExists(this.contentSections, cs.type)) {
+				local.extendedinfo = {"cs"=cs};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Undefined content type (#cs.type#) ",
+					detail       = "See content object for details of available content types",
+					errorcode    = "content.001"		
+				);
+				
+			}
+			if (arguments.loadsettings) {
 				settings(cs,arguments.styles,arguments.media);
 			}
 		}
@@ -153,10 +167,6 @@ component {
 
 			for (var id in arguments.content_sections) {
 				cs = arguments.content_sections[id];				
-				if (medium eq "mobile") {
-					media_css &= "\nMobile settings for #id#\n";
-					media_css &= SerializeJSON(cs.settings[medium]);
-				}
 				media_css &= css(cs,medium,false);
 				
 			}
@@ -271,7 +281,7 @@ component {
 				css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");
 			}
 			else {
-				css &= "/* No styles defined for layout #local.layout# */\n"
+				css &= "/* Layout #local.layout# not defined in site */\n"
 			}
 		}
 		// CSS for containers
@@ -299,13 +309,13 @@ component {
 	 * @return struct on page content keys (static_css,static_js,onready)
 	 * @see addPageContent
 	 */
-	public struct function getPageContent(required struct content) {
+	public struct function getPageContent(required struct content, struct data={}) {
 		
 		var pageContent = {};
 		
 		pageContent["static_css"] = getStaticCSS(arguments.content);
 		pageContent["static_js"] = getStaticJS(arguments.content);
-		pageContent["onready"] = getOnready(arguments.content);
+		pageContent["onready"] = getOnready(arguments.content,pageContent,data);
 		
 		return pageContent;
 		
@@ -348,8 +358,8 @@ component {
 		return this.contentSections[arguments.content.type].getStaticJs();
 	}
 
-	public String function getOnready(required struct content) {
-		var js =this.contentSections[arguments.content.type].onReady(arguments.content);
+	public String function getOnready(required struct content, required struct pageContent, struct data={}) {
+		var js =this.contentSections[arguments.content.type].onReady(arguments.content,pageContent,data);
 		
 		if (this.debug) {
 			js = "console.log('onready for #arguments.content.id#');"& NewLine() & js;
@@ -373,28 +383,28 @@ component {
 	 * to apply the necessary classes to the surrounding div. This _isn't_ a vestigial remnant from
 	 * the old class based styling system, it is just to allow reuse of item html in different cases
 	 * 
-	 * @content  Content section
+	 * @item  Item with keys title, description, image, link, caption, 
 	 * @settings  item settings. Required are the settings that adjust the html
 	 * @classes  Pass in struct by reference to return required classes for the wrapping div.
 	 */
-	public string function itemHtml(required struct content, struct settings={}, struct classes) {
+	public string function itemHtml(required struct item, string link="", struct settings={}, struct classes) {
 
 		local.titletag = arguments.settings.titletag ? : "h3"; 
-		local.hasLink = StructKeyExists(arguments.content,"link");
+		local.hasLink = arguments.link != "";
 
-		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
+		var linkStart = (local.hasLink) ? "<a href='#arguments.link#'>" : "";
 		var linkEnd = (local.hasLink) ? "</a>" : "";
 
 		arguments.classes["item"] = 1;
 		
-		var cshtml = "";
+		 var cshtml = "";
 
-		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.content.title & linkEnd &  "</" & local.titletag & ">\n";
+		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & ">\n";
 		cshtml &= "\t<div class='imageWrap'>\n";
-		if (StructKeyExists(arguments.content,"image")) {
-			cshtml &= "\t\t#linkStart#<img src='" & arguments.content.image & "'>#linkEnd#\n";
-			if (StructKeyExists(arguments.content,"caption")) {
-				cshtml &= "\t\t<div class='caption'>" & arguments.content.caption & "</div>\n";
+		if (StructKeyExists(arguments.item,"image")) {
+			cshtml &= "\t\t#linkStart#<img src='" & arguments.item.image & "'>#linkEnd#\n";
+			if (StructKeyExists(arguments.item,"caption")) {
+				cshtml &= "\t\t<div class='caption'>" & arguments.item.caption & "</div>\n";
 			}
 		}
 		else {
@@ -403,7 +413,7 @@ component {
 		cshtml &= "\t</div>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
-		cshtml &= arguments.content.content;
+		cshtml &= arguments.item.description ? : "";
 		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
 			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
 		}
@@ -411,6 +421,34 @@ component {
 
 		return cshtml;
 
+	}
+
+	// putting this here not until I can think of a better
+	// way of doing this.
+	public string function popupHTML(required string id) {
+		return replace("
+		    <div id='{id}' class='popup'>
+				<div class='popup_inner'>
+				</div>
+				<div id='{id}closeButton' class='closeButton button auto'>
+					<a href='##{id}.close'>
+						<svg  class='icon'  viewBox='0 0 357 357'><use xlink:href='/_assets/images/close47.svg##close'></svg>
+						<label>Close</label>
+					</a>
+				</div>
+				<div id='{id}nextButton' class='nextButton button auto'>
+					<a href='##{id}.next'>
+						<svg  class='icon' preserveAspectRatio='none' viewBox='0 0 16 16'><use xlink:href='/_assets/images/chevron-right.svg##chevron-right'></svg>
+						<label>Next</label>
+					</a>
+				</div>
+				<div id='{id}previousButton' class='previousButton button auto'>
+					<a href='##{id}.previous'>
+						<svg  class='icon' preserveAspectRatio='none' viewBox='0 0 16 16' viewBox='0 0 16 16'><use xlink:href='/_assets/images/chevron-left.svg##chevron-left'></svg>
+						<label>Previous</label>
+					</a>
+				</div>
+			</div>","{id}",arguments.id, "all");
 	}
 
 	/**

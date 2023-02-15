@@ -1,8 +1,12 @@
 <cfscript>
-layoutsFolder = expandPath("../../sample/_data/layouts");
-siteObj = new clikpage.site.site(layoutsFolder=layoutsFolder,mode="live");
 
-site = siteObj.loadSite(ExpandPath("../../sample/_data/sampleSite.xml"));
+path = ExpandPath("./preview/config.json");
+fileData = fileRead(path );
+config = deserializeJSON(fileData);
+
+siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
+
+site = siteObj.loadSite(config.siteDef);
 
 writeDump(site);
 

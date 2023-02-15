@@ -196,8 +196,10 @@ component name="layouts" {
 
 	/** Extend layout with values from "parent" */
 	private void function extendLayout(required layout, required string extends) {
+		
 		local.extends = getLayout(arguments.extends);
 		local.parentlayout = local.extends.layout;
+		// start by cloning the parent
 		local.newLayout = local.extends.layout.clone();
 
 		local.newLayout.title(arguments.layout.layout.title());
@@ -219,15 +221,18 @@ component name="layouts" {
 		}
 
 		// Extend all nodes 
-		for (local.node in arguments.layout.layout.select("div:not(.inner)")) {
+		for (local.node in arguments.layout.layout.select("body > div:not(.inner)")) {
 			local.div =  this.coldsoup.XMLNode2Struct(local.node);
-			local.newLayout.select("##" & local.div.id).html(local.node.html());
+			local.existingNode = local.newLayout.select("##" & local.div.id);
+			if (ArrayLen(local.existingNode)) {
+				local.existingNode.html(local.node.html());
+			}
+			else {
+				local.newLayout.body().append(local.node);
+			}
 		}
 
-		// other data
-		if (StructKeyExists(local.extends,"columns") && ! StructKeyExists(arguments.layout,"columns")) {
-			arguments.layout["columns"] = local.extends.columns;
-		}
+		
 		
 		arguments.layout.layout = local.newLayout;
 

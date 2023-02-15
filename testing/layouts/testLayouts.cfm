@@ -1,4 +1,7 @@
 <cfscript>
+/*
+Save a formatted version of each layout to an html file (see outDir)
+*/
 
 // inputDir = expandPath("testlayout1");
 inputDir = expandPath("../../sample/_data/layouts");
@@ -9,9 +12,8 @@ data = layoutsObj.loadAll();
 
 for (id in data.layouts) {
 	layout = layoutsObj.getLayout(id);
-	layout.layout.body().addClass(layout.bodyClass);
-	layoutsObj.addInners(layout);
-	fileWrite(outDir & ListLast(id,".") & ".html", layout.layout.html());
+	
+	fileWrite(outDir & ListLast(id,".") & ".html", layoutsObj.getHTML(layout));
 }
 
 WriteOutput("complete");

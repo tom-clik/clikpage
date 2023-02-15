@@ -19,7 +19,7 @@ Working ok. Named positions doesn't work. Otherwise ok. Flex options meaningless
 
 ## TODO 
 
--[] Same as the others -- needs formalising with move to clikpiage.content components
+-[ ] Same as the others -- needs formalising with move to clikpage.content components
 
 ## History
 
@@ -28,36 +28,49 @@ Working ok. Named positions doesn't work. Otherwise ok. Flex options meaningless
 --->
 
 <cfscript>
-settingsObj = new clikpage.settings.settingsObj(debug=1);
-contentObj = new clikpage.content.contentObj(settingsObj=settingsObj);
+settingsObj = new clikpage.settings.settings(debug=1);
+contentObj = new clikpage.content.content(settingsObj=settingsObj);
 contentObj.debug = 1;
 styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
-grid_cs = contentObj.new(id="grid",type="grid");
-
+grid_cs = contentObj.new(id="testgrid",type="imagegrid");
 
 // for page editing -- doesn't seem right. Where are the defaults? use the contentObj for defaults etc.
 settings = {};
+contentObj.contentSections["imagegrid"].updateDefaults();
+settings = contentObj.contentSections["imagegrid"].defaultStyles;
 
-for (setting in contentObj.contentSections["grid"].styleDefs) {
+for (setting in contentObj.contentSections["imagegrid"].styleDefs) {
 	if (structKeyExists(url, setting) AND url[setting] != "") {
-		styles.content["grid"][setting] = url[setting];
+		styles.content["testgrid"]["main"][setting] = url[setting];
 		settings[setting] = url[setting];
 	}
-	else {
+	else if (StructKeyExists(styles.content["testgrid"]["main"], setting)) {
+		settings[setting] = styles.content["testgrid"]["main"][setting];
+	}
+	else if (NOT structKeyExists(settings, setting)) {
 		settings[setting] = "";
 	}
 }
+
 // end page editing
 
-contentObj.settings(content=grid_cs,styles=styles);
 
-writeDump(grid_cs);
+contentObj.settings(content=grid_cs,styles=styles.content,media=styles.media);
 
-abort;
+css = contentObj.settingsObj.outputFormat(css=":root {\n" & contentObj.settingsObj.colorVariablesCSS(styles) & "}\n",media=styles.media);
+css &= contentObj.css(grid_cs);
 
-css = contentObj.css(grid_cs);
+class="";
 
 // abort;
+try {
+	myvar = settingsForm();
+}
+catch (any e) {
+	writeDump(e);
+	abort;
+}
+			
 </cfscript>
 
 <cfparam name="url.maximages" default=""><!--- numeric or blank --->
@@ -69,14 +82,127 @@ css = contentObj.css(grid_cs);
 	<head>
 		<title>Grids CSS Samples</title>
 		<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
-		<link rel="stylesheet" type="text/css" href="_styles/standard.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/images.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
+
 		<link rel="stylesheet" type="text/css" href="_styles/settingsPanel.css">
-		
+		<style>
+			body {
+				
+				background-color: #f3f3f3;
+			}
+
+			#testgrid {
+				padding:20px;
+			}
+
+			.button {
+				padding:4px 8px;
+				border:1px solid #333;
+				background-color:white;
+				margin-top:12px;
+			}
+
+			.button:hover {
+				background-color:#efefef;
+			}
+			
+		</style>
 		<style id="dynamic_css">
 			<cfoutput>#css#</cfoutput>
 		</style>
+		
+		<style>
+			
+			#testgrid.bottom {
+				--max-width:auto;
+				--max-height:auto;
+				--align-frame:center;
+				--justify-frame:end;
+				--image-grow:0;
+				--frame-flex-direction:column-reverse;
+/*				--object-fit:cover;*/
+			}
+			#testgrid.bottom .image {
+				margin-top: auto;
+				margin-bottom:0;
+			}
+
+			#testgrid.bottom.bottom_above .image {
+				margin-top: 0;
+				margin-bottom:0;
+			}
+
+			#testgrid.center {
+				--max-width:auto;
+				--max-height:auto;
+				--align-frame:center;
+				--justify-frame:center;
+				--image-grow:0;
+				--frame-flex-direction:column;
+/*				--object-fit:cover;*/
+			}
+			#testgrid.center .image {
+				margin-top: 0;
+				margin-bottom:0;
+			}
+
+			#testgrid.above {
+				--max-width:auto;
+				--max-height:auto;
+				--align-frame:center;
+				--justify-frame:start;
+				--image-grow:0;
+				--frame-flex-direction:column-reverse;
+/*				--object-fit:cover;*/
+			}
+			#testgrid.above .image {
+				margin-top: 0;
+				margin-bottom:0;
+			}
+
+			#testgrid.below {
+				--max-width:auto;
+				--max-height:auto;
+				--align-frame:center;
+				--justify-frame:start;
+				--image-grow:0;
+				--frame-flex-direction:column;
+/*				--object-fit:cover;*/
+			}
+			#testgrid.below .image {
+				margin-top: 0;
+				margin-bottom:0;
+			}
+
+			#testgrid.overlay {
+				--justify-frame:start;
+				--justify-caption:center;
+			}
+			#testgrid.overlay .caption {
+				position: absolute;
+				top:0;
+				left:0;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				background-color: black;
+				color:white;
+				text-transform: uppercase;
+				font-weight: bold;
+			}
+			#testgrid.overlay .frame:hover .caption {
+				opacity: 1;
+				background-color: rgba(0,0,0,0.6);
+			}
+
+			#testgrid.overlay .image {
+				margin-top: 0;
+				margin-bottom:0;
+			}
+		</style>
+	
 	</head>
 
 	<body class="body">
@@ -84,67 +210,29 @@ css = contentObj.css(grid_cs);
 		<div id="panel">
 			<h2>Settings</h2>
 			<form action="grids.cfm">
-				<cfoutput>
-					<fieldset>
-						<label>Mode</label>	
-						<cfset options = contentObj.options("grid","grid-mode")>	
+				
+				<cfoutput>#myvar#</cfoutput>
 
-						<select name="grid-mode">
-							<cfloop item="mode" array="#options#">
-								<cfset selected = mode.code eq settings["grid-mode"] ? " selected": "">
-								<option value="#mode.code#" #selected# title="#encodeForHTML(mode.description)#">#encodeForHTML(mode.name)#</option>
-							</cfloop>
-						</select>
-						
-						<label>Min grid width</label>				
-						<input name="grid-width" value="#settings["grid-width"]#">
-						<label>Grid gap</label>				
-						<input name="grid-gap" value="#settings["grid-gap"]#">
-						<label title="Only applies to  Fixed columns">Widths</label>				
-						<input name="grid-template-columns" value="#settings["grid-template-columns"]#">
-						<label title="Only applies to Fixed columns">Columns</label>				
-						<input name="grid-columns" value="#settings["grid-columns"]#">
-						<label>Justify</label>
-						<cftry>
-
-						<select name="justify-content">
-							<cfloop item="mode" array="#contentObj.options("grid","justify-content")#">
-								<cfset selected = mode.code eq settings["justify-content"] ? " selected": "">
-								<option value="#mode.code#" #selected# title="#encodeForHTML(mode.description)#">#encodeForHTML(mode.name)#</option>
-							</cfloop>
-						</select>
-							<cfcatch>
-								<cfdump var="#cfcatch#">
-							</cfcatch>
-						</cftry>
-						<label>Align</label>			
-						<select name="align-items">
-							<cfloop item="mode" array="#contentObj.options("grid","align-items")#">
-								<cfset selected = mode.code eq settings["align-items"] ? " selected": "">
-								<option value="#mode.code#" #selected# title="#encodeForHTML(mode.description)#">#encodeForHTML(mode.name)#</option>
-							</cfloop>
-						</select>
-						<label>Max images</label>				
-						<input name="maximages" value="#url.maximages#" type="number">
-						<label></label>				
-						<input type="submit" value="Update">
-					</fieldset>
-				</cfoutput>
+				
+				<label></label>				
+				<div class="button"><input type="submit" value="Update"></div>
 			</form>
 		</div>
 		<div>
 			
 			<cfoutput>		
-				<div id="grid" class="grid cs-photos">
+				<div id="testgrid" class="grid cs-imagegrid #class#">
 				
 				<cfloop index="i" from="1" to="#maximagescalc#">
 					<cfset image = images[i]>
-					<div class="frame">
-						<figure>
+					<a class="frame" href='/images/#image#'>
+						
+						<div class="image">
 							<img src="/images/#image#" />
-							<figcaption>#ListFirst(image,"-")# #ListGetAt(image,2,"-")#</figcaption>
-						</figure>
-					</div>
+						</div>
+						
+						<div class="caption">#ListFirst(image,"-")# #ListGetAt(image,2,"-")#</div> 
+					</a>
 				</cfloop>
 					
 				</div>
@@ -152,6 +240,7 @@ css = contentObj.css(grid_cs);
 					
 		</div>
 
+		<cfdump var="#grid_cs#">
 		
 	</body>
 	
@@ -176,3 +265,48 @@ css = contentObj.css(grid_cs);
 			]>
 
 </cffunction>
+
+<cfscript>
+string function settingsForm() {
+	var retval = "";
+	retval &= "<fieldset>";
+	for (setting in contentObj.contentSections["imagegrid"].styleDefs) {
+		settingDef = contentObj.contentSections["imagegrid"].styleDefs[setting];
+		retval &= "<label title='#encodeForHTMLAttribute(settingDef.description)#'>#settingDef.name#</label>";
+		switch(settingDef.type) {
+			case "dimension":
+			case "dimensionlist":
+			case "integer":
+				retval &= "<input name='#setting#' value='#settings[setting]#'>";
+				break;
+			case "boolean":
+			local.selected = isBoolean(settings[setting]) AND settings[setting] ? " selected": "";
+				retval &= "<div class='field'><input type='checkbox' name='#setting#' #local.selected#value='1'>Yes</div>";
+				break;
+			case "list":
+				options = contentObj.options("imagegrid",setting);
+				retval &= "<select name='#setting#'>";
+				for (mode in options) {
+					try {
+						selected = mode.value eq settings[setting] ? " selected": "";
+						retval &= "<option value='#mode.value#' #selected# title='#encodeForHTMLAttribute(mode.description)#'>#encodeForHTML(mode.name)#</option>";
+					}
+					catch (any e) {
+						local.extendedinfo = {"tagcontext"=e.tagcontext,mode=mode};
+						throw(
+							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Error:" & e.message, 
+							detail       = e.detail
+						);
+					}
+				}
+				retval &= "</select>";
+				break;
+
+		}
+		
+	}
+	retval &= "</fieldset>";
+	return retval;
+}
+</cfscript>

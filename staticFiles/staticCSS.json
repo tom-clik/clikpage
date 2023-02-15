@@ -72,17 +72,20 @@
         {
         	"debug": "/_assets/css/select2.min.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css",
-            "name": "select2"
+            "name": "select2",
+            "packageExclude": 1
         },
         {
         	"debug": "/_assets/css/jquery-ui.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css",
-            "name": "jqueryui"
+            "name": "jqueryui",
+            "packageExclude": 1
         },
         {
             "debug": "/_assets/css/jquery.dataTables.min.css",
             "min": "https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css",
-            "name": "datatables"
+            "name": "datatables",
+            "packageExclude": 1
         },
         {
         	"debug": "/_assets/css/fonts/fonts_local.css",
@@ -90,8 +93,10 @@
             "name": "fonts"
         },
         {
-            "min": "/_assets/css/colorbox/colorbox.css",
-            "name": "colorbox"
+            "debug": "/_assets/css/jBox.all.css",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jBox/1.3.3/jBox.all.min.css",
+            "name": "jBox",
+            "packageExclude": 1
         },
         {
             "min": "/_assets/css/styles.css",
@@ -101,15 +106,32 @@
         {
         	"debug": "/_assets/css/fonts/font-awesome-local.css",
         	"min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
-            "name": "fontawesome"
+            "name": "fontawesome",
+            "packageExclude": 1
         },
         {
-            "debug": "/_common/js/flickity.min.css",
+            "debug": "/_assets/css/flickity.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.min.css",
             "description": "Carousel plug in",
             "jsdoc": "https://flickity.metafizzy.co/",
             "name": "Flickity",
-            "exclude_from_packages": 1
+            "packageExclude": 1
+        },
+        {
+            "min": "/_assets/css/flickity-fade.css",
+            "description": "Carousel fade plug in",
+            "jsdoc": "https://flickity.metafizzy.co/",
+            "name": "flickity-fade",
+            "requires": "flickity"
+        },
+        {
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css",
+            "debug": "/_common/js/jquery.mCustomScrollbar.min.css",
+            "description": "Scroll bar plug in",
+            "jsdoc": "http://manos.malihu.gr/jquery-custom-content-scroller/",
+            "name": "scrollbar",
+            "requires": "jquery",
+            "packageExclude": 1
         }
     ]
 }

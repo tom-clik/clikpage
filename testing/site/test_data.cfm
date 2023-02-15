@@ -1,30 +1,51 @@
 <cfscript>
-siteObj = new clikpage.site.site();
+path = ExpandPath("./preview/config.json");
+fileData = fileRead(path );
+config = deserializeJSON(fileData);
+siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
+site = siteObj.loadSite(config.siteDef);
 
-siteObj.debug = true;
+dataset = {
+	tag="mainmenu",type="sections"
+};
 
 param name="request.rc.section" default="index";
 
-site = siteObj.loadSite(ExpandPath("../../sample/_data/sampleSite.xml"));
+WriteDump(var=dataset,label="Dataset definition");
+menu =siteObj.getDataSet(site=site,dataset=dataset);
+WriteDump(var=menu,label="Dataset 1");
 
-dataset1 = siteObj.getDataSet(site=site,tag="test");
+dataset.tag = "";
+menu =siteObj.getDataSet(site=site,dataset=dataset); 
+WriteDump(var=menu,label="Dataset with no tag");
 
-WriteDump(dataset1);
-data = siteObj.getRecords(site=site,dataset=dataset1);
-WriteDump(data);
+menudata = siteObj.menuData(site,menu);
+WriteDump(menudata);
+abort;
 
+dataset = {
+	tag="test"
+};
 
+records1 = siteObj.getDataSet(site=site,dataset=dataset);
 
-dataset2 =siteObj.getDataSet(site=site,tag="gallery",type="images"); 
-WriteDump(dataset2);
-data = siteObj.getRecords(site=site,dataset=dataset2,type="images");
-WriteDump(data);
+WriteDump(var=records1,label="Articles with tag test");
+data = siteObj.getRecords(site=site,dataset=records1);
+WriteDump(var=data,label="Data for last data set");
 
-record = siteObj.getRecord(site=site,id = dataset2[1],type="images");
-WriteDump(record);
+dataset = {
+	tag="gallery",type="images"
+};
 
-siteObj.addPageLinks(record=record, dataset=dataset2, site=site, section="gallery");
-writeDump(record);
+records2 =siteObj.getDataSet(site=site,dataset=dataset); 
+WriteDump(var=records2,label="Image data set");
+data = siteObj.getRecords(site=site,dataset=records2,type="images");
+WriteDump(var=data,label="Data from previous query");
 
+record = siteObj.getRecord(site=site,id = records2[2],type="images");
+WriteDump(var=record,label="Individual record");
+
+info = siteObj.getRecordSetInfo(site=site,dataset=records2,id=record.id);
+writeDump(var=info,label="Record set info");
 
 </cfscript>

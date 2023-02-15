@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Article Detail</title>
+	<meta name="description" content="Shows standard article with navigation for previous and next">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="double">
+	
+	<div id="contentheader">
+		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+			<title>Section title</title>
+			<content>
+			{{section.title}}
+			</content>
+		</content>			
+	</div>
+	
+	<div id="xcol">
+
+		<content id="image" type="image" class="scheme-box">
+			<title>Image tests</title>
+			<field-image>{{record.image}}</field-image>
+		</content>
+		
+	</div>
+	
+	<div id="maincol">
+
+		<div id="maincol_top">
+
+			<content id="articlesingletitle" type="title" data-notes="Notes here">
+				<title>Article title</title>
+				<content>
+				{{record.title}}
+				</content>
+			</content>
+
+			<content id="articlesingleintro" class="scheme-intro" type="text">
+				<title>Article intro</title>
+				<content>
+				{{record.intro}}
+				</content>
+			</content>
+
+			<content id="articlecopy" type="text" data-notes="Notes here">
+				<title>Article copy</title>
+				<content>
+				{{record.detail}}
+				</content>
+			</content>
+			
+		</div>	
+
+		<div id="maincol_bottom">
+			<!-- flex-start flex-end flex-between flex-center flex-around] -->
+		</div>	
+
+	</div>
+
+</body>
+</html>

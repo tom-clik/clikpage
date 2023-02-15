@@ -441,6 +441,15 @@
 				local.css &= "\t#local.property#:" & displayProperty(local.property,arguments.settings[local.property]) & ";\n";
 			}
 		}
+		for (local.property in ['object-fit','z-index','overflow','overflow-x','overflow-y','box-shadow']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
+			}
+		}
+
+		if (StructKeyExists(arguments.settings,"align") && arguments.settings.align == "center") {
+			local.css &= "\tmargin-left:auto;\n\tmargin-right:auto;\n";
+		}
 
 		if (StructKeyExists(arguments.settings,"align") && arguments.settings.align == "center") {
 			local.css &= "\tmargin-left:auto;\n\tmargin-right:auto;\n";
@@ -522,7 +531,7 @@
 		return retVal;
 
 	}
-
+	
 	/**
 	 * Add dimensions to plain number values and check vars
 	 */
@@ -556,16 +565,20 @@
 		
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
-
 		structAppend(styles, {
 			"grid-gap":"0",
 			"grid-mode":"auto",
 			"grid-fit":"auto-fit",
 			"grid-width":"180px",
 			"grid-max-width":"1fr",
-			"grid-columns":"2"
+			"grid-max-height":"auto",
+			"grid-columns":"2",
+			"flex-direction":"row",
+			"justify-content":"flex-start",
+			"align-items":"center"
 			},false);
-		arguments.out.main &= "\tgrid-gap:#styles["grid-gap"]#;\n;";
+		arguments.out.main &= "\tgrid-gap:" & displayDimension(styles["grid-gap"]) & ";\n;";
+		arguments.out.main &= "\t--grid-max-height:" & displayDimension(styles["grid-max-height"]) & ";\n;";
 		
 		switch (styles["grid-mode"]) {
 			case "none":
@@ -615,7 +628,10 @@
 				}
 				break;
 			case "flex": case "flexstretch":
-				arguments.out.main = "\tdisplay:flex;\n\tflex-wrap: wrap;\n\tflex-direction: row;\n";
+				arguments.out.main &= "\tdisplay:flex;\n\tflex-wrap: wrap;\n";
+				arguments.out.main &= "\tflex-direction: " & styles["flex-direction"] & ";\n";
+				arguments.out.main &= "\tjustify-content: " & styles["justify-content"] & ";\n";
+				arguments.out.main &= "\talign-items: " & styles["align-items"] & ";\n";
 				if (styles["grid-mode"] eq "flexstretch") {
 					arguments.out.item &= "\n\tflex-grow:1;\n;";
 				}

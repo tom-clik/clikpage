@@ -13,17 +13,15 @@ Then we have to write out the styles for all the content sections. How we do thi
 --->
 
 <cfscript>
-settingsObj = new clikpage.settings.settings(debug=1);
-contentObj  = new clikpage.content.content(settingsObj=settingsObj);
-
-// styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
-styles = settingsObj.loadStyleSheet(ExpandPath("../../sample/_data/styles/sample_style.xml"));
-fakesite = deserializeJSON(fileRead(ExpandPath("./testsite.json")));
-
+layoutsFolder = expandPath("../../sample/_data/layouts");
+siteObj = new clikpage.site.site(layoutsFolder=layoutsFolder,mode="live");
+sitedata = siteObj.layoutsObj.loadAll();
+// styles = siteObj.settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+styles = siteObj.settingsObj.loadStyleSheet(ExpandPath("../../sample/_data/styles/sample_style.xml"));
 outfile = ExpandPath("test_settings.css");
 
-contentObj.debug = true;
-css = contentObj.siteCSS(site=fakesite,styles=styles);
+siteObj.contentObj.debug = true;
+css = siteObj.contentObj.siteCSS(site=sitedata,styles=styles);
 
 fileWrite(outfile, css);
 
