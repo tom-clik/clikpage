@@ -216,7 +216,7 @@ component extends="contentSection" {
 			data.li &= "flex-grow: " & (arguments.styles.stretch ? "1" : "0") & ";\n";
 		}
 		//popup          | boolean               | height: 0   NB &.open  applies height:auto
-		// to check functionality here.
+		// to check functionality here. Don't think this is used.
 		if (StructKeyExists(arguments.styles,"popup")) {
 			data.main &= "/* popup styling */\n";
 			// expects decreasing media width
