@@ -43,13 +43,14 @@
 					<max-width>var(--sitewidth)</max-width>
 					<align>center</align>
 					<padding>var(--sitepadding)</padding>
-					<mobile>
+					
+				</inner>
+				<mobile>
 						<inner>
 							<max-width>auto</max-width>
 							<padding>var(--sitepaddingmobile)</padding>
 						</inner>
 					</mobile>
-				</inner>
 			</scheme-spanning>
 
 			<body>
