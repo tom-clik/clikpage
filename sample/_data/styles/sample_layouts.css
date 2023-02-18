@@ -1,0 +1,147 @@
+/* 
+
+A sample CSS file for a single layout
+
+*/
+
+.scheme-spanning {
+	inner {
+		max-width:var(--sitewidth);
+		align:center;
+		padding:var(--sitepadding);
+	}
+	@mobile {
+			inner {
+				max-width:auto;
+				padding:var(--sitepaddingmobile);
+			}
+	}
+}
+
+body {
+	padding:0;
+}
+			
+#ubercontainer {
+	height:100%;
+	padding:0 0 20px 0;
+	inner {
+		height:100%;
+	}
+	grid {
+		grid-mode:templateareas;
+		grid-template-areas:"header" "pagecontent" "footer";
+		grid-template-rows:min-content 1fr min-content;
+	}
+	@mobile {
+		grid {
+			grid-mode:none;
+		}
+	}
+}
+
+#pagecontent {
+	
+	grid {
+		grid-mode:templateareas;
+		grid-template-areas:"topnav content";
+		grid-template-columns:180px minmax(0, 1fr);
+	}
+	@mobile {
+		grid {
+			grid-mode:none;
+		}
+		inner {
+			padding:0;
+		}
+	}
+	
+}
+
+#topnav {
+	padding:8 0;
+	@mobile {
+		padding:0;
+	}
+}
+
+#header {
+	
+	grid {
+		grid-mode:fixedcols;
+		grid-template-columns:max-content minmax(0, 1fr);
+	}
+	
+	@mobile {
+		inner {
+			max-width:auto;
+			padding:4;
+		}
+		grid {
+			grid-mode:none;
+		}
+	}
+}
+
+#content {
+	grid {
+		grid-mode:templateareas;
+		grid-template-areas:"contentheader" "contentwrap" "contentfooter";
+		grid-template-rows:min-content minmax(0, 1fr) min-content;
+	}
+	@mobile {
+		padding:8;
+	}
+	
+}
+
+#contentfooter {
+	grid {
+		grid-mode:auto;
+	}
+	@mobile {
+		grid {
+			grid-mode:none;
+		}
+	}
+}
+
+#contentwrap {
+	grid {
+		grid-mode:templateareas;
+		grid-template-areas:"maincol xcol";
+		grid-template-columns:minmax(0, 1fr) 140px;
+	}
+	@mid {
+		grid {
+			grid-mode:none;
+		}
+	}
+	
+}		
+
+#footer {
+
+	grid {
+		grid-mode:templateareas;
+		grid-template-areas: "footer_right footer_mid footer_left";
+		grid-template-columns:20% 30% minmax(0, 1fr);
+	}
+
+	@mobile {
+		grid {
+			grid-mode:none;
+		}
+	}
+
+}
+
+#bottomnav {
+	position:fixed;
+	bottom:0px;
+	@mobile {
+		position:static;
+	}
+}
+
+		
