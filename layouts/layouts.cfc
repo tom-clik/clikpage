@@ -155,6 +155,12 @@ component name="layouts" {
 				}
 			}
 
+			local.styling = local.layoutObj["layout"].select("styling");
+			
+			if (IsDefined("local.styling") AND ArrayLen(local.styling)) {
+				local.layoutObj["styles"] = this.coldsoup.XMLNode2Struct(local.styling.first());
+			}
+
 			// data attributes
 			local.body = this.coldsoup.XMLNode2Struct(local.layoutObj.layout.select("body").first());
 			

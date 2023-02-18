@@ -2,7 +2,6 @@
 
 # Columns Test
 
-
 ## Notes
 
 ## Details
@@ -26,33 +25,10 @@
 		<meta name="VIEWPORT" content="width=device-width, initial-scale=1.0">
 
 		<link rel="stylesheet" type="text/css" href="reset.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/menus-schemes.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
-		<link rel="stylesheet" type="text/css" href="/_assets/css/title.css">
 		<link rel="stylesheet" type="text/css" href="_styles/css-autoschemes.css">
 		<link rel="stylesheet" type="text/css" href="_styles/grids.css">
 		<style type="text/css">
-
-
 			
-			.form {
-				--form-width:80%;
-				--form-row-gap:1px;
-				--field-padding: 1px;
-				
-			}
-	
-			/*#topnav > .inner > div.sticky {
-				position: sticky;
-				top:calc((var(--header-fixed-height) * var(--header-fixed)) + var(--body-margin-top));
-			}
-
-			#columns > div > .inner > div.sticky {
-				position: sticky;
-				top:calc((var(--header-fixed-height) * var(--header-fixed)) + var(--body-margin-top));
-			}*/
-
 			div:not(.inner) {
 				border:1px solid teal;
 				background-color: white;
@@ -79,10 +55,6 @@
 	</head>
 
 <body class="notopnav nocontenttop col-M-X-S mid-M-SX mob-SMX">
-
-	<!--- <cfdump var="#styles#">
-	<cfabort>
-	 --->
 
 	<div id="ubercontainer">
 		
@@ -126,7 +98,6 @@
 					<div id="maincol">
 						<div id="maincol_top">
 							<h2>Main col top</h2>
-							<cfoutput>#settingsForm()#</cfoutput>
 						</div>
 						
 						<div id="maincol_grid" class="scheme-grid">
@@ -248,23 +219,3 @@
 
 
 </html>
-
-
-<cfscript>
-string function settingsForm() {
-	var css= "<form action='columns.cfm'>";
-	
-	// for (local.setting in ['row-layout','column-layout','header-height','topnav-width','topnav-height','footer-height']) {
-	// 	local.val = StructKeyExists(styles[url.media], local.setting) ? styles[url.media][local.setting] : "";
-	// 	css &= "<div class='fieldrow'>";
-	// 	css &= "<label>#local.setting#</label>";
-	// 	css &= "<div class='field'><input name='row-layout' value='#local.val#' /></div>";
-	// 	css &= "</div>";	
-	
-	// }
-	css &= "<div class='fieldrow'><input type='submit' value='Update'></div>";
-	css &= "</form>";
-	return css;
-}
-
-</cfscript>

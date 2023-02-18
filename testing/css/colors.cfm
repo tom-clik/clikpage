@@ -2,6 +2,10 @@
 
 # Colors Test
 
+Take an array of colours and display them.
+
+Not sure where we are taking this.
+
 ## History
 
 2022-03-18  THP   Created

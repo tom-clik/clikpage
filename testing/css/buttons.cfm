@@ -93,9 +93,6 @@ css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug
 		
 		writeOutput( pageData.html);
 		
-		// if (id eq "test3") {
-		// 	writeDump(cs[id].settings);
-		// }
 	}
 	</cfscript>
 	

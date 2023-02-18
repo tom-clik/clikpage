@@ -1,4 +1,8 @@
-/* Base component for new cs components */
+/* Base component for new cs components
+
+Remove once we have deprecated all the components in this folder.
+
+ */
 component {
 	
 	public function init() {
