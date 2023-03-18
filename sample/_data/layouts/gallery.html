@@ -4,29 +4,53 @@
 	<title>Test layout 3</title>
 	<meta name="description" content="A test layout to extend another">
 	<meta name="author" content="Tom peer">
+	<style>
+		#contentwrap {
+			grid {
+				grid-mode:none;
+			}
+		}
+		#xcol {
+			show:0;
+		}
+	</style>
 </head>
 
 <body data-extends="main">
-		
+	
+	<div id="contentheader">
+		<content id="gallery_section_title" type="title" class="scheme-title">
+			<title>Section title</title>
+			<content>
+			{{section.title}}
+			</content>
+		</content>
+	</div>
+
 	<div id="contentwrap">
 		
 		<div id="maincol">
 
 			<div id="maincol_top">
 
-				<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-					<title>Section title</title>
-					<content>
-					{{section.title}}
-					</content>
-				</content>
-
 				
-				
-			</div>	
 
-			<div id="maincol_bottom">
 				<content id="imagegrid" type="imagegrid" class="scheme-overlay" >
+					<style>
+						masonry:true;
+						popup:true;
+						grid-width:24%;
+						
+						@mid {
+							grid-width:48%;
+						}
+
+						@mobile {
+							masonry:false;
+							grid-width:100%;
+						}
+
+					</style>
 					<notes>Notes here</notes>
 					<controls>popup</controls>
 					<link>#popup.open</content>

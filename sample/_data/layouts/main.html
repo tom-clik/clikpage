@@ -4,6 +4,167 @@
 	<title>Basic layout</title>
 	<meta name="description" content="Basic three column layout">
 	<meta name="author" content="Tom peer">
+	<style>
+		.scheme-spanning {
+			inner {
+				max-width:var(--sitewidth);
+				align:center;
+				padding:var(--sitepadding);
+			}
+			@mobile {
+				inner {
+					max-width:auto;
+					padding:var(--sitepaddingmobile);
+				}
+			}
+		}
+
+		body {
+			color:textcolor;
+			font-family:bodyfont;
+			font-size:80%;
+			padding:0;
+		}
+
+		#ubercontainer {
+			height:100%;
+			padding:0 0 20px 0;
+			inner {
+				height:100%;
+			}
+			grid {
+				grid-mode:templateareas;
+				grid-template-areas:"header" "pagecontent" "footer";
+				grid-template-rows:min-content 1fr min-content;
+			}
+			@mobile {
+				grid {
+					grid-mode:none;
+				}
+			}
+		}
+
+		#pagecontent {
+			
+			grid {
+				grid-mode:templateareas;
+				grid-template-areas:"topnav content";
+				grid-template-columns:180px minmax(0, 1fr);
+			}
+			@mobile {
+				grid {
+					grid-mode:none;
+				}
+				inner {
+					padding:0;
+				}
+			}
+			
+		}
+
+		#topnav {
+			padding:8 0;
+			background {
+				color:light-panel-bg;
+			}
+			
+			@mobile {
+				padding:0;
+			}
+		}
+
+		#header {
+			
+			grid {
+				grid-mode:fixedcols;
+				grid-template-columns:max-content minmax(0, 1fr);
+			}
+			
+			@mobile {
+				inner {
+					max-width:auto;
+					padding:4;
+				}
+				grid {
+					grid-mode:none;
+				}
+			}
+
+			background {
+				color:panelbg;
+			}
+			
+		}
+
+		#content {
+			grid {
+				grid-mode:templateareas;
+				grid-template-areas:"contentheader" "contentwrap" "contentfooter";
+				grid-template-rows:min-content minmax(0, 1fr) min-content;
+			}
+			@mobile {
+				padding:8;
+			}
+			
+		}
+
+		#contentfooter {
+			grid {
+				grid-mode:auto;
+			}
+			@mobile {
+				grid {
+					grid-mode:none;
+				}
+			}
+		}
+
+		#contentwrap {
+			grid {
+				grid-mode:templateareas;
+				grid-template-areas:"maincol xcol";
+				grid-template-columns:minmax(0, 1fr) 140px;
+			}
+			@mid {
+				grid {
+					grid-mode:none;
+				}
+			}
+			
+		}		
+
+		#footer {
+
+			grid {
+				grid-mode:templateareas;
+				grid-template-areas: "footer_right footer_mid footer_left";
+				grid-template-columns:20% 30% minmax(0, 1fr);
+			}
+
+			background {
+				color:panel-bg;
+			}
+			
+			
+
+			@mobile {
+				grid {
+					grid-mode:none;
+				}
+			}
+
+		}
+
+		#bottomnav {
+			position:fixed;
+			bottom:0px;
+			@mobile {
+				position:static;
+			}
+		}
+
+				
+	</style>
 </head>
 
 <body>
@@ -13,19 +174,43 @@
 		<div id="header" class="scheme-spanning">
 			<content type="title" id="sitetitle">
 				<content>{{site.title}}</content>
-				<field-link>{{link.index}}</field-link>
+				<link>{{link.index}}</link>
+				<style>
+				color:paneltext;
+				margin:12 12 12 0;
+				font-size:220%;	
+				</style>
 			</content>
 
 			<content type="title" id="sitedescription">
-				{{site.meta.description}}	
+				<content>{{site.meta.description}}</content>
+				<style>
+					position:absolute;
+					top:4px;
+					right:0;
+					@mobile {
+						position:static;
+					}
+				</style>
 			</content>
 
 			<content id="hamburger" type="button" class="scheme-button">
 				<title>Hamburger icon</title>
-				<href>
+				<link>
 					#mobilemenu.openclose
-				</href>
-							
+				</link>
+				<style>
+					show:0;
+					auto:1;
+					shape:menu;
+					
+					@mobile {
+						position:absolute;
+						top:4px;
+						right:0;
+						show:1;
+					}
+				</style>	
 			</content>
 			
 		</div>
@@ -33,8 +218,30 @@
 		<div id="pagecontent" class="scheme-spanning">
 			
 			<div id="topnav">
-				<content id="mainmenu" type="menu"></content>
+				<content id="mainmenu" type="menu">
+					<style>
+						position:sticky;
+						orientation:vertical;
+						align:left;
+						@mobile {
+							show:0;
+						}
+					</style>
+				</content>
 				<content id="mobilemenu" type="menu">
+					<style>
+						show:0;
+						orientation:vertical;
+						align:left;
+						@mobile {
+							background {
+								color:lightpanel-bg;
+							}
+							height:0;
+							padding:8;
+							position:static;
+						}
+					</style>
 					<dataset tag="" type="sections"></dataset>
 				</content>
 			</div>
@@ -62,7 +269,28 @@
 		</div>
 		
 		<div id="footer" class="scheme-spanning">
-			<div id="footer_left"><content id="footermenu" type="menu"></content></div>
+			<div id="footer_left">
+				<content id="footermenu" type="menu">
+					<style>
+						flex:true;
+						align:right;
+						border-type:dividers;
+						menu-item-padding:4px 12px;
+						menu-gap:0;
+						menu-item-border:1px;
+						menu-border-color:myfavcolor;
+						stretch:0;
+						@mobile {
+							align:left;
+							menu-item-padding:4px;
+							flex:false;
+							stretch:1;
+							orientation:vertical;
+						}
+					</style>
+
+				</content>
+			</div>
 			<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
 			<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
 		</div>

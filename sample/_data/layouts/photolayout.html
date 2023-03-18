@@ -4,11 +4,17 @@
 	<title>Photo detail page</title>
 	<meta name="description" content="">
 	<meta name="author" content="Tom peer">
+	<style>
+		#ubercontainer {
+			max-height:100vh;
+		}
+	</style>
 </head>
 
 <body data-extends="double">
 	
 	<div id="xcol">
+		
 		<content id="caption" type="text">
 			<title>Photo information</title>
 			<content>{{record.caption}}</content>
@@ -35,16 +41,6 @@
 
 	</div>
 
-	<div id="contentheader">
-		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-			<title>Section title</title>
-			<content>
-			{{section.title}}
-			</content>
-		</content>			
-	</div>
-				
-
 	<div id="maincol">
 
 		<div id="maincol_top">
@@ -52,6 +48,16 @@
 				<content id="photolayout-details" type="image" class="scheme-box">
 					<title>Image tests</title>
 					<field-image>{{record.image}}</field-image>
+					<style>
+						width:90%;
+						max-height:100%;
+						frame {
+							max-height:100%;
+						}
+						image {
+							object-fit:contain;
+						}
+					</style>
 				</content>
 				
 			</div>

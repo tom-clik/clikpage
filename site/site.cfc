@@ -3,8 +3,7 @@ component accessors="true" extends="utils.baseutils" {
 	property name="cr" type="string" default=newLine();
 	property name="debug" type="boolean" default=true;
 	property name="previewurl" type="string" default="index.cfm";
-	property name="mode" type="string" default="preview";
-
+	
 	public site function init(
 		required string layoutsFolder
 		) {
@@ -19,16 +18,14 @@ component accessors="true" extends="utils.baseutils" {
 
 		variables.pattern = variables.utils.patternObj.compile("\{+[\w\.]+?\}+" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
 
-		setmode( checkMode( getmode() )  );
-		
 		return this;
 	}
 
 	/** 
-	 * @hint Set default site mode for object
+	 * @hint Set mode for site
 	 *
 	 */
-	public string function checkMode(string mode) {
+	public void function setSiteMode(struct site, string mode) {
 		switch (arguments.mode) {
 			case "preview": case "cache": 
 				
@@ -36,15 +33,7 @@ component accessors="true" extends="utils.baseutils" {
 			default:
 				throw(message="Invalid site object mode #arguments.mode#",detail="Site mode must be preview or cache");
 		}
-		return arguments.mode;
-	}
-
-	/** 
-	 * @hint Set site mode for site
-	 *
-	 */
-	public void function setSiteMode(struct site, string mode) {
-		arguments.site["mode"] = checkMode(arguments.mode);
+		arguments.site["mode"] = arguments.mode;
 	}
 
 	public struct function loadSite(required string filename) {
@@ -56,7 +45,7 @@ component accessors="true" extends="utils.baseutils" {
 		local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
 		local.site = variables.utils.XML.xml2data(local.xmlData);
 		
-		local.site["mode"] = getmode();
+		local.site["mode"] = "preview";
 
 		if (NOT StructKeyExists(local.site,"layout")) {
 			throw("No layout defined for site");
@@ -72,8 +61,16 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 
-	/** Load data files specified in site.data  */
-	private void function loadData(required struct site, required string directory) {
+	/** Load data files specified in site.data 
+	 * 
+	 *
+	 * // TODO: replace directory with explicit links from site def.
+	 * // TODO: dumps data keys into root (??) put back into data key
+	 */
+	private void function loadData(
+		required struct site, 
+		required string directory
+		) {
 		
 		for (local.data in arguments.site.data) {
 			if (!StructKeyExists(local.data,"src")) {
@@ -542,7 +539,8 @@ component accessors="true" extends="utils.baseutils" {
 	 *
 	 * Layout can be a simple value or an array of values if there are different layouts for different actions
 	 *
-	 * In addtion the array values can be simple (default for section) or a struct if an action is specified.
+	 * In addition the array values can be simple (default for section) or a struct 
+	 * if an action is specified.
 	 *
 	 *  e.g.
 	 *  
@@ -561,7 +559,10 @@ component accessors="true" extends="utils.baseutils" {
 
 		if ( NOT structKeyExists( arguments.section,"layout" ) ) {
 			if ( NOT structKeyExists( arguments.site,"layout" ) ) {
-				throw("No default layout defined for site");
+				throw(
+					message="No layout defined for section #arguments.section.id#",
+					detail="If no default site layout is defined, a layout must be specified for all sections."
+				);
 			}
 			else {
 				return arguments.site.layout;
@@ -591,7 +592,9 @@ component accessors="true" extends="utils.baseutils" {
 			}
 			if (local.layoutName =="") {
 				if (local.defaultLayout == "") {
-					throw(message="No layout defined for action #arguments.action#",detail="Either define a layout for all actions or define a default layout for the section");
+					throw(
+						message="No layout defined for action #arguments.action# in section #arguments.section.id#",
+						detail="Either define a layout for all actions or define a default layout for the section");
 				}
 				else {
 					local.layoutName = local.defaultLayout;
@@ -746,6 +749,106 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 
 		return pageContent;
-	}	
+	}
+
+	/**
+	 * Get a list of all layouts used in the site
+	 */
+	private array function getSiteLayouts(required struct site) {
+		
+		// cache results in arguments.site.layouts
+		if (NOT StructKeyExists(arguments.site, "layouts")) {
+
+			local.layouts = [=];
+			
+			// site has a default layout
+			if ( StructKeyExists(arguments.site, "layout") ) {
+				local.layouts[arguments.site.layout] = 1;
+			}
+			// See notes on getLayoutName for structure of layouts
+			for ( local.section in arguments.site.sections ) {
+				if ( StructKeyExists( arguments.site.sections[local.section], "layout" ) ) {
+					local.layout = arguments.site.sections[local.section].layout;
+					if (isSimpleValue(local.layout)) {
+						local.layouts[local.layout] = 1;
+					}
+					else {
+						for (local.layoutAction in local.layout) {
+							if (isSimpleValue(local.layoutAction)) {
+								local.layouts[local.layoutAction] = 1;
+							}
+							else {
+								local.layouts[local.layoutAction.value] = 1;
+							}
+						}
+					}
+					
+				}
+			}
+
+			arguments.site.layouts = StructKeyArray(local.layouts);
+
+		}
+		return arguments.site.layouts;
+	}
 	
+	string function siteCSS(required struct site, required styleSettings) {
+	
+		var css = "";
+		
+		css &= ":root {\n";
+		css &= this.settingsObj.colorVariablesCSS(arguments.styleSettings);
+		css &= this.settingsObj.fontVariablesCSS(arguments.styleSettings);
+		css &= this.settingsObj.variablesCSS(arguments.styleSettings);
+		css &=  "\n}\n";
+		css &= this.settingsObj.CSSCommentHeader("Layouts");
+		
+		// get list of all layouts.
+		local.layouts = getSiteLayouts(arguments.site);
+		// complete struct of all cs
+		local.content = {};
+		// list of all containers used in site
+		local.containerList = [=];
+		// complete struct of all styles -- need to get schemes
+		// WILLDO: additional stylesheets for schemes
+		
+		local.styles = {};
+
+		// CSS for layouts
+		// watch order -- must do in order they appear in stylesheet
+		// which must match the precendence for inheritance (known issue)
+		// WILLDO: create body classes that enforce precedence (WILL I ? What does this mean)
+		
+		for (local.layout in local.layouts) {
+			local.layoutObj = this.layoutsObj.getLayout(local.layout);
+			css &= "/* Layout #local.layout# */\n";
+			// build complete list of cs
+			StructAppend(local.content,local.layoutObj.content,false);
+			// add to list of all containers used in site
+			StructAppend(local.containerList,local.layoutObj.containers);
+			// add to struct of all style schemes
+			StructAppend(local.styles,local.layoutObj.style);
+
+			css &= this.settingsObj.layoutCss(
+				containers=local.layoutObj.containers, 
+				styles=local.layoutObj.style,
+				media=arguments.styleSettings.media,
+				selector="body.template-#local.layout#"
+			);
+		}
+				
+		for (var id in local.containerList) {
+			css &= "###id# {grid-area:#id#;}\n";
+		}
+
+		// Main content section styling
+		css &= this.settingsObj.CSSCommentHeader("Content styling");
+		
+		css &= this.contentObj.contentCSS(content_sections=local.content,styles=local.styles,media=arguments.styleSettings.media, format=false);
+		
+		css = this.settingsObj.outputFormat(css=css,media=arguments.styleSettings.media,debug=variables.debug);
+		
+		return css;
+
+	}
 }

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stylesettings>
+
+	<colors>
+		<textcolor title="Main text color" value="#333333" />
+		<myfavcolor title="My favourite colour" value="#ff0000" />
+		<panelbg title="Darker panel bg" value="#01798a" />
+		<accent title="Accent colour" value="#38bbcd" />
+		<paneltext title="Panel text" value="#ffffff">
+			<description>To stand out against darker panel or accent</description>
+		</paneltext>
+		<lightpanel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />
+		<popupbg title="Popup overlay" value="#ffffff" />		
+	</colors>
+
+	<media>
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
+	</media>
+
+	<fonts>
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+		<subtitlefont title="Sub Title font" family="--titlefont" description="Used by sub titles" />
+		<test font-family="broken"  weights="" styles="" variants="" stretch="" />
+	</fonts>
+
+	<vars>
+		<sitewidth title="Site width" description="Maximum width of site containers" value="1200px" />
+		<sitepadding title="Site padding" description="Added to all spanning elements like header, footer" value="4px 6px" />
+		<sitepaddingmobile title="Site padding (mobile)" description="Site padding in mobile" value="4px" />
+	</vars>
+
+	<!--
+	Legacy content definitions
+	<content>
+
+		<body>
+			
+			<color>textcolor</color>
+			<font-family>bodyfont</font-family>
+			<font-size>80%</font-size>
+			<padding>0</padding>
+			
+		</body>
+
+		
+
+		<popup>
+			<position>fixed</position>
+			<height>100vh</height>
+			<width>100vw</width>
+			<background>
+				<color>popupbg</color>
+			</background>
+		</popup>
+
+		<popup_prev>
+			<auto>1</auto>
+			<shape>chevron-left</shape>
+			<top>240px</top>
+			<left>0</left>
+		</popup_prev>
+		<popup_next>
+			<top>240px</top>
+			<auto>1</auto>
+			<shape>chevron-right</shape>			
+		</popup_next>
+		<popup_close>
+			<right>4</right>
+			<auto>1</auto>
+			<shape>close</shape>				
+		</popup_close>
+
+		<scheme-popupbutton>
+			<position>fixed</position>
+			<top>4px</top>
+		</scheme-popupbutton>
+
+		
+
+
+		
+		
+
+
+		
+		<imagegrid2>
+			
+			
+
+		</imagegrid2>
+		
+
+		<sectiontitle>
+			
+			
+			
+		</sectiontitle>
+
+		<sectionlist>
+			
+			
+	
+		</sectionlist>
+
+		<scheme-title>
+			
+			<color>accent</color>
+			<font-family>bodyfont</font-family>
+			<font-size>2.4em</font-size>
+			<font-weight>300</font-weight>
+			<margin>0 0 0.4em 0</margin>
+		
+		</scheme-title>
+
+		<scheme-intros>
+			
+			<font-weight>bold</font-weight>
+			<font-style>italic</font-style>
+			<margin>0 0 1em 0</margin>
+		
+		</scheme-intros>
+
+		<navbuttons>
+			<grid>
+				<columns>2</columns>
+			</grid>
+			
+		</navbuttons>
+
+		<scheme-button>
+			<icon-width>16</icon-width>
+			
+			<hover>
+				<link-color>var(accent)</link-color>
+			</hover>
+			<shape>left_arrow</shape>
+		</scheme-button>
+
+		<navnext>
+			
+			<button-direction>row-reverse</button-direction>
+			<shape>right_arrow</shape>
+			
+		</navnext>
+
+		<scheme-listings>
+			<image-align>left</image-align>
+			<item>
+				<margin>
+					12 0
+				</margin>
+				<padding>
+					12
+				</padding>
+				<border>
+					<width>1px</width>
+					<color>bordercolor</color>
+				</border>
+			</item>
+			<title>
+				<padding>0</padding>
+			</title>
+			<text>
+				<padding>0</padding>
+			</text>
+			<mobile>
+				<image-align>center</image-align>
+			</mobile>
+			
+		</scheme-listings>
+
+		<imagelist>
+			<carousel>1</carousel>
+		</imagelist>
+
+		<scheme-carousel>
+			<htop>1</htop>
+			<image-align>left</image-align>
+			<carousel>1</carousel>
+		</scheme-carousel>
+		
+		<photolayout-details>
+			<width>90%</width>
+			<max-height>100%</max-height>
+			<frame><max-height>100%</max-height></frame>
+			<image><object-fit>contain</object-fit></image>
+
+		</photolayout-details>
+
+	</content>
+	-->
+
+</stylesettings>
+
+
+

@@ -4,6 +4,22 @@
 	<title>Article Detail</title>
 	<meta name="description" content="Shows standard article with navigation for previous and next">
 	<meta name="author" content="Tom peer">
+	<style>
+	#contentwrap {
+		grid {
+			grid-gap:10px;
+			grid-template-columns:minmax(0, 1fr) 33%;
+		}
+		@mobile {
+			grid {
+				grid-mode:none;
+			}
+			#xcol {
+				margin:10 0 0 0;
+			}
+		}
+	}
+	</style>
 </head>
 
 <body data-extends="double">

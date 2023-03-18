@@ -1,4 +1,16 @@
-﻿component {
+/*
+
+# Settings Object
+
+Handles parsing of the settings files and some writing out of CSS.
+
+## Synopsis
+
+Settings are loaded from XML defnition file.
+
+*/
+
+component {
 
 	public settings function init(debug=false)  output=false {
 
@@ -6,33 +18,42 @@
 		this.utils = CreateObject("component", "utils.utils");
 		this.utilsXML = CreateObject("component", "utils.xml");	
 		this.debug = arguments.debug;
+		this.parser = new cssParser();	
 
 		return this;
 	}
 
-	/** Load an XML settings definition */
-	public struct function loadStyleSheet(required string filename) output=false  {
+	/**
+	 * @hint Load XML style definition file
+	 *
+	 * XML style definitions define colors, fonts, media queries
+	 * and vars. In the CSS files we only ever refer to variable
+	 * names defined here.
+	 *  
+	 */
+	public struct function loadStyleSettings(required string filename) output=false  {
 
+		if (!FileExists(arguments.filename)) {
+			throw("Stylesheet #arguments.filename# not found");
+		}
+			
 		try {
 			
-			if (!FileExists(arguments.filename)) {
-				throw("Stylesheet #arguments.filename# not found");
-			}
 			
-			local.styles = {};// see catch below
+			local.styles = {};// leave this -- see catch below
 			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
 			local.styles = this.utilsXML.xml2data(local.xmlData);
 			
 			local.defaults = {
-					"colors" :[=],
-					"fonts" :[=],
-					"media" :[=],
-					"layouts" :[=],
-					"content" :[=]
-				};
+				"colors" :[=],
+				"fonts" :[=],
+				"media" :[=],
+				"vars" :[=]
+			};
 			
 			StructAppend(local.styles,local.defaults,false);
 			
+			// TODO: surely this can't be right
 			for (local.default in local.defaults) {
 				if ( NOT IsStruct(local.styles[local.default]) ) {
 					local.styles[local.default] = [=];
@@ -57,37 +78,32 @@
 	}
 
 	/**
-	 * Check we don't have a main medium defined.
+	 * Check definition of media queries
 	 */
 	private void function checkMedia(required struct styles) {
 		
-		// Add main medium to media
-		structDelete(arguments.styles.media, "main"); // mustn't be defined by user
+		// Main medium can't be defined by user
+		structDelete(arguments.styles.media, "main"); 
 
+		// create new ordered struct with main first
 		local.tempMedia = ["main"={"title":"Main"}];
 		
 		for (local.medium in arguments.styles.media) {
-			if (NOT structKeyExists(arguments.styles.media[local.medium], "title")) {
-				arguments.styles.media[local.medium]["title"] = local.medium;
-			}
+			// add default title
+			StructAppend(arguments.styles.media[local.medium],				{"title":local.medium},false);
 			local.tempMedia[local.medium] = arguments.styles.media[local.medium];
 		}
 		arguments.styles.media = local.tempMedia;
 
-		checkMediaMainStyles(arguments.styles.content,arguments.styles);
-
-		if ( StructKeyExists( arguments.styles,"layouts" ) AND IsStruct(arguments.styles.layouts) ) {
-			for (local.layout in arguments.styles.layouts) {
-				checkMediaMainStyles(arguments.styles.layouts[local.layout],arguments.styles);
-			}
-		}
-		
 	}
 
 	/**
-	 * move root settings "up" into main medium
+	 * @hint move root settings "up" into "main" medium
 	 *
-	 * See checkMedia()
+	 * When styles are defined, the settings for the main medium
+	 *  are just in the root. For consistency, we put them into
+	 *  a key "main".
+	 *
 	 */
 	private void function checkMediaMainStyles(required struct section, required struct styles) {
 		
@@ -150,7 +166,7 @@
 
 			var media = arguments.media[medium];
 			var section_css = "";
-
+			
 			for ( var id in arguments.containers ) {
 				
 				local.cs = arguments.containers[id];

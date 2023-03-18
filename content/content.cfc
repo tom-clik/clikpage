@@ -124,7 +124,7 @@ component {
 	/**
 	 * Generate CSS for a collection of content sections
 	 * 
-	 * @styles           Struct of styles for each cs.
+	 * @styles           Struct of styles for addition of class settings
 	 * @content_sections Struct of content section definitions
 	 * @media            Struct of media query definitions
 	 * @loadsettings     Load settings for each CSS
@@ -239,6 +239,10 @@ component {
 		if (StructKeyExists(arguments.styles, arguments.content.id)) {
 			deepStructAppend(settings,arguments.styles[arguments.content.id]);
 		}
+
+		if (StructKeyExists(arguments.content, "style")) {
+			deepStructAppend(settings,arguments.content.style);
+		}
 		
 		arguments.content["settings"] = settings;
 			
@@ -255,49 +259,7 @@ component {
 		}
 	
 	}
-
-	string function siteCSS(required site, required styles) {
 	
-		var css = "";
-		
-		css &= ":root {\n";
-		css &= this.settingsObj.colorVariablesCSS(arguments.styles);
-		css &= this.settingsObj.fontVariablesCSS(arguments.styles);
-		css &= this.settingsObj.variablesCSS(arguments.styles);
-		css &=  "\n}\n";
-		css &= this.settingsObj.CSSCommentHeader("Layouts");
-		
-		for (var id in arguments.site.containers) {
-			css &= "###id# {grid-area:#id#;}\n";
-		}
-		
-		// CSS for layouts
-		// watch order -- must do in order they appear in stylesheet
-		// which must match the precendence for inheritance (known issue)
-		// TODO: create body classes that enforce precedence
-		for (local.layout in arguments.styles.layouts) {
-			if (structKeyExists(arguments.site.layouts,local.layout)) {
-				css &= "/* Layout #local.layout# */\n"
-				css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.layouts[local.layout],media=arguments.styles.media,selector="body.template-#local.layout#");
-			}
-			else {
-				css &= "/* Layout #local.layout# not defined in site */\n"
-			}
-		}
-		// CSS for containers
-		// Styling for containers can be defined in the content styling. They will
-		// apply with a simple specificity #id {}
-		css &= this.settingsObj.CSSCommentHeader("Container styling");
-		css &= this.settingsObj.layoutCss(containers=arguments.site.containers, styles=arguments.styles.content,media=arguments.styles.media);
-
-		// Main content section styling
-		css &= this.settingsObj.CSSCommentHeader("Content styling");
-		css &= contentCSS(content_sections=arguments.site.content,styles=arguments.styles.content,media=arguments.styles.media);
-		css = this.settingsObj.outputFormat(css=css,media=arguments.styles.media,debug=this.debug);
-		
-		return css;
-
-	}
 
 
 	/**

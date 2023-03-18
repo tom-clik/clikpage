@@ -40,7 +40,7 @@ component {
 		// pattern to remove comments
 		variables.commentpattern = variables.patternObj.compile("\/\*[^*]*\*+([^/*][^*]*\*+)*\/", variables.patternObj.MULTILINE + variables.patternObj.UNIX_LINES);
 		// pattern to characets from start of "key"
-		variables.keypattern = variables.patternObj.compile("[##\.\@]");
+		variables.keypattern = variables.patternObj.compile("[##\.]");
 		return this;
 	}
 
@@ -57,6 +57,33 @@ component {
 
 		return ret;
 
+	}
+
+	/**
+	 * @hint move root settings "up" into "main" medium
+	 *
+	 * When styles are defined, the settings for the main medium
+	 *  are just in the root. For consistency, we put them into
+	 *  a key "main".
+	 *
+	 */
+	public void function addMainMedium(required struct styles) {
+		local.main = [=];
+		local.keys = StructKeyArray(arguments.styles);
+		for (local.setting in local.keys) {
+			if (left(local.setting,1) NEQ "@") {
+				local.main[local.setting] = arguments.styles[local.setting];
+				structDelete(arguments.styles, local.setting);
+			}
+			else {
+				arguments.styles[ListFirst(local.setting,"@")] = arguments.styles[local.setting];
+				structDelete(arguments.styles,local.setting);
+			}
+		}
+		if ( NOT StructIsEmpty(local.main) ) {
+			arguments.styles["main"] = local.main;
+		}
+		
 	}
 
 	/**
@@ -131,8 +158,8 @@ component {
 					}
 
 			}
+		
 		}
-
 
 	}
 
