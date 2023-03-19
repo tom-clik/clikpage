@@ -18,7 +18,7 @@ component {
 		this.utils = CreateObject("component", "utils.utils");
 		this.utilsXML = CreateObject("component", "utils.xml");	
 		this.debug = arguments.debug;
-		this.parser = new cssParser();	
+		this.cssParser = new cssParser();	
 
 		return this;
 	}
@@ -47,7 +47,8 @@ component {
 				"colors" :[=],
 				"fonts" :[=],
 				"media" :[=],
-				"vars" :[=]
+				"vars" :[=],
+				"style": [=]
 			};
 			
 			StructAppend(local.styles,local.defaults,false);
@@ -59,7 +60,30 @@ component {
 				}
 			}
 
-			checkMedia(local.styles);
+			// Load external files
+			if ( StructKeyExists(local.styles,"link") ) {
+				local.root = GetDirectoryFromPath(arguments.filename);
+				local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
+				if ( NOT isArray(local.styles.link) ) {
+					local.styles.link = [local.styles.link];
+				}
+				for (local.link in local.styles.link) {
+					if ( StructKeyExists(local.link,"href") && 
+						StructKeyExists(local.link,"rel") ) {
+						local.filepath = getCanonicalPath( local.root & local.link.href);
+						local.filedata = this.utils.fnReadFile(local.filepath,"utf-8");
+						switch (local.link.rel) {
+							case "stylesheet":
+								local.css = this.cssParser.parse(local.filedata);
+								this.utils.deepStructAppend(local.styles.style,local.css);
+							break;
+						}
+					}
+				}
+				StructDelete( local.styles,"link" );
+			}
+
+			checkMedia( local.styles );
 			
 		}
 		catch (any e) {
