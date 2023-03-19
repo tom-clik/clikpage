@@ -34,37 +34,23 @@
 	</div>
 	
 	<div id="xcol">
+
 		<content id="image" type="image" class="scheme-box">
 			<title>Image tests</title>
 			<field-image>{{record.image}}</field-image>
 		</content>
 
 		<div id="navbuttons" class="scheme-navbuttons">
-			
-			<content id="navprev" type="button" class="scheme-button">
-				<title>Previous button</title>
-				<content>
-					{{record.previous_title}}				
-				</content>
-				<href>{{record.previous_link}}</href>
-			</content>
-			<content id="navnext" type="button" class="scheme-button">
-				<title>Next button</title>
-				<href>
-					{{record.next_link}}
-				</href>
-				<content>
-					{{record.next_title}}				
-				</content>				
-			</content>
+			<!-- TODO: library items. Sometimes we do want to
+			share content between different layouts.
+			in that case we want a generic content definition
+			Currently these are defined in photodetail -->			
 		</div>
 	</div>
 	
 	<div id="maincol">
 
 		<div id="maincol_top">
-
-			
 
 			<content id="articletitle" type="title" data-notes="Notes here" class="scheme-title scheme-articletitle">
 				<title>Article title</title>
@@ -88,7 +74,6 @@
 			</content>
 			
 		</div>	
-
 
 		<div id="maincol_bottom">
 			<!-- flex-start flex-end flex-between flex-center flex-around] -->
