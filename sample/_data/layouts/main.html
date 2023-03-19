@@ -140,13 +140,7 @@
 				grid-template-areas: "footer_right footer_mid footer_left";
 				grid-template-columns:20% 30% minmax(0, 1fr);
 			}
-
-			background {
-				color:panel-bg;
-			}
 			
-			
-
 			@mobile {
 				grid {
 					grid-mode:none;
@@ -163,7 +157,9 @@
 			}
 		}
 
-				
+		.scheme-title {
+			
+		}
 	</style>
 </head>
 
@@ -186,10 +182,13 @@
 				<content>{{site.meta.description}}</content>
 				<style>
 					position:absolute;
-					top:4px;
+					color:paneltext;
+					top:14px;
 					right:0;
 					@mobile {
+						top:0;
 						position:static;
+						marging:4px 0;
 					}
 				</style>
 			</content>

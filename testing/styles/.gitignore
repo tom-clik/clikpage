@@ -1,2 +1,4 @@
+*.css
 # Ignore Test data. To run tests you will need to generate this, see e.g. saveTestData
 *.json
+

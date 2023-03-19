@@ -95,6 +95,7 @@ $(document).ready(function() {
 		onFix: function() {console.log("fix")},
 		onUnfix: function() {console.log("unfix")}
 	});
+	$("body").on("throttledresize",function() {console.log("throttledresize")});
 });
 </script>
 

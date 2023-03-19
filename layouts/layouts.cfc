@@ -72,41 +72,6 @@ component name="layouts" {
 		variables.cache.html = {};
 	}
 
-	public struct function loadAll() {
-
-		this.cacheClear();
-
-		var data = {
-			"layouts" = [=],
-			"content" = {},
-			"containers" = {}
-		};
-
-		local.list = directoryList(variables.layoutBase,true,"query","*.html");
-		
-		local.base = ArrayToList(ListToArray(variables.layoutBase,"\/"),".");
-		for (local.filedata in list) {
-			local.dir = ArrayToList(ListToArray(local.filedata.directory,"\/"),".");
-			
-			if (local.dir neq local.base) {
-				local.subfolder = replace(local.dir, local.base & ".", "") & ".";
-			}
-			else {
-				local.subfolder = "";
-			}
-
-			local.id = local.subfolder & ListFirst(local.filedata.name,".");
-
-			data.layouts[local.id] = 1;
-			local.layout = getLayout(local.id);
-			StructAppend(data.content,local.layout.content);
-			StructAppend(data.containers,local.layout.containers);
-		}
-
-		return data;
-
-	}
-
 	/**
 	 * @hint return layout struct
 	 *
@@ -159,9 +124,12 @@ component name="layouts" {
 				}
 			}
 
-			// data attributes
+			
 			local.body = this.coldsoup.XMLNode2Struct(local.layoutObj.layout.select("body").first());
 			
+
+			
+			// data attributes
 			if (StructKeyExists(local.body,"data")) {
 				if (StructKeyExists(local.body.data,"extends")) {
 					local.layoutObj["extends"] = local.body.data.extends;
@@ -214,6 +182,7 @@ component name="layouts" {
 		
 		for (local.div in local.test) {
 			local.div.tagName("div");
+			// local.div.html("");
 		}
 
 		return arguments.layoutObj.layout.body().html();

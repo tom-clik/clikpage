@@ -21,7 +21,6 @@ WriteDump(var=menu,label="Dataset with no tag");
 
 menudata = siteObj.menuData(site,menu);
 WriteDump(menudata);
-abort;
 
 dataset = {
 	tag="test"
@@ -48,4 +47,13 @@ WriteDump(var=record,label="Individual record");
 info = siteObj.getRecordSetInfo(site=site,dataset=records2,id=record.id);
 writeDump(var=info,label="Record set info");
 
+dataset = {
+	parent="about",
+	type="sections"
+};
+
+sections = siteObj.getDataSet(site=site,dataset=dataset);
+data = siteObj.getRecords(site=site,dataset=sections,type="sections");
+writeDump(var=sections,label="Sub sections data set");
+writeDump(var=data,label="Sub sections records");
 </cfscript>

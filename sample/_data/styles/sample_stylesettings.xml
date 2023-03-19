@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stylesettings>
+	
+	<link rel="stylesheet" href="sample_schemes.css" />
 
 	<colors>
 		<textcolor title="Main text color" value="#333333" />

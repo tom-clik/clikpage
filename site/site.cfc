@@ -12,6 +12,7 @@ component accessors="true" extends="utils.baseutils" {
 		
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj,debug=getdebug());
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
+
 		this.pageObj = new clikpage.page(debug=getdebug());
 		
 		super.utils();
@@ -42,6 +43,8 @@ component accessors="true" extends="utils.baseutils" {
 			throw("Site definition #arguments.filename# not found");
 		}
 
+		local.root = GetDirectoryFromPath(arguments.filename);
+
 		local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
 		local.site = variables.utils.XML.xml2data(local.xmlData);
 		
@@ -50,12 +53,56 @@ component accessors="true" extends="utils.baseutils" {
 		if (NOT StructKeyExists(local.site,"layout")) {
 			throw("No layout defined for site");
 		}
+		if (NOT StructKeyExists(local.site,"stylesettings")) {
+			throw("No stylesettings defined for site");
+		}
+
+		if (StructKeyExists(local.site.stylesettings,"src")) {
+			local.site.stylesettings = this.settingsObj.loadStyleSettings( getCanonicalPath( local.root & local.site.stylesettings.src ) );
+		}
+		else {
+			throw("Only src supported for stylesettings at this time");
+		}
 
 		// load sections
 		parseData(site=local.site,data=local.site.sections,type="sections");
 
 		// load other data from files
 		loadData(site=local.site,directory=getDirectoryFromPath(arguments.filename));
+		
+		// process styling from layouts
+		loadSiteLayouts(local.site);
+
+		// TODO: put into function
+		// complete struct of all cs
+		local.site.content = {};
+		// list of all containers used in site
+		local.site.containers = [=];
+		// complete struct of all styles -- need to get schemes
+		// WILLDO: additional stylesheets for schemes
+		local.site.style = {};
+
+		// CSS for layouts
+		// watch order -- must do in order they appear in stylesheet
+		// which must match the precendence for inheritance (known issue)
+		// WILLDO: create body classes that enforce precedence (WILL I ? What does this mean)
+		
+		for (local.layout in local.site.layouts) {
+			local.layoutObj = this.layoutsObj.getLayout(local.layout);
+			// build complete list of cs
+			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
+			// add to list of all containers used in site
+			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
+			// add to struct of all style schemes
+			variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
+		}
+
+		
+		this.contentObj.loadSettings(
+			styles = local.site.style, 
+			content_sections = local.site.content, 
+			media = local.site.stylesettings.media
+		);		
 
 		return local.site;
 
@@ -194,7 +241,7 @@ component accessors="true" extends="utils.baseutils" {
 	 * @hint Get array of data for using in menu components
 	 *
 	 * Use normal dataset functionality to get array of section 
-	 * codes. The call this to get menu data.
+	 * codes. Then call this to get menu data.
 	 * 
 	 * @site         Site struct
 	 * @sections     Array or list of section codes
@@ -271,17 +318,28 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.ref = arguments.site[arguments.dataset.type];
-
+		local.isTagSet = arguments.dataset.tag neq "";
+		
+		if (! local.isTagSet AND NOT StructKeyExists(arguments.dataset,"parent")) {
+			local.extendedinfo = {dataset=arguments.dataset};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Invalid dataset definition",
+				detail       = "A dataset must have a tag or a parent defined",
+				errorcode    = "site.getDataSet"		
+			);
+			
+		}
 		for (local.id in local.ref) {
 			
 			local.record = local.ref[local.id];
-			if (arguments.dataset.tag neq "") {
+
+			if (local.isTagSet) {
 				if (ListFindNoCase(local.record.tags, arguments.dataset.tag)) {
 					ArrayAppend(local.data,local.id);
 				}
 			}
-			else if (StructKeyExists(local.record,"parent") AND
-					local.record.parent eq arguments.dataset.parent) {
+			else if ( StructKeyExists(local.record,"parent") AND local.record.parent eq arguments.dataset.parent ) {
 				ArrayAppend(local.data,local.id);
 			}
 		}
@@ -323,7 +381,19 @@ component accessors="true" extends="utils.baseutils" {
 	 */
 	public struct function getRecord(required struct site, required any ID, required string type="articles") {
 
-		return Duplicate(arguments.site[arguments.type][id]);
+		try {
+			return arguments.site[arguments.type][arguments.id];
+		}
+		catch (any e) {
+			local.extendedinfo = {tagcontext=e.tagcontext,data=arguments.site[arguments.type],type=arguments.type,id=arguments.id};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error getting data record:" & e.message, 
+				detail       = e.detail,
+				errorcode    = "site.getRecord"		
+			);
+		}
+
 		
 	}
 
@@ -371,17 +441,17 @@ component accessors="true" extends="utils.baseutils" {
 		) {
 
 		var info = getRecordSetInfo(site=arguments.site,dataset=arguments.dataset,id=arguments.record.id);
-		
+
 		arguments.record["next_link"] = info.next neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.next) : "";
 
 		arguments.record["previous_link"] = info.previous neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.previous) : "";
 		
 		if (info.next neq "") {
-			arguments.record["next_title"] = getRecord(site=arguments.site, ID=info.next, type=arguments.type)["title"];
+			arguments.record["next_title"] = getRecord(site=arguments.site, ID=arguments.dataset[info.next], type=arguments.type)["title"];
 		}
 
 		if (info.previous neq "") {
-			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=info.previous, type=arguments.type)["title"];
+			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=arguments.dataset[info.previous], type=arguments.type)["title"];
 		}
 
 
@@ -639,18 +709,16 @@ component accessors="true" extends="utils.baseutils" {
 			A section can have a dataset and the default dataset for an
 			item can be that.
 			
-			They can also define their data sets themsleves. For a menu,
-			this default will not be the section, but a search by a tag
-			of the mainmenu.
+			They can also define their data sets themselves. For a menu,
+			this default is a search by a tag.
 
-			We want to cache the results by name. These will be keyed by e.g.
-			section_<sectionname> or content_<id>
+			We want to cache the results.
 
 		 */
 		if (StructKeyExists(local.rc.sectionObj,"dataset")) {
 			
 			local.rc.sectionObj["data"] = getDataSet(site=arguments.site,dataset=local.rc.sectionObj.dataset);
-			
+
 			// always gets record -- maybe do something about this
 			if (arguments.pageRequest.id eq "") {
 				arguments.pageRequest.id = local.rc.sectionObj["data"][1];
@@ -665,35 +733,36 @@ component accessors="true" extends="utils.baseutils" {
 		}
 		
 		// todo: add as method of content object
-		for (var content in local.rc.layout.content) {
+		for (var contentid in local.rc.layout.content) {
 			try {
-				var csdata = local.rc.layout.content[content];
+				var csdata = local.rc.layout.content[contentid];
 				// TODO: remove true
-				if (TRUE OR ! StructKeyExists(arguments.site.cs, content)) {
-					arguments.site.cs[content] =  this.contentObj.new(argumentCollection=csdata);
-					//writeDump(cs[content]);
-					this.contentObj.settings(content=arguments.site.cs[content],styles=arguments.site.styles.content,media=arguments.site.styles.media);
+				if (TRUE OR ! StructKeyExists(arguments.site.content, contentid)) {
+					
 					
 					local.data = {};
 					local.datatype = "sections";
 					// hardwired for list types at the minute. what to do???
-					// reasonably easy to define data sets but waht about the links
-					switch (arguments.site.cs[content].type) {
+					// reasonably easy to define data sets but what about the links
+					// TO DO: linkto functionality for the lists
+					// article/image lists might link to another section
+					// sub section links need to link to the section
+					switch (arguments.site.content[contentid].type) {
 						case "articlelist":
 						case "imagegrid":
-							;
-							if ( StructKeyExists( arguments.site.cs[content] , "dataset") )  {
-								arguments.site.cs[content].data = getDataSet(
+							
+							if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
+								arguments.site.content[contentid].data = getDataSet(
 									site=arguments.site,
-									dataset=arguments.site.cs[content].dataset
+									dataset=arguments.site.content[contentid].dataset
 								);
-								local.datatype = arguments.site.cs[content].dataset.type;
+								local.datatype = arguments.site.content[contentid].dataset.type;
 								
 			
 							}
 							else if ( StructKeyExists( local.rc.sectionObj,"dataset" ) ) {
 								local.datatype = local.rc.sectionObj.dataset.type;
-								arguments.site.cs[content].data = local.rc.sectionObj["data"];
+								arguments.site.content[contentid].data = local.rc.sectionObj["data"];
 							}
 							else {
 								throw("No data set defined");
@@ -701,19 +770,19 @@ component accessors="true" extends="utils.baseutils" {
 
 							break;
 						case "menu":
-							if ( StructKeyExists( arguments.site.cs[content] , "dataset") )  {
+							if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
 								
 								local.menuDataSet = getDataSet(
 									site=arguments.site,
-									dataset=arguments.site.cs[content].dataset
+									dataset=arguments.site.content[contentid].dataset
 								);
-								local.datatype = arguments.site.cs[content].dataset.type;
+								local.datatype = arguments.site.content[contentid].dataset.type;
 							}
 							else {
-								local.menuDataSet = arguments.site.cs[content].data = getDataSet(site=arguments.site,dataset={"tag"=content,type="sections"});
+								local.menuDataSet = arguments.site.content[contentid].data = getDataSet(site=arguments.site,dataset={"tag"=contentid,type="sections"});
 								local.datatype = "sections";
 							}
-							arguments.site.cs[content].data = menuData(arguments.site,local.menuDataSet);
+							arguments.site.content[contentid].data = menuData(arguments.site,local.menuDataSet);
 							
 							break;
 						
@@ -723,26 +792,28 @@ component accessors="true" extends="utils.baseutils" {
 
 				}
 				
-				local.tag=local.rc.layout.layout.select("###content#").first();
+				local.tag=local.rc.layout.layout.select("###contentid#").first();
 				
 				// TO do: use display method
 				// and cache results
-				local.tag.html(this.contentObj.html(content=arguments.site.cs[content],data=local.data));
+				local.tag.html(this.contentObj.html(content=arguments.site.content[contentid],data=local.data));
 				
-				local.tag.attr("class",this.contentObj.getClassList(arguments.site.cs[content]));
+				local.tag.attr("class",this.contentObj.getClassList(arguments.site.content[contentid]));
 				
-				this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.cs[content],local.data));
+				this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.content[contentid],local.data));
 				
 			}
 
 			catch (Any e) {
-				writeOutput("<h2>issue with #content#</h2>");
-				writeDump(e);
+				writeOutput("<h2>issue with #contentid#</h2>");
+				writeDump(e.message);
+				writeDump(arguments.site.content[contentid]);
+				writeDump(e.TagContext[1]);
 			}
 
 		}
 		
-		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styles.media);
+		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
 
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
 
@@ -754,99 +825,70 @@ component accessors="true" extends="utils.baseutils" {
 	/**
 	 * Get a list of all layouts used in the site
 	 */
-	private array function getSiteLayouts(required struct site) {
+	private void function loadSiteLayouts(required struct site) {
 		
-		// cache results in arguments.site.layouts
-		if (NOT StructKeyExists(arguments.site, "layouts")) {
-
-			local.layouts = [=];
-			
-			// site has a default layout
-			if ( StructKeyExists(arguments.site, "layout") ) {
-				local.layouts[arguments.site.layout] = 1;
-			}
-			// See notes on getLayoutName for structure of layouts
-			for ( local.section in arguments.site.sections ) {
-				if ( StructKeyExists( arguments.site.sections[local.section], "layout" ) ) {
-					local.layout = arguments.site.sections[local.section].layout;
-					if (isSimpleValue(local.layout)) {
-						local.layouts[local.layout] = 1;
-					}
-					else {
-						for (local.layoutAction in local.layout) {
-							if (isSimpleValue(local.layoutAction)) {
-								local.layouts[local.layoutAction] = 1;
-							}
-							else {
-								local.layouts[local.layoutAction.value] = 1;
-							}
+		local.layouts = [=];
+		
+		// site has a default layout
+		if ( StructKeyExists(arguments.site, "layout") ) {
+			local.layouts[arguments.site.layout] = 1;
+		}
+		// See notes on getLayoutName for structure of layouts
+		for ( local.section in arguments.site.sections ) {
+			if ( StructKeyExists( arguments.site.sections[local.section], "layout" ) ) {
+				local.layout = arguments.site.sections[local.section].layout;
+				if (isSimpleValue(local.layout)) {
+					local.layouts[local.layout] = 1;
+				}
+				else {
+					for (local.layoutAction in local.layout) {
+						if (isSimpleValue(local.layoutAction)) {
+							local.layouts[local.layoutAction] = 1;
+						}
+						else {
+							local.layouts[local.layoutAction.value] = 1;
 						}
 					}
-					
 				}
+				
 			}
-
-			arguments.site.layouts = StructKeyArray(local.layouts);
-
 		}
-		return arguments.site.layouts;
+
+		arguments.site.layouts = StructKeyArray(local.layouts);
+
 	}
 	
-	string function siteCSS(required struct site, required styleSettings) {
+	string function siteCSS(required struct site) {
 	
 		var css = "";
 		
 		css &= ":root {\n";
-		css &= this.settingsObj.colorVariablesCSS(arguments.styleSettings);
-		css &= this.settingsObj.fontVariablesCSS(arguments.styleSettings);
-		css &= this.settingsObj.variablesCSS(arguments.styleSettings);
+		css &= this.settingsObj.colorVariablesCSS(arguments.site.styleSettings);
+		css &= this.settingsObj.fontVariablesCSS(arguments.site.styleSettings);
+		css &= this.settingsObj.variablesCSS(arguments.site.styleSettings);
 		css &=  "\n}\n";
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
 		
-		// get list of all layouts.
-		local.layouts = getSiteLayouts(arguments.site);
-		// complete struct of all cs
-		local.content = {};
-		// list of all containers used in site
-		local.containerList = [=];
-		// complete struct of all styles -- need to get schemes
-		// WILLDO: additional stylesheets for schemes
-		
-		local.styles = {};
-
-		// CSS for layouts
-		// watch order -- must do in order they appear in stylesheet
-		// which must match the precendence for inheritance (known issue)
-		// WILLDO: create body classes that enforce precedence (WILL I ? What does this mean)
-		
-		for (local.layout in local.layouts) {
+		for (local.layout in arguments.site.layouts) {
 			local.layoutObj = this.layoutsObj.getLayout(local.layout);
 			css &= "/* Layout #local.layout# */\n";
-			// build complete list of cs
-			StructAppend(local.content,local.layoutObj.content,false);
-			// add to list of all containers used in site
-			StructAppend(local.containerList,local.layoutObj.containers);
-			// add to struct of all style schemes
-			StructAppend(local.styles,local.layoutObj.style);
-
 			css &= this.settingsObj.layoutCss(
 				containers=local.layoutObj.containers, 
 				styles=local.layoutObj.style,
-				media=arguments.styleSettings.media,
+				media=arguments.site.styleSettings.media,
 				selector="body.template-#local.layout#"
 			);
 		}
-				
-		for (var id in local.containerList) {
+		for (var id in arguments.site.containers) {
 			css &= "###id# {grid-area:#id#;}\n";
 		}
 
 		// Main content section styling
 		css &= this.settingsObj.CSSCommentHeader("Content styling");
 		
-		css &= this.contentObj.contentCSS(content_sections=local.content,styles=local.styles,media=arguments.styleSettings.media, format=false);
+		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.style,media=arguments.site.styleSettings.media, format=false);
 		
-		css = this.settingsObj.outputFormat(css=css,media=arguments.styleSettings.media,debug=variables.debug);
+		css = this.settingsObj.outputFormat(css=css,media=arguments.site.styleSettings.media,debug=variables.debug);
 		
 		return css;
 

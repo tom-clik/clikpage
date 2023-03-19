@@ -80,9 +80,7 @@ component {
 				structDelete(arguments.styles,local.setting);
 			}
 		}
-		if ( NOT StructIsEmpty(local.main) ) {
-			arguments.styles["main"] = local.main;
-		}
+		arguments.styles["main"] = local.main;
 		
 	}
 

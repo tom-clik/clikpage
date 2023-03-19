@@ -1,4 +1,4 @@
-component {
+component extends="utils.baseutils" {
 	/** 
 	 * Constructor 
 	 *
@@ -13,6 +13,9 @@ component {
 		
 		this.contentSections = {};
 		this.debug = arguments.debug;
+		super.utils();
+		// WILLDO: better solution for utils
+		this.deepStructAppend = variables.utils.utils.deepStructAppend;
 		
 		for (local.type in ListToArray(arguments.types)) {
 			load(local.type);
@@ -20,8 +23,7 @@ component {
 		
 		variables.defaultMedia = [{"name"="main"}];
 		this.settingsObj = arguments.settingsObj;
-		this.utils = CreateObject("component", "utils.utils");
-		this.XMLutils = CreateObject("component", "utils.xml");
+		
 
 		return this;
 	}
@@ -53,7 +55,8 @@ component {
 				 string image, 
 				 string caption, 
 				 string link,
-				 struct data
+				 struct data,
+				 struct style = {}
 				 ) {
 
 		if (!StructKeyExists(this.contentSections,arguments.type)) {
@@ -68,7 +71,8 @@ component {
 	/* generate html for a content section */
 	public string function html(required struct content, struct data={}) {
 		
-		var ret = this.contentSections[arguments.content.type].html(arguments.content, arguments.data);
+
+		var ret = this.contentSections[arguments.content.type].html(content=arguments.content, data=arguments.data);
 		
 		ret = this.settingsObj.outputFormat(css=ret,media={},debug=this.debug);
 		
@@ -120,6 +124,41 @@ component {
 		return this.contentSections[arguments.content.type].getClasses(arguments.content);
 	
 	}
+	/**
+	 * Load settings for a collection of content sections
+	 * 
+	 * @styles           Struct of styles for addition of class settings
+	 * @content_sections Struct of content section definitions
+	 * @media            Struct of media query definitions
+	 * @reload           Reload settings if already present
+	 */
+	public void function loadSettings(
+		required struct   styles, 
+		required struct   content_sections, 
+		required struct   media,
+		         boolean  reload=true, 
+		) {
+		
+		for (var id in arguments.content_sections) {
+			local.cs = arguments.content_sections[id];
+			if (NOT StructKeyExists(this.contentSections, local.cs.type)) {
+				local.extendedinfo = {"cs"=local.cs};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Undefined content type (#local.cs.type#) ",
+					detail       = "See content object for details of available content types",
+					errorcode    = "content.001"		
+				);
+				
+			}
+
+			if (arguments.reload OR NOT StructKeyExists(local.cs,"settings")) {
+				arguments.content_sections[id] =  new(argumentCollection=local.cs);
+				settings(arguments.content_sections[id],arguments.styles,arguments.media);
+			}
+		}
+
+	}
 
 	/**
 	 * Generate CSS for a collection of content sections
@@ -127,8 +166,6 @@ component {
 	 * @styles           Struct of styles for addition of class settings
 	 * @content_sections Struct of content section definitions
 	 * @media            Struct of media query definitions
-	 * @loadsettings     Load settings for each CSS
-	 * 
 	 * @return CSS stylesheet
 	 */
 	
@@ -136,56 +173,42 @@ component {
 		required struct  styles, 
 		required struct  content_sections, 
 		required struct  media, 
-				 boolean loadsettings=true, 
 				 boolean format=true
 		) {
 		
-		var css_out = "";
-		var cs = false;
-
-		for (var id in arguments.content_sections) {
-			cs = arguments.content_sections[id];
-			if (NOT StructKeyExists(this.contentSections, cs.type)) {
-				local.extendedinfo = {"cs"=cs};
-				throw(
-					extendedinfo = SerializeJSON(local.extendedinfo),
-					message      = "Undefined content type (#cs.type#) ",
-					detail       = "See content object for details of available content types",
-					errorcode    = "content.001"		
-				);
-				
-			}
-			if (arguments.loadsettings) {
-				settings(cs,arguments.styles,arguments.media);
-			}
-		}
+		local.css_out = "";
 		
-		for (var medium in arguments.media ) {
-			
-			var media = arguments.media[medium];
-			var media_css = "";
+		loadSettings(
+			styles           = arguments.styles,
+			content_sections = arguments.content_sections, 
+			media            = arguments.media,
+		    reload           = false 
+		);
 
-			for (var id in arguments.content_sections) {
-				cs = arguments.content_sections[id];				
-				media_css &= css(cs,medium,false);
-				
+		for (local.medium in arguments.media ) {
+			
+			local.media_css = "";
+
+			for (local.id in arguments.content_sections) {
+				local.cs = arguments.content_sections[local.id];				
+				local.media_css &= css(local.cs,local.medium,false);
 			}
 
-			if (media_css NEQ "") {
-				if (medium NEQ "main") {
-					css_out &= "@media.#medium# {\n" & this.settingsObj.indent(media_css,1) & "\n}\n";
+			if (local.media_css NEQ "") {
+				if (local.medium NEQ "main") {
+					local.css_out &= "@media.#local.medium# {\n" & this.settingsObj.indent(local.media_css,1) & "\n}\n";
 				}
 				else {
-					css_out &= media_css;
+					local.css_out &= local.media_css;
 				}
 			}
 		}
 
 		if (arguments.format) {
-			css_out = this.settingsObj.outputFormat(css=css_out, media=arguments.media,debug=this.debug);
+			local.css_out = this.settingsObj.outputFormat(css=local.css_out, media=arguments.media,debug=this.debug);
 		}
 		
-		return css_out;
+		return local.css_out;
 
 	}
 
@@ -224,24 +247,24 @@ component {
 		
 		var settings = {"main"={}};
 		// add default styling
-		deepStructAppend(settings.main,this.contentSections[arguments.content.type].defaultStyles);
+		variables.utils.utils.deepStructAppend(settings.main,this.contentSections[arguments.content.type].defaultStyles);
 
 		// Add in settings from classes e.g. scheme-whatever, cs-type
 		if (StructKeyExists(arguments.content,"class")) {
 			// make sure we apply the styles in order.
 			for (local.section in arguments.styles) {
 				if (listFindNoCase(arguments.content.class, local.section, " ")) {
-					deepStructAppend(settings,arguments.styles[local.section]);
+					variables.utils.utils.deepStructAppend(settings,arguments.styles[local.section]);
 				}
 			}
 		}
 
 		if (StructKeyExists(arguments.styles, arguments.content.id)) {
-			deepStructAppend(settings,arguments.styles[arguments.content.id]);
+			variables.utils.utils.deepStructAppend(settings,arguments.styles[arguments.content.id]);
 		}
 
 		if (StructKeyExists(arguments.content, "style")) {
-			deepStructAppend(settings,arguments.content.style);
+			variables.utils.utils.deepStructAppend(settings,arguments.content.style);
 		}
 		
 		arguments.content["settings"] = settings;
@@ -414,41 +437,6 @@ component {
 	}
 
 	/**
-	 * Appends the second struct to the first.
-	 */
-	void function deepStructAppend(struct struct1, struct struct2, overwrite="true") output=false {
-		
-		for(local.key IN arguments.struct2){
-			if(StructKeyExists(arguments.struct1,local.key) AND 
-				IsStruct(arguments.struct2[local.key]) AND 
-				IsStruct(arguments.struct1[local.key])){
-				deepStructAppend(arguments.struct1[local.key],arguments.struct2[local.key],arguments.overwrite);
-			}
-			else if (arguments.overwrite OR NOT StructKeyExists(arguments.struct1,local.key)){
-				arguments.struct1[local.key] = Duplicate(arguments.struct2[local.key]);
-			}
-		}
-	}
-
-	/**
-	 * Updates a struct with values from second struct
-	 */
-	void function deepStructUpdate(struct struct1, struct struct2) output=false {
-		
-		for(local.key IN arguments.struct1){
-			if(StructKeyExists(arguments.struct2,local.key)) {
-				if (IsStruct(arguments.struct1[local.key])) {
-					deepStructUpdate(arguments.struct1[local.key],arguments.struct2[local.key]);
-				}
-			}
-			else {
-				arguments.struct1[local.key] = Duplicate(arguments.struct2[local.key]);
-			}
-		}
-	}
-
-
-	/**
 	 * @hint Utitlty to load XML file for shape definitions
 	 *
 	 * Usually these are defined in a stylesheet, but this utility can be used for testing etc
@@ -463,8 +451,8 @@ component {
 			if (!StructKeyExists(this.contentSections,"button")) {
 				throw("buttons content section not defined");
 			}
-			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-			local.buttons = this.XMLutils.xml2data(local.xmlData);
+			local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
+			local.buttons = variables.utils.xml.xml2data(local.xmlData);
 			
 			this.contentSections["button"].addShapes(local.buttons);
 			

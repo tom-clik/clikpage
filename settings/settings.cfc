@@ -39,7 +39,6 @@ component {
 			
 		try {
 			
-			
 			local.styles = {};// leave this -- see catch below
 			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
 			local.styles = this.utilsXML.xml2data(local.xmlData);
