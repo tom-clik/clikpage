@@ -73,14 +73,18 @@ component accessors="true" extends="utils.baseutils" {
 		// process styling from layouts
 		loadSiteLayouts(local.site);
 
-		// TODO: put into function
 		// complete struct of all cs
-		local.site.content = {};
+		local.site["content"] = {};
 		// list of all containers used in site
-		local.site.containers = [=];
-		// complete struct of all styles -- need to get schemes
-		// WILLDO: additional stylesheets for schemes
-		local.site.style = {};
+		local.site["containers"] = [=];
+		// complete struct of all styles - may have globale settings like schemes
+		// or library components in there already (defined in stylesettings)
+		if ( StructKeyExists(local.site.stylesettings,"style") ) {
+			local.site["style"] = Duplicate(local.site.stylesettings.style);
+		}
+		else {
+			local.site["style"] = {};
+		}
 
 		// CSS for layouts
 		// watch order -- must do in order they appear in stylesheet
@@ -97,7 +101,8 @@ component accessors="true" extends="utils.baseutils" {
 			variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
 		}
 
-		
+		// Load the settings for every content section. Combination
+		// of styles and defaults. Applies inheritance according to media
 		this.contentObj.loadSettings(
 			styles = local.site.style, 
 			content_sections = local.site.content, 
@@ -854,7 +859,7 @@ component accessors="true" extends="utils.baseutils" {
 			}
 		}
 
-		arguments.site.layouts = StructKeyArray(local.layouts);
+		arguments.site["layouts"] = StructKeyArray(local.layouts);
 
 	}
 	

@@ -75,6 +75,9 @@ component {
 						switch (local.link.rel) {
 							case "stylesheet":
 								local.css = this.cssParser.parse(local.filedata);
+								for (local.key in local.css) {
+									this.cssParser.addMainMedium(local.css[local.key]);			
+								}
 								this.utils.deepStructAppend(local.styles.style,local.css);
 							break;
 						}
