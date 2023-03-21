@@ -7,17 +7,19 @@
 </head>
 
 <body data-extends="main">
+
+	<div id="contentheader">
 		
+		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+			<title>Section title</title>
+			<content>
+			{{section.title}}
+			</content>
+		</content>	
+	</div>
+	
 	<div id="maincol">
-
 		<div id="maincol_top">
-
-			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-				<title>Section title</title>
-				<content>
-				{{section.title}}
-				</content>
-			</content>	
 
 			<content id="sectioncopy" type="text">
 				<title>Section detail</title>

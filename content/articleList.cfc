@@ -36,11 +36,13 @@ component extends="item" {
 		
 		var cshtml = "<div class='list'>\n";
 		var classes = {};
+
+		local.link_format = arguments.content.link ? : "{link.{section.id}.view.{data.id}}";
 		
 		for (local.id in arguments.content.data) {
 			local.item = arguments.data[local.id];
 			classes = {};
-			local.link = "{link.{section.id}.view.#local.id#}";
+			local.link = Replace(local.link_format, "{data.id}", local.id);
 			local.tmpHTML = variables.contentObj.itemHtml(item=local.item,link=local.link);
 			cshtml &= "<div class='item'>";
 			cshtml &= local.tmpHTML;

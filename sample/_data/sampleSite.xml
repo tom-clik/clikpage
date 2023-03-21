@@ -4,6 +4,8 @@
 
 	<title>My site test</title>
 
+	<stylesettings src="styles/sample_stylesettings.xml" />
+	
 	<meta>
 		<description>A fine site indeed</description>
 		<detailright><![CDATA[&detail; 2022 Tom Peer]]></detailright>
@@ -49,8 +51,9 @@
 		<section id="about">
 			<title>About</title>
 			<description>
-				<![CDATA[This is the section description. It's a separate field]]>
+				<![CDATA[A list of sub sections]]>
 			</description>
+			<layout>sectionlist</layout>
 			<dataset parent="about" type="sections"></dataset>
 			<tags>mainmenu,footermenu</tags>
 		</section>
@@ -58,9 +61,6 @@
 		<section id="about1">
 			<title>About sub 1</title>
 			<parent>about</parent>
-			<description>
-				<![CDATA[This is the section description. It's a separate field]]>
-			</description>
 			<detail> 
 				<![CDATA[<p>Simple sub section 1</p>]]>
 			</detail>
@@ -69,9 +69,6 @@
 		<section id="about2">
 			<title>About sub 2</title>
 			<parent>about</parent>
-			<description>
-				<![CDATA[This is the section description. It's a separate field]]>
-			</description>
 			<detail> 
 				<![CDATA[<p>Simple sub section 2</p>]]>
 			</detail>
@@ -80,9 +77,6 @@
 		<section id="about3">
 			<title>About sub 3</title>
 			<parent>about</parent>
-			<description>
-				<![CDATA[This is the section description. It's a separate field]]>
-			</description>
 			<detail> 
 				<![CDATA[<p>Simple sub section 3</p>]]>
 			</detail>

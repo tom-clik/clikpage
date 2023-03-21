@@ -141,7 +141,7 @@ component extends="contentSection" {
 		
 		cshtml &= displayShape(local.shape);
 
-		if (arguments.content.content !="") {
+		if (StructKeyExists( arguments.content,"content") AND  arguments.content.content !="") {
 			cshtml &= "<label>#arguments.content.content#</label>";
 		}
 		

@@ -8,9 +8,22 @@
 
 <body data-extends="gallery">
 	
-	<div id="maincol_bottom">
+	<div id="maincol_top">
 		<content id="imagegrid2" data-notes="Notes here" type="imagegrid" class="fill scheme-overlay">
+			<style>
+				grid-mode:auto;
+				grid-width:220px;
 				
+				@mid {
+					grid-mode:auto;
+					grid-width:180px;
+				}
+
+				@mobile {					
+					grid-mode:none;
+					grid-width:100%;
+				}
+			</style>
 		</content>
 			
 	</div>	

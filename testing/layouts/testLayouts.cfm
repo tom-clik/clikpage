@@ -8,9 +8,11 @@ inputDir = expandPath("../../sample/_data/layouts");
 outDir = ExpandPath("_output/");
 
 layoutsObj = new clikpage.layouts.layouts(inputDir);
-data = layoutsObj.loadAll();
+files = DirectoryList(inputDir,0,"name");
 
-for (id in data.layouts) {
+
+for (filename in files) {
+	id = ListFirst(filename,".");
 	layout = layoutsObj.getLayout(id);
 	
 	fileWrite(outDir & ListLast(id,".") & ".html", layoutsObj.getHTML(layout));
