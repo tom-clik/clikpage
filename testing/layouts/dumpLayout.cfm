@@ -8,5 +8,5 @@ inputDir = expandPath("../../sample/_data/layouts");
 
 layoutsObj = new clikpage.layouts.layouts(inputDir);
 data = layoutsObj.getLayout("main");
-writeDump(data);
+writeDump(data.content);
 </cfscript>

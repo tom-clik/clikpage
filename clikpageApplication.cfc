@@ -35,19 +35,9 @@ component {
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;
 			application.siteObj.pageObj.content.static_css["content"] = 1;
 			
-			application.site = application.siteObj.loadSite(application.config.siteDef);
-
-			if (StructKeyExists(application.site,"links")) {
-				for (local.link in application.site.links) {
-					application.siteObj.pageObj.addLink(content=application.siteObj.pageObj.content,argumentcollection=local.link);	
-				}
-			}
-
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
-			loadStyling(true);
-
-			
+			loadSite(reload=true);
 
 		}
 		catch (any e) {
@@ -95,18 +85,21 @@ component {
 
 	}
 
-	// TODO: formalise this. Add path for styles somehow
-	private void function loadStyling(boolean reload=false)	 {
+	private void function loadSite(boolean reload=false)	 {
 		
 		local.update = arguments.reload OR checkStylesChanged();
 
 		if (local.update) {
 			
-			application.site.styles = application.siteObj.settingsObj.loadStyleSheet(application.config.styledef);
-			
-			local.sitedata = application.siteObj.layoutsObj.loadAll();
+			application.site = application.siteObj.loadSite(application.config.siteDef);
 
-			local.css = application.siteObj.contentObj.siteCSS(site=local.sitedata,styles=application.site.styles);
+			if (StructKeyExists(application.site,"links")) {
+				for (local.link in application.site.links) {
+					application.siteObj.pageObj.addLink(content=application.siteObj.pageObj.content,argumentcollection=local.link);	
+				}
+			}
+			
+			local.css = application.siteObj.siteCSS(site=application.site);
 
 			fileWrite(ExpandPath("styles/styles.css"), local.css);
 
@@ -127,7 +120,7 @@ component {
 			param name="request.rc.action" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
 			param name="request.rc.id" default="";
 			if (NOT (request.rc.id eq "" OR IsValid("integer",request.rc.id))) {
-				throw("Invalid ID");
+				throw(message="Invalid ID");
 			}
 		}
 		catch (any e) {
@@ -143,8 +136,8 @@ component {
 		  	if (request.rc.reload) {
 
 		  		onApplicationStart();
+		  		loadSite(reload=1);
 		  	}
-			loadStyling(reload=request.rc.reload);
 		}
 		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);

@@ -11,11 +11,61 @@
 	<div id="ubercontainer">
 
 		<div id="header" class="scheme-spanning">
+			
 			<content type="title" id="sitetitle">
 				{{site.title}}
 				<href>{link.index}</href>
 			</content>
-			<content id="topmenu" type="menu"></content>
+			<content id="topmenu" type="menu">
+				<style>
+				menu {
+					flex:true;
+					align:right;
+					min-height:100%;
+					link-color:panel-text;
+					hi {
+						link:color>panel-text;
+					}
+					hover {
+						link:color>panel-text;
+					}
+				}
+
+				height:100%;
+
+				item {
+					font-size:120%;
+					text-transform:uppercase;
+					color:panel-text;
+					hover {
+						background {
+							color:accent;
+						}
+						
+					}
+					hi {
+						background {
+							color:accent;
+						}
+						
+					}
+					padding:20;
+
+				}
+				
+				@mid {
+					@menu {
+						align:left;
+						height:auto;
+					}
+					height:auto;
+				}
+
+				@mobile {
+					show:0;
+				}
+				</style>
+			</content>
 			<content id="hamburger" type="button" class="scheme-button">
 				<title>Menu button</title>
 				<href>

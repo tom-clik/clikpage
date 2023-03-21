@@ -129,13 +129,14 @@ component {
 				 string content,
 				 string image, 
 				 string caption, 
-				 string link
+				 string link,
+				 struct style={}
 				 ) {
 
 		var cs = {"id"=arguments.id, "type"=variables.type, "settings":{}};
 		
-		variables.contentObj.DeepStructAppend(cs,arguments,true);
-		variables.contentObj.DeepStructAppend(cs,variables.defaults,false);
+		variables.contentObj.deepStructAppend(cs,arguments,true);
+		variables.contentObj.deepStructAppend(cs,variables.defaults,false);
 		
 		return cs;
 	}

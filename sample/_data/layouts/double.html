@@ -4,20 +4,35 @@
 	<title>Two column layout</title>
 	<meta name="description" content="Two column layout">
 	<meta name="author" content="Tom peer">
+	<style>
+		#contentwrap {
+			grid {
+				grid-mode:templateareas;
+				grid-gap:10px;
+				grid-template-areas:"maincol xcol";
+				grid-template-columns:minmax(0, 1fr) 240px;
+			}
+			@mobile {
+				grid {
+					grid-mode:none;
+				}
+				#xcol {
+					margin:10 0 0 0;
+				}
+			}
+		}
+	</style>
 </head>
 
 <body data-extends="main">
 	
-	<div id="contentwrap">
-		
-		<div id="maincol">
-
-		</div>
-		
-		<div id="xcol">
-			
-		</div>
-
+	<div id="contentheader">
+		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+		<title>Section title</title>
+		<content>
+		{{section.title}}
+		</content>
+		</content>			
 	</div>
 
 </body>

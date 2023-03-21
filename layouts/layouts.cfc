@@ -11,6 +11,7 @@
  *
  * layout    Jsoup document of parsed html
  * title     Title of the layout
+ * style     Any XCSS for the layout     
  * meta      Struct of meta data with key and value. NB this is for information and documentation of the layouts and is unrelated to html meta data
  * columns   column layout for standard column grid.
  * content   struct of content items keyed by id
@@ -46,6 +47,8 @@ component name="layouts" {
 			);
 		}
 
+		variables.parser = new clikpage.settings.cssParser();
+
 		variables.layoutBase = arguments.layoutBase;
 		// remove trailing slash
 		variables.layoutBase = ReReplace(variables.layoutBase,"[\\\/]$","");
@@ -67,41 +70,6 @@ component name="layouts" {
 		variables.cache = {};
 		variables.cache.layouts = {};
 		variables.cache.html = {};
-	}
-
-	public struct function loadAll() {
-
-		this.cacheClear();
-
-		var data = {
-			"layouts" = [=],
-			"content" = {},
-			"containers" = {}
-		};
-
-		local.list = directoryList(variables.layoutBase,true,"query","*.html");
-		
-		local.base = ArrayToList(ListToArray(variables.layoutBase,"\/"),".");
-		for (local.filedata in list) {
-			local.dir = ArrayToList(ListToArray(local.filedata.directory,"\/"),".");
-			
-			if (local.dir neq local.base) {
-				local.subfolder = replace(local.dir, local.base & ".", "") & ".";
-			}
-			else {
-				local.subfolder = "";
-			}
-
-			local.id = local.subfolder & ListFirst(local.filedata.name,".");
-
-			data.layouts[local.id] = 1;
-			local.layout = getLayout(local.id);
-			StructAppend(data.content,local.layout.content);
-			StructAppend(data.containers,local.layout.containers);
-		}
-
-		return data;
-
 	}
 
 	/**
@@ -136,7 +104,8 @@ component name="layouts" {
 			}
 
 			local.html = FileRead(local.filename,variables.charset);
-			
+			local.html = replaceFieldNames(local.html);
+
 			local.layoutObj = {"id"=arguments.id};
 
 			local.layoutObj["layout"] = this.coldsoup.parse(local.html);
@@ -164,6 +133,9 @@ component name="layouts" {
 			// data attributes
 			local.body = this.coldsoup.XMLNode2Struct(local.layoutObj.layout.select("body").first());
 			
+
+			
+			// data attributes
 			if (StructKeyExists(local.body,"data")) {
 				if (StructKeyExists(local.body.data,"extends")) {
 					local.layoutObj["extends"] = local.body.data.extends;
@@ -172,6 +144,14 @@ component name="layouts" {
 				
 			}
 
+			// Parse template styling from style tag
+			local.style = local.layoutObj["layout"].select("style");
+			if (IsDefined("local.style")) {
+				local.layoutObj["style"] = variables.parser.parse( local.style.html() ) ;
+				for (local.key in local.layoutObj["style"]) {
+					variables.parser.addMainMedium(local.layoutObj["style"][local.key]);			
+				}
+			}
 			parseContainers(local.layoutObj);
 			parseContentSections(local.layoutObj);
 
@@ -186,6 +166,21 @@ component name="layouts" {
 		
 	}
 
+	// Many field names aren't allowed by jsoup
+	// We have to prefix them with field- 
+	// (see xml2data in utils -- standard functionality)
+	private string function replaceFieldNames(required string input) {
+		local.start = find("<body>",arguments.input);
+		local.end = find("</body>",arguments.input);
+		local.body = Mid(arguments.input,local.start + 6,local.end - local.start -1);
+		for (local.field in ['style','link']) {
+			// SHOULDDO: single RegEx here (or even for whole thing?)
+			local.newBody = replace(local.body, "<#local.field#>", "<field-#local.field#>","all");
+			local.newBody = replace(local.newBody, "</#local.field#>", "</field-#local.field#>","all");
+		}
+		return replace(arguments.input, local.body, local.newBody);
+	}
+
 	public string function getHTML(required layoutObj) {
 
 		addInners(arguments.layoutObj);
@@ -194,6 +189,7 @@ component name="layouts" {
 		
 		for (local.div in local.test) {
 			local.div.tagName("div");
+			// local.div.html("");
 		}
 
 		return arguments.layoutObj.layout.body().html();
@@ -279,12 +275,15 @@ component name="layouts" {
 		if (! StructKeyExists(arguments.layout,"content")) {
 			arguments.layout["content"] = {};
 		}
+
 		local.content = arguments.layout.layout.select("content[id]");
+		
 		if (IsDefined("local.content")) {
+
 			for (local.contentObj in local.content) {
 				
 				local.cs = this.coldsoup.XMLNode2Struct(local.contentObj);
-				
+
 				if (! StructKeyExists(local.cs,"id")) {
 					throw("ID not found for cs #local.contentObj.html()#");
 				}
@@ -298,26 +297,15 @@ component name="layouts" {
 					}
 				}
 				
-				// link tags defined as href as link can't be used in html definition (jsoup mangles it)
-				// to do: make decision on this. convert everything to href?
-				if (StructKeyExists(local.cs, "href")) {
-					local.cs["link"] = local.cs.href;
+				if (StructKeyExists(local.cs,"style")) {
+					local.cs.style = variables.parser.parse(local.cs.style);
+					variables.parser.addMainMedium(local.cs.style);					
 				}
-
-				// // convert class attribute to struct
-				// if (StructKeyExists(local.cs, "class")) {
-				// 	local.tmpClass = {};
-				// 	for (local.className in ListToArray(local.cs.class," ")) {
-				// 		local.tmpClass[local.className] = 1;
-				// 	}
-				// 	local.cs.class = local.tmpClass;
-				// }
 
 				arguments.layout["content"][local.cs.id] = local.cs;
 
 			}
 		}
-
 	}
 
 	/** inner divs applied to children of uberContainer 

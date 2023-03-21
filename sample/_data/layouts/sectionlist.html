@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Article list</title>
-	<meta name="description" content="">
+	<title>Section list</title>
+	<meta name="description" content="List sub sections">
 	<meta name="author" content="Tom peer">
 </head>
 
@@ -29,37 +29,39 @@
 		</div>	
 
 		<div id="maincol_bottom">
-			<content id="articlelist" class="scheme-listings" type="articlelist" data-notes="Notes here">
-				<title>Article list</title>
+			<content id="sectionlist" class="scheme-listings" type="articlelist" data-notes="Notes here">
+				<title>Section list</title>
+				<link>{link.{data.id}}</link>
 				<style>
-				item {
-					title {
-						text-transform:uppercase;
-					}
-					image {
-						padding:4px;
+					item {
+						title {
+							text-transform:uppercase;
+						}
+						image {
+							padding:4px;
+							hover {
+								padding:2px;
+								border {
+									width:2px;
+									color:panel-text;
+								}
+							}
+						}
+						padding:12px;
+						background {
+							color:light-panel-bg;
+						}
+						align:left;
+						imagewidth:33%;
+						margin:0 0 12px 0;
 						hover {
-							padding:2px;
-							border {
-								width:2px;
-								color:panel-text;
+							color:panel-text;
+							background {
+								color:panel-bg;
 							}
 						}
 					}
-					padding:12px;
-					background {
-						color:light-panel-bg;
-					}
-					align:left;
-					imagewidth:33%;
-					margin:0 0 12px 0;
-					hover {
-						color:panel-text;
-						background {
-							color:panel-bg;
-						}
-					}
-				}
+			
 				</style>
 			</content>			
 		</div>	
