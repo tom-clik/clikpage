@@ -182,7 +182,7 @@ component extends="utils.baseutils" {
 			styles           = arguments.styles,
 			content_sections = arguments.content_sections, 
 			media            = arguments.media,
-		    reload           = false 
+			reload           = false 
 		);
 
 		for (local.medium in arguments.media ) {

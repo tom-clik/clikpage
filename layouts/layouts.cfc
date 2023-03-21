@@ -138,8 +138,7 @@ component name="layouts" {
 				
 			}
 
-			// any styling
-			// TODO: linked stylesheets
+			// Parse template styling from style tag
 			local.style = local.layoutObj["layout"].select("style");
 			if (IsDefined("local.style")) {
 				local.layoutObj["style"] = variables.parser.parse( local.style.html() ) ;
@@ -162,15 +161,17 @@ component name="layouts" {
 	}
 
 	// Many field names aren't allowed by jsoup
-	// We have to prefix them with field- and then process them
+	// We have to prefix them with field- 
+	// (see xml2data in utils -- standard functionality)
 	private string function replaceFieldNames(required string input) {
 		local.start = find("<body>",arguments.input);
 		local.end = find("</body>",arguments.input);
 		local.body = Mid(arguments.input,local.start + 6,local.end - local.start -1);
-		local.newBody = replace(local.body, "<style>", "<field-style>","all");
-		local.newBody = replace(local.newBody, "</style>", "</field-style>","all");
-		local.newBody = replace(local.newBody, "<link>", "<field-link>","all");
-		local.newBody = replace(local.newBody, "</link>", "</field-link>","all");
+		for (local.field in ['style','link']) {
+			// SHOULDDO: single RegEx here (or even for whole thing?)
+			local.newBody = replace(local.body, "<#local.field#>", "<field-#local.field#>","all");
+			local.newBody = replace(local.newBody, "</#local.field#>", "</field-#local.field#>","all");
+		}
 		return replace(arguments.input, local.body, local.newBody);
 	}
 
