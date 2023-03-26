@@ -92,13 +92,18 @@ component accessors="true" extends="utils.baseutils" {
 		// WILLDO: create body classes that enforce precedence (WILL I ? What does this mean)
 		
 		for (local.layout in local.site.layouts) {
+
 			local.layoutObj = this.layoutsObj.getLayout(local.layout);
 			// build complete list of cs
 			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
 			// add to list of all containers used in site
 			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
 			// add to struct of all style schemes
-			variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
+			
+			if ( StructKeyExists ( local.layoutObj, "style") ) {
+				variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
+			}
+
 		}
 
 		// Load the settings for every content section. Combination
@@ -811,9 +816,9 @@ component accessors="true" extends="utils.baseutils" {
 
 			catch (Any e) {
 				writeOutput("<h2>issue with #contentid#</h2>");
-				writeDump(e.message);
-				writeDump(arguments.site.content[contentid]);
-				writeDump(e.TagContext[1]);
+				// writeDump(e.message);
+				// writeDump(arguments.site.content[contentid]);
+				// writeDump(e.TagContext[1]);
 			}
 
 		}
@@ -876,13 +881,18 @@ component accessors="true" extends="utils.baseutils" {
 		
 		for (local.layout in arguments.site.layouts) {
 			local.layoutObj = this.layoutsObj.getLayout(local.layout);
-			css &= "/* Layout #local.layout# */\n";
-			css &= this.settingsObj.layoutCss(
-				containers=local.layoutObj.containers, 
-				styles=local.layoutObj.style,
-				media=arguments.site.styleSettings.media,
-				selector="body.template-#local.layout#"
-			);
+			if ( StructKeyExists(local.layoutObj, "style") ) {
+				css &= "/* Layout #local.layout# */\n";
+				css &= this.settingsObj.layoutCss(
+					containers=local.layoutObj.containers, 
+					styles=local.layoutObj.style,
+					media=arguments.site.styleSettings.media,
+					selector="body.template-#local.layout#"
+				);
+			}
+			else {
+				css &= "/* No styles defined for layout #local.layout# */\n";
+			}
 		}
 		for (var id in arguments.site.containers) {
 			css &= "###id# {grid-area:#id#;}\n";
