@@ -923,11 +923,9 @@ component accessors="true" extends="utils.baseutils" {
 		css &=  "\n}\n";
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
 		
+		local.written = {};
 		for (local.layout in arguments.site.layouts) {
-			
-			css &= getLayoutCss(layoutName=local.layout,site=arguments.site);
-
-
+			css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
 		}
 
 		for (var id in arguments.site.containers) {
@@ -944,14 +942,21 @@ component accessors="true" extends="utils.baseutils" {
 		return css;
 
 	}
-	/** Get CSS for indivudal layout */
-	private string function getLayoutCss(required string layoutName, required struct site ) {
+	/** Get CSS for individial layout 
+	 * 
+	 * @layoutName    Name of layout
+	 * @site          Site struct
+	 * @written       Struct to ensure "extends" layouts only get written once
+	 */
+	private string function getLayoutCss(required string layoutName, required struct site, struct written={} ) {
 		
 		local.css = "";
 		local.layoutObj = this.layoutsObj.getLayout(arguments.layoutName);
 		
-		if (StructKeyExists(local.layoutObj, "extends" )) {
-			local.css &= getLayoutCss(layoutName=local.layoutObj.extends, site=arguments.site );
+		if (StructKeyExists(local.layoutObj, "extends" ) &&
+			NOT StructKeyExists( arguments.written, local.layoutObj.extends) ) {
+			local.css &= getLayoutCss(layoutName=local.layoutObj.extends, site=arguments.site, written=arguments.written );
+			arguments.written[local.layoutObj.extends] = 1;
 		}
 
 		local.styles = local.layoutObj.style ? : {};
@@ -964,6 +969,8 @@ component accessors="true" extends="utils.baseutils" {
 			media=arguments.site.styleSettings.media,
 			selector="body.template-#arguments.layoutName#"
 		);
+
+		arguments.written[arguments.layoutName] = 1;
 		
 		return local.css;
 	}
