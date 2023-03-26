@@ -559,9 +559,7 @@ component {
 		switch (arguments.name) {
 
 			case "padding": case "margin":case "width":case "max-width": case "max-height":case "min-width":case "min-height":
-				for (local.dimension in ListToArray(arguments.value," #chr(13)##chr(10)##chr(9)#")) {
-					retVal = ListAppend(retVal,displayDimension(local.dimension)," ");
-				}
+				retVal = displayDimension(arguments.value);
 				break;
 			case "color":
 				retVal = displayColor(arguments.value);
@@ -577,21 +575,24 @@ component {
 	/**
 	 * Add dimensions to plain number values and check vars
 	 */
-	private string function displayDimension(required string value) {
+	public string function displayDimension(required string value) {
 		
-		var retVal = arguments.value;
-		
-		if (isValid("numeric", retVal)) {
-			retVal &= "px";
+		var retVal = "";
+		for (local.dimension in ListToArray( arguments.value," #chr(13)##chr(10)##chr(9)#") ) {
+			if ( isValid( "numeric", local.dimension ) ) {
+				local.dimension &= "px";
+			}
+			else if ( Left(local.dimension,2) eq "--" ) {
+				local.dimension = "var(" & local.dimension & ")";
+			}
+
+			retVal = ListAppend(retVal,local.dimension," ");
 		}
-		else if (Left(retVal,2) eq "--") {
-			retVal = "var(" & retVal & ")";
-		}
-		
+
 		return retVal;
 	}
 
-	private string function displayColor(required string value) {
+	public string function displayColor(required string value) {
 		var retVal = "var(--#arguments.value#)";
 		return retVal;
 	}

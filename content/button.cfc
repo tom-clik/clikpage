@@ -33,7 +33,7 @@ component extends="contentSection" {
 	variables.description = "Display a navigation button and optional label";
 	variables.defaults = {
 		"title"="Untitled",
-		"content"="Undefined content",
+		"content"="",
 	};
 
 	function init(required content contentObj) {
@@ -64,23 +64,20 @@ component extends="contentSection" {
 			"label-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}]},
 			"icon-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}]},
 			"shape" = {"type":"text"},
-			"gap" = {"type":"dimension"},
+			"label-gap" = {"type":"dimension"},
 			"button-direction" = {"type":"list","options"=[{"value":"row"},{"value":"row-reverse"}]},
 			"button-align" = {"type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}]},
 			"link-color" = {"type":"color"},
 			"icon-width" = {"type":"dimension"},
-			"icon" = {"type":"dimension"},
-			"auto" = {"type":"boolean"}
+			"icon-height" = {"type":"dimension"},
+			"auto" = {"type":"boolean","default": false}
 		];
 
 		this.settings = {
-			"shape" = "left_arrow"
+			"shape" = "left_arrow",
+			"auto" = false
 		}
 
-		this.defaultStyles = {
-			"auto": false
-		}
-		
 		variables.shapes = {};
 
 		this.panels = [

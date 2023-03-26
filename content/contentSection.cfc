@@ -227,6 +227,7 @@ component {
 			ret &= arguments.selector & local.state.selector & " {\n";
 			
 			for (local.style in this.styleDefs) {
+				local.def = this.styleDefs[local.style];
 				// ignore complex settings
 				if (NOT StructKeyExists(this.settings, local.style)) {
 					if (StructKeyExists(local.state_styles,local.style)) {
@@ -234,7 +235,19 @@ component {
 							throw("incorrect value for #local.style#");
 						}
 						else {
-							ret &= "\t--#local.style#: " & local.state_styles[local.style] & ";\n";
+							switch (local.def.type) {
+								case "dimension":
+									local.val = variables.contentObj.settingsObj.displayDimension(local.state_styles[local.style]);
+								break;
+								case "color":
+									local.val = variables.contentObj.settingsObj.displayColor(local.state_styles[local.style]);
+								break;
+								default:
+									local.val = local.state_styles[local.style];
+								break;
+							}
+							// css &= this.settingsObj.CSSCommentHeader("Content styling");
+							ret &= "\t--#local.style#: " & local.val & ";\n";
 						}
 					}
 					else {

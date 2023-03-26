@@ -169,6 +169,8 @@
 		
 		<div id="header" class="scheme-spanning">
 			<content type="title" id="sitetitle">
+				<title>Site Title</title>
+				<description>The main site title</description>
 				<content>{{site.title}}</content>
 				<link>{{link.index}}</link>
 				<style>
@@ -179,6 +181,8 @@
 			</content>
 
 			<content type="title" id="sitedescription">
+				<title>Site Description</title>
+				<description>Strapline appears in header with title</description>
 				<content>{{site.meta.description}}</content>
 				<style>
 					position:absolute;
@@ -202,7 +206,10 @@
 					show:0;
 					auto:1;
 					shape:menu;
-					
+					link-color: paneltext;
+					hover {
+						link-color:paneltext;
+					}
 					@mobile {
 						position:absolute;
 						top:4px;
@@ -277,7 +284,6 @@
 						menu-item-padding:4px 12px;
 						menu-gap:0;
 						menu-item-border:1px;
-						menu-border-color:myfavcolor;
 						stretch:0;
 						@mobile {
 							align:left;
