@@ -18,7 +18,8 @@ scheme-intros {
 
 scheme-navbuttons {
 	grid {
-		columns:2;
+		grid-mode: fixedcols;
+		grid-columns:2;
 	}
 }
 
@@ -31,6 +32,7 @@ scheme-button {
 }
 
 scheme-navnext {
+	label-align: right;
 	button-direction:row-reverse;
 	shape:right_arrow;
 }

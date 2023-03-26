@@ -60,17 +60,18 @@ component extends="contentSection" {
 		];
 
 		this.styleDefs = [
-			"align":{"type":"halign"},
-			"label-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}]},
-			"icon-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}]},
+			"label-align":{"type":"halign","default":"left"},
+			"label-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}],"default":"inline-block"},
+			"icon-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}],"default":"inline-block"},
 			"shape" = {"type":"text"},
 			"label-gap" = {"type":"dimension"},
-			"button-direction" = {"type":"list","options"=[{"value":"row"},{"value":"row-reverse"}]},
-			"button-align" = {"type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}]},
+			"button-direction" = {"name":"Label alignment","description":"Show the label on the left or right of the button","type":"list","options"=[{"value":"row", "display":"Right"},{"value":"row-reverse", "display":"Left"}],"default":"row"},
+			"button-align" = {"name":"Vertical Icon alignment","description":"Adjust the vertical alignment of the icon where you have expanded the height of the whole button","type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}],"default":"center"},
+			"link-color" = {"type":"color"},
 			"link-color" = {"type":"color"},
 			"icon-width" = {"type":"dimension"},
 			"icon-height" = {"type":"dimension"},
-			"auto" = {"type":"boolean","default": false}
+			"auto" = {"type":"boolean","default": false,"name":"Auto open target","description":"function WIP. Calls open method on target specified in link."}
 		];
 
 		this.settings = {

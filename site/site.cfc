@@ -99,10 +99,11 @@ component accessors="true" extends="utils.baseutils" {
 			// add to list of all containers used in site
 			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
 			// add to struct of all style schemes
-			
-			if ( StructKeyExists ( local.layoutObj, "style") ) {
-				variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
-			}
+			// TODO: this is a mistake. We don't want layout styling in the 
+			// global scope.
+			// if ( StructKeyExists ( local.layoutObj, "style") ) {
+			// 	variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
+			// }
 
 		}
 
@@ -915,18 +916,17 @@ component accessors="true" extends="utils.baseutils" {
 			local.css &= getLayoutCss(layoutName=local.layoutObj.extends, site=arguments.site );
 		}
 
-		if ( StructKeyExists(local.layoutObj, "style") ) {
-			local.css &= "/* Layout #arguments.layoutName# */\n";
-			local.css &= this.settingsObj.layoutCss(
-				containers=local.layoutObj.containers, 
-				styles=local.layoutObj.style,
-				media=arguments.site.styleSettings.media,
-				selector="body.template-#arguments.layoutName#"
-			);
-		}
-		else {
-			local.css &= "/* No styles defined for layout #arguments.layoutName# */\n";
-		}
+		local.styles = local.layoutObj.style ? : {};
+		variables.utils.utils.deepStructAppend(local.styles, arguments.site.style,false);
+
+		local.css &= "/* Layout #arguments.layoutName# */\n";
+		local.css &= this.settingsObj.layoutCss(
+			containers=local.layoutObj.containers, 
+			styles=local.styles,
+			media=arguments.site.styleSettings.media,
+			selector="body.template-#arguments.layoutName#"
+		);
+		
 		return local.css;
 	}
 }
