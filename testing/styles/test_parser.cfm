@@ -11,7 +11,12 @@ Just reads a sample stylesheet and passes it to the parser.
 <cfscript>
 testFile = expandPath("../../sample/_data/styles/sample_layouts.css");
 parser = new clikpage.settings.cssParser();
-WriteDump(parser.parse(fileRead(testFile)));
+styles = parser.parse(fileRead(testFile));
+for (key in styles) {
+	variables.parser.addMainMedium(styles[key]);			
+}
+
+WriteDump(styles);
 
 
 </cfscript>

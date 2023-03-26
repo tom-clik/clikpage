@@ -5,7 +5,6 @@ A sample CSS file for a single layout
 // TODO: move to the testing folder. This isn't part of the sample site
 
 */
-
 .scheme-spanning {
 	inner {
 		max-width:var(--sitewidth);
@@ -13,17 +12,20 @@ A sample CSS file for a single layout
 		padding:var(--sitepadding);
 	}
 	@mobile {
-			inner {
-				max-width:auto;
-				padding:var(--sitepaddingmobile);
-			}
+		inner {
+			max-width:auto;
+			padding:var(--sitepaddingmobile);
+		}
 	}
 }
 
 body {
+	color:textcolor;
+	font-family:bodyfont;
+	font-size:80%;
 	padding:0;
 }
-			
+
 #ubercontainer {
 	height:100%;
 	padding:0 0 20px 0;
@@ -62,6 +64,10 @@ body {
 
 #topnav {
 	padding:8 0;
+	background {
+		color:light-panel-bg;
+	}
+	
 	@mobile {
 		padding:0;
 	}
@@ -83,6 +89,11 @@ body {
 			grid-mode:none;
 		}
 	}
+
+	background {
+		color:panelbg;
+	}
+	
 }
 
 #content {
@@ -129,7 +140,7 @@ body {
 		grid-template-areas: "footer_right footer_mid footer_left";
 		grid-template-columns:20% 30% minmax(0, 1fr);
 	}
-
+	
 	@mobile {
 		grid {
 			grid-mode:none;
@@ -146,4 +157,6 @@ body {
 	}
 }
 
-		
+.scheme-title {
+	
+}

@@ -105,11 +105,14 @@ component name="layouts" {
 
 			local.html = FileRead(local.filename,variables.charset);
 			local.html = replaceFieldNames(local.html);
-
+			// Jsoup wrecking style info in header. Get it out before parsing
+			local.metaInfo = {};
+			local.html = replaceMetaInfo(local.html,local.metaInfo);
+			
 			local.layoutObj = {"id"=arguments.id};
 
 			local.layoutObj["layout"] = this.coldsoup.parse(local.html);
-
+			
 			local.title = local.layoutObj["layout"].select("title").first().text();
 			
 			if (IsDefined("local.title")) {
@@ -123,11 +126,8 @@ component name="layouts" {
 					local.layoutObj[local.metaTag.attr("name")] = local.metaTag.attr("content") ;
 				}
 			}
-
 			
 			local.body = this.coldsoup.XMLNode2Struct(local.layoutObj.layout.select("body").first());
-			
-
 			
 			// data attributes
 			if (StructKeyExists(local.body,"data")) {
@@ -135,17 +135,18 @@ component name="layouts" {
 					local.layoutObj["extends"] = local.body.data.extends;
 					extendLayout(local.layoutObj, local.body.data.extends);		
 				}
-				
 			}
 
 			// Parse template styling from style tag
-			local.style = local.layoutObj["layout"].select("style");
-			if (IsDefined("local.style")) {
-				local.layoutObj["style"] = variables.parser.parse( local.style.html() ) ;
+			if ( StructKeyExists( local.metaInfo, "style" ) ) {
+				local.layoutObj["style"] = variables.parser.parse( local.metaInfo.style ) ;
+				
 				for (local.key in local.layoutObj["style"]) {
-					variables.parser.addMainMedium(local.layoutObj["style"][local.key]);			
+					variables.parser.addMainMedium(local.layoutObj["style"][local.key]);
 				}
+				
 			}
+
 			parseContainers(local.layoutObj);
 			parseContentSections(local.layoutObj);
 
@@ -164,16 +165,37 @@ component name="layouts" {
 	// We have to prefix them with field- 
 	// (see xml2data in utils -- standard functionality)
 	private string function replaceFieldNames(required string input) {
-		local.start = find("<body>",arguments.input);
+		local.start = find("<body",arguments.input);
 		local.end = find("</body>",arguments.input);
 		local.body = Mid(arguments.input,local.start + 6,local.end - local.start -1);
+		local.newBody = local.body;
+		
 		for (local.field in ['style','link']) {
 			// SHOULDDO: single RegEx here (or even for whole thing?)
-			local.newBody = replace(local.body, "<#local.field#>", "<field-#local.field#>","all");
+			local.newBody = replace(local.newBody, "<#local.field#>", "<field-#local.field#>","all");
 			local.newBody = replace(local.newBody, "</#local.field#>", "</field-#local.field#>","all");
 		}
 		return replace(arguments.input, local.body, local.newBody);
 	}
+	// Jsoup wrecks some of our CSS styling. Before parsing, remove it into a
+	// a struct
+	private string function replaceMetaInfo(required string input, required struct metaInfo) {
+
+		local.start = find("<head>",arguments.input);
+		local.end = find("</head>",arguments.input);
+		local.head = Mid(arguments.input,local.start + 6,local.end - local.start -1);
+		local.newHead = local.head;
+		for (local.tag in ['style']) {
+			local.res = reMatch("\<#local.tag#\>(.*)\<\/#local.tag#\>", local.head);
+			if ( ArrayLen(local.res) ) {
+				arguments.metaInfo[local.tag] = ReReplace(local.res[1],"\<\/?#local.tag#\>","","all");
+				local.newHead = Replace(local.newHead, local.res[1], "");
+			}
+		}
+
+		return replace(arguments.input, local.head, local.newHead);;
+	}
+
 
 	public string function getHTML(required layoutObj) {
 

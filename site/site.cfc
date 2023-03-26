@@ -92,13 +92,18 @@ component accessors="true" extends="utils.baseutils" {
 		// WILLDO: create body classes that enforce precedence (WILL I ? What does this mean)
 		
 		for (local.layout in local.site.layouts) {
+
 			local.layoutObj = this.layoutsObj.getLayout(local.layout);
 			// build complete list of cs
 			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
 			// add to list of all containers used in site
 			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
 			// add to struct of all style schemes
-			variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
+			
+			if ( StructKeyExists ( local.layoutObj, "style") ) {
+				variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
+			}
+
 		}
 
 		// Load the settings for every content section. Combination
@@ -737,85 +742,89 @@ component accessors="true" extends="utils.baseutils" {
 			throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
 		}
 		
+		local.errorsHtml = "";
 		// todo: add as method of content object
 		for (var contentid in local.rc.layout.content) {
-			try {
-				var csdata = local.rc.layout.content[contentid];
-				// TODO: remove true
-				if (TRUE OR ! StructKeyExists(arguments.site.content, contentid)) {
-					
-					
-					local.data = {};
-					local.datatype = "sections";
-					// hardwired for list types at the minute. what to do???
-					// reasonably easy to define data sets but what about the links
-					// TO DO: linkto functionality for the lists
-					// article/image lists might link to another section
-					// sub section links need to link to the section
-					switch (arguments.site.content[contentid].type) {
-						case "articlelist":
-						case "imagegrid":
-							
-							if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
-								arguments.site.content[contentid].data = getDataSet(
-									site=arguments.site,
-									dataset=arguments.site.content[contentid].dataset
-								);
-								local.datatype = arguments.site.content[contentid].dataset.type;
-								
 			
-							}
-							else if ( StructKeyExists( local.rc.sectionObj,"dataset" ) ) {
-								local.datatype = local.rc.sectionObj.dataset.type;
-								arguments.site.content[contentid].data = local.rc.sectionObj["data"];
-							}
-							else {
-								throw("No data set defined");
-							}
-
-							break;
-						case "menu":
-							if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
-								
-								local.menuDataSet = getDataSet(
-									site=arguments.site,
-									dataset=arguments.site.content[contentid].dataset
-								);
-								local.datatype = arguments.site.content[contentid].dataset.type;
-							}
-							else {
-								local.menuDataSet = arguments.site.content[contentid].data = getDataSet(site=arguments.site,dataset={"tag"=contentid,type="sections"});
-								local.datatype = "sections";
-							}
-							arguments.site.content[contentid].data = menuData(arguments.site,local.menuDataSet);
-							
-							break;
+			var csdata = local.rc.layout.content[contentid];
+			// TODO: remove true
+			if (TRUE OR ! StructKeyExists(arguments.site.content, contentid)) {
+				
+				
+				local.data = {};
+				local.datatype = "sections";
+				// hardwired for list types at the minute. what to do???
+				// reasonably easy to define data sets but what about the links
+				// TO DO: linkto functionality for the lists
+				// article/image lists might link to another section
+				// sub section links need to link to the section
+				switch (arguments.site.content[contentid].type) {
+					case "articlelist":
+					case "imagegrid":
 						
-					}
+						if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
+							arguments.site.content[contentid].data = getDataSet(
+								site=arguments.site,
+								dataset=arguments.site.content[contentid].dataset
+							);
+							local.datatype = arguments.site.content[contentid].dataset.type;
+							
+		
+						}
+						else if ( StructKeyExists( local.rc.sectionObj,"dataset" ) ) {
+							local.datatype = local.rc.sectionObj.dataset.type;
+							arguments.site.content[contentid].data = local.rc.sectionObj["data"];
+						}
+						else {
+							throw("No data set defined");
+						}
 
-					local.data = arguments.site[local.datatype];
-
+						break;
+					case "menu":
+						if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
+							
+							local.menuDataSet = getDataSet(
+								site=arguments.site,
+								dataset=arguments.site.content[contentid].dataset
+							);
+							local.datatype = arguments.site.content[contentid].dataset.type;
+						}
+						else {
+							local.menuDataSet = arguments.site.content[contentid].data = getDataSet(site=arguments.site,dataset={"tag"=contentid,type="sections"});
+							local.datatype = "sections";
+						}
+						arguments.site.content[contentid].data = menuData(arguments.site,local.menuDataSet);
+						
+						break;
+					
 				}
-				
-				local.tag=local.rc.layout.layout.select("###contentid#").first();
-				
-				// TO do: use display method
-				// and cache results
-				local.tag.html(this.contentObj.html(content=arguments.site.content[contentid],data=local.data));
-				
-				local.tag.attr("class",this.contentObj.getClassList(arguments.site.content[contentid]));
-				
-				this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.content[contentid],local.data));
-				
-			}
 
+				local.data = arguments.site[local.datatype];
+
+			}
+			
+			local.tag=local.rc.layout.layout.select("###contentid#").first();
+			
+			// TO do: use display method
+			// and cache results
+			try {
+				local.html = this.contentObj.html(content=arguments.site.content[contentid],data=local.data);
+			}
 			catch (Any e) {
-				writeOutput("<h2>issue with #contentid#</h2>");
-				writeDump(e.message);
-				writeDump(arguments.site.content[contentid]);
-				writeDump(e.TagContext[1]);
-			}
+				local.html = "issue with #contentid#";
+				savecontent variable="local.debug" {
+					writeDump(e);
+				}
+				local.errorsHtml &= local.debug;
 
+			}	
+			local.tag.html(local.html);
+			
+			local.tag.attr("class",this.contentObj.getClassList(arguments.site.content[contentid]));
+			
+			this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.content[contentid],local.data));
+			
+			
 		}
 		
 		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
@@ -823,6 +832,7 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
 
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
+		pageContent.body &= local.errorsHtml;
 
 		return pageContent;
 	}
@@ -875,15 +885,12 @@ component accessors="true" extends="utils.baseutils" {
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
 		
 		for (local.layout in arguments.site.layouts) {
-			local.layoutObj = this.layoutsObj.getLayout(local.layout);
-			css &= "/* Layout #local.layout# */\n";
-			css &= this.settingsObj.layoutCss(
-				containers=local.layoutObj.containers, 
-				styles=local.layoutObj.style,
-				media=arguments.site.styleSettings.media,
-				selector="body.template-#local.layout#"
-			);
+			
+			css &= getLayoutCss(layoutName=local.layout,site=arguments.site);
+
+
 		}
+
 		for (var id in arguments.site.containers) {
 			css &= "###id# {grid-area:#id#;}\n";
 		}
@@ -897,5 +904,29 @@ component accessors="true" extends="utils.baseutils" {
 		
 		return css;
 
+	}
+	/** Get CSS for indivudal layout */
+	private string function getLayoutCss(required string layoutName, required struct site ) {
+		
+		local.css = "";
+		local.layoutObj = this.layoutsObj.getLayout(arguments.layoutName);
+		
+		if (StructKeyExists(local.layoutObj, "extends" )) {
+			local.css &= getLayoutCss(layoutName=local.layoutObj.extends, site=arguments.site );
+		}
+
+		if ( StructKeyExists(local.layoutObj, "style") ) {
+			local.css &= "/* Layout #arguments.layoutName# */\n";
+			local.css &= this.settingsObj.layoutCss(
+				containers=local.layoutObj.containers, 
+				styles=local.layoutObj.style,
+				media=arguments.site.styleSettings.media,
+				selector="body.template-#arguments.layoutName#"
+			);
+		}
+		else {
+			local.css &= "/* No styles defined for layout #arguments.layoutName# */\n";
+		}
+		return local.css;
 	}
 }
