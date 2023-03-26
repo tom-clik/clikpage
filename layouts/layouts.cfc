@@ -164,13 +164,15 @@ component name="layouts" {
 	// Many field names aren't allowed by jsoup
 	// We have to prefix them with field- 
 	// (see xml2data in utils -- standard functionality)
-	private string function replaceFieldNames(required string input) {
+	// WILLDO: this should be private and there should
+	// be a single method to parse thigns
+	public string function replaceFieldNames(required string input) {
 		local.start = find("<body",arguments.input);
 		local.end = find("</body>",arguments.input);
 		local.body = Mid(arguments.input,local.start + 6,local.end - local.start -1);
 		local.newBody = local.body;
 		
-		for (local.field in ['style','link']) {
+		for (local.field in ['style','link','caption','image']) {
 			// SHOULDDO: single RegEx here (or even for whole thing?)
 			local.newBody = replace(local.newBody, "<#local.field#>", "<field-#local.field#>","all");
 			local.newBody = replace(local.newBody, "</#local.field#>", "</field-#local.field#>","all");
@@ -286,7 +288,7 @@ component name="layouts" {
 	 * Every tag or attribute is added as a struck key. Data attributes are added to a data struct.
 	 *
 	 **/
-	private void function parseContentSections(required struct layout) {
+	public void function parseContentSections(required struct layout) {
 		
 		if (! StructKeyExists(arguments.layout,"content")) {
 			arguments.layout["content"] = {};

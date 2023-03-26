@@ -35,17 +35,9 @@
 	
 	<div id="xcol">
 
-		<content id="image" type="image" class="scheme-box">
-			<title>Image tests</title>
-			<field-image>{{record.image}}</field-image>
-		</content>
-
-		<div id="navbuttons" class="scheme-navbuttons">
-			<!-- TODO: library items. Sometimes we do want to
-			share content between different layouts.
-			in that case we want a generic content definition
-			Currently these are defined in photodetail -->			
-		</div>
+		<content id="articleimage" />
+		
+		
 	</div>
 	
 	<div id="maincol">
@@ -76,7 +68,10 @@
 		</div>	
 
 		<div id="maincol_bottom">
-			<!-- flex-start flex-end flex-between flex-center flex-around] -->
+			<div id="navbuttonsbottom" class="scheme-navbuttons">
+				<content id="navprev" />
+				<content id="navnext" />			
+			</div>
 			
 		</div>	
 

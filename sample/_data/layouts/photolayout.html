@@ -21,22 +21,8 @@
 		</content>
 		
 		<div id="navbuttons" class="scheme-navbuttons">
-			<content id="navprev" type="button" class="scheme-button">
-				<title>Previous button</title>
-				<content>
-					{{record.previous_title}}				
-				</content>
-				<link>{{record.previous_link}}</link>
-			</content>
-			<content id="navnext" type="button" class="scheme-button">
-				<title>Next button</title>
-				<link>
-					{{record.next_link}}
-				</link>
-				<content>
-					{{record.next_title}}				
-				</content>				
-			</content>
+			<content id="navprev" />
+			<content id="navnext" />			
 		</div>
 
 	</div>
@@ -47,7 +33,7 @@
 			<div id="photo">	
 				<content id="photolayout-details" type="image" class="scheme-box">
 					<title>Image tests</title>
-					<field-image>{{record.image}}</field-image>
+					<image>{{record.image}}</image>
 					<style>
 						width:90%;
 						max-height:100%;
