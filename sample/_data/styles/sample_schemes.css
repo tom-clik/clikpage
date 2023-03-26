@@ -23,7 +23,7 @@ scheme-navbuttons {
 }
 
 scheme-button {
-	icon-width:16;
+	icon-width:32;
 	hover {
 		link-color:accent;
 	}
