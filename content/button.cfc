@@ -66,7 +66,7 @@ component extends="contentSection" {
 			"shape" = {"type":"text"},
 			"label-gap" = {"type":"dimension"},
 			"button-direction" = {"name":"Label alignment","description":"Show the label on the left or right of the button","type":"list","options"=[{"value":"row", "display":"Right"},{"value":"row-reverse", "display":"Left"}],"default":"row"},
-			"button-align" = {"name":"Vertical Icon alignment","description":"Adjust the vertical alignment of the icon where you have expanded the height of the whole button","type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}],"default":"center"},
+			"button-align" = {"name":"Button alignment","description":"Align button in container","type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}],"default":"center"},
 			"link-color" = {"type":"color"},
 			"link-color" = {"type":"color"},
 			"icon-width" = {"type":"dimension"},

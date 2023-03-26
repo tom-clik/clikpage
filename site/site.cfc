@@ -68,13 +68,14 @@ component accessors="true" extends="utils.baseutils" {
 		parseData(site=local.site,data=local.site.sections,type="sections");
 
 		// load other data from files
-		loadData(site=local.site,directory=getDirectoryFromPath(arguments.filename));
+		loadData( site=local.site,directory=local.root );
 		
 		// process styling from layouts
 		loadSiteLayouts(local.site);
 
 		// complete struct of all cs
-		local.site["content"] = {};
+		loadContent( site=local.site, directory=local.root );
+
 		// list of all containers used in site
 		local.site["containers"] = [=];
 		// complete struct of all styles - may have globale settings like schemes
@@ -86,11 +87,6 @@ component accessors="true" extends="utils.baseutils" {
 			local.site["style"] = {};
 		}
 
-		// CSS for layouts
-		// watch order -- must do in order they appear in stylesheet
-		// which must match the precendence for inheritance (known issue)
-		// WILLDO: create body classes that enforce precedence (WILL I ? What does this mean)
-		
 		for (local.layout in local.site.layouts) {
 
 			local.layoutObj = this.layoutsObj.getLayout(local.layout);
@@ -98,13 +94,6 @@ component accessors="true" extends="utils.baseutils" {
 			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
 			// add to list of all containers used in site
 			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
-			// add to struct of all style schemes
-			// TODO: this is a mistake. We don't want layout styling in the 
-			// global scope.
-			// if ( StructKeyExists ( local.layoutObj, "style") ) {
-			// 	variables.utils.utils.deepStructAppend(local.site.style,local.layoutObj.style);
-			// }
-
 		}
 
 		// Load the settings for every content section. Combination
@@ -166,7 +155,56 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 
-	/** Convert XML parsed array into struct keyed by code 
+	/** 
+	 * @hint Load content items from files
+	 *
+	 * Content items can be defined in their own files. Import them and add
+	 * them to the general struct.
+	 *
+	 * We first concatentate them if they are in separate files and then
+	 * call the parseContentSections method of the layouts component. 
+	 *
+	 */
+	private void function loadContent(
+		required struct site, 
+		required string directory
+		) {
+		
+		if (! StructKeyExists(arguments.site, "content")) {
+			arguments.site.content = {};
+			return;
+		}
+
+		if (! isArray(arguments.site.content) ) {
+			arguments.site.content = [arguments.site.content];
+		}
+
+		for (local.link in arguments.site.content) {
+			local.match = ListLast(local.link.import, "\/");
+			local.dir = arguments.directory & "/" & Replace(local.link.import, local.match, "");
+			local.glob = DirectoryList(local.dir,true,"path",local.match);
+		}
+
+		local.csData = "";
+		for ( local.csFile in local.glob ) {
+			local.csData &= FileRead(local.csFile);
+		}
+
+		local.html = this.layoutsObj.replaceFieldNames(local.csData);
+		local.layout = {"id"="importCSS"};
+		local.layout["layout"] = this.layoutsObj.coldsoup.parse(local.html);
+		this.layoutsObj.parseContentSections(local.layout);
+		
+		arguments.site.content = local.layout.content;
+		
+	}
+
+	/** 
+	 * @hint Convert XML parsed array into struct keyed by code 
+	 *
+	 * Slightly unusual here. Swme function used for sections, articles, photos etc
+	 * Possibly revisit
+	 * 
 	 * @site Site struct
 	 * @data Array of data records
 	 * @type Data type (key from site.data)
@@ -817,8 +855,8 @@ component accessors="true" extends="utils.baseutils" {
 					writeDump(e);
 				}
 				local.errorsHtml &= local.debug;
+			}
 
-			}	
 			local.tag.html(local.html);
 			
 			local.tag.attr("class",this.contentObj.getClassList(arguments.site.content[contentid]));

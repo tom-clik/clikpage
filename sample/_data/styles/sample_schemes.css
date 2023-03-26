@@ -10,6 +10,11 @@ scheme-title {
 	font-weight:300;
 }
 
+scheme-articletitle {
+	font-size:1.8em;
+	color:textcolor;
+}
+
 scheme-intros {
 	font-weight:bold;
 	font-style:italic;
@@ -21,6 +26,10 @@ scheme-navbuttons {
 		grid-mode: fixedcols;
 		grid-columns:2;
 	}
+}
+
+scheme-navbutton {
+	button-align: flex-start;
 }
 
 scheme-button {
