@@ -164,7 +164,7 @@ component name="layouts" {
 	// Many field names aren't allowed by jsoup
 	// We have to prefix them with field- 
 	// (see xml2data in utils -- standard functionality)
-	// WILLDO: this should be private and their should
+	// WILLDO: this should be private and there should
 	// be a single method to parse thigns
 	public string function replaceFieldNames(required string input) {
 		local.start = find("<body",arguments.input);
@@ -172,7 +172,7 @@ component name="layouts" {
 		local.body = Mid(arguments.input,local.start + 6,local.end - local.start -1);
 		local.newBody = local.body;
 		
-		for (local.field in ['style','link']) {
+		for (local.field in ['style','link','caption','image']) {
 			// SHOULDDO: single RegEx here (or even for whole thing?)
 			local.newBody = replace(local.newBody, "<#local.field#>", "<field-#local.field#>","all");
 			local.newBody = replace(local.newBody, "</#local.field#>", "</field-#local.field#>","all");
