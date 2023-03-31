@@ -48,12 +48,13 @@ info = siteObj.getRecordSetInfo(site=site,dataset=records2,id=record.id);
 writeDump(var=info,label="Record set info");
 
 dataset = {
-	parent="about",
+	tag="{parent}",
 	type="sections"
 };
 
-sections = siteObj.getDataSet(site=site,dataset=dataset);
+sections = siteObj.getDataSet(site=site,dataset=dataset,fields={"parent":"about"});
 data = siteObj.getRecords(site=site,dataset=sections,type="sections");
 writeDump(var=sections,label="Sub sections data set");
 writeDump(var=data,label="Sub sections records");
+
 </cfscript>

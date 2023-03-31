@@ -54,7 +54,6 @@
 				<![CDATA[A list of sub sections]]>
 			</description>
 			<layout>sectionlist</layout>
-			<dataset parent="about" type="sections"></dataset>
 			<tags>mainmenu,footermenu</tags>
 		</section>
 

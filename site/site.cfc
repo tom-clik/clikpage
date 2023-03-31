@@ -66,6 +66,7 @@ component accessors="true" extends="utils.baseutils" {
 
 		// load sections
 		parseData(site=local.site,data=local.site.sections,type="sections");
+		checkParentSections(site=local.site);
 
 		// load other data from files
 		loadData( site=local.site,directory=local.root );
@@ -154,6 +155,25 @@ component accessors="true" extends="utils.baseutils" {
 		structDelete(arguments.site,"data");
 
 	}
+
+	// Add children (array) to parent sections
+	// And also {parent} tag to sub sections
+	private void function checkParentSections( required struct site ) {
+
+		for ( local.section_code in arguments.site.sections ) {
+			local.section = arguments.site.sections[local.section_code];
+			if ( StructKeyExists( local.section, "parent" ) ) {
+				local.parent = arguments.site.sections[local.section.parent];
+				if ( ! StructKeyExists( local.parent, "children" ) ) {
+					local.parent["children"] = [];
+				}
+				ArrayAppend( local.parent.children, local.section_code );
+				local.section.tags["#local.section.parent#"] = 1;
+			}
+		}
+
+	}
+
 
 	/** 
 	 * @hint Load content items from files
@@ -283,6 +303,13 @@ component accessors="true" extends="utils.baseutils" {
 				}
 				break;
 		}
+
+		// convert tags list to set
+		local.tagsStr = [=];
+		for (local.tag in ListToArray(arguments.data.tags)) {
+			local.tagsStr[local.tag] = 1;
+		}
+		arguments.data.tags = local.tagsStr;
 		
 	}
 
@@ -351,48 +378,42 @@ component accessors="true" extends="utils.baseutils" {
 	 * Get array of data IDs that match data set filter criteria
 	 * 
 	 * @site         Site struct
-	 * @tag          see notes. WIP to be replaced by criteria for search
+	 * @dataset      see notes. 
+	 * @data         Replace {field} in the dataset with these values
 	 */
 	public array function getDataSet(
 		required struct site, 
-		required struct dataset
+		required struct dataset,
+				 struct fields = {}
 		) {
 
-		StructAppend(arguments.dataset,{"tag":"","parent":"","type":"articles"},false);
+		StructAppend(arguments.dataset,{"tag":"","type":"articles"},false);
 
 		local.data = [];
 
-		if (arguments.dataset.tag eq "" AND arguments.dataset.parent eq "") {
+		// return all data for a type if no filter
+		if (arguments.dataset.tag eq "") {
 			return structKeyArray(arguments.site[arguments.dataset.type]);
 		}
 
+		// alias the data we are looking at
 		local.ref = arguments.site[arguments.dataset.type];
-		local.isTagSet = arguments.dataset.tag neq "";
-		
-		if (! local.isTagSet AND NOT StructKeyExists(arguments.dataset,"parent")) {
-			local.extendedinfo = {dataset=arguments.dataset};
-			throw(
-				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Invalid dataset definition",
-				detail       = "A dataset must have a tag or a parent defined",
-				errorcode    = "site.getDataSet"		
-			);
-			
+		local.tag =  arguments.dataset.tag;
+
+		for (local.field in arguments.fields) {
+			local.tag = Replace(local.tag, "{" & local.field & "}", arguments.fields[local.field])
 		}
+
 		for (local.id in local.ref) {
 			
 			local.record = local.ref[local.id];
 
-			if (local.isTagSet) {
-				if (ListFindNoCase(local.record.tags, arguments.dataset.tag)) {
-					ArrayAppend(local.data,local.id);
-				}
-			}
-			else if ( StructKeyExists(local.record,"parent") AND local.record.parent eq arguments.dataset.parent ) {
+			if (  local.record.tags.keyExists( local.tag ) ) {
 				ArrayAppend(local.data,local.id);
 			}
+			
 		}
-
+		
 		return local.data;
 	}
 
@@ -757,6 +778,9 @@ component accessors="true" extends="utils.baseutils" {
 
 			A section can have a dataset and the default dataset for an
 			item can be that.
+
+			Note that a child section will by default inherit the parent
+			data set.
 			
 			They can also define their data sets themselves. For a menu,
 			this default is a search by a tag.
@@ -764,18 +788,21 @@ component accessors="true" extends="utils.baseutils" {
 			We want to cache the results.
 
 		 */
-		if (StructKeyExists(local.rc.sectionObj,"dataset")) {
+		
+		loadSectionData(site=arguments.site, section=local.rc.sectionObj);
+
+		if (ArrayLen (local.rc.sectionObj.data) ) {
 			
-			local.rc.sectionObj["data"] = getDataSet(site=arguments.site,dataset=local.rc.sectionObj.dataset);
+			local.type = getDataType(local.rc.sectionObj);
 
 			// always gets record -- maybe do something about this
 			if (arguments.pageRequest.id eq "") {
 				arguments.pageRequest.id = local.rc.sectionObj["data"][1];
 			}
 
-			local.rc.record = Duplicate(getRecord(site=arguments.site,id=arguments.pageRequest.id,type=local.rc.sectionObj.dataset.type));
+			local.rc.record = Duplicate(getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
 
-			addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.rc.sectionObj.dataset.type);
+			addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.type);
 		}
 		else if ( arguments.pageRequest.id != "" ) {
 			throw(message="section data not defined",detail="You must define a dataset for a section to use the record functionality");
@@ -803,14 +830,14 @@ component accessors="true" extends="utils.baseutils" {
 						if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
 							arguments.site.content[contentid].data = getDataSet(
 								site=arguments.site,
-								dataset=arguments.site.content[contentid].dataset
+								dataset=arguments.site.content[contentid].dataset,
+								fields={"parent":arguments.pageRequest.section}
 							);
 							local.datatype = arguments.site.content[contentid].dataset.type;
-							
-		
+
 						}
-						else if ( StructKeyExists( local.rc.sectionObj,"dataset" ) ) {
-							local.datatype = local.rc.sectionObj.dataset.type;
+						else if ( StructKeyExists( local.rc.sectionObj,"data" ) ) {
+							local.datatype = local.type = getDataType(local.rc.sectionObj);
 							arguments.site.content[contentid].data = local.rc.sectionObj["data"];
 						}
 						else {
@@ -820,15 +847,25 @@ component accessors="true" extends="utils.baseutils" {
 						break;
 					case "menu":
 						if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
+							local.fields = {};
+							if ( local.rc.sectionObj.keyExists( "parent" )) {
+								local.fields["parent"] = local.rc.sectionObj.parent;
+							}
 							
 							local.menuDataSet = getDataSet(
 								site=arguments.site,
-								dataset=arguments.site.content[contentid].dataset
+								dataset=arguments.site.content[contentid].dataset,
+								fields=local.fields
 							);
 							local.datatype = arguments.site.content[contentid].dataset.type;
+							
 						}
 						else {
-							local.menuDataSet = arguments.site.content[contentid].data = getDataSet(site=arguments.site,dataset={"tag"=contentid,type="sections"});
+							local.menuDataSet = arguments.site.content[contentid].data = getDataSet(
+								site=arguments.site,
+								dataset={"tag"=contentid,type="sections"},
+								fields={"parent":arguments.pageRequest.section}
+							);
 							local.datatype = "sections";
 						}
 						arguments.site.content[contentid].data = menuData(arguments.site,local.menuDataSet);
@@ -872,7 +909,54 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		pageContent.body &= local.errorsHtml;
 
+		savecontent variable="local.temp" {
+			writeDump(local.rc.sectionObj);
+			// writeDump(arguments.site.content["sectionmenu"]);
+		}
+		pageContent.body &= local.temp;
+
+
+
 		return pageContent;
+	}
+
+	/**
+	 * @hint Load data for section into section.data
+	 * 
+	 */
+	private void function loadSectionData(site, section) {
+		if ( ! StructKeyExists( arguments.section, "data" ) ) {
+			if ( StructKeyExists(arguments.section, "dataset") ) {
+				arguments.section.data = getDataSet(
+					site=arguments.site,
+					dataset=arguments.section.dataset
+				);
+			}
+			else if ( StructKeyExists(arguments.section, "children") ) {
+				arguments.section.data = arguments.section.children;
+			}
+			else if ( StructKeyExists(arguments.section, "parent") ) {
+				arguments.section.data = arguments.site.sections[arguments.section.parent].children;
+			}
+			else {
+				arguments.section.data = [];
+			}
+		}
+	}
+
+	/**
+	 * Get type of data in section data set
+	 *
+	 */
+	private string function getDataType(section) {
+
+		local.type = "sections";
+				
+		if ( StructKeyExists(arguments.section, "dataset") ) {
+			local.type = arguments.section.dataset.type ? : "articles";
+		}
+		
+		return local.type;
 	}
 
 	/**
