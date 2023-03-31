@@ -909,11 +909,12 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		pageContent.body &= local.errorsHtml;
 
-		savecontent variable="local.temp" {
-			writeDump(local.rc.sectionObj);
-			// writeDump(arguments.site.content["sectionmenu"]);
-		}
-		pageContent.body &= local.temp;
+		// WILLDO: remove this. Leave for now as it's useful sometimes
+		// savecontent variable="local.temp" {
+		// 	writeDump(local.rc.sectionObj);
+		// 	// writeDump(arguments.site.content["sectionmenu"]);
+		// }
+		// pageContent.body &= local.temp;
 
 
 
