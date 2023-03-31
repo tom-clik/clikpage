@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Extends single page with a sub menu</title>
+	<meta name="description" content="Extends single page with a sub menu in the extra column">
+	<meta name="author" content="Tom peer">
+</head>
+
+<body data-extends="section">
+
+	<div id="xcol">
+		
+		<content id="section" type="menu">
+			<style>
+				orientation:vertical;
+				align:left;
+			</style>
+			
+			<dataset parent="{section.parent}" type="sections"></dataset>
+
+		</content>
+		
+	</div>	
+	
+
+</body>
+</html>

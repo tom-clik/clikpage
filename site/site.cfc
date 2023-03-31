@@ -789,7 +789,6 @@ component accessors="true" extends="utils.baseutils" {
 			// TODO: remove true
 			if (TRUE OR ! StructKeyExists(arguments.site.content, contentid)) {
 				
-				
 				local.data = {};
 				local.datatype = "sections";
 				// hardwired for list types at the minute. what to do???
