@@ -13,7 +13,7 @@ site = siteObj.loadSite(siteFile);
 
 styleSettings = siteObj.settingsObj.loadStyleSettings(ExpandPath("../../sample/_data/styles/sample_stylesettings.xml"));
 
-outfile = ExpandPath("test_settings.css");
+outfile = ExpandPath("output/test_settings.css");
 
 siteObj.contentObj.debug = true;
 css = siteObj.siteCSS(site=site,styleSettings=styleSettings);

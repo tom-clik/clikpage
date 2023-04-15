@@ -30,8 +30,8 @@ component extends="grid" {
 		];
 
 		StructAppend(this.styleDefs, [
-			"masonry" : {"name":"Masonry","description":"","type":"boolean","default":0},
-			"popup" : {"name":"Popup","description":"","type":"boolean","default":0},
+			"masonry" : {"name":"Masonry","description":"","type":"boolean","default":0,"inherit":1},
+			"popup" : {"name":"Popup","description":"","type":"boolean","default":0,"inherit":1},
 			"image-max-height": {"name":"Max image height","description":"","type":"dimension"},
 			"caption-position": {
 				"name":"Caption position","description":"","type":"list","options":[
@@ -41,7 +41,7 @@ component extends="grid" {
 					{"name":"Under","description":"","value":"under"},
 					{"name":"Overlay","description":"","value":"overlay"}
 				],
-				"default":"bottom"
+				"default":"bottom","inherit":1
 			},
 			"align-frame": {
 				"name":"Image Align (horzontal)","default":"middle","description":"","type":"list","options":[
@@ -55,7 +55,7 @@ component extends="grid" {
 					{"name":"Top","description":"","value":"start"},
 					{"name":"Center","description":"","value":"center"},
 					{"name":"Bottom","description":"","value":"end"}
-				]
+				],"inherit":1
 			},
 			"object-fit": {
 				"name":"Image fit","default":"scale-down","description":"","type":"list","options":[
@@ -66,12 +66,7 @@ component extends="grid" {
 			}
 		]);
 
-		StructAppend(this.settings, {
-			"masonry" :0,
-			"popup" : 0,
-			"caption-position": "bottom",
-			"justify-frame":"start"
-		});
+		updateDefaults();
 
 		return this;
 	}

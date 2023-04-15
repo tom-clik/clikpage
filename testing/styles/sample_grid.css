@@ -1,0 +1,45 @@
+.scheme-auto {
+	
+	grid-mode: auto;
+	grid-width: 160px;
+	grid-gap:20px;
+	
+	@mid {
+		grid-width: 220px;
+	}
+
+	@mobile {
+		grid-mode: none;
+	}
+}
+
+.scheme-fixedcols {
+	
+	grid-mode: fixedcols;
+	grid-gap:20px;
+	grid-columns:4;
+	
+	@max {
+		grid-columns:5;
+	}
+
+	@mobile {
+		grid-columns:2;
+	}
+}
+
+
+.scheme-fixedwidths {
+	
+	grid-mode: fixedcols;
+	grid-gap:20px;
+	grid-template-columns:200px 300px 200px 200px;
+	
+	@max {
+		grid-template-columns:300px 300px 300px 300px 300px;
+	}
+
+	@mobile {
+		grid-template-columns:200px 200px;
+	}
+}
