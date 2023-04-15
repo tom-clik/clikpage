@@ -19,14 +19,14 @@ catch (any e) {
 	pageObjOk = 0;
 }
 
-styles = settingsObj.loadStyleSheet(ExpandPath("../styles/testStyles.xml"));
+styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 contentObj.debug = 1;
 
 function testCS(required struct cs, boolean getSettings=1) {
 	
 	try {
 		if (arguments.getSettings) {
-			contentObj.settings(arguments.cs,styles.content,styles.media);
+			contentObj.settings(arguments.cs,styles.style,styles.media);
 		}		
 		writeDump(var=arguments.cs.settings,label="settings");
 		displayCSS(arguments.cs);
@@ -43,8 +43,6 @@ function testCS(required struct cs, boolean getSettings=1) {
 		);
 	}
 
-	
-
 	writeOutput( HTMLEditFormat(local.cs.html));
 	writeDump(var=local.cs.pagecontent,label="Page content");
 
@@ -54,7 +52,7 @@ function testCS(required struct cs, boolean getSettings=1) {
 function displayCSS(required struct cs) {
 	local.site_data = { "#arguments.cs.id#" = arguments.cs};
 	
-	local.css = contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media, loadsettings=0);
+	local.css = contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media);
 
 	writeOutput("<pre>" & local.css & "</pre>");
 }

@@ -389,27 +389,37 @@ component {
 	 */
 	public void function inheritSettings(required struct settings, required struct media) {
 		
-		var currentSettings =duplicate(this.settings);
-		
-		for (local.medium in arguments.media) {
-			
-			if (NOT StructKeyExists(arguments.settings,local.medium)) {
-				arguments.settings[local.medium] = {};
-				for (local.setting in this.settings) {
-					arguments.settings[local.medium][local.setting] = currentSettings[local.setting];
+		var currentSettings = false;
+		// need to do ascending size and then descending.
+		for (local.order in ['asc','desc']) {
+			currentSettings = duplicate(this.settings);
+			for (local.medium in arguments.media) {
+				local.mediumSettings = arguments.media[local.medium];
+				
+				if (local.medium != "main") {
+					if (local.order eq "asc" AND ! StructKeyExists( local.mediumSettings, "min" )) {
+						continue;
+					}
+					else if (local.order eq "desc" AND ! StructKeyExists( local.mediumSettings, "max" )) {
+						continue;
+
+					}
 					
 				}
-				
-			}
-			else {
-				for (local.setting in this.settings) {
-					if (NOT StructKeyExists(arguments.settings[local.medium],local.setting) ) {
-						arguments.settings[local.medium][local.setting] = currentSettings[local.setting];
-					}
+				if (NOT StructKeyExists(arguments.settings,local.medium)) {
+					arguments.settings[local.medium] = Duplicate(currentSettings);
 				}
-				currentSettings = duplicate(arguments.settings[local.medium]);
-			}
+				else {
+					for (local.setting in this.settings) {
 
+						if (NOT StructKeyExists(arguments.settings[local.medium],local.setting) ) {
+							arguments.settings[local.medium][local.setting] = currentSettings[local.setting];
+						}
+					}
+					currentSettings = duplicate(arguments.settings[local.medium]);
+				}
+
+			}
 		}
 		
 	}
