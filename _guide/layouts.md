@@ -1,8 +1,8 @@
 # Layouts
 
-Layouts control what "content" is applied to a page. _Content_ is not _data_, which comes from a site definition. _Content_ defines the position and styling of items such as menus, titles, and photo grids. 
+Layouts control what _content_ is applied to a page. The most important thing to understand about the Clik system is that _content_ is not _data_. _Content_ defines the position and styling of items such as menus, titles, and photo grids. A _style_ will define _content_ and can be re-used across different sites which will define different _data_.
 
-All information on a page is defined as a content section, whether that's just a simple text item, or a menu with sub menus.
+All information on a layout is defined as a content section, whether that's just a simple text item, or a menu with sub menus.
 
 Layouts can inherit from other layouts, and key to successful Clik design is creating abstract layouts to contain common elements.
 

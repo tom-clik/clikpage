@@ -4,7 +4,7 @@ Wireframe mode allows you to see all the containers on a layout in a schematic.
 
 The containers can be re-arranged easily and the styling dialog accessed by selecting the container and pressing `S`.
 
-It's used when the conatiners or content aren't easily accessible on normal preview.
+It's used when the containers or content aren't easily accessible on normal preview.
 
 ## Implementation
 
