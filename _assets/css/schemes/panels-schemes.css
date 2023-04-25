@@ -1,0 +1,97 @@
+/* 
+
+Use this stylesheet to apply styling to itmem via classes.
+
+E.g.
+
+div class="item setting-htop"
+
+There is also a box scheme showing how to pad the content for a boxed look
+
+*/
+
+:root {
+	--item-image-width:40%;
+}
+
+.item.setting-htop {
+	--item-grid-template-areas: "title" "imageWrap" "textWrap";
+}
+
+.item.setting-noimage .imageWrap {
+	display: none;
+}
+
+
+@media screen and (min-width: 600px) {
+
+	.item.setting-flowright, .item.setting-flowleft {
+		display: block;
+	}
+
+	.item.setting-flowright  .imageWrap, .item.setting-flowleft  .imageWrap {
+		float:left;
+		width:var(--item-image-width);
+		margin-bottom:var(--item-gridgap);
+		margin-right:var(--item-gridgap);
+
+	}
+
+	.item.setting-flowright .imageWrap {
+		float:right;
+		margin-right:0;
+		margin-left:var(--item-gridgap);
+	}
+
+
+	.item.setting-left {
+		--item-grid-template-areas: "imageWrap title" "imageWrap textWrap";
+		--item-grid-template-rows: minmax(0, min-content) auto;
+		--item-grid-template-columns: var(--item-image-width) auto;
+	}
+
+	.item.setting-right {
+		--item-grid-template-areas: "title imageWrap" "textWrap imageWrap";
+		--item-grid-template-rows: minmax(0, min-content) auto;
+		--item-grid-template-columns: auto var(--item-image-width);
+	}
+
+	.item.setting-htop.setting-left {
+		--item-grid-template-areas: "title title" "imageWrap textWrap";
+	}
+
+	.item.setting-htop.setting-right {
+		--item-grid-template-areas: "title title" "textWrap imageWrap";
+	}
+
+	.item.scheme-wide {
+		--item-image-width: 66%;
+	}
+}
+
+
+@media screen and (max-width: 600px) {
+	.item.setting-munder {
+		--item-grid-template-areas:  "imageWrap" "title" "textWrap";
+	}
+}
+
+
+:root {
+	--panel-color:#ffffff;
+	--panel-bg:#000000;
+}
+
+.item.scheme-box {
+	--padding:8px;
+	padding:var(--padding);
+	border-radius: 4px;
+	border:1px solid var(--panel-bg);
+}
+
+.item.scheme-box .title {
+	margin: calc(-1 * var(--padding)) calc(-1 *var(--padding)) var(--padding) calc(-1 *var(--padding));
+	padding:var(--padding);
+	background-color: var(--panel-bg);
+	color:var(--panel-color);
+}

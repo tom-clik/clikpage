@@ -1,0 +1,116 @@
+/* Standardised icon naming to allow swapping out of icon sets
+To use an icon font, you'll need to include this page and a font specific page,
+e.g. for Google which uses ligatures to display icons:
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.icon {
+	--icon-close: "close";
+	--icon-menu: "menu";
+	--icon-previous: "arrow_back_ios";
+	--icon-next: "arrow_forward_ios"; 
+	--icon-squares: "apps";
+	--icon-fullscreen: "fullscreen";
+	--icon-fullscreen_exit: "fullscreen_exit";
+	--icon-first_page: "first_page";
+	--icon-last_page: "last_page";
+	--icon-help: "help";
+	--icon-cart: "shopping_cart";
+	--icon-done: "done";
+	--icon-favorite: "favorite";
+	--icon-home: "home";
+	--icon-search: "search";
+	--icon-account: "account_circle";
+    --icon-font: "Material Icons"; 
+}
+
+--icon-font: normal 400 1em/1 "Material Icons"; 
+
+
+Font awesom uses unicode
+
+.icon {
+	--icon-close: "\f410";
+	--icon-menu: "\f0c9"; 
+    --icon-font: "Font Awesome 6 Free"; 
+}
+
+*/
+
+:root {
+	--icon-close:'\2613';
+	--icon-menu:'\2630';
+	--icon-previous:'\261A';
+	--icon-next:'\261B';
+	--icon-squares:'\2756';
+	--icon-fullscreen: "\02750";
+	--icon-fullscreen_exit: "\27B2";
+	--icon-first_page: "|<";
+	--icon-last_page: "|>";
+	--icon-help: "?";
+	--icon-cart: "$$$";
+	--icon-done: "\2714";
+	--icon-favorite: "\2665";
+	--icon-home: "\0213F";
+	--icon-search: "\026B2";
+	--icon-account: "\02600";
+	--icon-list: "list";
+}
+
+.icon {
+	font:var(--icon-font);
+	display: inline-block;	
+}
+
+.icon-close:before {
+	content:var(--icon-close);
+}
+
+.icon-menu:before {
+	content:var(--icon-menu);
+}
+.icon-previous:before {
+	content:var(--icon-previous);
+}
+.icon-next:before {
+	content:var(--icon-next);
+}
+.icon-squares:before {
+	content:var(--icon-squares);
+}
+.icon-fullscreen:before {
+	content:var(--icon-fullscreen);
+}
+.icon-fullscreen_exit:before {
+	content:var(--icon-fullscreen_exit);
+}
+.icon-first_page:before {
+	content:var(--icon-first_page);
+}
+.icon-last_page:before {
+	content:var(--icon-last_page);
+}
+.icon-help:before {
+	content:var(--icon-help);
+}
+.icon-cart:before {
+	content:var(--icon-cart);
+}
+.icon-done:before {
+	content:var(--icon-done);
+}
+.icon-favorite:before {
+	content:var(--icon-favorite);
+}
+.icon-home:before {
+	content:var(--icon-home);
+}
+.icon-search:before {
+	content:var(--icon-search);
+}
+.icon-account:before {
+	content:var(--icon-account);
+}
+.icon-list:before {
+	content:var(--icon-list);
+}

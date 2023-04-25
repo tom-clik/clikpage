@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Local font test</title>
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="../css/fonts/font-awesome-local.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<meta charset="UTF-8">
+	<style>
+		
+		.open {
+			font-family: 'Open Sans';
+  
+		}
+		.lato {
+			font-family: 'Lato';
+  
+		}
+		#test:before {
+			font: normal 400 1em/1 "Font Awesome";
+			content:"\f556";
+		}
+
+	/*--icon-menu: "\f0c9";  */
+}
+	</style>
+</head>
+<body>
+
+<h2 class="open">Testing Local Fonts</h2>
+
+<div class="lato">
+	<p>
+	Test local font stylesheets. Ideally this would use a local() definition for the font but it
+	doesn't seem to work for Font Awesome.</p>
+	<p>
+	<a id="test">Font awesome only working for tiny number of useless icons in free version</a>
+	</p>
+
+</div>
+
+
+<div>
+	<i class="icon icon-close"></i>
+	<i class="icon icon-menu"></i>
+	<i class="icon icon-previous"></i>
+	<i class="icon icon-next"></i>
+	<i class="icon icon-squares"></i>
+	<i class="icon icon-fullscreen"></i>
+	<i class="icon icon-fullscreen_exit"></i>
+	<i class="icon icon-first_page"></i>
+	<i class="icon icon-last_page"></i>
+	<i class="icon icon-help"></i>
+	<i class="icon icon-cart"></i>
+	<i class="icon icon-done"></i>
+	<i class="icon icon-favorite"></i>
+	<i class="icon icon-home"></i>
+	<i class="icon icon-search"></i>
+	<i class="icon icon-account"></i>
+</div>
+
+</body>
+</html>

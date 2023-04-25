@@ -1,0 +1,116 @@
+/*
+
+# Tabs styling
+
+*/
+
+:root {
+	--dark-color: #ccc;
+	--lightcolor:#e4e4e4;
+	--border-color:#ffffff;
+	--item-padding:8px;
+}
+
+:root {
+	--tab-closed-color:var(--dark-color);
+	--tab-padding:8px 14px;
+	--tab-font-size:inherit;
+	--tab-font-weight:inherit;
+	--tab-font:inherit;
+	--tab-background-color:var(--lightcolor);
+	--tab-border-width:1px;
+	--tab-border-color:var(--border-color);
+	--tab-border-radius: 8px 6px;
+	--tab-width:160px;
+}
+
+.cs-tabs {
+	position: relative;
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	grid-gap:0; /* Applying a grid gap seems to work in some browsers */
+}
+
+.cs-tabs.vertical {
+	flex-direction: column;
+	grid-gap:0; /* Applying a grid gap seems to work in some browsers */
+	/*align-items: center;*/
+}
+
+.cs-tabs.vertical .title {
+	width:var(--tab-width);
+}
+.cs-tabs.vertical .item {
+	left:var(--tab-width);
+	top:0;
+}
+
+.cs-tabs.accordian {
+	display: block;
+}
+
+.cs-tabs .title {
+	cursor:pointer;
+	font-size: var(--tab-font-size);
+	font-weight: var(--tab-font-weight);
+	font-family: var(--tab-font);
+	padding:var(--tab-padding);
+	border-style:solid;
+	border-width:var(--tab-border-width);
+	border-color:var(--tab-border-color);
+	position: relative;
+	z-index: 200;
+	background-color: var(--tab-closed-color);
+}
+
+.cs-tabs:not(.vertical, .accordian) .title {
+	margin-left:-1px;
+	margin-bottom:-1px;
+	border-top-left-radius: var(--tab-border-radius);
+	border-top-right-radius: var(--tab-border-radius);
+}
+
+.cs-tabs.vertical .title, .cs-tabs.accordian .title {
+	border-top-width: 0;
+}
+
+.cs-tabs.vertical .tab:first-of-type .title, .cs-tabs.accordian .tab:first-of-type .title {
+	border-top-width: var(--tab-border-width);
+}
+
+.cs-tabs:not(.vertical, .accordian) .tab:first-of-type .title {
+	margin-left:6px;
+} 
+
+.cs-tabs .state_open .title { 
+	border-bottom-color: var(--tab-background-color);
+	background-color: var(--tab-background-color);
+} 
+
+.cs-tabs .item {
+	visibility: hidden;
+	position:absolute;
+	left:0;
+	max-width: 100%;
+	border-style:solid;
+	border-width:var(--tab-border-width);
+	border-color:var(--tab-border-color);
+	background-color: var(--tab-background-color);
+}
+
+.cs-tabs.accordian .item {
+	position:static;
+	height: 0;
+	display: none;
+}
+
+.cs-tabs.accordian .title {
+	margin-left:0px;
+}
+
+.tab.state_open .item {
+	visibility: visible;
+	height: auto;
+	display: block;
+}

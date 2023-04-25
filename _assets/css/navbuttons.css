@@ -1,0 +1,139 @@
+/*
+
+Buttons get complicated through the problem of <a> tags and inputs.
+
+Both of these get styled through the browser defaults and reset.
+
+To get around this and preserve inheritance, all buttons need to be wrapped in
+another div with a class of .button which allows us to provide the consistency.
+
+Styling should be applied to the .button element.
+
+To assign icons we can use icons or svgs. For icons, always use our standard icon vars, see icons.css.
+
+Either way the icon needs a class of "icon".
+
+```
+<div class="button"><a href="#"><i class="icon icon-close"></i><label>Button text</label></a></div>
+
+<div class="button"><input type="submit" value="">Button text
+Button text</div>
+
+<div class="button"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></svg></div>
+```
+
+# Notes
+
+There is no "width" for a whole button, only the icon. In common with much modern styling, widths
+should be assigned by the containing div through grid or flexbox.
+
+The buttons are always inline-blocks, so always style the surrounding div with grid or flexbox to control
+ the whitespace between the them.
+
+# Usage
+
+Styling should be applied to `.button` with hover state `.button:hover`
+
+The label itself can also be styles with a selector of `.button label`.
+
+E.g.
+
+```
+.scheme-button.button 
+.scheme-button.button label
+.scheme-button.button:hover label
+
+```
+
+*/
+
+:root {
+	--icon-width: 32px; /* size of icon */
+	--icon-height: var(--icon-width); /* size of icon */
+	--label-gap: 10px;
+	--label-display:inline-block;/* Turn button or label off with inline-block|none */
+	--icon-display:inline-block;/* ---- " ---- */
+	--button-align:center; /* icon valign flex-start|center|flex-end */
+	--button-direction: row;/* row or row reverse to align left or right */
+	--link-color:inherit;
+	--label-align:left;
+}
+
+.button {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	color:var(--link-color);
+	stroke:var(--link-color);
+	fill:var(--link-color);
+}
+
+.button input {
+	width: 100%;
+}
+
+.button a, .button a:hover, .button input {
+	display:flex;
+	color:inherit;
+	stroke: inherit;
+	fill:inherit;
+	justify-content: var(--button-align);
+  	align-items: center;
+  	flex-direction: var(--button-direction);
+  	grid-gap:var(--label-gap);
+}
+
+.button svg {
+	width:100%;
+	height:100%;
+	display:block;
+}
+
+.button .icon {
+	display: var(--icon-display);
+	width:var(--icon-width);
+	height:var(--icon-height);
+	line-height:var(--icon-height);
+	font-size: var(--icon-height);
+}
+
+.button label {
+	display:  var(--label-display);
+	line-height: var(--icon-height);
+	text-align: var(--label-align);
+}
+
+/** See auto button functionality */
+.button > a:not(:first-child) {
+    display: none;
+}
+
+.button.setting-popout{
+	--label-gap:0;
+}
+
+.button.setting-popout a {
+	display: block;
+	position: relative;
+}
+
+.button.setting-popout label {
+	visibility: hidden;
+	position: absolute;
+	width: 0;
+	overflow: hidden;
+	top: calc(-1 * var(--button-padding));
+	left:calc(var(--icon-width) + var(--button-padding));
+	transition: width 0.3s ease-in-out;
+	white-space: nowrap;
+}
+
+.button.right.setting-popout label {
+	left:unset;
+	right:0;
+}
+
+.button.setting-popout:hover label {
+	visibility: visible;
+	width:200px;
+}
