@@ -48,7 +48,7 @@ Has init method, options, public method, and private method.
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/mustache.js"></script>
-<script src="swipeDetector.js"></script>
+<script src="/_assets/js/swipeDetector.js"></script>
 <script src="plugin-boiler-plate.js"></script>
 
 
@@ -56,11 +56,11 @@ Has init method, options, public method, and private method.
 
 $(document).ready(function() {
 	$(window).on("keydown.anotherScope", function( event ) {
-		console.log("event.key");
+		console.log(event.key);
 	});
 	$('#test').pluginName(
 		{
-			data:<cfoutput>#photosJS#</cfoutput>,
+			data:{},
 			onFoo: function() {
 				console.log("Test callback");
 			}

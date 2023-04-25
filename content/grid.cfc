@@ -47,9 +47,9 @@ component extends="contentSection" {
 			"grid-max-width":{"name":"max width","type"="dimension","default"="1fr","note"="Not sure this should be exposed","hidden":1,"description":""},
 			"grid-columns":{"name"="Columns","type"="integer","default"="2","description"="Number of columns for a fixed column grid (only used if Template columns is not specified","dependson":"grid-mode","dependvalue":"fixedcols","inherit":1},
 			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items"},
-			"grid-template-columns":{"name":"Template columns","type"="dimensionlist","description":"Column sizes when using fixed columns or named template areas","dependson":"grid-mode","dependvalue":"templateareas,fixedcols"},
-			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using a named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":"templateareas"},
-			"grid-template-areas":{"name"="Template areas","type"="text","dependson":"grid-mode","dependvalue":"templateareas","description":""},
+			"grid-template-columns":{"name":"Template columns","type"="text","description":"Column sizes when using fixed columns or named template areas","dependson":"grid-mode","dependvalue":"templateareas,fixedcols","inherit":1,"default":""},
+			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using a named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":"templateareas","inherit":1,"default":""},
+			"grid-template-areas":{"name"="Template areas","type"="text","dependson":"grid-mode","dependvalue":"templateareas","description":"","inherit":1,"default":""},
 			"justify-content":{"name"="Alignment","type"="list","options"=[
 				{"name"="Start","value"="flex-start","description"=""},
 				{"name"="Center","value"="center","description"=""},

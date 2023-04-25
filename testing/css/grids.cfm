@@ -22,7 +22,7 @@ Broken settings form but we are planning to do this properly with the styleDefs
 <cfscript>
 //numeric or blank
 param name="url.maximages" default="";
-request.rc.test = 'auto'; /* fixedwidths | fixedcols */
+request.rc.test = 'auto'; /* auto | fixedwidths | fixedcols */
 
 settingsObj = new clikpage.settings.settings(debug=1);
 contentObj = new clikpage.content.content(settingsObj=settingsObj);
@@ -36,28 +36,17 @@ styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 grid_cs = contentObj.new(id="testgrid",type="imagegrid");
 grid_cs.class = "scheme-#request.rc.test#";
 
-// WILLDO: remove these comments once we have introduced a proper settings editing system.
-// // for page editing -- doesn't seem right. Where are the defaults? use the contentObj for defaults etc.
-// settings = {};
-// contentObj.contentSections["imagegrid"].updateDefaults();
-// settings = contentObj.contentSections["imagegrid"].defaultStyles;
+for (setting in contentObj.contentSections["imagegrid"].styleDefs) {
+	if (structKeyExists(url, setting) AND url[setting] != "") {
+		styles.style["testgrid"]["main"][setting] = url[setting];
+	}
+}
 
-// for (setting in contentObj.contentSections["imagegrid"].styleDefs) {
-// 	if (structKeyExists(url, setting) AND url[setting] != "") {
-// 		styles.content["testgrid"]["main"][setting] = url[setting];
-// 		settings[setting] = url[setting];
-// 	}
-// 	else if (StructKeyExists(styles.content["testgrid"]["main"], setting)) {
-// 		settings[setting] = styles.content["testgrid"]["main"][setting];
-// 	}
-// 	else if (NOT structKeyExists(settings, setting)) {
-// 		settings[setting] = "";
-// 	}
-// }
+contentObj.settings(content=grid_cs,styles=styles.style,media=styles.media);
 
 // end page editing
 
-contentObj.settings(content=grid_cs,styles=styles.style,media=styles.media);
+
 css = contentCSS(grid_cs);
 
 // try {
@@ -99,11 +88,17 @@ css = contentCSS(grid_cs);
 				max-width: 100%;
 				height:auto;
 			}
-			.duumyy {
-				grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width), var(--grid-max-width)));
+			
+			.modal {
+				display: none;
 			}
 
-			
+			#settings_panel_open {
+				position: fixed;
+				top:10px;
+				left:10px;
+
+			}
 		</style>
 		<style id="dynamic_css">
 			<cfoutput>#css#</cfoutput>
@@ -113,16 +108,18 @@ css = contentCSS(grid_cs);
 
 	<body class="body">
 
-		<!--- <div id="panel">
+		<div id="settings_panel" class="settings_panel modal">
 			<h2>Settings</h2>
 			<form action="grids.cfm">
 				
-				<cfoutput>#myvar#</cfoutput>
+				<cfoutput>#settingsForm(settings=grid_cs.settings.main)#</cfoutput>
 				
 				<label></label>				
 				<div class="button"><input type="submit" value="Update"></div>
 			</form>
-		</div> --->
+		</div>
+
+		<div id="settings_panel_open"><div class="button auto"><a href="#settings_panel.open">Settings</a></div></div>
 
 		<div>
 			
@@ -148,11 +145,21 @@ css = contentCSS(grid_cs);
 		</div>
 
 		<cfoutput>
+			
 			<div class="code code_css">
 				<pre>#css#</pre>
 			</div>
 		</cfoutput>
 		
+		<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/_assets/js/jquery.modal.js"></script>
+		<script src="/_assets/js/jquery.autoButton.js"></script>
+		<script>
+		$(document).ready(function() {
+			$('#settings_panel').modal({modal:0,draggable:1});
+			$(".button").button();
+		});
+		</script>
 	</body>
 	
 </html>
@@ -169,46 +176,49 @@ function contentCSS(required struct cs) {
 	return local.css;
 }
 
-// string function settingsForm() {
-// 	var retval = "";
-// 	retval &= "<fieldset>";
-// 	for (setting in contentObj.contentSections["imagegrid"].styleDefs) {
-// 		settingDef = contentObj.contentSections["imagegrid"].styleDefs[setting];
-// 		retval &= "<label title='#encodeForHTMLAttribute(settingDef.description)#'>#settingDef.name#</label>";
-// 		switch(settingDef.type) {
-// 			case "dimension":
-// 			case "dimensionlist":
-// 			case "integer":
-// 				retval &= "<input name='#setting#' value='#settings[setting]#'>";
-// 				break;
-// 			case "boolean":
-// 			local.selected = isBoolean(settings[setting]) AND settings[setting] ? " selected": "";
-// 				retval &= "<div class='field'><input type='checkbox' name='#setting#' #local.selected#value='1'>Yes</div>";
-// 				break;
-// 			case "list":
-// 				options = contentObj.options("imagegrid",setting);
-// 				retval &= "<select name='#setting#'>";
-// 				for (mode in options) {
-// 					try {
-// 						selected = mode.value eq settings[setting] ? " selected": "";
-// 						retval &= "<option value='#mode.value#' #selected# title='#encodeForHTMLAttribute(mode.description)#'>#encodeForHTML(mode.name)#</option>";
-// 					}
-// 					catch (any e) {
-// 						local.extendedinfo = {"tagcontext"=e.tagcontext,mode=mode};
-// 						throw(
-// 							extendedinfo = SerializeJSON(local.extendedinfo),
-// 							message      = "Error:" & e.message, 
-// 							detail       = e.detail
-// 						);
-// 					}
-// 				}
-// 				retval &= "</select>";
-// 				break;
-
-// 		}
+string function settingsForm(required struct settings) {
+	var retval = "";
+	retval &= "<fieldset>";
+	for (local.setting in contentObj.contentSections["imagegrid"].styleDefs) {
+		local.settingDef = contentObj.contentSections["imagegrid"].styleDefs[local.setting];
+		retval &= "<label title='#encodeForHTMLAttribute(local.settingDef.description)#'>#local.settingDef.name#</label>";
+		local.value = arguments.settings[local.setting] ? : "";
 		
-// 	}
-// 	retval &= "</fieldset>";
-// 	return retval;
-// }
+		switch(local.settingDef.type) {
+			case "dimension":
+			case "dimensionlist":
+			case "text":
+			case "integer":
+				retval &= "<input name='#local.setting#' value='#local.value#'>";
+				break;
+			case "boolean":
+			local.selected = isBoolean(local.value) AND local.value ? " selected": "";
+				retval &= "<div class='field'><input type='checkbox' name='#local.setting#' #local.selected#value='1'>Yes</div>";
+				break;
+			case "list":
+				local.options = contentObj.options("imagegrid",local.setting);
+				retval &= "<select name='#local.setting#'>";
+				for (local.mode in local.options) {
+					try {
+						local.selected = local.mode.value eq local.value ? " selected": "";
+						retval &= "<option value='#local.mode.value#' #local.selected# title='#encodeForHTMLAttribute(local.mode.description)#'>#encodeForHTML(local.mode.name)#</option>";
+					}
+					catch (any e) {
+						local.extendedinfo = {"tagcontext"=e.tagcontext,mode=local.mode};
+						throw(
+							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Error:" & e.message, 
+							detail       = e.detail
+						);
+					}
+				}
+				retval &= "</select>";
+				break;
+
+		}
+		
+	}
+	retval &= "</fieldset>";
+	return retval;
+}
 </cfscript>

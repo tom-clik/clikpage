@@ -1,8 +1,8 @@
 .scheme-auto {
 	
 	grid-mode: auto;
-	grid-width: 160px;
-	grid-gap:20px;
+	grid-width: 260px;
+	grid-gap:10px;
 	
 	@mid {
 		grid-width: 220px;
