@@ -31,7 +31,7 @@ array function readFile(filename) {
 		throw(message="File #arguments.filename# not found. Please download the bootstrap icons (see notes)");
 	}
 	var data = FileRead(arguments.filename);
-	var coldSoup = new coldSoup();
+	var coldSoup = new coldsoup.coldSoup();
 
 	var doc = coldSoup.parseXML(data);
 	var symbols = doc.select("symbol");
