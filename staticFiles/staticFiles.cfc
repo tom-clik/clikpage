@@ -272,17 +272,17 @@ component {
 	/**
 	 * @hint        Compress packages. Currently using toptal API (see callCompressAPI())
 	 *
-	 * For each package, concatenate files, compress, and save to file specified in "min" field
-	 * for the package.
+	 * For each package, concatenate files, compress, and save to file specified
+	 *  in "min" field for the package.
 	 *
-	 * This will only work if the debug verions of the individual scripts be obtained by using the 
-	 * ExpandPath() function and the file to save can be determined by the ExpandPath() of the "min"
-	 * property.	 * 
+	 * 
 	 * 
 	 * @type        css|javascript
-	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF. You should always bump the version
-	 * @return      Array of results (result.name, result.saved [won't save if pack=false or 
-	 *              all scripts excluded from package], result.filename, result.files)
+	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF. 
+	 *              You should always bump the version
+	 * @return      Array of results (result.name, result.saved [won't save if 
+	 *              pack=false or all scripts are excluded from packages], 	
+	 *              result.filename, result.files)
 	 */
 	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=]) {
 		
@@ -296,21 +296,23 @@ component {
 				
 				local.outputFile = filePath(local.package.min,arguments.mappings);
 				local.res["filename"] = local.outputFile;
+				
 				if (FileExists(local.outputFile) AND NOT arguments.overwrite) {
 					ArrayAppend(local.results, local.res);
 					continue;
 				}
+				
 				local.res["files"]=[];
 				local.res["raw"] = 0;// sum total size of raw packages
 				// TO DO: check package scripts are in order. Use them if they are
 				local.out = "";
 				for (local.script in variables.scripts) {
-					//writeDump(local.script);
+					
 					if (ArrayFind(local.package.scripts, local.script.name)) {
 						if (!local.script.packageExclude) {
 							local.filename = filePath(local.script.min,arguments.mappings);
 							if (!FileExists(local.filename)) {
-								Throw(message="File #local.filename# not found for script #local.script.name#");
+								Throw(message="File #local.filename# not found for script #local.script.name#. Please check mappings if this doesn't make sense.");
 							}
 							local.res.raw += getFileInfo(local.filename).size;
 							local.out &= FileRead(local.filename,"utf-8");

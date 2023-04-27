@@ -15,7 +15,6 @@
 	--flex-wrap: wrap;
 }
 
-
 .cs-grid {
 	display:grid;
 	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));

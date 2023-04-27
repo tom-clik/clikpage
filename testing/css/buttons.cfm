@@ -1,5 +1,4 @@
 <!---
-TODO: broken
 
 # Button content section test
 
@@ -12,6 +11,8 @@ We've only just begun
 
 ## TODO:
 
+Add all the tests
+
 --->
 
 <cfscript>
@@ -20,7 +21,7 @@ settingsObj = new clikpage.settings.settings(debug=1);
 contentObj = new clikpage.content.content(settingsObj=settingsObj);
 contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 
-styles = settingsObj.loadStyleSheet(ExpandPath("button_test_styles.xml"));
+styles = settingsObj.loadStyleSettings(ExpandPath("button_test_styles.xml"));
 contentObj.debug = 1;
 
 tests = [
@@ -28,6 +29,13 @@ tests = [
 ];
 
 cs = [=];
+html = "";
+
+css = ":root {\n";
+css &= settingsObj.colorVariablesCSS(styles);
+css &= settingsObj.fontVariablesCSS(styles);
+css &=  "\n}\n";
+css &= settingsObj.CSSCommentHeader("Content styling");
 
 for (test in tests) {
 
@@ -45,14 +53,16 @@ for (test in tests) {
 	if (structKeyExists(test, "class")) {
 		cs[test.id].class = ListAppend(cs[test.id].class,test.class," ");
 	}
+
+	contentObj.settings(content=cs[test.id],styles=styles.style,media=styles.media);
+
+	pageData = contentObj.display(content=cs[test.id]);
+	html &= pageData.html;
+
 }
 
-css = ":root {\n";
-css &= settingsObj.colorVariablesCSS(styles);
-css &= settingsObj.fontVariablesCSS(styles);
-css &=  "\n}\n";
-css &= settingsObj.CSSCommentHeader("Content styling");
 css &= contentObj.contentCSS(content_sections=cs,styles=styles.content,media=styles.media);
+
 css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
 
 // writeDump(cs.test1);
@@ -88,16 +98,7 @@ css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug
 <div class="itemlist">
 
 	<cfscript>
-	for (id in cs) {
-		writeOutput( "<h1> test #id#</h1>");
-		pageData = contentObj.display(content=cs[id]);
-		
-		writeOutput( pageData.html);
-		
-		// if (id eq "test3") {
-		// 	writeDump(cs[id].settings);
-		// }
-	}
+	writeOutput( html);
 	</cfscript>
 	
 </div>

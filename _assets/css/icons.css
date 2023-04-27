@@ -27,7 +27,7 @@ e.g. for Google which uses ligatures to display icons:
 --icon-font: normal 400 1em/1 "Material Icons"; 
 
 
-Font awesom uses unicode
+Font awesome uses unicode
 
 .icon {
 	--icon-close: "\f410";
