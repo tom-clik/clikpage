@@ -50,6 +50,10 @@
             "name": "menus"
         },
         {
+            "min": "/_assets/css/grids.css",
+            "name": "grids"
+        },
+        {
             "min": "/_assets/css/navbuttons.css",
             "name": "navbuttons"
         },

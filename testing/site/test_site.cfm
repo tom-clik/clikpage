@@ -1,5 +1,7 @@
 <cfscript>
-
+/*
+ * Load a site definition
+ */
 path = ExpandPath("./preview/config.json");
 fileData = fileRead(path );
 config = deserializeJSON(fileData);

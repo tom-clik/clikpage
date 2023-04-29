@@ -11,7 +11,6 @@ component extends="contentSection" {
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-
 		
 		// static css definitions
 		variables.static_css = {"grids"=1};
@@ -37,7 +36,7 @@ component extends="contentSection" {
 				],
 				"description":"Select the way your grid is laid out"
 			},
-			"grid-fit":{"name"="Auto fill mode","type"="list","default"="auto-fit","inherit":1,"options"=[
+			"grid-fit":{"name"="Auto fill mode","type"="list","default"="auto-fit","options"=[
 					{"name"="Fit","value"="auto-fit","description"=""},
 					{"name"="Fill","value"="auto-fill","description"=""}
 				],

@@ -528,8 +528,17 @@ component accessors="true" extends="utils.baseutils" {
 	}
 	
 
-
-	public string function dataReplace(required struct site, required string html, required string sectioncode, string action="index", string id="", struct record={}) {
+	/**
+	 * @hint Replace all data placeholders in the HTML with data values
+	 */
+	public string function dataReplace(
+		required struct site, 
+		required string html, 
+		required string sectioncode, 
+		         string action="index", 
+		         string id="", 
+		         struct record={}
+		) {
 
 		local.tags = variables.pattern.matcher(arguments.html);
 		local.tagMatches = {};
@@ -645,8 +654,6 @@ component accessors="true" extends="utils.baseutils" {
 
 	/**
 	 * Generate page link according to whether we are in live or cache mode
-	 * 
-	 * @return {[type]}          [description]
 	 */
 	private string function pageLink(required struct site, required string section, string action="index", string id="") {
 		local.sectionStr = getSection(site=arguments.site,section=arguments.section);
@@ -1009,7 +1016,17 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.written = {};
 		for (local.layout in arguments.site.layouts) {
-			css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
+			try{
+				css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
+			} 
+			catch (any e) {
+				local.extendedinfo = {"tagcontext"=e.tagcontext};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Unable to write styling for template #local.layout#:" & e.message, 
+					detail       = e.detail
+				);
+			}
 		}
 
 		for (var id in arguments.site.containers) {
