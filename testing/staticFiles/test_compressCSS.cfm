@@ -28,8 +28,8 @@ E.g.
 
 Would match a  file specified as `/_assets/js/myscript.js`
 
-Not that all mappings are applied so if there is a potential conflict with the output paths, you might need
-to specify an output folder with a higher priority, e.g.
+Note that all mappings are applied so if there is a potential conflict with the 
+output paths, you might need to specify an output folder with a higher priority, e.g.
 
 ```
 [
@@ -44,6 +44,7 @@ A build process would probably also push the files to the cloud or similar.
 
 <cfscript>
 mappings = [
+	"/_assets/" = ExpandPath("/_assets/"),
 	"/_assets/css/_min/" = ExpandPath("_output/"),
 	"/_assets/js/_min/" = ExpandPath("_output/")
 ];

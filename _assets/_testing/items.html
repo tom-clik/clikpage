@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Menu test</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/title.css">
+	<link rel="stylesheet" href="../css/panels.css">
+	<link rel="stylesheet" href="../css/schemes/panels-schemes.css">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			--title-font: 'Open Sans';
+			--title-font-size: 140%;
+			--title-font-weight: 300;
+			--border-color:#1B02A3;
+			--accent-color:#DC00FE;
+		}
+
+		.item {
+			margin:20px;
+			border:1px solid #ccc;
+			padding:8px;
+		}
+
+		.item.scheme-box:hover {
+			--title-color: #00C0F9;
+		}
+
+		.item.scheme-underline .imageWrap {
+			padding:0 0 2px 0;
+			border-width:0px 0px 8px 0;	
+		}
+
+		.item.scheme-underline:hover .imageWrap {
+			border-color:var(--accent-color);
+		}
+		
+	</style>
+</head>
+<body>
+
+<div class="cs-title">
+item Testing
+</div>
+
+
+<div class="itemlist">
+
+	<div class="item setting-htop scheme-box" id="test1">
+
+		<h3 class="title">setting-htop scheme-box</h3>
+
+		<div class="imageWrap">
+			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+		</div>
+		
+		<div class="textWrap">
+			<p>Assign htop to put the headline abve the content</p>
+		</div>
+	
+	</div>
+	
+	<div class="item setting-htop setting-left setting-munder" id="test2">
+
+		<h3 class="title">Headline before image except in mobile</h3>
+
+		<div class="imageWrap">
+			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+		</div>
+		
+		<div class="textWrap">
+			<p>Set munder to put a heading under the image in mobile (if its got htop for main view)</p>
+		</div>
+	
+	</div>
+
+	<div class="item setting-htop setting-left scheme-wide" id="test3">
+
+		<h3 class="title">Larger image</h3>
+
+		<div class="imageWrap">
+			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+		</div>
+		
+		<div class="textWrap">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>				
+		</div>
+	
+	</div>
+
+	<div class="item setting-htop setting-right scheme-wide" id="test4">
+
+		<h3 class="title">Larger image right</h3>
+
+		<div class="imageWrap">
+			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+		</div>
+		
+		<div class="textWrap">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>		
+		</div>
+	
+	</div>
+			
+	<div class="item setting-left" id="test5">
+
+	
+		<h3 class="title">No image with space still showing</h3>
+
+		<div class="imageWrap">
+			
+		</div>
+		
+
+		<div class="textWrap">
+			<p>Actualy here you just assign the image alignment class.</p>
+		</div>
+	
+	</div>
+
+	<div class="item  setting-noimage" id="test6">
+		
+		<h3 class="title">No image with no space</h3>
+
+		<div class="imageWrap">
+			
+		</div>
+
+		<div class="textWrap">
+			<p>You can just do nothing but noimage will set the imageWrap to display:none</p>
+		</div>
+	
+	</div>
+
+	<div class="item setting-left scheme-underline " id="test7">
+
+	
+		<h3 class="title">Headline is inline</h3>
+
+		<div class="imageWrap">
+			
+				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+			
+		</div>
+		
+
+		<div class="textWrap">
+			<p>This is actually the default. You have to put htop on to change it.</p>
+				
+		</div>
+	
+	</div>
+
+	<div class="item setting-flowleft scheme-wide " id="test8">
+
+		<h3 class="title">Flow settings</h3>
+
+		<div class="imageWrap">
+			
+				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+			
+		</div>
+		
+
+		<div class="textWrap">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+				
+		</div>
+	
+	</div>
+
+	<div class="item setting-flowright " id="test8">
+
+	
+		<h3 class="title">Flow settings right</h3>
+
+		<div class="imageWrap">
+			
+				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+			
+		</div>
+		
+
+		<div class="textWrap">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. </p>
+			
+				
+		</div>
+	
+	</div>
+
+</div>
+
+
+</body>
+</html>
+

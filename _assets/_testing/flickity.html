@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Flickity test</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/flickity.css">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			--title-font: 'Open Sans';
+			--title-font-size: 140%;
+			--title-font-weight: 300;
+			--border-color:#1B02A3;
+			--accent-color:#DC00FE;
+		}
+
+		.panel.panel1 {
+			background-color: teal;
+			height:280px;
+		}
+		.panel.panel2 {
+			background-color: CornflowerBlue;
+			width: 560px; 
+			height:180px;
+		}
+		.panel.panel3 {
+			background-color: DarkGreen;
+			width: 260px;
+			height:380px; 
+		}
+		.panel.panel4 {
+			background-color: blue;
+			width: 360px;
+			height:140px; 
+		}
+		.panel {
+			padding:40px;
+			width: 460px; /* full width */
+			min-height: 260px; /* height of carousel */
+			margin-right: 10px;
+		}
+
+		.panel.is-selected {
+		  background: #ED2;
+		}
+		.title {
+			font-size: 240%;
+			font-weight: bold;
+		}
+
+		.flickity-button, .flickity-button:hover {
+		  background: transparent;
+		}
+		/* big previous & next buttons */
+		.flickity-prev-next-button {
+		  width: 100px;
+		  height: 100px;
+		}
+		/* icon color */
+		.flickity-button-icon {
+		  fill: white;
+		}
+
+		.flickity-button:hover .flickity-button-icon {
+		  fill: pink;
+		}
+
+		/* hide disabled button */
+		.flickity-button:disabled {
+		  display: none;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="main-item">
+		<div class="title">Title 1</div>
+		<div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. </div>
+	</div>
+
+<div class="main-carousel">
+
+	<div class="panel panel1" id="panel1">
+		<div class="image"></div>
+		<div class="title">Title 1</div>
+		<div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. </div>
+	</div>
+	<div class="panel panel2" id="panel2">
+		<div class="image"></div>
+		<div class="title">Title 2</div>
+		<div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. </div>
+	</div>
+	<div class="panel panel3" id="panel3">
+		<div class="image"></div>
+		<div class="title">Title 3</div>
+		<div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. </div>
+	</div>
+	<div class="panel panel4" id="panel4">
+		<div class="image"></div>
+		<div class="title">Title 4</div>
+		<div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. </div>
+	</div>
+
+</div>
+
+<script src="../js/jquery-3.4.1.js"></script>
+<script src="../js/flickity.pkgd.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$main = $("#main-item");
+		$carousel = $('.main-carousel');
+		$('.main-carousel').flickity({
+		  // options
+		  contain: true,
+		  freeScroll: true,
+		  wrapAround: true
+		}).on( 'change.flickity', function( event, index ) {
+		  console.log( 'Slide changed to ' + index );
+		  var cellElements = $carousel.flickity('getCellElements')
+		  $main.html($(cellElements[index]).html()); 
+		}).on( 'staticClick.flickity', function( event, pointer, cellElement, cellIndex ) {
+		  // dismiss if cell was not clicked
+		  if ( !cellElement ) {
+		    return;
+		  }
+		  $carousel.flickity("select", cellIndex,true);
+		});;
+	});
+</script>
+
+
+</body>
+</html>
+

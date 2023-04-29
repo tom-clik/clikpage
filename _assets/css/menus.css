@@ -1,0 +1,199 @@
+/* MENUS
+
+
+Create a grid or flexbox menu from a ul
+
+## Grid menus
+
+By default menus are horizontal grids. Change this to vertical with scheme-vertical
+
+scheme-flex will use a flexbox which only makes sense for horizontal menus.
+
+## Notes
+
+The a tags are actually set to display flex themselves in order to accomodate icons. To align the lext you have to set
+the justify-content property.
+
+# usage
+
+hover   li a:hover
+hi      li.hi a
+*/
+
+:root {
+	--link-color: #000;
+	--menu-border-color:var(--link-color);
+	--menu-background: transparent;
+	--menu-gap: 4px;/* Gap between items (only grid modes: use itempadding for flex); */
+	--menu-item-padding: 0 8px;
+	--menu-item-border:0;/* single value for dividers or boxes or use normal border width (can use e.g. 0 1px 0 0) */
+	--menu-icon-display: none;/* none or inline-block */
+	--menu-label-display: inline-block;/* text part of menu item:; none or inline-block */
+	--icon-width:32px;/* normal menu icons */
+	--icon-height:32px;	
+	--menu-icon-valign: middle;/* WIP */
+	--menu-icon-gap: 8px;/* gap between label and icon */
+	--menu-openicon-width:32px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
+	--menu-openicon-height:32px;	
+	--menu-openicon-adjust: -4px;
+	--menu-text-align: center;/* alignment of text in menu items */
+	--menu-anim-time: 0.3s;
+}
+
+.cs-menu ul {
+	list-style: none;
+	margin:0;
+	padding-left: 0em;
+    text-indent: 0px;
+	display:grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+	grid-gap:var(--menu-gap);
+}
+
+
+.cs-menu li {
+	position:relative;
+	/*min-height:100%;*/
+}
+
+.cs-menu a, .cs-menu a:hover {
+	white-space: nowrap;
+	color:var(--link-color);
+	display:flex;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: center; /* needs formalising. This is the align mechanism as the a tags themselves are now flexboxes */
+	grid-gap: var(--menu-icon-gap);
+	text-decoration: none;
+	padding:var(--menu-item-padding);	
+	color:var(--link-color);
+	border-width:var(--menu-item-border);
+	border-style:solid;
+	border-color:var(--menu-border-color);
+	background-color: var(--menu-background);
+	/* watch browser agent default. Can't apply to ul */
+	text-align: var(--menu-text-align);	
+	transition-property: background-color;
+    transition-duration: var(--menu-anim-time);
+    transition-timing-function: ease-in-out;
+}
+
+/* Per class behaviour applied via JS. leave for now. */
+.cs-menu.open {
+	height:auto;
+}
+
+@media screen and (max-width:630px) {
+
+	.cs-menu.mobilemenu {
+		height:0;
+		overflow: hidden;
+	}
+	 /*need this. Watch specificity*/
+	.cs-menu.mobilemenu.open {
+		height:auto;
+	}
+
+}
+
+/* Watch the specifity here. JS library creates clone to get heights */
+ul.submenu {
+	z-index: 100;
+  	min-width:100%;
+  	height: 0;
+  	overflow: hidden;
+  	grid-template-columns: 1fr;
+	--menu-gap:0px;
+}
+
+ul.submenu.open, ul.submenu.show  {
+	height: auto;
+	overflow: visible;
+}
+
+
+.cs-menu li.open > ul.submenu {
+	display:block;
+}
+
+.cs-menu ul.submenu li.open > ul.submenu {
+	margin-top:0px;
+}
+
+/* sub menu indicator */
+.cs-menu a .icon {
+	flex-grow: 0;
+	position: relative;
+	right:var(--menu-openicon-adjust);
+	max-height:100%;
+	top:0;
+	--menu-openicon-width:32px;
+	--menu-openicon-height:32px;	
+	fill:var(--link-color);
+	stroke:var(--link-color);
+	transition-property: transform;
+	transition-duration: 0.3s;
+	transition-timing-function: ease-in-out;
+}
+
+/* menu icons 
+
+Requires icons.css and navbuttons.css
+
+
+
+*/
+.cs-menu a b  {
+	display: var(--menu-icon-display);
+	font:var(--icon-font);
+	width:var(--icon-width);
+	height:var(--icon-height);
+	line-height:var(--icon-height);
+	font-size: var(--icon-height);
+	overflow: hidden;
+}
+
+.cs-menu a span {
+	display: var(--menu-label-display);	
+}
+
+.cs-menu a b:before {
+	content:var(--menu-icon);
+}
+
+.cs-menu li.open > a .icon {
+	transform: rotate(90deg);
+}
+
+.cs-menu a > span {
+	flex-grow: 1;
+}
+
+/*.
+
+TODO: check deprecation;
+cs-menu li:hover > a svg {
+	fill:var(--link-color);
+	stroke:var(--link-color);
+}
+
+.cs-menu li:hover > a {
+	color:var(--link-color);
+}
+
+.cs-menu li.hi > a, .cs-menu li.hi:hover  > a {
+	color:var(--link-color);
+}
+
+.cs-menu li.hi > a svg, .cs-menu li.hi:hover > a svg {
+	fill:var(--link-color);
+	stroke:var(--link-color);
+}
+*/
+
+
+
+
+
+
+

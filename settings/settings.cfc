@@ -598,8 +598,7 @@ component {
 	}
 
 	/**
-	 * NOTE THIS IS JUST COPIED FROM grid.cfc. TODO: incorporate grid styling from grid.cfc
-	 * somehow.
+	 * CSS styling for a grid
 	 * 
 	 */
 	public void function grid(required struct settings, required struct out) {
@@ -608,20 +607,6 @@ component {
 		
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
-		structAppend(styles, {
-			"grid-gap":"0",
-			"grid-mode":"auto",
-			"grid-fit":"auto-fit",
-			"grid-width":"180px",
-			"grid-max-width":"1fr",
-			"grid-max-height":"auto",
-			"grid-columns":"2",
-			"flex-direction":"row",
-			"justify-content":"flex-start",
-			"align-items":"center"
-			},false);
-		arguments.out.main &= "\tgrid-gap:" & displayDimension(styles["grid-gap"]) & ";\n;";
-		arguments.out.main &= "\t--grid-max-height:" & displayDimension(styles["grid-max-height"]) & ";\n;";
 		
 		switch (styles["grid-mode"]) {
 			case "none":
@@ -631,13 +616,13 @@ component {
 			case "auto":
 				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
-				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, minmax(#styles["grid-width"]#, #styles["grid-max-width"]#));\n";
+				arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width), var(--grid-max-width)));\n";
 
 				break;	
 			case "fixedwidth":
 				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
-				arguments.out.main &= "\tgrid-template-columns: repeat(#styles["grid-fit"]#, #styles["grid-width"]#);\n";
+				arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), var(--grid-width));\n";
 				break;	
 			case "fixedcols":
 				arguments.out.item &= "\tgrid-area:unset;\n;";
@@ -654,7 +639,6 @@ component {
 				else {
 					arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
 				}
-				
 				break;	
 
 			case "templateareas":
@@ -670,14 +654,8 @@ component {
 					arguments.out.main &= "\tgrid-template-rows: " & styles["grid-template-rows"] & ";\n";
 				}
 				break;
-			case "flex": case "flexstretch":
-				arguments.out.main &= "\tdisplay:flex;\n\tflex-wrap: wrap;\n";
-				arguments.out.main &= "\tflex-direction: " & styles["flex-direction"] & ";\n";
-				arguments.out.main &= "\tjustify-content: " & styles["justify-content"] & ";\n";
-				arguments.out.main &= "\talign-items: " & styles["align-items"] & ";\n";
-				if (styles["grid-mode"] eq "flexstretch") {
-					arguments.out.item &= "\n\tflex-grow:1;\n;";
-				}
+			case "flex":
+				arguments.out.main &= "\tdisplay:flex;\n";
 				break;
 		}
 

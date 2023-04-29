@@ -1,0 +1,36 @@
+/* Static CSS for new var style grid styling */
+
+:root {
+	--grid-gap:0;
+	--grid-fit:auto-fit;
+	--grid-width:180px;
+	--grid-max-width:1fr;
+	--grid-max-height:auto;
+	--grid-columns:2;
+	--flex-direction:row;
+	--justify-content:flex-start;
+	--align-items:flex-start;
+	--align-content:flex-start;/* alignment for multiple rows */
+	--flex-stretch:0;/* treat as boolean */
+	--flex-wrap: wrap;
+}
+
+.cs-grid {
+	display:grid;
+	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
+	grid-gap:var(--grid-gap);
+	flex-direction: var(--flex-direction);
+	align-items: var(--align-items);
+	justify-content: var(--justify-content);
+	flex-wrap: var(--flex-wrap);
+	/*grid-row-gap: var(--gridrowgap); too hard -- need to think about how this will work and inherit */
+}
+
+.cs-grid > * {
+	max-height: var(--grid-max-height);
+	flex-grow: var(--flex-stretch);
+}
+
+.flex {
+	display: flex;
+}

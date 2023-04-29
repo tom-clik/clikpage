@@ -1,0 +1,418 @@
+:root {
+	--darkblue: #40babd;
+	--highlight: #40babd;
+	--background: #494d55;
+	--headertext: rgba(255, 255, 255, 0.85);
+	--text: rgb(73, 77, 85);
+	--headertextdark: rgba(255, 255, 255, 0.5);
+	--menucolor: #616670;
+	--menuhicolor: var(--darkblue);
+	--bordercolor: #ccc;
+	--buttoncolor: var(--darkblue);
+	--buttonhicolor: var(--background);
+	--menubordercolor: var(--bordercolor);;
+	--lightbg: #eee;
+	--headerheight:120px;
+	--contentpadding:20px;
+	--pagebg: #fff;
+	--titleheight:96px;
+}
+
+body {
+	font-family:  var(--bodyfont);
+	padding:0;
+	margin:0;
+	font-size: 80%;
+	color: var(--text);
+}
+
+.cs-title, .title {
+	font-family:  var(--titlefont);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 300;
+}
+
+h1 {
+	font-size: 2.4em;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.pageTitle {
+	position: sticky;
+	margin-top: calc(-1 *  var(--contentpadding));
+	padding-top:  var(--contentpadding);
+	padding-bottom:8px;
+	top: calc(var(--headerheight));
+	background-color:var(--pagebg);
+	height: var(--titleheight);
+}
+
+@media only screen and (max-width: 800px) {
+
+	.pageTitle {
+
+		margin-top: 0;
+		height:auto;
+		top:0;
+
+
+	}
+
+	
+}
+
+h2 {
+	font-size:1.8em;
+}
+
+h3 {
+	font-size: 1.6em;
+}
+
+h4 {
+	font-size: 1.3em;
+}
+h5 {
+	font-size: 1.2em;
+}
+
+h4, h5, h6 {
+	margin-bottom: 0.6em;
+}
+
+h1, h2  {
+	padding-bottom:0.6em;
+	border-bottom: 1px solid var(--bordercolor);
+}
+
+.icon {
+	font-family: 'ElegantIcons';
+	font-size: 24px;
+	display: inline-block;
+	padding:4px;
+}
+
+.icon:hover {
+	 color:  var(--darkblue);
+}
+
+
+a {
+    -webkit-transition: all 0.4s ease-in-out;
+}
+
+#maincol {
+	padding-top: var(--headerheight);
+	min-height: 100%;
+	display: grid;
+	grid-template-rows: auto 50px;
+}
+
+.pageBody h1 a:before, .pageBody h2 a:before , .pageBody h3 a:before  {
+  display: block; 
+  content: " "; 
+  margin-top: calc(-1 *  (var(--headerheight)  + var(--titleheight))); 
+  height:  calc(var(--headerheight) + var(--titleheight)); 
+  visibility: hidden; 
+  pointer-events: none;
+}
+
+@media only screen and (max-width: 800px) {
+
+	#maincol {
+		padding-top:0;
+		grid-template-rows: min-content auto 50px;
+
+	}
+
+
+	.pageBody h1 a:before, .pageBody h2 a:before , .pageBody h3 a:before  {
+	  display: none;
+	}
+
+	
+}
+
+#header {
+	position:fixed;
+	width:100%;
+	top:0;
+	left:0;
+	border-top: 5px solid var(--darkblue);
+	background-color:  var(--background);
+	color:  var(--headertext);
+	padding-top: 30px;
+	padding-bottom: 30px;
+	height: var(--headerheight);
+	z-index: 1000;
+}
+
+@media only screen and (max-width: 800px) {
+	
+	#header {
+		position:relative;
+		min-height: var(--headerheight);
+		height:auto;
+		z-index: 0;
+	}
+
+}
+
+div.spanning {
+	padding:0 20px;
+}
+
+.hasSticky > .inner {
+	height: 100%;
+}
+
+#footer {
+	padding: 6px 0;
+	 min-height: 50px;
+	 background-color:  var(--background);
+	 color:  var(--headertext);
+	 font-size: 90%;
+	 text-align: center;
+}
+
+#footer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+#content  {
+	padding: var(--contentpadding) 0 var(--contentpadding) 0;
+}
+
+
+#mainmenu, #pagemenu {
+	position: sticky;
+	top: calc(var(--headerheight) + var(--contentpadding));
+}
+
+
+@media only screen and (max-width: 800px) {
+	
+	#mainmenu {
+
+		padding:20px;
+		position: fixed;
+		top:0;
+		left:800px;
+		transition: transform .3s ease-in-out;
+		min-height: 100vh;
+		width:800px;
+		background: white;
+		z-index: 2000;
+	}
+
+	#mainmenu:target {
+		transform: translateX(-800px);
+	}
+
+	
+}
+
+#breadcrumb {
+	margin-top:4px;
+	color:var(--headertextdark);
+}
+
+#breadcrumb a:hover {
+	color:var(--headertext);
+	text-decoration: underline;
+}
+
+#search {
+	position: absolute;
+	right:0;
+	top:8px;
+}
+
+#search button.search-btn {
+	color:var(--headertext);
+}
+
+#searchResults.empty {
+	display: none;
+}
+
+#searchResults  {
+	width:260px;
+	position: absolute;
+	right:0;
+	top:38px;
+	padding:8px;
+	background-color:var(--pagebg);
+	color: var(--text);
+	border:1px solid var(--bordercolor);
+}
+
+.icon-big {
+	font-size: 48px;
+}
+
+#mobileclose {
+	display:none;
+}
+
+#hamburger  {
+	display:none;
+	position: absolute;
+	right:0;
+	top:8px;
+}
+
+
+@media only screen and (max-width: 800px) {
+	#search {
+		position: relative;
+		margin:12px 0;
+	}
+
+	#searchResults  {
+		width:auto;
+		position: relative;
+		top:0;
+	}
+
+	#hamburger, #mobileclose  {
+		display:block;
+	}
+
+}
+
+#search  input {
+	padding:4px 8px;
+	border-radius: 16px;
+	border-color: #f0f0f0;
+}
+
+.text-highlight {
+	color:var(--darkblue);
+}
+
+#sitetitle {
+	text-transform: uppercase;
+	font-size: 220%;
+}
+
+
+
+code, .code {
+	padding:2px;
+	border:1px solid #eee;
+	font-family: monospace;
+}
+
+code {
+	display: inline-block;
+	margin:2px;
+}
+
+pre.code {
+	margin-bottom: 1em;
+}
+/* new markdown engine just dumps out <pre> without a class */
+pre {
+	margin-bottom: 1em;
+}
+
+table {
+	margin-bottom: 1em;
+}
+
+table , td,   th {
+	border: 1px solid  #eee;
+}
+table td, table th {
+	padding: 2px
+}
+ table th {
+    border-bottom: 2px solid #d4dde4;
+    background: #eaeef2;
+    background: rgba(212,221,228,.5);
+}
+
+table.striped tr:nth-of-type(2n) {
+	background-color: #eee;
+}
+
+.summary {
+	padding:1em;
+	border:1px solid var(--bordercolor, #eee);
+	background-color: var(--lightbg, #eee);
+}
+
+a.xref {
+	color: var(--highlight);
+	display: inline-block;
+	border-bottom:1px dotted var(--highlight);
+}
+
+a.xref:hover {
+	color:var(--text);
+}
+
+/** menus  */
+
+.level3 {
+	padding-left:1.6em;
+}
+
+.level2 + .level3 {
+	padding-top:5px;
+}
+
+.cs-menu .headingselected a {
+	color:var(--menuhicolor);
+}
+
+
+#pagemenu {
+	padding-left:1.6em;
+	border-left: 1px solid var(--menubordercolor);
+	font-size:86%;
+	padding-bottom: 12px;
+}
+
+#pagemenu {
+	display: block;
+}
+
+@media only screen and (max-width: 800px) {
+	#pagemenu {
+		display: none;
+	}
+}
+
+
+#pagemenu a {
+    padding: 0 0 8px 0;
+}
+
+.doc-sub-menu {
+	display: none;
+}
+
+.selected .doc-sub-menu {
+	display: block;
+}
+
+
+.doc-sub-menu  {
+	padding:0em 0 0em 1em;
+	margin-top:1em;
+}
+
+.doc-sub-menu  a {
+	display:block;
+	padding-bottom: 1em;
+}
+

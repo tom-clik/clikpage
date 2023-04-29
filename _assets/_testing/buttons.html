@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Button tests</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="../css/title.css">
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/navbuttons.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<meta charset="UTF-8">
+	<style id="test1" data-title="page styling">
+		/* test page styling */
+		body {
+			--title-font:'Open Sans';
+			background-color: Bisque;
+			--font-size:0.86em;
+			--text-font: 'courier new';
+		}
+		#test1 {
+			--icon-width:64px;
+			--icon-height:64px;
+		}
+	</style>
+	<style id="test2" data-title="other styling">
+		.panels > div {
+			margin:4px;
+			background-color: white;
+			border:1px solid DarkSlateGrey;
+		}
+
+		.panels .cs-title {
+			color:white;
+			--title-font-size:100%;
+			--title-font-weight:300%;
+			--title-font-align:center;
+			color:MintCream;
+			background-color: DarkSlateGrey;
+			padding:4px;
+		}
+
+		.panels .cs-title + div {
+			padding: 4px;
+		}
+		/* Button defaults */
+		.button  {
+			color:red;
+			font-family:var(--text-font);
+		}
+		
+		.button label {
+			padding:4px;
+		}
+
+		.button:hover  {
+			color:magenta;
+		}
+		
+
+		/* Scheme no font */
+		.scheme-no-font .button {
+			color:teal;
+			--icon-width:16px;
+			--icon-height:16px;
+			padding:2px;
+
+		}
+
+		.scheme-no-font .icon {
+			font-family: verdana;
+		}
+		/* Scheme panel */
+		.scheme-panel .button {
+			background-color: #c5c5c5;
+			border-width: 1px solid hotpink;
+			color:red;
+			fill:red;
+			stroke:red;
+			padding:4px 18px;
+
+		}
+		.scheme-panel .button:hover {
+			color: #ff00ff;
+			fill:#ff00ff;
+			stroke:#ff00ff;
+			background-color: #ffff00;
+		}
+		/* Scheme rollout */
+		.scheme-rollout .button {
+			color:teal;
+			--icon-width:16px;
+			--icon-height:16px;
+			padding:2px;
+		}
+		.scheme-rollout .button:hover  {
+			color:white;
+			background-color:teal;
+		}
+		
+		.setting-align-left {
+			--button-align:flex-start; 
+			--button-direction: row;	
+		}
+		.setting-align-right {
+			--button-align:flex-start; 
+			--button-direction: row-reverse;		
+		}
+		.setting-align-center {
+			--button-align:	center;
+		}
+
+		/* container styling */
+		/* icons are always a list of inline blocks.
+		Use a wrapper and a flexbox to align them */
+		.flex {
+			display: flex;
+			grid-gap:4px;
+		}
+		.flex-column {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			width:32px;
+		}
+
+		.flex-end {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.flex-stretch div {
+			flex-grow: 1;
+		}
+	</style>
+
+</head>
+<body>
+
+<div class="panels">
+
+	<div>
+		<div class="cs-title"><a href="#test1">SVGs with labels</a></div>
+		<div class="test  scheme-panel" id="test1">
+			<div class="button">
+				<a href="#">
+					<svg class="icon"   viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /></svg>
+					<labeL>
+						Text
+					</labeL>
+				</a>
+			</div>
+
+			<div class="button right">
+				<a href="#">
+					<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /></svg>
+					<labeL>
+						Text
+					</labeL>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#test2">Plain icons</a></div>
+		<div class="test" id="test2">
+			<div class="button" id="xcolbutton">
+				<a data-action="open" data-state="close" data-target="#xcol">
+					<i class="icon icon-previous"></i>
+				</a>
+				<a class="state_close" data-state="open" data-action="close" data-target="#xcol">
+					<i class="icon icon-next"></i>
+				</a>
+			</div>
+			<div class="button"><a href="#"><i class="icon icon-home"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-search"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-account"></i></a></div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#testa2">Icons with labels</a></div>
+		<div class="test" id="test2a">
+			<div class="button"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
+			<div class="button"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
+			<div class="button"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#test3">Plain icons aligned with flexbox</a></div>
+		<div class="test flex-end" id="test3">
+			<div class="button"><a href="#"><i class="icon icon-home"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-search"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-account"></i></a></div>
+		</div>
+	</div>
+	
+	<div>
+		<div class="cs-title"><a href="#test3a">Combine svgs</a></div>
+		<div class="test flex" id="test3a">
+			
+			<div class="button"><a href="#"><svg class=icon viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /></svg></a></div>
+			<div class="button"><a href="#"><svg class=icon viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#help_outline" /></svg></a></div>
+			<div class="button"><a href="#"><svg class=icon viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#help" /></svg></a></div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#test4">Rollout labels</a></div>
+		<div class="test scheme-rollout flex-column" id="test4">
+			<div class="button  setting-popout"><a href="#"><i class="icon icon-close"></i><label>icon-close spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-menu"></i><label>icon-menu spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-previous"></i><label>icon-previous  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-next"></i><label>icon-next  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-squares"></i><label>icon-squares  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-fullscreen"></i><label>icon-fullscreen  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-fullscreen_exit"></i><label>icon-fullscreen_exit  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-first_page"></i><label>icon-first_page  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-last_page"></i><label>icon-last_page  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-help"></i><label>icon-help  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-cart"></i><label>icon-cart  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-done"></i><label>icon-done  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-favorite"></i><label>icon-favorite  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-home"></i><label>icon-home  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-search"></i><label>icon-search  spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-account"></i><label>icon-account  spaces !^&!% fref</label></a></div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#test4a">No font</a></div>
+		<div class="test scheme-no-font flex-column" id="test4a">
+			<div class="button"><a href="#"><i class="icon icon-close"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-menu"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-previous"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-next"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-squares"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-fullscreen"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-fullscreen_exit"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-first_page"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-last_page"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-help"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-cart"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-done"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-favorite"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-home"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-search"></i></a></div>
+			<div class="button"><a href="#"><i class="icon icon-account"></i></a></div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#test6">Inputs</a></div>
+		<div class="test button-menu scheme-panel flex" id="test6">
+			<div class="button"><input type="submit" value="Button"></div>
+			<div class="button"><input type="button" value="Button missi"></div>
+			<div class="button"><input type="submit" value="Button mississippi"></div>
+		</div>
+	</div>
+
+	<div class="">
+		<div class="cs-title"><a href="#test7">Inputs with stretch</a></div>
+		<div class="test button-menu scheme-panel flex flex-stretch" id="test7">
+			<div class="button"><input type="submit" value="Button"></div>
+			<div class="button"><input type="button" value="Button missi"></div>
+			<div class="button"><input type="submit" value="Button mississippi"></div>
+		</div>
+	</div>
+
+	<div>
+		<div class="cs-title"><a href="#test8">Plain links</a></div>
+		<div class="test button-menu scheme-panel flex" id="test8">
+			<div class="button"><input type="submit" value="Button"></div>
+			<div class="button"><input type="button" value="Button missi"></div>
+			<div class="button"><input type="submit" value="Button mississippi"></div>
+		</div>
+	</div>
+	<div>
+		<div class="cs-title"><a href="#test8">Plain links with stretch</a></div>
+		<div class="test button-menu scheme-panel flex flex-stretch" id="test8">
+			<div class="button"><input type="submit" value="Button"></div>
+			<div class="button"><input type="button" value="Button missi"></div>
+			<div class="button"><input type="submit" value="Button mississippi"></div>
+		</div>
+	</div>
+	<div>
+		<div class="cs-title"><a href="#test9">Icons, labels with grid</a></div>
+		<div class="test button-menu scheme-panel scheme-grid" id="test9">
+			<!-- setting-align takes the class left or right and justfies the content accordingly -->
+			<div class="button setting-align-left"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
+			<div class="button setting-align-left"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
+			<div class="button setting-align-left"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
+			<div class="button setting-align-center"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
+			<div class="button setting-align-center"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
+			<div class="button setting-align-center"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
+			<div class="button setting-align-right"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
+			<div class="button setting-align-right"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
+			<div class="button setting-align-right"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

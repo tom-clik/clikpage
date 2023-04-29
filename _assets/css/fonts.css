@@ -1,0 +1,26 @@
+:root {
+	--title-font:Arial;
+	--text-font:Verdana;
+	--title-font:var(--text-font);
+	--heading-font:var(--title-font);
+	--font-size:86%;
+	--heading-margin: 0;
+}
+
+body {
+	font-family: var(--text-font);
+	font-size: var(--font-size);
+}
+
+.title, .cs-title {
+	font-family: var(--title-font);	
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--heading-font);
+	margin: var(--heading-margin);
+}
+
+
+
+
