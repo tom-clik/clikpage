@@ -1,2 +1,2 @@
-fullpage/*
-*.css
+# ignore generated CSS in this folder
+menu_styling.css

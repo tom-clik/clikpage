@@ -1,0 +1,8 @@
+@import url('google_icons_codes.css');
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../fonts/google-icons.woff2) format('woff2');
+}

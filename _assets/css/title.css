@@ -1,0 +1,101 @@
+/* Deprecated. All new versions to use text.css. To be removed when FOEC site is checked.
+*/
+:root {
+	--text-color:initial;
+	--text-font: initial;
+	--font-size:100%;
+	--title-font:inherit;
+	--title-font-weight:bold;
+	--title-color:inherit;
+	--title-font-align: inherit;
+	--title-font-size:inherit;
+
+	/* Headings are the cross headers inside text items (see .textWrap) 
+	usually we want headings to be the title font but sometimes
+	we want something different. The sizes here only apply to these. 
+	All sizes applied to titles are done by assigning a font size to the content section (for titles)
+	or the cs title panel for e.g. general content sections */
+	
+	--heading-font: inherit;
+	--heading-font-weight:inherit;
+	--heading-color:inherit;
+	--heading-font-align: inherit;
+	--heading-font-size:inherit;
+
+	--heading-margin:0;
+	--heading-padding:0;
+	--link-color:inherit;
+
+	--button-border-color:var(--link-color);
+	--button-border-width:1px;
+	--button-background-color: transparent;
+	--button-border-style:solid;
+	--button-padding: 8px;
+}
+
+body {
+	font-family: var(--text-font);
+	font-size: var(--font-size);
+	color: var(--text-color);
+}
+
+/* Need the hover to override reset.css value */
+a, a:hover, input.button, input.button:hover {
+	color:var(--link-color);
+}
+
+.noicon {
+	--buttonwidth:0px;
+	--buttongap: 0px;
+}
+
+.cs-title, .title {
+	font-family: var(--title-font);
+	font-weight:  var(--title-font-weight);
+	text-align: var(--title-font-align);
+	color:  var(--title-color);
+	font-size: var(--title-font-size);
+}
+
+.cs-title a, .cs-title a:hover {
+	color:inherit;
+}
+
+.cs-text, .textWrap {
+	color: var(--text-color);
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+	margin: var(--heading-margin);
+	font-family:  var(--heading-font);
+	font-weight:  var(--heading-font-weight);
+	text-align: var(--heading-font-align);
+	color:  var(--heading-color);
+	font-size: var(--heading-font-size);
+}
+
+
+/* Standard Class styling */
+
+/* 1. Headings within text items */
+
+.textWrap, .cs-text {
+	--heading-font: var(--title-font);
+	--heading-margin: 0 0 0.2em 0;
+}
+
+.textWrap h1, .cs-text  h1 {
+	--heading-font-size: 140%;
+}
+.textWrap h2, .cs-text  h2 {
+	--heading-font-size: 120%;
+}
+.textWrap h3, .cs-text  h3 {
+	--heading-font-size: 110%;
+}
+.textWrap h4, .cs-text  h4, .textWrap h5, .cs-text  h5, .textWrap h6, .cs-text  h6 {
+	--heading-font-size: 140;
+}
+
+

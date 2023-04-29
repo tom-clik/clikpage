@@ -1,0 +1,252 @@
+:root {
+	--bordercolor: #eee;
+}
+
+.cs-imagegrid {
+	--image-max-height: auto;
+  	--image-max-width: 100%;
+  	--object-fit: scale-down;
+  	--align-frame:center;/* align items within frame */
+	--justify-frame:start;/* justify content within frame */
+	--align-caption:center;/* align caption */
+	--justify-caption:start;/* justify  caption */
+	--image-grow:0;/* expand image to frame */
+	--frame-flex-direction:column; /* image on top of caption (can reverse) */
+	--transition-time:1s;/* time for rollover transition */
+}
+
+.cs-imagegrid .frame {
+	position: relative;
+	display: flex;
+	flex-direction: var(--frame-flex-direction);
+	padding:8px;
+	align-items: var(--align-frame);
+	justify-content: var(--justify-frame);
+}
+
+.cs-imagegrid .frame img {
+	display: block;
+	width: 100%;
+	height:100%;
+	object-fit: var(--object-fit);
+}
+
+.cs-imagegrid .image {
+	height: var(--image-max-height);
+	width: var(--image-max-width);
+	flex-grow: var(--image-grow);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: var(--justify-frame);
+	align-items: var(--align-frame);
+}
+
+.cs-imagegrid .caption {
+	display: flex;
+	flex-direction: column;
+	padding:2px;
+	align-items: var(--align-caption);
+	justify-content: var(--justify-caption);
+	transition:opacity var(--transition-time);
+}
+
+.cs-imagegrid .frame:hover .caption {
+	opacity: 1 !important;
+}
+
+.cs-image img {
+	max-width: 100%;
+	height:auto;
+
+}
+
+.popup {
+	position: fixed;
+	padding:20px;
+	top:0;
+	left:0;
+	background-color: rgba(255,255,255,1);
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+}
+
+.popup .button {
+	position: fixed;
+	top:6px;
+	right:6px;
+	--icon-width:12px;
+	--icon-height:12px;
+}
+
+.popup img {
+	margin:0 auto;
+	box-shadow: 10px 10px 15px -4px rgba(0,0,0,0.72);
+}
+
+.popup .button:hover {
+	stroke:#ff00ff;
+	fill:#ff00ff;
+	color:#ff00ff;
+}
+
+.closeButton.button {
+	--label-display:none;
+}
+
+.nextButton.button{
+	top:40%;
+	--button-align:flex-start; 
+	--button-direction: row-reverse;
+	right:60x;
+	
+}
+.previousButton.button{
+	right:unset;
+	top:40%;
+	left:60x;
+}
+
+.popup_image {
+	width: 100%;
+	height: 100%;
+}
+
+
+/*
+
+.cs-image.scheme-box {
+	padding:0 8px 12px 0;
+	margin:0 0 12px 0;
+}
+
+.cs-image.scheme-box .frame {
+	margin-bottom:12px;
+}
+
+.cs-image.scheme-box .frame img {
+	border:1px solid var(--bordercolor);
+	box-shadow: 4px 4px 4px 0px rgba(156,150,156,0.72);
+}
+
+.cs-image.scheme-left {
+	float:left;
+	margin:0 12px 12px 0;
+}
+
+.cs-imagegrid.scheme-test .frame img  {
+	padding:0 0 6px 0;
+}
+
+.cs-imagegrid.scheme-test .frame:hover img {
+	border-bottom:2px solid #ff00ff;
+	padding:0 0 4px 0;
+}
+
+
+.cs-imagegrid.img_centerh .frame {
+	align-items: center;
+}
+
+.cs-imagegrid.img_centerv .frame {
+	justify-content: center;
+}
+
+.cs-imagegrid.img_topv .frame {
+	justify-content: flex-start;
+}
+
+.cs-imagegrid.img_bottomv .frame {
+	justify-content: flex-end;
+}
+
+.cs-imagegrid.caption_top  .frame {
+	flex-direction: column-reverse;
+}
+.cs-imagegrid.caption_bottom .image, .cs-imagegrid.caption_top .image {
+	flex-grow: 1;
+}
+
+.cs-imagegrid.caption_overlay  .frame {
+	
+}
+
+.cs-imagegrid.caption_overlay  .caption {
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+
+.cs-imagegrid.caption_overlay .frame:hover .caption {
+	opacity: 1;
+}
+
+
+.scheme-bottom  figcaption {
+	position:absolute;
+	bottom:0%;
+	left:0;
+	width:100%;
+	padding:4px;
+	display: inline-block;
+	text-align: center;
+	font-size: 12px;
+	color: white;
+	opacity: 1;
+	background-color: #333;
+}
+
+.scheme-bottom figure:hover figcaption {
+	opacity: 0;
+}
+
+.scheme-bottom figure {
+	background-color: #333;		
+}
+
+.scheme-bottom img {
+	opacity: 0.7;
+}
+
+.scheme-bottom figure:hover img {
+	opacity: 1;
+}
+
+.scheme-overlay figcaption {
+	position:absolute;
+	top: 50%;
+	transform: translate(0%,-50%);
+	left:0;
+	width:100%;
+	padding:4px;
+	display: inline-block;
+	text-align: center;
+	font-size: 24px;
+	color: white;
+	opacity: 0;
+}
+
+.scheme-overlay figure {
+	background-color: #333;		
+}
+
+.scheme-overlay img {
+	opacity: 1;
+}
+
+.scheme-overlay figure:hover img {
+	opacity: 0.7;
+}
+
+.scheme-overlay figure:hover figcaption {
+	opacity: 1;
+}
+
+*/

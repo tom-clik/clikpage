@@ -1,0 +1,10 @@
+.footnotes p span {
+	display: inline-block;
+	padding:0 4px 0 0;
+}
+
+#footnotes {
+	margin-top: 0.5em;
+	border-top:1px solid var(--bordercolor, #ccc);
+	padding-top:0.5em;
+}

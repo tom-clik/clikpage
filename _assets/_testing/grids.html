@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Title and heading font test</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/schemes/grid-schemes.css">
+	
+	<meta charset="UTF-8">
+	<style>
+	body {
+		padding:20px;
+	}
+	.test-header {
+		font-weight: bold;
+		font-size: 24px;
+	}
+
+	.test {
+		margin:20px;
+	}
+
+	g {
+		display: inline-block;
+		background-color: #cecece;
+		padding:2px;
+		
+	}
+	.cs-grid {
+		--grid-gap:10px;
+	}
+	.scheme-grid-fixedcols {
+		--grid-columns:4;
+	}
+	.scheme-grid-fixed {
+		--grid-width:240px;
+	}
+	#test2a_grid {
+		grid-template-columns: 120px auto 160px;
+	}
+	#test4_grid {
+		--justify-content: flex-end;
+	}
+	#test5_grid {
+		--flex-wrap: nowrap;
+		--align-items: center;
+	}
+
+	#test6_grid {
+		--flex-direction: row-reverse;
+		--flex-stretch: 1;
+	}
+	#test7_grid {
+		--justify-content: center;
+	}
+	</style>
+</head>
+<body>
+
+	<div class="test">
+		<div class="test-header">Auto grid with max-width</div>
+		<div id="test1_grid" class="cs-grid"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Grid with fixed width cols</div>
+		<div id="test2_grid" class="cs-grid scheme-grid-fixedcols"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Grid with set cols</div>
+		<div id="test2a_grid" class="cs-grid"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Grid with fixed width</div>
+		<div id="test3_grid" class="cs-grid scheme-grid-fixed"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Flex</div>
+		<div id="test4_grid" class="cs-grid flex"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Flex No Wrap</div>
+		<div id="test5_grid" class="cs-grid flex"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Flex Stretch</div>
+		<div id="test6_grid" class="cs-grid flex" data-cols="5"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Flex align center</div>
+		<div id="test7_grid" class="cs-grid flex" data-cols="5"></div>
+	</div>
+
+	<script src="../js/jquery-3.4.1.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".cs-grid").each( function() {
+				const cols = $(this).data("cols") ? $(this).data("cols") : 12;
+				$(this).html(testGrid(cols));
+			});
+		});
+		lorem = ["Lorem","ipsum","dolor","sit","amet,","consectetur","adipisicing","elit,","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua."];
+
+		function testGrid(cols) {
+			var html = "";
+			text = "";
+			for (let i = 1 ; i <= cols; i++) {
+				text += lorem[i] + " ";
+				html += "<g>" + text + "</g>";
+			}
+			return html;
+		}
+	</script>
+
+</body>
+</html>

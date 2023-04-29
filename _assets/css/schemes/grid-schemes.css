@@ -1,0 +1,19 @@
+/*Set number of columns */
+.scheme-grid-fixedcols {
+	grid-template-columns: repeat(var(--grid-columns), 1fr);
+}
+
+/*Fixed width */
+.scheme-grid-fixed {
+	grid-template-columns:  repeat(auto-fit, var(--grid-width));
+}
+
+
+.scheme-stretch > * {
+	--flex-stretch: 1;
+}
+
+/* Exotica */
+.scheme-grid-test {
+	grid-template-columns: 200px repeat(auto-fit, minmax(var(--mingridcol),1fr)) 300px;
+}

@@ -1,0 +1,34 @@
+/* This file must not be used without also adding the following to your
+page. Put this in as a separate link and async hack it THP */
+/*@import url("http://fast./_assets/fonts.net/t/1.css?apiType=css&projectid=7b798933-257c-43d7-8947-4509cc0faf41");*/
+
+@font-face{
+    font-family:"Futura PT W01 Light";
+    src:url("/_assets/fonts/9ad55860-bbe2-4e51-be58-08b45bdda354.woff2") format("woff2"),
+    url("/_assets/fonts/eceb6e13-403b-4d2b-af74-c05bc9c2535e.woff") format("woff");
+}
+@font-face{
+    font-family:"Futura PT W01 Book";
+    src:url("/_assets/fonts/aafdd021-88d4-41d8-8e15-fe91f83e4b17.woff2") format("woff2"),
+    url("/_assets/fonts/81d44d4b-ac07-4ad4-8cdd-4df771a3c1c3.woff") format("woff");
+}
+@font-face{
+    font-family:"Soleil W01 Light";
+    src:url("/_assets/fonts/71d413d0-7756-4df0-a3cd-3b4f9f04c8f4.woff2") format("woff2"),
+    url("/_assets/fonts/4f8fefe7-7b0a-44ca-ac95-4aac1c3ab3fc.woff") format("woff");
+}
+@font-face{
+    font-family:"Soleil W01 Book";
+    src:url("/_assets/fonts/84e71e4a-5715-4e88-847f-9e61efb408d8.woff2") format("woff2"),
+    url("/_assets/fonts/ebaf73bb-d58a-4a53-a0fd-8e4663bfb4fa.woff") format("woff");
+}
+@font-face{
+    font-family:"Soleil W01 Regular";
+    src:url("/_assets/fonts/6561a656-6f33-48a9-a9b4-c923cacb6769.woff2") format("woff2"),
+    url("/_assets/fonts/5328f8ac-8b9c-4408-8a29-d1e6a757f7e7.woff") format("woff");
+}
+@font-face{
+    font-family:"Soleil W01 SemiBold";
+    src:url("/_assets/fonts/b6a7e4bd-9d8b-4af3-9cfc-ad6aa8eca691.woff2") format("woff2"),
+    url("/_assets/fonts/b5ca97db-4d8a-4559-80a2-e7310efdeafe.woff") format("woff");
+}
