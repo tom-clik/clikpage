@@ -9,12 +9,14 @@
 	link-color: brown;
 	menu-background: Bisque;
 	menu-item-border: 0 0 4px 0;
-	hover: {
+	
+	hover {
 		link-color : DarkCyan;
 		menu-background : DarkKhaki;
 		menu-border-color : pink;
-	};
-	hi: {
+	}
+	
+	hi {
 		link-color : Cornsilk;
 		menu-background : darkslategray;
 	}
