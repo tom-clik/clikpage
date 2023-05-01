@@ -6,7 +6,8 @@
 @import url('font-awesome-icons.css');
 
 :root, :host {
-  --icon-font: normal 400 1em/1 "Font Awesome"; }
+  --icon-font: normal 400 1em/1 "Font Awesome"; 
+}
 
 @font-face {
   font-family: 'Font Awesome';
