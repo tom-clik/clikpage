@@ -2,7 +2,10 @@
 
 # Carousel testing page
 
+NB This is mainly deprecated by using layout=carousel in the imagegrid testing page. 
 
+We just need to sort out the styling for the carousel nav buttons. These are done manually
+here. Need to work to them into the component in panels and states etc.
 
 ## Notes
 
@@ -57,7 +60,7 @@ Mess - copied form somewhere else.
 
 <cfscript>
 
-request.rc.test = 'auto'; /* fixedwidths | fixedcols */
+request.rc.test = 'overlay'; 
 
 settingsObj = new clikpage.settings.settings(debug=1);
 contentObj = new clikpage.content.content(settingsObj=settingsObj);
@@ -65,7 +68,7 @@ contentObj.debug = 1;
 site = {};
 options = {
 	"contain": "true",
-	"wrapAround": "false",
+	"wrapAround": "true",
 	"freeScroll": "false",
 	"pageDots": "false",
 	"prevNextButtons": "true"
@@ -76,7 +79,7 @@ styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 
 grid_cs = contentObj.new(id="testgrid",type="imagegrid");
 grid_cs.data = image_sets;
-grid_cs.class = "scheme-#request.rc.test#";
+grid_cs.class = "scheme-grid scheme-#request.rc.test#";
 
 contentObj.settings(content=grid_cs,styles=styles.style,media=styles.media);
 css = ":root {\n";
@@ -95,6 +98,7 @@ html = pageData.html;
 	<head>
 		<title>Grids CSS Samples</title>
 		<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/images.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/flickity.css">
 		<style>
 			body {
@@ -118,6 +122,7 @@ html = pageData.html;
 			#testgrid .flickity-cell.is-selected img {
 			  opacity: 1;
 			}
+
 			.flickity-button-icon {	
 				  fill: white;
 			}
@@ -136,9 +141,6 @@ html = pageData.html;
 			  background: transparent;
 			  box-shadow: none;
 			}
-			
-    
-}
 
 			<cfoutput>#css#</cfoutput>
 		</style>
@@ -172,7 +174,7 @@ html = pageData.html;
 				    return;
 				  }
 				  $carousel.flickity("select", cellIndex,true);
-				});;
+				});
 			});
 		</script>
 

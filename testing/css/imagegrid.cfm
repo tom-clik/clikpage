@@ -35,7 +35,9 @@ tests = [
 	{id="setcols",title="Specified columns"},
 	{id="heights",title="Limit the height of images"},
 	{id="captiontop",title="Caption at the top plus some frame styling"},
-	{id="overlay",title="Caption overlay"}
+	{id="overlay",title="Caption overlay"},
+	{id="masonry",title="Masonry"},
+	{id="carousel",title="Carousel"}
 ];
 
 settingsObj = new clikpage.settings.settings(debug=1);
@@ -70,6 +72,8 @@ html = pageData.html;
 		<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/images.css">
+		<link rel="stylesheet" type="text/css" href="/_assets/css/flickity.css">
+
 		<style>
 			body {
 				background-color: #f3f3f3;
@@ -100,7 +104,18 @@ html = pageData.html;
 				</cfloop>
 			</select>
 		</div>
-
+		<script src="/_assets/js/jquery-3.4.1.js"></script>
+		<script src="/_assets/js/imagesloaded.pkgd.js"></script>
+		<script src="/_assets/js/isotope.pkgd.min.js"></script>
+		<script src="/_assets/js/masonry-horizontal.js"></script>
+		<script src="/_assets/js/flickity.pkgd.min.js"></script>
+		<script>
+		$( document ).ready( function() {
+			<cfoutput>
+			#pageData.pagecontent.onready#
+			</cfoutput>
+		});	
+		</script>
 	</body>
 	
 </html>

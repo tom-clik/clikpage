@@ -15,8 +15,11 @@
 	--transition-time:1s;/* time for rollover transition */
 }
 
-.cs-imagegrid .frame {
+.frame:not(.flickity-cell ) {
 	position: relative;
+}
+
+.cs-imagegrid .frame {
 	display: flex;
 	flex-direction: var(--frame-flex-direction);
 	align-items: var(--align-frame);

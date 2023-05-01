@@ -90,13 +90,33 @@
 }
 
 .scheme-overlay {
-	subcaptions:true;
 	caption-position:overlay;
 	caption {
 		background {
 			color: panel-overlay;
 		}
 		color: panel-text;
-
 	}
+}
+
+.scheme-masonry {
+	layout: masonry;
+	grid-width: 19%;
+	grid-gap: 4px;
+	@mid {
+		grid-width: 23%;
+	}
+
+	@mobile {
+		grid-width: 31%;
+	}
+
+	item {
+		margin:0 0 12px 0;
+	}
+}
+
+.scheme-carousel {
+	layout: carousel;
+	grid-max-height: 220px;
 }

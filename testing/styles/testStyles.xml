@@ -12,7 +12,7 @@
 		<panel-text  title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>
 		</panel-text>
-		<panel-overlay title="Semi transparent overlay" value="rgba(33,33,33,0.6)" />
+		<panel-overlay title="Semi transparent overlay" value="rgba(33,33,33,0.4)" />
 		<light-panel-bg title="Light panel packground" value="#eaeaea" />
 		<linkcolor title="Link color" value="#38bbcd" />
 		<overlaybg title="Overlay background" value="rgba(0,0,0,0.2)" />
