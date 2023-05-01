@@ -170,7 +170,7 @@
 			}
 
 			$image.attr('src',plugin.settings.imagepath + img_record.image);
-			$caption.html(img_record.caption);
+			$caption.html(img_record.description);
 		}
 
 		// render initial html
@@ -180,7 +180,7 @@
 			html += "	<img src='" + plugin.settings.imagepath + img.image + "'>";
 			html += "</div>";
 			html += "<div class='popup_caption'>";
-			html += img.caption;
+			html += img.description;
 			html += "</div>";
 			return html;
 		}
