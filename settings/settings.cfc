@@ -496,7 +496,8 @@ component {
 				local.css &= "\t#local.property#:" & displayProperty(local.property,arguments.settings[local.property]) & ";\n";
 			}
 		}
-		for (local.property in ['object-fit','z-index','overflow','overflow-x','overflow-y','box-shadow']) {
+
+		for (local.property in ['z-index','overflow','overflow-x','overflow-y','box-shadow']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
 			}
@@ -505,11 +506,6 @@ component {
 		if (StructKeyExists(arguments.settings,"align") && arguments.settings.align == "center") {
 			local.css &= "\tmargin-left:auto;\n\tmargin-right:auto;\n";
 		}
-
-		if (StructKeyExists(arguments.settings,"align") && arguments.settings.align == "center") {
-			local.css &= "\tmargin-left:auto;\n\tmargin-right:auto;\n";
-		}
-
 
 		return local.css;
 
@@ -641,15 +637,18 @@ component {
 				arguments.out.main &= "\tdisplay:grid;\n";
 				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
 				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
-					arguments.out.main &= "\tgrid-template-columns: " & styles["grid-template-columns"] & ";\n";
+					local.spec = styles["grid-template-columns"];
+					// try and fix the grid bust out issue
+					local.spec = Replace(local.spec,"auto", "minmax(0,1fr)","all");
+					arguments.out.main &= "\tgrid-template-columns: " & local.spec & ";\n";
 				}
 				// specified number of columns
 				else if (StructKeyExists(styles,"grid-columns") AND isValid("integer", styles["grid-columns"])) {
-					arguments.out.main &= "\tgrid-template-columns: repeat(" & styles["grid-columns"] & ",1fr);\n";
+					arguments.out.main &= "\tgrid-template-columns: repeat(" & styles["grid-columns"] & ",minmax(0,1fr));\n";
 				}
 				// All columns in one row -- not a very good idea.
 				else {
-					arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
+					arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(0, max-content));\n";
 				}
 				break;	
 			case "templateareas":
