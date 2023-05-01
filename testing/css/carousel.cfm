@@ -52,6 +52,9 @@ Mess - copied form somewhere else.
 
 --->
 
+
+<cfinclude template="images_include.cfm">
+
 <cfscript>
 
 request.rc.test = 'auto'; /* fixedwidths | fixedcols */
@@ -65,8 +68,7 @@ options = {
 	"wrapAround": "false",
 	"freeScroll": "false",
 	"pageDots": "false",
-	"pageDots": "false",
-	"prevNextButtons": "false"
+	"prevNextButtons": "true"
 }
 image_sets = getImages(site);
 
@@ -77,7 +79,14 @@ grid_cs.data = image_sets;
 grid_cs.class = "scheme-#request.rc.test#";
 
 contentObj.settings(content=grid_cs,styles=styles.style,media=styles.media);
-css = "";//contentCSS(grid_cs);
+css = ":root {\n";
+css &= settingsObj.colorVariablesCSS(styles);
+css &= settingsObj.fontVariablesCSS(styles);
+css &=  "\n}\n";
+css &= settingsObj.CSSCommentHeader("Content styling");
+css &= contentCSS(grid_cs);
+css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
+
 pageData = contentObj.display(content=grid_cs,data=site.images);
 html = pageData.html;
 </cfscript>
@@ -171,38 +180,3 @@ html = pageData.html;
 
 	
 </html>
-
-<cfscript>
-/**
- * To use images in a grid content section we need a record of all images
- * as a look up struct ("Data") and an array of ids ("data set").
- *
- * This function uses the sample data to add the complete data to the struct
- *  supplied by reference and adds the ID to the array.
- * and
- */
-array function getImages(required struct site, image_path="/images/") {
-	
-	local.myXML = application.utils.fnReadXML(ExpandPath("../../sample/_data\data\photos.xml"));
-	local.images = application.XMLutils.xml2Data(local.myXML);
-	arguments.site.images = [=];
-	local.image_set = [];
-
-	for (local.image in local.images) {
-		local.image.image = image_path & local.image.image_thumb;
-		local.image.image_thumb = image_path & local.image.image_thumb;
-		arguments.site.images[local.image.id] = local.image;
-		ArrayAppend(local.image_set, local.image.id);
-	}
-
-	return local.image_set;
-
-}
-
-function contentCSS(required struct cs) {
-	local.site_data = { "#arguments.cs.id#" = arguments.cs};
-	local.css = contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media);
-	return local.css;
-}
-
-</cfscript>

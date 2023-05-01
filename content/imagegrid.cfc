@@ -12,6 +12,8 @@ component extends="grid" {
 		
 		super.init(arguments.contentObj);
 		
+		this.classes = ListAppend(this.classes, "cs-grid", " ");	
+
 		variables.static_css = {"images"=1};
 		variables.static_js = {"masonry"=1,"popup"=1};
 		
@@ -32,7 +34,7 @@ component extends="grid" {
 		StructAppend(this.styleDefs, [
 			"masonry" : {"name":"Masonry","description":"","type":"boolean","default":0,"inherit":1},
 			"popup" : {"name":"Popup","description":"","type":"boolean","default":0,"inherit":1},
-			"image-max-height": {"name":"Max image height","description":"","type":"dimension"},
+			"grid-max-height": {"name":"Max image height","description":"","type":"dimension"},
 			"caption-position": {
 				"name":"Caption position","description":"","type":"list","options":[
 					{"name":"Top","description":"","value":"top"},
@@ -63,7 +65,8 @@ component extends="grid" {
 					{"name":"Shrink","description":"","value":"scale-down"},
 					{"name":"Stretch","description":"","value":"fill"}
 				]
-			}
+			},
+			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1}
 		]);
 
 		updateDefaults();
@@ -179,8 +182,13 @@ component extends="grid" {
 			local.html &= "<div class='image'><img src='#local.image_src#'></div>";
 
 			if (local.image.title NEQ "") {
-				local.html &= "<div class='caption'>#local.image.title#</div>";
+				local.html &= "<div class='caption'>#local.image.title#";
+				if (arguments.content.settings.main.subcaptions AND local.image.description NEQ "") {
+					local.html &= "<div class='subcaption'>#local.image.description#</div>";
+				}
+				local.html &= "</div>";
 			}
+
 			
 			local.html &= "</a>";
 

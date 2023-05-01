@@ -2,7 +2,7 @@ component {
 
 	this.sessionManagement = false;
 	this.debug = true;
-	this.baseDir = ExpandPath("..\..\..")
+	this.baseDir = ExpandPath("..\..\..");
 	this.componentPaths=[this.baseDir];
 
 	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
@@ -16,6 +16,9 @@ component {
 	}
 
 	public void function onRequestStart() output=false {
+		request.rc = Duplicate(url);
+		StructAppend(request.rc,form,true);
+		request.prc = {};
 		onApplicationStart();
 	}
 

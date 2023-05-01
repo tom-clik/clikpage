@@ -1,8 +1,8 @@
-.scheme-auto {
+.scheme-grid {
 	
 	grid-mode: auto;
 	grid-width: 160px;
-	grid-gap:20px;
+	grid-gap:10px;
 	
 	@mid {
 		grid-width: 220px;
@@ -16,7 +16,7 @@
 .scheme-fixedcols {
 	
 	grid-mode: fixedcols;
-	grid-gap:20px;
+	grid-gap:2px;
 	grid-columns:4;
 	
 	@max {
@@ -28,18 +28,75 @@
 	}
 }
 
-
-.scheme-fixedwidths {
+.scheme-setcols {
 	
 	grid-mode: fixedcols;
-	grid-gap:20px;
+	grid-gap:10px;
 	grid-template-columns:200px 300px 200px 200px;
-	
+	@mid {
+		grid-template-columns:190px 190px 190px 190px;
+	}
 	@max {
-		grid-template-columns:300px 300px 300px 300px 300px;
+		grid-template-columns:230px 230px 230px 230px 230px;
 	}
 
 	@mobile {
-		grid-template-columns:200px 200px;
+		grid-template-columns:49% 49%;
+	}
+}
+
+.scheme-fixedwidth {
+	grid-width:280px;
+	grid-mode: fixedwidth;
+	grid-gap:10px;
+	
+}
+
+.scheme-heights {
+	grid-max-height:180px;
+	object-fit:cover;	
+}
+
+.scheme-captiontop {
+	caption-position:top;
+	item {
+		padding:4px;
+		background {
+			color: panel-bg;
+		}
+		opacity: 0.6;
+		hover {
+			background {
+				color: light-panel-bg;
+			}
+			opacity: 1;
+		}
+	}
+
+	caption {
+		color: panel-text;
+	}
+
+	image {
+		margin:4px 0 0  0;
+		border {
+			width:1px;
+			style:solid;
+			color:accent;
+		}
+	}
+/*	subcaption*/
+
+}
+
+.scheme-overlay {
+	subcaptions:true;
+	caption-position:overlay;
+	caption {
+		background {
+			color: panel-overlay;
+		}
+		color: panel-text;
+
 	}
 }
