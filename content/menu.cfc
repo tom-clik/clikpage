@@ -11,7 +11,6 @@ component extends="contentSection" {
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-
 		
 		// static css definitions
 		variables.static_css = {"menus"=1};
@@ -39,7 +38,9 @@ component extends="contentSection" {
 		];
 
 		this.styleDefs = [
-			"orientation":{"type":"orientation"},
+			"orientation":{"type":"options","default":"horizontal","options":[
+				{"value":"horizontal"},{"value":"vertical"}],"inherit":true},
+			"align":{"type":"halign","default":"left","inherit":true},
 			"link-color":{"type":"color"},
 			"menu-border-color":{"type":"color"},
 			"menu-background":{"type":"color"},
@@ -50,35 +51,16 @@ component extends="contentSection" {
 			"menu-anim-time":{"type":"time"},
 			"menu-label-display": {"type":"boolean","name":"Display label","description":"Show or hide the text part of the menu items","default":true},
 			"menu-icon-display": {"type":"boolean","name":"Display icon","description":"Show or hide the icon in the menu item. You will need to define the icons  (how TBC)","default":false},
-			"border-type": {"type":"list","name":"Border type","description":"","options":[
+			"border-type": {"type":"list","name":"Border type","description":"","default":"none","inherit":true,"options":[
 				{"value":"normal"},{"value":"dividers"},{"value":"boxes"}
 			]},
-			"flex": {"type":"boolean","name":"Flex mode","description":"Flexible grid that adjusts to the size of the items","default":false},
-			"stretch": {"type":"boolean","name":"Stretch","description":"Stretch out the menu in flex mode. Equal padding will be added to the items","default":false},
-			"popup": {"type":"boolean","name":"Popup","description":"Show as popup (you will need to ensure a button is present that opens the menu","default":false},
-			"padding-adjust":{"type":"boolean","name":"Padding adjust","description":"adjust padding for first and last item (only flex"}
+			"flex": {"type":"boolean","name":"Flex mode","description":"Flexible grid that adjusts to the size of the items","inherit":true,"default":false},
+			"stretch": {"type":"boolean","name":"Stretch","description":"Stretch out the menu in flex mode. Equal padding will be added to the items","inherit":true,"default":false},
+			"popup": {"type":"boolean","name":"Popup","description":"Show as popup (you will need to ensure a button is present that opens the menu","inherit":true,"default":false},
+			"padding-adjust":{"type":"boolean","name":"Padding adjust","description":"adjust padding for first and last item (only flex)","inherit":true,"default":false}
 		];
-		// ## Settings
-
-		// Name           | Type                  | Implementation
-		// ---------------|-----------------------|----------------------
-		// orientation    | horizontal|vertical   | ul Grid columns
-		// align          | left|center|right     | text align (menu text align) and also justify-content: for flex modes
-		// border-type    | normal|dividers|boxes | adjust border widths for edges
-		// padding-adjust | boolean               | adjust padding for first and last items
-		// flex           | boolean               | ul display flex
-		// stretch        | boolean               | li {flex-grow:1{}
-		// popup          | boolean               | height: 0   NB &.open  applies height:auto
-
-		this.settings = [
-			"orientation": "horizontal",
-			"align":"left",
-			"border-type": "none",
-			"flex":"false",
-			"stretch":"false",
-			"popup":"false",
-			"padding-adjust": false
-		];
+		
+		updateDefaults();
 
 		return this;
 
