@@ -219,11 +219,10 @@ component {
 						section_css &= containerCss(settings=local.styles,selector=local.select);
 					}
 					catch (any e) {
-						local.extendedinfo = {"tagcontext"=e.tagcontext,settings=local.styles};
-						throw(e);
+						local.extendedinfo = {"tagcontext"=e.tagcontext,id=id,settings=local.styles};
 						throw(
 							extendedinfo = SerializeJSON(local.extendedinfo),
-							message      = "Unable to display container settings for #id# (medium #medium#):" & e.message, 
+							message      = "Unable to write css for container #id#:" & e.message, 
 							detail       = e.detail
 						);
 					}
@@ -394,7 +393,10 @@ component {
 		
 		local.gridSettings = {"main"="","item"=""};
 		if (StructKeyExists(arguments.settings,"grid")) {
+
 			grid(arguments.settings.grid,local.gridSettings);
+
+
 		}
 		
 		local.css &= "}\n";
@@ -514,11 +516,6 @@ component {
 	}
 
 	private string function displayPosition(required struct settings) {
-		
-		// var hasPosition = structSome(arguments.settings,
-		// 	function(key,value) {
-		// 		return structKeyExists({"top":1,"bottom":1,"left":1,"right":1}, key);
-		// 	});		
 		
 		var retVal = ["\tposition:" & arguments.settings.position & ";"];
 

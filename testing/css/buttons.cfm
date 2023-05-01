@@ -25,7 +25,9 @@ styles = settingsObj.loadStyleSettings(ExpandPath("button_test_styles.xml"));
 contentObj.debug = 1;
 
 tests = [
-	{id="test1",title="No formatting",class=""}
+	{id="test1",title="No formatting"},
+	{id="test2",title="Right"},
+	{id="test3",title="No icon"}
 ];
 
 cs = [=];
@@ -61,7 +63,7 @@ for (test in tests) {
 
 }
 
-css &= contentObj.contentCSS(content_sections=cs,styles=styles.content,media=styles.media);
+css &= contentObj.contentCSS(content_sections=cs,styles=styles.style,media=styles.media);
 
 css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
 
@@ -89,6 +91,9 @@ css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug
 	  min-width:260px;
 	  max-width: 560px;
 	  margin:20px auto;
+	  display: flex;
+	  flex-direction: column;
+	  grid-gap: 4px;
 	}
 
 	</style>

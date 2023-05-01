@@ -25,7 +25,7 @@ Color schemes will just append to the main stylesheet. In this case the titles c
 
 ## Font Familes
 
-Colors like all properties are abstracted and given a name. Fonts can only be applied in the system via this name.
+Like, colors, fonts are abstracted and given a name. Fonts can only be applied in the system via this name.
 
 The font faces themselves need defining in the static CSS files. The font variables then reference the defined font families.
 
@@ -37,7 +37,7 @@ The font faces themselves need defining in the static CSS files. The font variab
 </fonts>
 ```
 
-Like colors, it's permissible to defined font families that derive from other fonts.
+Like colors, it's permissible to define fonts that derive from other fonts.
 
 ### Editing options
 
@@ -58,14 +58,14 @@ Note these values are just for the editing system. If a bold variant is not avai
 
 Media queries are defined and referenced by keyword. They can have a minimum with (min), maximum width (max), and specified media.
 
-A default of "main" is always added and applies to all sizes. To apply styles to only the full size screen you would need to specify a medium with an appropriate min and max.
+A default of "main" is always added and applies to all sizes. To apply styles to only the full size screen you would need to specify a medium with min such as in this example.
 
 ```
 <media>
-	<medium name="max" min="1200" title="Max" description="Extended screen only" />
-	<medium name="mid" max="800" title="Mid"  description="Medium width for tablets"/>
-	<medium name="mobile" max="600" title="Mobile" description="mobile" />
-	<medium name="print" media="print" title="Print" description="Print only" />
+	<max min="800" description="Full size only" />
+	<mid max="800"  description="Medium width for tablets"/>
+	<mobile max="600" description="mobile" />
+	<print media="print" description="Print only" />
 </media>
 ```
 

@@ -130,7 +130,7 @@
         },
         {
             "min": "https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css",
-            "debug": "/_common/js/jquery.mCustomScrollbar.min.css",
+            "debug": "/_assets/css/jquery.mCustomScrollbar.min.css",
             "description": "Scroll bar plug in",
             "jsdoc": "http://manos.malihu.gr/jquery-custom-content-scroller/",
             "name": "scrollbar",

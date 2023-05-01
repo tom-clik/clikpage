@@ -11,19 +11,25 @@
 	<link rel="stylesheet" href="../css/icons.css">
 	<meta charset="UTF-8">
 	<style id="test1" data-title="page styling">
-		/* test page styling */
-		body {
-			--title-font:'Open Sans';
-			background-color: Bisque;
-			--font-size:0.86em;
-			--text-font: 'courier new';
+		/* test styling */
+		:root {
+			--grid-gap:4px;
 		}
+
+		
 		#test1 {
 			--icon-width:64px;
 			--icon-height:64px;
 		}
 	</style>
 	<style id="test2" data-title="other styling">
+		body {
+			--title-font:'Open Sans';
+			background-color: Bisque;
+			--font-size:0.86em;
+			--text-font: 'courier new';
+		}
+		
 		.panels > div {
 			margin:4px;
 			background-color: white;
@@ -141,7 +147,7 @@
 
 	<div>
 		<div class="cs-title"><a href="#test1">SVGs with labels</a></div>
-		<div class="test  scheme-panel" id="test1">
+		<div class="test  scheme-panel  flex" id="test1">
 			<div class="button">
 				<a href="#">
 					<svg class="icon"   viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /></svg>
@@ -164,7 +170,7 @@
 
 	<div class="">
 		<div class="cs-title"><a href="#test2">Plain icons</a></div>
-		<div class="test" id="test2">
+		<div class="test flex" id="test2">
 			<div class="button" id="xcolbutton">
 				<a data-action="open" data-state="close" data-target="#xcol">
 					<i class="icon icon-previous"></i>
@@ -181,7 +187,7 @@
 
 	<div class="">
 		<div class="cs-title"><a href="#testa2">Icons with labels</a></div>
-		<div class="test" id="test2a">
+		<div class="test  flex" id="test2a">
 			<div class="button"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
 			<div class="button"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
 			<div class="button"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
@@ -287,7 +293,7 @@
 	</div>
 	<div>
 		<div class="cs-title"><a href="#test9">Icons, labels with grid</a></div>
-		<div class="test button-menu scheme-panel scheme-grid" id="test9">
+		<div class="test button-menu scheme-panel cs-grid" id="test9">
 			<!-- setting-align takes the class left or right and justfies the content accordingly -->
 			<div class="button setting-align-left"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
 			<div class="button setting-align-left"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>

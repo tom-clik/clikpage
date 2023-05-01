@@ -34,7 +34,7 @@ component {
 			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;
 			application.siteObj.pageObj.content.static_css["content"] = 1;
-			
+
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
 			loadSite(reload=true);
@@ -178,7 +178,7 @@ component {
 	}
 
 	public void function onError(e) {
-		
+
 		var niceError = [
 			"usermessage"="Sorry, an error has occurred",
 			"message"=arguments.e.message,
