@@ -27,8 +27,8 @@ hi      li.hi a
 	--menu-gap: 4px;/* Gap between items (only grid modes: use itempadding for flex); */
 	--menu-item-padding: 0 8px;
 	--menu-item-border:0;/* single value for dividers or boxes or use normal border width (can use e.g. 0 1px 0 0) */
-	--menu-icon-display: none;/* none or inline-block */
-	--menu-label-display: inline-block;/* text part of menu item:; none or inline-block */
+	--menu-icon-display: none;/* none or block */
+	--menu-label-display: block;/* text part of menu item:; none or block */
 	--icon-width:32px;/* normal menu icons */
 	--icon-height:32px;	
 	--menu-icon-valign: middle;/* WIP */
