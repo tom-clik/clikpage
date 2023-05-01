@@ -11,4 +11,4 @@ There are three key parts to it.
     Every site or app is built using a set of layouts. These are more than just templates, they are contructed from modular components and offer huge flexibility for styling and configuration.
 
 3. [Styling](styling.md)
-    XML based styles allow for control over styles and interactivity without the need to code HTML or JavaScript.
+    All styling can be applied by CSS-like styling.

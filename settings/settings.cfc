@@ -215,7 +215,17 @@ component {
 				
 				if ( NOT structIsEmpty(local.styles) ) {
 					local.select = ListAppend(arguments.selector, "###id#", " ");
+					try {
 						section_css &= containerCss(settings=local.styles,selector=local.select);
+					}
+					catch (any e) {
+						local.extendedinfo = {"tagcontext"=e.tagcontext,id=id,settings=local.styles};
+						throw(
+							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Unable to write css for container #id#:" & e.message, 
+							detail       = e.detail
+						);
+					}
 				}
 			}
 
@@ -383,7 +393,10 @@ component {
 		
 		local.gridSettings = {"main"="","item"=""};
 		if (StructKeyExists(arguments.settings,"grid")) {
+
 			grid(arguments.settings.grid,local.gridSettings);
+
+
 		}
 		
 		local.css &= "}\n";
@@ -504,11 +517,6 @@ component {
 
 	private string function displayPosition(required struct settings) {
 		
-		// var hasPosition = structSome(arguments.settings,
-		// 	function(key,value) {
-		// 		return structKeyExists({"top":1,"bottom":1,"left":1,"right":1}, key);
-		// 	});		
-		
 		var retVal = ["\tposition:" & arguments.settings.position & ";"];
 
 		switch ( arguments.settings.position ) {
@@ -608,6 +616,11 @@ component {
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
 		
+		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width']) {
+			if (StructKeyExists(styles,local.setting)) {
+				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
+			}
+		}
 		switch (styles["grid-mode"]) {
 			case "none":
 				arguments.out.item &= "\tgrid-area:unset;\n;";
@@ -617,8 +630,7 @@ component {
 				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
 				arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width), var(--grid-max-width)));\n";
-
-				break;	
+			break;	
 			case "fixedwidth":
 				arguments.out.item &= "\tgrid-area:unset;\n;";
 				arguments.out.main &= "\tdisplay:grid;\n";
@@ -640,7 +652,6 @@ component {
 					arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(20px, max-content));\n";
 				}
 				break;	
-
 			case "templateareas":
 				arguments.out.main &= "\tdisplay:grid;\n";
 				if (NOT StructKeyExists(styles,"grid-template-areas")) {

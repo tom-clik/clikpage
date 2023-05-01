@@ -1,74 +1,39 @@
-# CSS Tests
+# Styling
 
-Working on a rebuild of the CSS for Clik. The conversion to grids and modern CSS was never really done properly.
+Split into container styles and content styles. Container styles use CSS inheritance via the name of the template applied to the body class. Content styles are all applied individually to the content section via a single `#id` qualifier.
 
-## State of play
+## Container styles
 
-Originally I was just doing this for ColdLight. It went so well I have decided to incorporate it into Clik. Hence slight muddle over layout.
+Container styles are applied to a template. Some bugs with this -- doesn't inherit.
 
-For Coldlight I was going to do everything with classes for all the settings. This didn't really work even without the requirement to fit into the Clik system. I have been going through the stylesheets and reverting to a system where the main stylesheets just contain simple CSS vars and any complex functionality is in the scheme stylesheets. In the Clik system, this is applied via settings.
+Can also be assigned via classes. Attach a class to container div and it will apply.
 
-There is still some confusion about fonts and colours etc. I did want to revert this as well and just use "panels". The wildcard here is the text styling where we have headings and titles, which are always a headache. Also linkcolor for menus uis very useful.
+### Implementation
 
-## Set up
+A class `template-templatename` is applied to the body for a layout. If the layout inherits, then all that template name is also applied, e.g. for a template `homepage` that inherits from `main`
 
-For each of the types, there is a static CSS file in the coldLight directory and a test file. 
+```
+class="template-main template-homepage"
+```
 
-### Stylesheets
+This means any styling applied via main will apply to the homepage as well.
 
-The static CSS should contain only simple vars and invariant styling. All complex settings should be applied in the scheme files.
+To generate the template styling, we loop over each layout in a site, and call a function `settings.layoutCss()`. This loops over all the containers and calls `containerCss()`.
 
-### Testing files
+## Content styles
 
-There are static HTML test files in the coldlight directory. I am maintaining these for now but I want to replace them with the dynamic versions in the Clikpage testing folders. Will do this once the codebase has stabilised.
 
-### Class styling
+### Implementation
 
-No classes should be required when using the dynamic mode. In the Clik system all functionality should be CSS based.
+A method, settings is used to calculate generate the full settings for a content section and save it in cs.settings.
 
-## CSS Vars
+To do this, it has to get all the styling applied via classes and also work out which settings inherit across media.
 
-We make a distinction between "settings" and styles. Any variant styles are just css vars that can be set with a qualifier. Settings requires logic to output more complex styles.
+As many settings as possible are applied via CSS vars and can be applied very simply. Settings that don't translate to CSS vars have to inherit according to the media queries. 
 
-### Typical application
 
-The `text.css` contains styling for all the text. This is the least satisfactory part of it. There are separate definitions for main fonts, title fonts and header fonts. If we don't do this we struggle to keep the inheritance working.
 
-## Column Layouts
 
-Abandoned in favour of just using standard grid layouts with positions.
 
-## General CS
 
-Uses grid positions to do everything. NB everything is now kind of an item and the functionality is more generic.
-
-## Popups
-
-Images and general popups done differently. Images need javascript and also all the extra buttons. Other popups are just CSS with flexbox centering.
-
-## Grids
-
-See the separate notes for grids.
-
-## Galleries
-
-Just need the cropping etc options applied to grids (object cover??)
-
-## Menus
-
-Rudiments in place. Nice for everything bar sub sub menus.
-
-Now need to get JavaScript sorted. Also fully expanded sub menus in horizontal mode.
-
-## SVGS
-
-You can apply css to an external svg with the `use` syntax.
-
-    <svg  viewBox="0 0 197.4 197.4"><use href="graphics/left_arrow.svg#left_arrow" class="inlinebuttonSVG fillme"/></svg>
-
-Not as neat as you'd like and viewport needs to be matched but it'll do.
-
-## Text
-
-Nice ideas for styling headings etc.
 

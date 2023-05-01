@@ -151,8 +151,8 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]>
 	<content import="content/*" />
 	
 	<data>
-		<data src="photos.xml" type="images" image_path="/images/" />
-		<data src="articles.xml" image_path="/images/" />
+		<data src="data/photos.xml" type="images" image_path="/images/" />
+		<data src="data/articles.xml" image_path="/images/" />
 	</data>
 
 </site>

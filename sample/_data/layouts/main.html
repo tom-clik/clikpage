@@ -103,6 +103,7 @@
 				grid-template-rows:min-content minmax(0, 1fr) min-content;
 			}
 			@mobile {
+				grid-mode:none;
 				padding:8;
 			}
 			
@@ -111,6 +112,7 @@
 		#contentfooter {
 			grid {
 				grid-mode:auto;
+				grid-gap:14px;
 			}
 			@mobile {
 				grid {
@@ -268,7 +270,7 @@
 					</div>
 					
 				</div>
-				<div id="contentfooter">
+				<div id="contentfooter" class="gridOuter">
 				
 				</div>
 			</div>

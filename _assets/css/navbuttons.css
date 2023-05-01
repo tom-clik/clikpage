@@ -51,8 +51,8 @@ E.g.
 	--icon-width: 32px; /* size of icon */
 	--icon-height: var(--icon-width); /* size of icon */
 	--label-gap: 10px;
-	--label-display:inline-block;/* Turn button or label off with inline-block|none */
-	--icon-display:inline-block;/* ---- " ---- */
+	--label-display:block;/* Turn button or label off with block|none */
+	--icon-display:block;/* ---- " ---- */
 	--button-align:center; /* icon valign flex-start|center|flex-end */
 	--button-direction: row;/* row or row reverse to align left or right */
 	--link-color:inherit;
