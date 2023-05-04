@@ -180,6 +180,14 @@
       "description": "Basic image popup script",
       "name": "popup",
       "requires": "jquery"
+    },
+    {
+      "debug":"/_assets/js/tooltipster.main.js",
+      "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/js/tooltipster.main.js",
+      "description": "Tooltip library",
+      "name": "tooltipster",
+      "requires": "jquery",
+      "packageExclude": 1
     }
     
   ]

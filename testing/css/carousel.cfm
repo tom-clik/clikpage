@@ -175,6 +175,10 @@ html = pageData.html;
 				  }
 				  $carousel.flickity("select", cellIndex,true);
 				});
+
+				$("#nextbutton").on("click",function() {
+					$carousel
+				})
 			});
 		</script>
 

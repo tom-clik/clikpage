@@ -2,11 +2,15 @@
 
 # Jquery Plug in Demo
 
+Just loads a plug in and calls a public method set via options
+
 ## Synopsis
 
 See the boiler plate js for creating plug ins.
 
 Has init method, options, public method, and private method.
+
+
 
 -->
 
@@ -30,6 +34,20 @@ Has init method, options, public method, and private method.
 		max-width: 660px;
 	}
 
+	#test {
+		border:1px solid gray;
+		padding:4px;
+		margin:20px 0;
+		display: block;
+	}
+
+	a {
+		border:1px solid gray;
+		padding:4px;
+		margin:20px 0;
+		display: inline-block;
+	}
+
 	</style>
 </head>
 
@@ -41,14 +59,15 @@ Has init method, options, public method, and private method.
 			
 		</div>	
 
-		
+		<div><a href="#" id="change">Change message</a></div>
 	</div>
 
 </body>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/mustache.js"></script>
-<script src="swipeDetector.js"></script>
+<script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/swipeDetector.js"></script>
 <script src="plugin-boiler-plate.js"></script>
 
 
@@ -56,19 +75,30 @@ Has init method, options, public method, and private method.
 
 $(document).ready(function() {
 	$(window).on("keydown.anotherScope", function( event ) {
-		console.log("event.key");
+		console.log(event.key + "Logged by anotherScope");
 	});
-	$('#test').pluginName(
+	$plug = $('#test');
+	$plug.pluginName(
 		{
-			data:<cfoutput>#photosJS#</cfoutput>,
+			message: 'Change default message',
+			resize: 'debouncedresize',//throttledresize usually better
 			onFoo: function() {
-				console.log("Test callback");
+				console.log("Test Foo method");
+			},
+			onPublic_method: function() {
+				console.log("Custom callback for Public_method");
 			}
 		}
 	);
 
-	$('#test').data('pluginName').foo_public_method();
-	$('#test').trigger("Foo");
+	$plug.data('pluginName').public_method();
+	$plug.trigger("Foo");
+
+	$("#change").on("click", function(e) {
+		e.preventDefault();
+		$plug.data('pluginName').settings.message = "Changed message";
+		$plug.data('pluginName').public_method();
+	});
 
 });
 

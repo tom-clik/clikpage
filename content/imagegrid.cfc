@@ -186,7 +186,12 @@ component extends="grid" {
 				local.link = " href='" & ( arguments.content.link ? : local.image.image ) & "'";
 			}
 			else {
-				local.link = " href='{link.{section.id}.view.#local.id#}'";
+				if ( StructKeyExists( arguments.content, "link" )) {
+					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
+				}
+				else {
+					local.link = " href='{link.{section.id}.view.#local.id#}'";
+				}
 			}
 
 			local.html &= "<a class='frame'#local.link#>";
