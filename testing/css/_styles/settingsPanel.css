@@ -11,6 +11,29 @@
 	max-width:480px;
 }
 
+.modal {
+	display: none;
+}
+
+#settings_panel_open {
+	position: fixed;
+	top:10px;
+	left:10px;
+
+}
+
+.button {
+	padding:4px 8px;
+	border:1px solid #333;
+	background-color:white;
+	margin-top:12px;
+}
+
+.button:hover {
+	background-color:#efefef;
+}
+
+
 fieldset {
 	display: grid;
 	grid-template-columns: 40% auto;

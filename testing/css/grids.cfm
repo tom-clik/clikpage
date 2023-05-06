@@ -87,16 +87,7 @@ css = contentCSS(grid_cs);
 				height:auto;
 			}
 			
-			.modal {
-				display: none;
-			}
-
-			#settings_panel_open {
-				position: fixed;
-				top:10px;
-				left:10px;
-
-			}
+			
 		</style>
 		<style id="dynamic_css">
 			<cfoutput>#css#</cfoutput>
