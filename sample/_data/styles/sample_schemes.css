@@ -22,10 +22,8 @@ scheme-intros {
 }
 
 scheme-navbuttons {
-	grid {
-		grid-mode: fixedcols;
-		grid-columns:2;
-	}
+	grid-mode: fixedcols;
+	grid-columns:2;
 }
 
 scheme-navbutton {
