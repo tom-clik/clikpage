@@ -36,7 +36,6 @@ component {
 		this.states = [
 			{"state"="main", "selector"="","name":"Main","description":"The main state"},
 			{"state"="hover", "selector"=":hover","name":"Hover","description":"Hover state"}
-
 		];
 
 		// panels for generic css styling.
@@ -263,7 +262,48 @@ component {
 			// additional panels for plain css styling
 			for (local.panel in this.panels) {
 				if (StructKeyExists(local.state_styles,local.panel.panel)) {
-					ret &= arguments.selector & local.state.selector & " " & local.panel.selector & " {\n" & variables.contentObj.settingsObj.css(local.state_styles[local.panel.panel]) & "}\n";
+					ret &= "/* panel #local.panel.panel# */\n";
+				
+					// also get state styles for the panels
+					// This is pretty crude. If any states are defined it also
+					// looks inside every panel for those states. This is necessary
+					// where you only want the panel affected and not the whole item
+					local.panel_styles = local.state_styles[local.panel.panel];
+					for (local.panel_state in this.states) {
+						
+						if ( local.panel_state.state eq "main") {
+							local.panel_state_styles = local.panel_styles;
+						}
+						else {
+							if (NOT StructKeyExists(local.panel_styles,local.panel_state.state)) {
+								ret &= "/* No settings for state #local.panel_state.state# */\n";
+								continue;
+							}
+							local.panel_state_styles = local.panel_styles[local.panel_state.state];
+						}
+						ret &= "/* state #local.panel_state.state# */\n";
+						try {
+							ret &= arguments.selector & local.state.selector & " " & local.panel.selector & local.panel_state.selector & " {\n" & variables.contentObj.settingsObj.css(local.panel_state_styles) & "}\n";
+						}
+						catch (any e) {
+							local.extendedinfo = {
+								"tagcontext"=e.tagcontext,
+								"selector" = arguments.selector,
+								"state.selector" = local.state.selector,
+								"panel_styles" = local.panel_styles,
+								"state_styles" = local.state_styles
+							};
+							throw(
+								extendedinfo = SerializeJSON(local.extendedinfo),
+								message      = "Error:" & e.message, 
+								detail       = e.detail,
+								errorcode    = ""		
+							);
+						}
+					}
+				}
+				else {
+					ret &= "/* No settings for panel #local.panel.panel# */\n\n";
 				}
 			}
 

@@ -9,9 +9,9 @@ Working of a fashion
 -->
 
 <cfscript>
-myXML = application.utils.fnReadXML(ExpandPath("../images/photos.xml"));
-myData = application.XMLutils.xml2Data(myXML);
-photosJS = serializeJSON(myData);
+photoDef = ExpandPath("../images/photos.xml");
+photos = loadPhotoDef(photoDef);
+photosJS = serializeJSON(photos);
 </cfscript>
 
 <!DOCTYPE html>
@@ -114,7 +114,7 @@ photosJS = serializeJSON(myData);
 	<div id="ubercontainer">
 		<div id="images" class="grid cs-imagegrid ">
 			<cfset count = 0>
-			<cfloop index="image" array="#myData#">
+			<cfloop index="image" array="#photos#">
 				<cfoutput>
 					<a data-index='#count#' class='frame' href="##">
 						<div class='image'><img src="../images/#image.image_thumbnail#"> 
@@ -186,3 +186,14 @@ photosJS = serializeJSON(myData);
 </script>
 
 </html>
+
+<cfscript>
+array function loadPhotoDef(required string filename) {
+	var myXML = application.utils.fnReadXML(arguments.filename);	
+	var myData = application.XMLutils.xml2Data(myXML);
+	for (local.photo in myData) {
+		local.photo["description"] = local.photo.caption;
+	}
+	return myData;
+}
+</cfscript>

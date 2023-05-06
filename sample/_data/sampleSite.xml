@@ -127,7 +127,6 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]>
 		<section id="newscarousel">
 			<title>News carousel</title>
 			<layout>articlecarousel</layout>
-			<layout action="view">articledetail</layout>
 			<dataset tag="test" sort="pubdate desc"></dataset>
 			<tags>mainmenu</tags>
 		</section>

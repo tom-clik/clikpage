@@ -34,4 +34,9 @@ scheme-button {
 	button-align:center;
 	icon-display:none;
 }
+
+#test4 {
+	label-display:none;
+	shape:facebook;
+}
 		

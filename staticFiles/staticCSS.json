@@ -136,6 +136,13 @@
             "name": "scrollbar",
             "requires": "jquery",
             "packageExclude": 1
+        },
+        {
+          "debug":"/_assets/css/tooltipster.css",
+          "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/css/tooltipster.main.min.css",
+          "description": "Tooltip library",
+          "name": "tooltipster",
+          "packageExclude": 1
         }
     ]
 }

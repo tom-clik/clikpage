@@ -451,6 +451,7 @@ component extends="utils.baseutils" {
 			if (!StructKeyExists(this.contentSections,"button")) {
 				throw("buttons content section not defined");
 			}
+			
 			local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
 			local.buttons = variables.utils.xml.xml2data(local.xmlData);
 			

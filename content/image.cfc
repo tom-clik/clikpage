@@ -33,6 +33,11 @@ component extends="contentSection" {
 			{"name":"Caption","panel":"caption", "selector": " figcaption"}
 		];
 
+		this.selectors = [
+			{"name"="main", "selector"=""},
+			{"name"="frame", "selector"=" figure"}		
+		];
+
 		this.styleDefs = [
 			"object-fit": {
 				"type":"list",
@@ -70,6 +75,13 @@ component extends="contentSection" {
 			"object-position-y": {
 				"type":"valign",
 				"default":"center"
+			},
+			"fitheight": {
+				"name":"Fit to height",
+				"description": "Ensure the image fits into the height available. Without this, the container will expand",
+				"type":"boolean",
+				"default":false,
+				"inherit":true
 			}
 		];
 
@@ -100,6 +112,16 @@ component extends="contentSection" {
 
 		return local.img;
 		
+	}
+
+	private string function css_settings(required string selector, required struct styles) {
+		
+		var data = getSelectorStruct();
+		
+		data.frame &= "position: " & (arguments.styles.fitheight ? "absolute" : "static") & ";\n";
+
+		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
+
 	}
 
 	

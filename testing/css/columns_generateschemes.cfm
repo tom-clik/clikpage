@@ -8,19 +8,23 @@ generate the column schemes file to allow use of e.g.  body.col-MX etc
 
 Loop over the complete range of permutations for columns and rows in each media query and write out the CSS.
 
+## Status
 
+Broken and never complete in the first place.
 
 ## Notes
 
-
-
+In the old systems we used to apply column settings via a class applied to body. The idea here was to automatically generate those classes using a new CSS stylesheet and save them to a scheme file for people to use if they want to.
 
 ## History
 
+Looks like this was started long before the columns were re-written to be a generic grid.
 
 --->
 
 <cfscript>
+throw("This page needs work, see notes");
+
 fileout = ExpandPath("_styles/css-autoschemes.css");
 columns = deserializeJSON(fileRead("columns_data.json"));
 

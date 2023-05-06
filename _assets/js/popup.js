@@ -1,4 +1,4 @@
-
+ 
 (function($) {
 
 	$.popup = function(element, options) {
@@ -12,19 +12,16 @@
 			onOpen: function() {},
 			onClose: function() {},
 			onGoTo: function() {}
-
 		}
 
 		var plugin = this;
 
 		plugin.settings = {};
-		plugin.images = [];// image objects
-
-		
-
+		// Internal array of loaded images
+		plugin.images = [];
+	
 		var $element = $(element),
-					   element = element; 
-
+			element = element; 
 
 		plugin.init = function() {
 
@@ -86,7 +83,6 @@
 		  		break;
 		  	}	  	 	
 		});
-
 
 		// public methods
 		plugin.open = function() {
@@ -153,7 +149,7 @@
 			var img_record = plugin.settings.data[plugin.settings.index];
 			var img = plugin.images[plugin.settings.index];
 			
-			var vw = $(window).width() - 60;// to do: padding calcs
+			var vw = $(window).width() - 60;// TODO: padding calcs
 			var vh = $(window).height() - 60;
 			var dw = vw / img.width;
 			var dh = vh / img.height;
@@ -170,7 +166,7 @@
 			}
 
 			$image.attr('src',plugin.settings.imagepath + img_record.image);
-			$caption.html(img_record.caption);
+			$caption.html(img_record.description);
 		}
 
 		// render initial html
@@ -180,14 +176,9 @@
 			html += "	<img src='" + plugin.settings.imagepath + img.image + "'>";
 			html += "</div>";
 			html += "<div class='popup_caption'>";
-			html += img.caption;
+			html += img.description;
 			html += "</div>";
 			return html;
-		}
-
-		// private methods
-		var foo_private_method = function(message) {
-			
 		}
 
 		plugin.init();

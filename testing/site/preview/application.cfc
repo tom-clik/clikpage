@@ -16,7 +16,7 @@ component extends="clikpage.clikpageApplication" { //
 	this.rootDir = GetCanonicalPath(getCurrentTemplatePath() & "../../../../../../");
 	
 	this.mappings = [
-		"/_assets" = this.rootDir & "coldlight\_assets",
+		"/_assets" = this.rootDir & "clikpage\_assets",
 	];
 	
 	this.debug = 1;

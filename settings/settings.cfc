@@ -187,7 +187,7 @@ component {
 	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="") {
 
 		var css = "";
-
+		
 		for ( var medium in arguments.media ) {
 
 			var media = arguments.media[medium];
@@ -392,12 +392,7 @@ component {
 		}
 		
 		local.gridSettings = {"main"="","item"=""};
-		if (StructKeyExists(arguments.settings,"grid")) {
-
-			grid(arguments.settings.grid,local.gridSettings);
-
-
-		}
+		grid(arguments.settings,local.gridSettings);
 		
 		local.css &= "}\n";
 		
@@ -472,6 +467,16 @@ component {
 			local.css &= displayPosition(arguments.settings);
 		}
 
+		if ( structKeyExists( arguments.settings, "float") ) {
+			local.css &= "\tfloat:#arguments.settings.float#;\n";
+			if ( structKeyExists( arguments.settings, "float-margin") ) {
+				local.margin = displayDimension(arguments.settings["float-margin"]);
+				local.css &= "\tmargin-bottom:#local.margin#;\n";
+				local.outside = arguments.settings.float eq "left" ? "right" : "left";
+				local.css &= "\tmargin-#local.outside#:#local.margin#;\n";
+			}
+		}
+
 		if (StructKeyExists(arguments.settings,"border")) {
 			local.settings = Duplicate(arguments.settings["border"]);
 			StructAppend(local.settings, {"style":"solid"}, false);
@@ -497,7 +502,7 @@ component {
 			}
 		}
 
-		for (local.property in ['z-index','overflow','overflow-x','overflow-y','box-shadow']) {
+		for (local.property in ['opacity','z-index','overflow','overflow-x','overflow-y','box-shadow']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
 			}
@@ -549,7 +554,7 @@ component {
 					
 				}
 				break;
-
+			
 		}
 		
 		return retVal.toList( "\n\t" ) & "\n";
@@ -617,56 +622,59 @@ component {
 				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
 			}
 		}
-		switch (styles["grid-mode"]) {
-			case "none":
-				arguments.out.item &= "\tgrid-area:unset;\n;";
-				arguments.out.main &= "\tdisplay:block;\n";
-				break;
-			case "auto":
-				arguments.out.item &= "\tgrid-area:unset;\n;";
-				arguments.out.main &= "\tdisplay:grid;\n";
-				arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width), var(--grid-max-width)));\n";
-			break;	
-			case "fixedwidth":
-				arguments.out.item &= "\tgrid-area:unset;\n;";
-				arguments.out.main &= "\tdisplay:grid;\n";
-				arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), var(--grid-width));\n";
+
+		if (StructKeyExists(styles,"grid-mode")) {
+			switch (styles["grid-mode"]) {
+				case "none":
+					arguments.out.item &= "\tgrid-area:unset;\n;";
+					arguments.out.main &= "\tdisplay:block;\n";
+					break;
+				case "auto":
+					arguments.out.item &= "\tgrid-area:unset;\n;";
+					arguments.out.main &= "\tdisplay:grid;\n";
+					arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width), var(--grid-max-width)));\n";
 				break;	
-			case "fixedcols":
-				arguments.out.item &= "\tgrid-area:unset;\n;";
-				arguments.out.main &= "\tdisplay:grid;\n";
-				// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
-				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
-					local.spec = styles["grid-template-columns"];
-					// try and fix the grid bust out issue
-					local.spec = Replace(local.spec,"auto", "minmax(0,1fr)","all");
-					arguments.out.main &= "\tgrid-template-columns: " & local.spec & ";\n";
-				}
-				// specified number of columns
-				else if (StructKeyExists(styles,"grid-columns") AND isValid("integer", styles["grid-columns"])) {
-					arguments.out.main &= "\tgrid-template-columns: repeat(" & styles["grid-columns"] & ",minmax(0,1fr));\n";
-				}
-				// All columns in one row -- not a very good idea.
-				else {
-					arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(0, max-content));\n";
-				}
-				break;	
-			case "templateareas":
-				arguments.out.main &= "\tdisplay:grid;\n";
-				if (NOT StructKeyExists(styles,"grid-template-areas")) {
-					throw("Grid mode templateareas requires grid-template-areas to be set");
-				}
-				arguments.out.main &= "\tgrid-template-areas:" & styles["grid-template-areas"] & ";\n";
-				if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
-					arguments.out.main &= "\tgrid-template-columns: " & styles["grid-template-columns"] & ";\n";
-				}
-				if (StructKeyExists(styles,"grid-template-rows") AND styles["grid-template-rows"] neq "") {
-					arguments.out.main &= "\tgrid-template-rows: " & styles["grid-template-rows"] & ";\n";
-				}
-				break;
-			case "flex":
-				arguments.out.main &= "\tdisplay:flex;\n";
-				break;
+				case "fixedwidth":
+					arguments.out.item &= "\tgrid-area:unset;\n;";
+					arguments.out.main &= "\tdisplay:grid;\n";
+					arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), var(--grid-width));\n";
+					break;	
+				case "fixedcols":
+					arguments.out.item &= "\tgrid-area:unset;\n;";
+					arguments.out.main &= "\tdisplay:grid;\n";
+					// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
+					if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
+						local.spec = styles["grid-template-columns"];
+						// try and fix the grid bust out issue
+						local.spec = Replace(local.spec,"auto", "minmax(0,1fr)","all");
+						arguments.out.main &= "\tgrid-template-columns: " & local.spec & ";\n";
+					}
+					// specified number of columns
+					else if (StructKeyExists(styles,"grid-columns") AND isValid("integer", styles["grid-columns"])) {
+						arguments.out.main &= "\tgrid-template-columns: repeat(" & styles["grid-columns"] & ",minmax(0,1fr));\n";
+					}
+					// All columns in one row -- not a very good idea.
+					else {
+						arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(0, max-content));\n";
+					}
+					break;	
+				case "templateareas":
+					arguments.out.main &= "\tdisplay:grid;\n";
+					if (NOT StructKeyExists(styles,"grid-template-areas")) {
+						throw("Grid mode templateareas requires grid-template-areas to be set");
+					}
+					arguments.out.main &= "\tgrid-template-areas:" & styles["grid-template-areas"] & ";\n";
+					if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
+						arguments.out.main &= "\tgrid-template-columns: " & styles["grid-template-columns"] & ";\n";
+					}
+					if (StructKeyExists(styles,"grid-template-rows") AND styles["grid-template-rows"] neq "") {
+						arguments.out.main &= "\tgrid-template-rows: " & styles["grid-template-rows"] & ";\n";
+					}
+					break;
+				case "flex":
+					arguments.out.main &= "\tdisplay:flex;\n";
+					break;
+			}
 		}
 
 	}
