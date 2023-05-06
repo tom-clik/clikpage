@@ -7,14 +7,15 @@
 	<colors>
 		<textcolor title="Main text color" value="#333333" />
 		<myfavcolor title="My favourite colour" value="#ff0000" />
-		<panel-bg name="panel-bg" title="Darker panel bg" value="#01798a" />
-		<accent name="accent" title="Accent colour" value="#38bbcd" />
+		<panel-bg title="Darker panel bg" value="#01798a" />
+		<accent title="Accent colour" value="#38bbcd" />
 		<panel-text  title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>
 		</panel-text>
+		<panel-overlay title="Semi transparent overlay" value="rgba(33,33,33,0.4)" />
 		<light-panel-bg title="Light panel packground" value="#eaeaea" />
 		<linkcolor title="Link color" value="#38bbcd" />
-		<overlaybg value="rgba(0,0,0,0.2)" />
+		<overlaybg title="Overlay background" value="rgba(0,0,0,0.2)" />
 	</colors>
 
 	<media>

@@ -60,9 +60,9 @@ component extends="contentSection" {
 		];
 
 		this.styleDefs = [
-			"label-align":{"type":"halign","default":"left"},
-			"label-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}],"default":"inline-block"},
-			"icon-display" = {"type":"list","options"=[{"value":"inline-block","display"="Yes"},{"value":"none","display"="No"}],"default":"inline-block"},
+			"label-align":{"type":"halign","default":"left","description":"text alignment of label."},
+			"label-display" = {"type":"list","options"=[{"value":"block","display"="Yes"},{"value":"none","display"="No"}],"default":"block"},
+			"icon-display" = {"type":"list","options"=[{"value":"block","display"="Yes"},{"value":"none","display"="No"}],"default":"block"},
 			"shape" = {"type":"text"},
 			"label-gap" = {"type":"dimension"},
 			"button-direction" = {"name":"Label alignment","description":"Show the label on the left or right of the button","type":"list","options"=[{"value":"row", "display":"Right"},{"value":"row-reverse", "display":"Left"}],"default":"row"},
@@ -111,6 +111,10 @@ component extends="contentSection" {
 		for (local.shape in arguments.shapeList) {
 			variables.shapes[local.shape.id] = {"src"=local.shape.src, "viewbox"=local.shape.viewbox};
 		}
+	}
+
+	public struct function getShapes() {
+		return variables.shapes;
 	}
 
 	public string function displayShape(required string id) {

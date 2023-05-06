@@ -12,8 +12,10 @@ component extends="grid" {
 		
 		super.init(arguments.contentObj);
 		
-		variables.static_css = {"images"=1};
-		variables.static_js = {"masonry"=1,"popup"=1};
+		this.classes = ListAppend(this.classes, "cs-grid", " ");	
+
+		variables.static_css = {"images"=1,"flickity"=1};
+		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1};
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
@@ -30,9 +32,16 @@ component extends="grid" {
 		];
 
 		StructAppend(this.styleDefs, [
-			"masonry" : {"name":"Masonry","description":"","type":"boolean","default":0,"inherit":1},
-			"popup" : {"name":"Popup","description":"","type":"boolean","default":0,"inherit":1},
-			"image-max-height": {"name":"Max image height","description":"","type":"dimension"},
+			"layout": {
+				"name":"Layout type","description":"","type":"list","options":[
+					{"name":"Standard","description":"Standard grid","value":"standard"},
+					{"name":"Masonry","description":"Arrange images in a best fit alignment according to their height","value":"masonry"},
+					{"name":"Carousel","description":"A horizontal scrolling panel","value":"carousel"}
+				],
+				"default":"standard","inherit":1
+			},
+			"popup" : {"name":"Popup","description":"Link to pop up image","type":"boolean","default":0,"inherit":1},
+			"grid-max-height": {"name":"Max image height","description":"","type":"dimension"},
 			"caption-position": {
 				"name":"Caption position","description":"","type":"list","options":[
 					{"name":"Top","description":"","value":"top"},
@@ -63,7 +72,15 @@ component extends="grid" {
 					{"name":"Shrink","description":"","value":"scale-down"},
 					{"name":"Stretch","description":"","value":"fill"}
 				]
-			}
+			},
+			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
+
+			"contain" : {"name":"contain","type":"boolean","default":true},
+			"freeScroll" : {"name":"freeScroll","type":"boolean","default":true},
+			"wrapAround" : {"name":"wrapAround","type":"boolean","default":true},
+			"pageDots" : {"name":"pageDots","type":"boolean","default":true},
+			"prevNextButtons" : {"name":"prevNextButtons","type":"boolean","default":true}
+
 		]);
 
 		updateDefaults();
@@ -75,63 +92,63 @@ component extends="grid" {
 		
 		var data = getSelectorStruct();
 		
-		if (arguments.styles.masonry) {
+		// image positions require some quite funny logic
+		// if caption is top or bottom, we need automargin on the image
+		// to fill the space if the image is top or bottom.
+		
+		local.imagegrow = 0;
+		switch(arguments.styles["caption-position"]){
+			case "top":
+			case "bottom":
+				local.imagegrow = (arguments.styles["justify-frame"] eq "center");
+				if (! local.imagegrow) {
+					if (arguments.styles["caption-position"] eq "top"){
+						data.image &= "/* caption at the top. */\n";
+						if (arguments.styles["justify-frame"] eq "end") {
+							data.image &= "\tmargin-top:auto;\n\tmargin-bottom:0;";
+						}
+					}
+					else {
+						data.image &= "/* caption at the bottom. */\n";
+						// caption at the bottom.
+						if (arguments.styles["justify-frame"] eq "start") {
+							data.image &= "\tmargin-top:0;\n\tmargin-bottom:auto;";
+						}
+					}
+				}
+				local.reverse = arguments.styles["caption-position"] eq "top" ? "-reverse" : "";
+				data.main &= "\t--frame-flex-direction:column" & (local.reverse) & ";\n";
+				data.main &= "\t--image-grow:#(local.imagegrow ? 1 : 0)#;\n";
+				
+				break;
+			
+			case "under":
+			case "above":
+				local.reverse = arguments.styles["caption-position"] eq "above" ? "-reverse" : "";
+				data.main &= "\t--frame-flex-direction:column#local.reverse#;\n";
+				data.image &= "\tmargin:0;";
+				data.main &= "\t--image-grow:0";
+				break;
+			case "overlay":
+				data.main &= "--justify-frame:start;\n";
+				data.main &= "--justify-caption:center;\n";
+				data.caption &= "position: absolute;\n";
+				data.caption &= "top:0;";
+				data.caption &= "left:0;";
+				data.caption &= "width: 100%;";
+				data.caption &= "height: 100%;";
+				data.caption &= "opacity: 0;";
+				break;
+		}
+
+		if (arguments.styles.layout eq "masonry") {
 			data.main &= "\tdisplay:block;\n";
 			data.item &= "\twidth:var(--grid-width);\n";
 		}
+		else if (arguments.styles.layout eq "carousel") {
+			data.main &= "\tdisplay:block;\n";
+		}
 		else {
-			// image positions require some quite funny logic
-			// if caption is top or bottom, we need automargin on the image
-			// to fill the space if the image is top or bottom.
-			
-
-			local.imagegrow = 0;
-			switch(arguments.styles["caption-position"]){
-				case "top":
-				case "bottom":
-					local.imagegrow = (arguments.styles["justify-frame"] eq "center");
-					if (! local.imagegrow) {
-						if (arguments.styles["caption-position"] eq "top"){
-							data.image &= "/* caption at the top. */\n";
-							if (arguments.styles["justify-frame"] eq "end") {
-								data.image &= "\tmargin-top:auto;\n\tmargin-bottom:0;";
-							}
-						}
-						else {
-							data.image &= "/* caption at the bottom. */\n";
-							// caption at the bottom.
-							if (arguments.styles["justify-frame"] eq "start") {
-								data.image &= "\tmargin-top:0;\n\tmargin-bottom:auto;";
-							}
-						}
-					}
-					local.reverse = arguments.styles["caption-position"] eq "top" ? "-reverse" : "";
-					data.main &= "\t--frame-flex-direction:column" & (local.reverse) & ";\n";
-					data.main &= "\t--image-grow:#(local.imagegrow ? 1 : 0)#;\n";
-					
-					break;
-				
-				case "under":
-				case "above":
-					local.reverse = arguments.styles["caption-position"] eq "above" ? "-reverse" : "";
-					data.main &= "\t--frame-flex-direction:column#local.reverse#;\n";
-					data.image &= "\tmargin:0;";
-					data.main &= "\t--image-grow:0";
-					break;
-				case "overlay":
-					data.main &= "--justify-frame:start;\n";
-					data.main &= "--justify-caption:center;\n";
-					data.caption &= "position: absolute;\n";
-					data.caption &= "top:0;";
-					data.caption &= "left:0;";
-					data.caption &= "width: 100%;";
-					data.caption &= "height: 100%;";
-					data.caption &= "opacity: 0;";
-					break;
-			}
-
-			
-
 			local.gridstyles = {};
 			variables.contentObj.settingsObj.grid(arguments.styles,local.gridstyles);
 			for (local.item in local.gridstyles) {
@@ -169,7 +186,12 @@ component extends="grid" {
 				local.link = " href='" & ( arguments.content.link ? : local.image.image ) & "'";
 			}
 			else {
-				local.link = " href='{link.{section.id}.view.#local.id#}'";
+				if ( StructKeyExists( arguments.content, "link" )) {
+					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
+				}
+				else {
+					local.link = " href='{link.{section.id}.view.#local.id#}'";
+				}
 			}
 
 			local.html &= "<a class='frame'#local.link#>";
@@ -179,8 +201,13 @@ component extends="grid" {
 			local.html &= "<div class='image'><img src='#local.image_src#'></div>";
 
 			if (local.image.title NEQ "") {
-				local.html &= "<div class='caption'>#local.image.title#</div>";
+				local.html &= "<div class='caption'>#local.image.title#";
+				if (arguments.content.settings.main.subcaptions AND local.image.description NEQ "") {
+					local.html &= "<div class='subcaption'>#local.image.description#</div>";
+				}
+				local.html &= "</div>";
 			}
+
 			
 			local.html &= "</a>";
 
@@ -200,26 +227,44 @@ component extends="grid" {
 
 		var js = "";
 			
-			
-		if (arguments.content.settings.main.masonry) {
+		if (arguments.content.settings.main.layout eq "masonry") {
 			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').isotope({\n";
 			js &= "\t/* options*/\n";
 			// js &= "\titemSelector: 'figure',\n";
 			js &= "layoutMode: 'masonry',\n";
 			js &= "itemSelector: '.frame',\n";
 			js &= "masonry: {\n";
-			js &= "	columnWidth: '##imagegrid .frame'";
-			if (StructKeyExists(arguments.content.settings.main,"gridgap")) {
-				js &= ",\n\tgutter: #Val(arguments.content.settings.main.gridgap)#";
+			js &= "	columnWidth: '###arguments.content.id# .frame'";
+			if (StructKeyExists(arguments.content.settings.main,"grid-gap")) {
+				js &= ",\n\tgutter: " & Val(arguments.content.settings.main["grid-gap"]);
 			}
 			js &= "\n\t},\n";
 			js &= "});\n";
-
 			js &= "/* layout Masonry after each image loads*/\n";
 			// js &= "$#arguments.content.id#Grid.imagesLoaded().progress( function() {\n";
 			js &= "$#arguments.content.id#Grid.imagesLoaded( function() {\n";
 			js &= "\t$#arguments.content.id#Grid.isotope();\n";
 			js &= "});\n";
+		}
+		else if (arguments.content.settings.main.layout eq "carousel") {
+			local.elem = "$carousel_#arguments.content.id#";
+			js &= "#local.elem# = $('###arguments.content.id#');\n";
+			js &= "#local.elem#.flickity({\n";
+			js &= "    contain: #arguments.content.settings.main.contain#,\n";
+			js &= "	   freeScroll: #arguments.content.settings.main.freeScroll#,\n";
+			js &= "	   wrapAround: #arguments.content.settings.main.wrapAround#,\n";
+			js &= "	   pageDots: #arguments.content.settings.main.pageDots#,\n";
+			js &= "	   prevNextButtons: #arguments.content.settings.main.prevNextButtons#\n";
+			js &= "	 }).on( 'change.flickity', function( event, index ) {\n";
+			js &= "	  console.log( 'Slide changed to ' + index );\n";
+			js &= "	  var cellElements = #local.elem#.flickity('getCellElements')\n";
+			js &= "	}).on( 'staticClick.flickity', function( event, pointer,cellElement, cellIndex ) {\n";
+			js &= "	  // dismiss if cell was not clicked\n";
+			js &= "	  if ( !cellElement ) {\n";
+			js &= "	    return;\n";
+			js &= "	  }\n";
+			js &= "	  #local.elem#.flickity(""select"", cellIndex,true);\n";
+			js &= "	});\n";
 		}
 
 		if (arguments.content.settings.main.popup) {

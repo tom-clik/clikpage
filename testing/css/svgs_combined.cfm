@@ -17,7 +17,7 @@ The file is XML so we can read it and return an array of icons details.
 This seems to be broken. Can't get the CORS settings to work.
 
 */
-mode = "cdn";// local|cdn -- cdn will show individual files.
+mode = "local";// local|cdn -- cdn will show individual files.
 path = "graphics/bootstrap-icons.svg";
 cdn = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.2/icons/";
 icons = readFile(ExpandPath(path));
@@ -31,7 +31,7 @@ array function readFile(filename) {
 		throw(message="File #arguments.filename# not found. Please download the bootstrap icons (see notes)");
 	}
 	var data = FileRead(arguments.filename);
-	var coldSoup = new coldSoup();
+	var coldSoup = new coldsoup.coldSoup();
 
 	var doc = coldSoup.parseXML(data);
 	var symbols = doc.select("symbol");

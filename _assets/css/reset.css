@@ -1,0 +1,178 @@
+/* Clik Site Standard */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, input, textarea, button, select,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  height:100%;
+  position:relative;
+}
+body { 
+  -webkit-font-smoothing: antialiased;
+  height:100%;
+}
+
+button, input[type=submit], input[type=button] {
+  background-color: transparent;
+}
+
+/*
+tried this to stop margin collapse between inner and outer.
+
+div {
+  overflow:hidden;
+}
+
+div.outer {
+  overflow:visible; 
+}*/
+
+
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+p {
+	margin-bottom: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+}
+
+h1 {
+  font-size: 1.8em;
+  margin-bottom:0.625em;
+}
+
+h2 {
+	font-size: 1.6em;
+	margin-bottom:0.625em;
+}
+
+h3 {
+	font-size: 1.4em;
+	margin-bottom:0.714em;
+}
+
+h4 {
+	font-size: 1.2em;
+}
+
+h4 {
+  font-size: 1.1em;
+}
+
+b,strong {
+  font-weight: bold;
+}
+i,em {
+  font-style: italic;
+}
+
+img {
+	display:block;
+}
+
+.container {
+  position:relative;
+}
+
+.contentsection:after, .container:after, .clear:after, .clearfix:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+/* common elements */
+
+img {
+  display:block;
+}
+
+div.clearing {
+  clear: both;
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 0;
+  line-height: 1px;
+  font-size: 1px;
+}
+
+.clear {
+  clear:both;
+}
+
+.print {
+  display:none;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+th,td {
+  vertical-align:top;
+}
+
+th {
+  font-weight: bold;
+}
+
+ol, ul {
+  margin:1em 0;
+  padding-left: 2em;
+  text-indent:0px;
+}
+
+ul {
+  list-style: disc;
+}
+ul ul  {
+  list-style: circle;
+}
+ol  {
+  list-style: decimal;
+}
+ol ol {
+  list-style: lower-alpha;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* Use inner divs to stop a host of issues like margin expanding etc */
+div.inner {
+  position: relative;
+  height:100%;
+}

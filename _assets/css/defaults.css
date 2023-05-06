@@ -1,0 +1,54 @@
+body {
+	--sitewidth:100%;
+	/* spanning now set by these. No classes */
+	--inner-width:100%;
+	--inner-margin:0;
+	--subcolwidth:25%;
+	--xcolwidth:15%;
+	--columns-grid-gap:5px;
+	--content-grid-gap:5px;
+	--xcol-display:block;
+	--subcol-display:block;
+	--uber-grid-template-areas: "header"
+						 "topnav"	 
+						 "content" 
+						 "footer";
+	--uber-grid-template-rows: min-content min-content auto min-content;
+	--header-display: block;
+	--topnav-display: block;
+	--bottomnav-display: none;
+	--footer-display: block;
+	
+	--content-grid-template-areas: "content_top" "content" "content_bottom";
+	--content-grid-template-rows: min-content auto min-content;
+	--columns-grid-template-areas: "subcol maincol xcol";
+	--columns-grid-template-columns: var(--subcolwidth) auto var(--xcolwidth);
+	--columns-grid-template-rows: auto;
+	--footer-grid-template-areas:"footer_left footer_middle footer_right";
+	--footer-grid-template-columns: 33% auto 33%;
+	--maincol-grid-template-columns: 1fr 1fr;
+	--maincol-grid-gap: var(--columns-grid-gap);
+	-
+	--content_top-display: block;
+	--content_bottom-display: block;
+
+}
+
+
+
+@media screen and (max-width:630px) {
+
+	:root {
+		--footer-grid-template-areas: "footer_right" "footer_middle"  "footer_left";
+		--footer-grid-template-columns: 1fr;
+		--columns-grid-template-areas: "subcol" "maincol" "xcol";
+		--columns-grid-template-columns: 1fr;
+	}
+	
+}
+
+
+@media screen and (max-width:800px) {
+
+	
+}

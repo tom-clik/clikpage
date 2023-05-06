@@ -1,0 +1,42 @@
+body {
+	color:textcolor;
+	font-family:bodyfont;
+	font-size:80%;
+	padding:0;
+}
+
+scheme-button {
+	link-color:linkcolor;
+	padding:4px;
+	border {
+		width:1;
+		style:solid;
+		color:bordercolor;
+	}
+	background {
+		color:light-panel-bg;
+	}
+	hover {
+		link-color:accent;
+	}
+	width:240px;
+	button-align:flex-start;
+}
+
+#test2 {
+	label-align:right;
+	button-direction:row-reverse;
+	shape:right_arrow;
+}
+
+
+#test3 {
+	button-align:center;
+	icon-display:none;
+}
+
+#test4 {
+	label-display:none;
+	shape:facebook;
+}
+		

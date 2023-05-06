@@ -1,12 +1,10 @@
 <!---
-
 # Grids testing page
 
 
 ## Notes
 
-This page originally had a sort of proto type settings form in it. This is here, commented out
-
+This page has been renamed imagegrid. This is being kept only to preserve the work done in branch 22.
 
 ## Status
 
@@ -222,3 +220,4 @@ string function settingsForm(required struct settings) {
 	return retval;
 }
 </cfscript>
+

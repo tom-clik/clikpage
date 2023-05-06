@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+
+<buttons>
+	<button src="/_assets/images/arrow_down.svg" id="arrow_down" viewBox="0 0 284.929 284.929" />
+	<button src="/_assets/images/chevron-left.svg" id="chevron-left" viewBox="0 0 16 16" />
+	<button src="/_assets/images/chevron-right.svg" id="chevron-right" viewBox="0 0 16 16" />
+	<button src="/_assets/images/left_arrow.svg" id="left_arrow" viewBox="0 0 197.4 197.4" />
+	<button src="/_assets/images/right_arrow.svg" id="right_arrow" viewBox="0 0 223.413 223.413" />
+	<button src="/_assets/images/menu.svg" id="menu" viewBox="0 0 24 24" />
+	<button src="/_assets/images/close47.svg" id="close" viewBox="0 0 357 357" />
+	<button src="/_assets/images/social/facebook.svg" id="facebook" viewBox="0 0 64 64" />
+	<button src="/_assets/images/social/twitter.svg" id="twitter" viewBox="0 0 16 16" />
+	<button src="/_assets/images/social/whatspp.svg" id="whatspp" viewBox="0 0 16 16" />
+	<button src="/_assets/images/social/instagram.svg" id="instagram" viewBox="0 0 16 16" />
+
+	
+</buttons>

@@ -3,88 +3,8 @@
 
 Allows for easy inclusion of static files (js,css) in a web page
 
-## Usage
+See docs/static_files.md
 
-### Configuration
-
-Configure a definition along the lines of the sample. See Scripts and Packages below for details
-
-The script array is the order in which the scripts must appear.
-
-### Use
-
-NB this can be used on its own but is designed for use the the pageObject component.
-
-If you do want to just use this, you can instantiate the component in a permanent scope and initialise with the definition and your required prefix/suffix
-
-To add files of packages, add to a "set" (a struct with a redundant key), e.g.
-
-  js_static["myscript"] = 1
-  
-To get the list of script/style tags for an HTML page, use the `getLinks()` method, e.g.
-
-  getLinks(js_static);
-
-To use the "debug" versions (if specified) call the method with  getLinks(js_static,true);
-
-#### Scripts
-
-Scripts (meaning css or js files) are defined as an array of objects with the following keys
-
-:name
-	The name by which the script is referenced
-:min
-	src of the production version of the script (usually minimised or such). Can be omitted if the script is in a bundled package and a debug version is specified.
-:debug
-	The debug version of the script. In debug mode, scripts are always included seperately even if in a bundled package. For libraries like Jquery, you can use a local version as the debug script which allows for offline working.
-:requires
-	List or array of required scripts. Always include all required scripts even if it's something as common as jquery
-:packageExclude (boolean)
-	Always show separate file even if in a package that is bundled. Typically the "min" script will be served from a CDN
-
-Note the order of the array is the order the scripts appear in the page.
-
-Sample script entry
-
-```
-{
-	"debug": "/_assets/js/jquery.validate.js",
-	"min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
-	"name": "validate",
-	"packageExclude": 1,
-	"requires": "jquery"
-}
-```
-#### Packages
-
-Groups of scripts can be defined in packages. These are added in the same way as normal scripts, e.g. for the package defined below:
-
-js_static["main"] = 1
- 
-These can include scripts like jquery that won't be "bundled". For any given script definition, the packageExclude
-field can be set to true to ensure the individual script is always used, usually from a CDN.
-
-A package can also be set to not to be bundled. Otherwise an "min" attribute must be set for the packaged files (the src). Even if all scripts are marked packageExclude you must still supply either pack:false or a "min" src.
-
-The static object can be used to package the scripts using the toptal APIs. See 
-
-```
-packages": [
-    {
-        "scripts": [
-            "jquery",
-            "jqueryui",
-            "validate",
-            "fuzzy",
-            "metaforms",
-            "datatables",
-            "select2"
-        ],
-        "pack":false,
-        "name":"main"
-    }
-]
-```    
 */
 
 component {
@@ -272,17 +192,17 @@ component {
 	/**
 	 * @hint        Compress packages. Currently using toptal API (see callCompressAPI())
 	 *
-	 * For each package, concatenate files, compress, and save to file specified in "min" field
-	 * for the package.
+	 * For each package, concatenate files, compress, and save to file specified
+	 *  in "min" field for the package.
 	 *
-	 * This will only work if the debug verions of the individual scripts be obtained by using the 
-	 * ExpandPath() function and the file to save can be determined by the ExpandPath() of the "min"
-	 * property.	 * 
+	 * 
 	 * 
 	 * @type        css|javascript
-	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF. You should always bump the version
-	 * @return      Array of results (result.name, result.saved [won't save if pack=false or 
-	 *              all scripts excluded from package], result.filename, result.files)
+	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF. 
+	 *              You should always bump the version
+	 * @return      Array of results (result.name, result.saved [won't save if 
+	 *              pack=false or all scripts are excluded from packages], 	
+	 *              result.filename, result.files)
 	 */
 	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=]) {
 		
@@ -296,21 +216,23 @@ component {
 				
 				local.outputFile = filePath(local.package.min,arguments.mappings);
 				local.res["filename"] = local.outputFile;
+				
 				if (FileExists(local.outputFile) AND NOT arguments.overwrite) {
 					ArrayAppend(local.results, local.res);
 					continue;
 				}
+				
 				local.res["files"]=[];
 				local.res["raw"] = 0;// sum total size of raw packages
 				// TO DO: check package scripts are in order. Use them if they are
 				local.out = "";
 				for (local.script in variables.scripts) {
-					//writeDump(local.script);
+					
 					if (ArrayFind(local.package.scripts, local.script.name)) {
 						if (!local.script.packageExclude) {
 							local.filename = filePath(local.script.min,arguments.mappings);
 							if (!FileExists(local.filename)) {
-								Throw(message="File #local.filename# not found for script #local.script.name#");
+								Throw(message="File #local.filename# not found for script #local.script.name#. Please check mappings if this doesn't make sense.");
 							}
 							local.res.raw += getFileInfo(local.filename).size;
 							local.out &= FileRead(local.filename,"utf-8");

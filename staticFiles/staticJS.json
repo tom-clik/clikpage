@@ -24,7 +24,7 @@
         "menuScroll",
         "menus"
       ],
-      "min": "/_assets/js/_min/coldlightpackage.0.1.min.js",
+      "min": "/_assets/js/_min/coldlightpackage.0.2.min.js",
       "name": "coldlight"
     }
   ],
@@ -74,7 +74,7 @@
       "hash": "sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
     },
     {
-      "min": "/_assets/js/_min/menuScroll.js",
+      "min": "/_assets/js/menuScroll.js",
       "name": "menuScroll",
       "description": "Highlight location in side menu according to headings in text",
       "requires": "jquery"
@@ -180,6 +180,14 @@
       "description": "Basic image popup script",
       "name": "popup",
       "requires": "jquery"
+    },
+    {
+      "debug":"/_assets/js/tooltipster.main.js",
+      "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/js/tooltipster.main.js",
+      "description": "Tooltip library",
+      "name": "tooltipster",
+      "requires": "jquery",
+      "packageExclude": 1
     }
     
   ]

@@ -5,12 +5,7 @@
 	<meta name="description" content="A test layout to extend another">
 	<meta name="author" content="Tom peer">
 	<style>
-		contentfooter {
-			grid {
-				grid-mode:auto;
-				grid-gap:14;
-			}
-		}
+		
 	</style>
 </head>
 
@@ -40,12 +35,12 @@
 			<content id="homearticlecarousel" class="scheme-carousel" type="articlelist">
 				<title>List of homepage articles</title>
 				<dataset tag="test2" sort="pubdate desc"></dataset>
-				<link>{link.news.view.{data.id}}</content>
-			</content>			
+				<link>{link.news.view.{data.id}}</link>
+			</content>
 		</div>	
 	</div>
 
-	<div id="contentfooter">
+	<div id="contentfooter" class="cs-grid">
 		<content id="welcome1" data-notes="Notes here">
 			<title>Footer item 1</title>
 			<content>

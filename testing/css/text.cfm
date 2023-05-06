@@ -7,7 +7,6 @@
 	<link rel="stylesheet" type="text/css" href="/_assets/css/text.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/fonts/fonts_local.css">
 
-	
 	<meta charset="UTF-8">
 	<style>
 		body {

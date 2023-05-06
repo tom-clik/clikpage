@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <stylesheet>
 
+	<link rel="stylesheet" href="_styles/button_test.css" />
+
 	<colors>
 		<textcolor title="Main text color" value="#333333" />
 		<panel-bg name="panel-bg" title="Darker panel bg" value="#01798a" />
-		<accent name="accent" title="Accent colour" value="#38bbcd" />
+		<accent name="accent" title="Accent colour" value="#ff00ff" />
 		<panel-text  title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>
 		</panel-text>
@@ -31,35 +33,7 @@
 		
 	</layouts>
 
-	<content>
-
-		<body>
-			<color>textcolor</color>
-			<font-family>bodyfont</font-family>
-			<font-size>80%</font-size>
-			<padding>0</padding>
-		</body>
-
-		<scheme-button>
-			<link-color>var(--linkcolor)</link-color>
-			<padding>4px</padding>
-			<border>
-				<width>1</width>
-				<style>solid</style>
-				<color>bordercolor</color>
-			</border>
-			<background>
-				<color>light-panel-bg</color>
-			</background>
-			<hover>
-				<link-color>var(--accentcolor)</link-color>
-			</hover>
-		</scheme-button>
-
-		
-
-	</content>
-
+	
 </stylesheet>
 
 

@@ -6,9 +6,7 @@
 	<meta name="author" content="Tom peer">
 	<style>
 		#contentwrap {
-			grid {
-				grid-mode:none;
-			}
+			grid-mode:none;
 		}
 		#xcol {
 			show:0;
@@ -37,9 +35,10 @@
 
 				<content id="imagegrid" type="imagegrid" class="scheme-overlay" >
 					<style>
-						masonry:true;
+						layout:masonry;
 						popup:true;
 						grid-width:24%;
+						grid-gap:8px;
 						
 						@mid {
 							grid-width:48%;

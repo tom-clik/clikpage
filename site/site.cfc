@@ -120,7 +120,13 @@ component accessors="true" extends="utils.baseutils" {
 		required string directory
 		) {
 		
+		// cope with one record not being array
+		if (NOT IsArray(arguments.site.data)) {
+			arguments.site.data = [arguments.site.data.data]
+		}
+
 		for (local.data in arguments.site.data) {
+			
 			if (!StructKeyExists(local.data,"src")) {
 				throw(message="No src defined for data entry", detail="Each data record in a site definition must have an src tag pointing to a valid xml data file");	
 			}
@@ -131,7 +137,13 @@ component accessors="true" extends="utils.baseutils" {
 				local.xmlData = variables.utils.utils.fnReadXML(local.filepath,"utf-8");
 				local.records = variables.utils.xml.xml2data(local.xmlData);
 				if (NOT IsArray(local.records)) {
-					throw("Data is not array");
+					// chekc single record
+					if (StructCount(local.records) eq 1) {
+						local.records = [local.records[structKeyList(local.records)]];
+					}
+					else {
+						throw("Data is not array. If you only have one record");
+					}
 				}
 				if (NOT StructKeyExists(local.data,"type")) {
 					local.data.type = "articles";
@@ -528,8 +540,17 @@ component accessors="true" extends="utils.baseutils" {
 	}
 	
 
-
-	public string function dataReplace(required struct site, required string html, required string sectioncode, string action="index", string id="", struct record={}) {
+	/**
+	 * @hint Replace all data placeholders in the HTML with data values
+	 */
+	public string function dataReplace(
+		required struct site, 
+		required string html, 
+		required string sectioncode, 
+		         string action="index", 
+		         string id="", 
+		         struct record={}
+		) {
 
 		local.tags = variables.pattern.matcher(arguments.html);
 		local.tagMatches = {};
@@ -645,8 +666,6 @@ component accessors="true" extends="utils.baseutils" {
 
 	/**
 	 * Generate page link according to whether we are in live or cache mode
-	 * 
-	 * @return {[type]}          [description]
 	 */
 	private string function pageLink(required struct site, required string section, string action="index", string id="") {
 		local.sectionStr = getSection(site=arguments.site,section=arguments.section);
@@ -901,6 +920,12 @@ component accessors="true" extends="utils.baseutils" {
 			
 			
 		}
+
+		// TODO: setting somewhere to include this or not
+		// pageContent.onready &= "$(""##ubercontainer"").mCustomScrollbar();";
+		// pageContent.css &= "body {height:100vh;overflow:hidden};";
+		// pageContent.static_js["scrollbar"] = 1;
+		// pageContent.static_css["scrollbar"] = 1;
 		
 		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
 
@@ -1009,7 +1034,16 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.written = {};
 		for (local.layout in arguments.site.layouts) {
-			css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
+			try{
+				css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
+			} 
+			catch (any e) {
+				throw(
+					extendedinfo = e.extendedinfo,
+					message      = "Unable to write styling for template #local.layout#:" & e.message, 
+					detail       = e.detail
+				);
+			}
 		}
 
 		for (var id in arguments.site.containers) {

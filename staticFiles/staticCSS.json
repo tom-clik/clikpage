@@ -19,7 +19,7 @@
                 "title"
             ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.3.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.4.min.css"
         }
     ],
     "scripts": [
@@ -48,6 +48,10 @@
         {
             "min": "/_assets/css/menus.css",
             "name": "menus"
+        },
+        {
+            "min": "/_assets/css/grids.css",
+            "name": "grids"
         },
         {
             "min": "/_assets/css/navbuttons.css",
@@ -126,12 +130,19 @@
         },
         {
             "min": "https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css",
-            "debug": "/_common/js/jquery.mCustomScrollbar.min.css",
+            "debug": "/_assets/css/jquery.mCustomScrollbar.min.css",
             "description": "Scroll bar plug in",
             "jsdoc": "http://manos.malihu.gr/jquery-custom-content-scroller/",
             "name": "scrollbar",
             "requires": "jquery",
             "packageExclude": 1
+        },
+        {
+          "debug":"/_assets/css/tooltipster.css",
+          "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/css/tooltipster.main.min.css",
+          "description": "Tooltip library",
+          "name": "tooltipster",
+          "packageExclude": 1
         }
     ]
 }

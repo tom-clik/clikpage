@@ -13,13 +13,16 @@
 	// this is private property and is accessible only from inside the plugin
 	var defaults = {
 
-		foo: 'bar',
-
+		message: 'Default message',
+		// Window method for resize. Change to throttledresize or your
+		// chosen debounce method
+		resize: 'resize',
 		// if your plugin is event-driven, you may provide callback capabilities
 		// for its events. execute these functions before or after events of your
 		// plugin, so that users may customize those particular events without
 		// changing the plugin's code
-		onFoo: function() {}
+		onFoo: function() {},
+		onPublic_method: function() {}
 
 	}
 
@@ -45,7 +48,13 @@
 		plugin.settings = $.extend({}, defaults, options);
 
 		// code goes here
+		
 
+		// sample resize function
+		$(window).on(plugin.settings.resize,function() {
+			width = $element.width();
+			console.log("width now" + width);
+		});
 	}
 
 	$element.on("Foo",function() {
@@ -55,9 +64,9 @@
 	if ( $.isFunction($.fn.swipeDetector) ) {
 		$element.swipeDetector(options);
 		$element.on("swipeLeft.sd",function() {
-			foo_public_method_left();
+			plugin.public_method_left();
 		}).on("swipeRight.sd",function() {
-			foo_public_method_right();
+			plugin.public_method_right();
 		});
 	}
 
@@ -65,15 +74,15 @@
 		switch (event.key) {
 			case "Escape":
 	  		event.preventDefault();
-	  		plugin.foo_public_method_close();
+	  		plugin.public_method_close();
 	  		break;
 	  		case "ArrowLeft":
 	  		event.preventDefault();
-	  		plugin.foo_public_method_left();
+	  		plugin.public_method_left();
 	  		break;
 	  		case "ArrowRight":
 	  		event.preventDefault();
-	  		plugin.foo_public_method_right();
+	  		plugin.public_method_right();
 	  		break;
 	  	}	  	 	
 	});
@@ -86,21 +95,22 @@
 	// the plugin, where "element" is the element the plugin is attached to;
 
 	// a public method. for demonstration purposes only - remove it!
-	plugin.foo_public_method = function() {
-		foo_private_method(plugin.settings.foo);
+	plugin.public_method = function() {
+		private_method(plugin.settings.message);
+		plugin.settings.onPublic_method();
 		// code goes here
 
 	}
 
-	plugin.foo_public_method_left = function() {
-		foo_private_method("left " + plugin.settings.foo);
+	plugin.public_method_left = function() {
+		private_method("left");
 	}
 
-	plugin.foo_public_method_right = function() {
-		foo_private_method("right " + plugin.settings.foo);
+	plugin.public_method_right = function() {
+		private_method("right");
 	}
 
-	plugin.foo_public_method_close = function() {
+	plugin.public_method_close = function() {
 		console.log("Close method. Keybindings should no longer work");
 		$(window).off("keydown.pluginName");
 	}
@@ -110,7 +120,7 @@
 	// methodName(arg1, arg2, ... argn)
 
 	// a private method. for demonstration purposes only - remove it!
-	var foo_private_method = function(message) {
+	var private_method = function(message) {
 		$element.html(message);
 	}
 
