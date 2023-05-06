@@ -31,40 +31,25 @@ component extends="contentSection" {
 			}
 		};
 		
-		
-		this.panels = [
-			{"name":"item","panel":"item", "selector": " a"},
-			{"name":"icon","panel":"icon", "selector": " .icon"}
+		/* TODO: modernise to panels */
+		this.styleDefs = [
+			"field-border-color": {"type":"color"},
+			"form-stripe-background-color": {"type":"color"},
+			"form-label-width": {"type":"dimension"},
+			"form-label-gap": {"type":"dimension"},
+			"form-row-gap": {"type":"dimension"},
+			"field-padding": {"type":"dimensionlist"},
+			"input-padding": {"type":"dimensionlist"},
+			"form-width": {"type":"dimension"},
+			"field-checkbox-width": {"type":"dimension"},
+			"field-border-width": {"type":"dimension"},
+			"field-border-style": {"type":"text"},
+			"field-background-color": {"type":"color"},
+			"form-font": {"type":"text"},
+			"form-color": {"type":"color"}
 		];
 
 		return this;
-	}
-
-	public string function css(required struct styles, required selector) {
-		
-		var css = "#arguments.selector# {
-			max-width: 800px;
-			margin:12px auto;
-			border:1px solid var(--border-color);
-			background-color: ##efefef;
-			--field-background-color: white;
-			--field-border-color: ##aaa;
-			--input-padding: 8px;
-		}
-
-		.button {
-			--button-border-color:var(--border-color);
-			--button-border-width:1px;
-			--button-border-style:solid;
-			--button-background-color: white;
-		}
-
-		#arguments.selector# .fieldrow:nth-child(even) {
-			background-color: ##e3e3e3;
-		}";
-
-		return css;
-
 	}
 
 	public string function html(required struct content) {

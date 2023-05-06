@@ -22,12 +22,14 @@ contentObj = new clikpage.content.content(settingsObj=settingsObj);
 contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 
 styles = settingsObj.loadStyleSettings(ExpandPath("button_test_styles.xml"));
+
 contentObj.debug = 1;
 
 tests = [
 	{id="test1",title="No formatting"},
 	{id="test2",title="Right"},
-	{id="test3",title="No icon"}
+	{id="test3",title="No icon"},
+	{id="test4",title="Facebook"}
 ];
 
 cs = [=];

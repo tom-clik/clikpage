@@ -187,7 +187,7 @@ component {
 	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="") {
 
 		var css = "";
-
+		
 		for ( var medium in arguments.media ) {
 
 			var media = arguments.media[medium];
@@ -467,6 +467,16 @@ component {
 			local.css &= displayPosition(arguments.settings);
 		}
 
+		if ( structKeyExists( arguments.settings, "float") ) {
+			local.css &= "\tfloat:#arguments.settings.float#;\n";
+			if ( structKeyExists( arguments.settings, "float-margin") ) {
+				local.margin = displayDimension(arguments.settings["float-margin"]);
+				local.css &= "\tmargin-bottom:#local.margin#;\n";
+				local.outside = arguments.settings.float eq "left" ? "right" : "left";
+				local.css &= "\tmargin-#local.outside#:#local.margin#;\n";
+			}
+		}
+
 		if (StructKeyExists(arguments.settings,"border")) {
 			local.settings = Duplicate(arguments.settings["border"]);
 			StructAppend(local.settings, {"style":"solid"}, false);
@@ -544,7 +554,7 @@ component {
 					
 				}
 				break;
-
+			
 		}
 		
 		return retVal.toList( "\n\t" ) & "\n";

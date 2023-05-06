@@ -7,7 +7,7 @@ component {
 
 	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
 	this.mappings = [
-		"/_assets" = this.baseDir & "\coldlight\_assets",
+		"/_assets" = this.baseDir & "\clikpage\_assets",
 	];
 
 	public void function onApplicationStart()  output=false {
