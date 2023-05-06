@@ -64,6 +64,10 @@ component extends="contentSection" {
 			rules : {
 				field1: {
 			    	required: true,
+			    	minlength: 20
+			    },
+			    email: {
+			    	required: true,
 			    	email: true
 			    },
 			    field2: {
