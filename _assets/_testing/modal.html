@@ -68,11 +68,12 @@
 		top:0;
 		left:0;
 		transform: translate(-100%, 0);
-		width:260px;
+		width:460px;
 		height: 100vh;
 		background-color: teal;
 		overflow: hidden;
-		transition: transform 0.3s ease-in;
+		transition: transform 0.6s ease-in;
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	}
 
 	#menu .inner {
@@ -290,17 +291,28 @@
 			modal:false
 		});
 
-
+		$menu = $("#menu");
+		$menu.modal({
+			draggable:false,
+			modal:true,
+			useCss:true,
+			onOpen: function() {
+				$menu.addClass("open");
+			},
+			onClose: function() {
+				$menu.removeClass("open");
+			}
+		});
 		// MUSTDO: put this into the modal
 		$("#popup .textWrap,#menu .content").mCustomScrollbar();
 
-		$("#menu").on("open",function() {
-			console.log("opening " + $(this).attr("id"));
-			$(this).addClass("open");
-		}).on("close",function() {
-			console.log("closing " + $(this).attr("id"));
-			$(this).removeClass("open");
-		});
+		// $("#menu").on("open",function() {
+		// 	console.log("opening " + $(this).attr("id"));
+		// 	$(this).addClass("open");
+		// }).on("close",function() {
+		// 	console.log("closing " + $(this).attr("id"));
+		// 	$(this).removeClass("open");
+		// });
 
 		$(".button.auto").button();
 

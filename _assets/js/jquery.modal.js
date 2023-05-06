@@ -5,6 +5,7 @@
 		var defaults = {
 			modal: true,
 			draggable: false,
+			useCss:false,//use your own magic css and callbacks to show
 			dragTarget: "h2",
 			closebutton: "<svg class=\"icon\"  viewBox=\"0 0 357 357\"><use xlink:href=\"/_assets/images/close47.svg#close\"></svg>",
 			onOpen: function() {},
@@ -54,7 +55,11 @@
 
 		// public methods
 		plugin.open = function() {
-			$element.css({"display":"block",'z-index': (plugin.settings.modal ? 1000 : 998)});
+			var cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
+			if (! plugin.settings.useCss) {
+				cssSettings["display"] = "block";
+			}
+			$element.css(cssSettings);
 			if (plugin.settings.modal) {
 				backdrop = $("<div class='backdrop'></div>").appendTo("body")
 				.css(backdropSettings)
@@ -83,7 +88,9 @@
 		}
 
 		plugin.close = function() {
-			$element.css({"display":"none"});
+			if (! plugin.settings.useCss) {
+				$element.css({"display":"none"});
+			}
 			if (plugin.settings.modal) {
 				backdrop.remove();
 			}
