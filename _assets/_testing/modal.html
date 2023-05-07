@@ -30,6 +30,13 @@
 		background-color: #dedede;
 	}
 
+	.button.scheme-rotate a .icon {
+		transition: transform 0.5s ease-in;
+	}
+	.button.scheme-rotate.state_open a .icon {
+		transform: rotate(90deg);
+	}
+
 	img {
 		max-width: 100%;
 	  	height: auto;
@@ -57,6 +64,10 @@
 		left:50%;
 		transform:translate(-50%, -50%);
 		width:660px;
+	}
+
+	.modal.open {
+		display: block;
 	}
 	
 	.backdrop {
@@ -107,6 +118,18 @@
 		top:4px;
 		right:4px;
 	}
+
+	.pulldown {
+		visibility: hidden;
+		position: absolute;
+		top:40px;
+		left:420px;
+		overflow: hidden;
+		height:0px;
+		width:240px;
+	}
+
+	
 	</style>
 </head>
 <body>
@@ -128,6 +151,13 @@
 		<a href="#menu.open">
 				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
 				<label>Open Menu</label>
+			</a>				
+	</div>
+	<div class="button auto scheme-rotate">
+
+		<a href="#pulldown.openclose">
+				<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+				<label>Open Pulldown</label>
 			</a>				
 	</div>
 </div>
@@ -268,13 +298,24 @@
 		<div class="menu_footer">
 			$6.99
 		</div>
-	</use>
+	</div>
 </div>
+
+<div id="pulldown" class="pulldown">
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
 <script src="/_assets/js/jquery.modal.js"></script>
 <script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/jquery.animateAuto.js"></script>
 <script>
 
 	$(document).ready(function() {
@@ -294,27 +335,34 @@
 		$menu = $("#menu");
 		$menu.modal({
 			draggable:false,
-			modal:true,
-			useCss:true,
+			modal:true
+		});
+		
+		$pulldown = $("#pulldown");
+		menuAnimationTime = 500;
+				
+		$pulldown.modal({
+			draggable:false,
+			modal:false,
 			onOpen: function() {
-				$menu.addClass("open");
+				$pulldown.css({"visibility": "visible"});
+				$pulldown.animateAuto("height", menuAnimationTime, function() {
+					console.log("Animation complete");
+					$(this).css({"height":"auto"});
+				});
 			},
 			onClose: function() {
-				$menu.removeClass("open");
+				$pulldown.animate({"height":0}, menuAnimationTime, function() {
+					$pulldown.css({"visibility": "hidden"});
+				});
 			}
 		});
+
 		// MUSTDO: put this into the modal
 		$("#popup .textWrap,#menu .content").mCustomScrollbar();
 
-		// $("#menu").on("open",function() {
-		// 	console.log("opening " + $(this).attr("id"));
-		// 	$(this).addClass("open");
-		// }).on("close",function() {
-		// 	console.log("closing " + $(this).attr("id"));
-		// 	$(this).removeClass("open");
-		// });
-
 		$(".button.auto").button();
+
 
 	});
 

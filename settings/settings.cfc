@@ -375,17 +375,17 @@ component {
 					 boolean debug=this.debug
 			) {
 		local.css = "";
+
+		local.mainCSS = "";
 		local.innerCSS = "";
 		local.gridcss = "";
 		
-		local.css &= "#arguments.selector# {\n";
-		local.css &= dimensions(settings=arguments.settings);
 		
-		// if (StructKeyExists(arguments.settings,"show")) {
-		// 	if (NOT arguments.settings.show) {
-		// 		local.css &= "}\n";
-		// 	}
-		// }
+		local.mainCSS = dimensions(settings=arguments.settings);
+		
+		if ( local.mainCSS neq "") {
+			local.css &= "#arguments.selector# {\n" & local.mainCSS & "}\n";
+		}
 
 		if (StructKeyExists(arguments.settings, "inner")) {
 			local.innerCSS &= dimensions(arguments.settings.inner);
@@ -393,15 +393,13 @@ component {
 		
 		local.gridSettings = {"main"="","item"=""};
 		grid(arguments.settings,local.gridSettings);
-		
-		local.css &= "}\n";
-		
-		if (local.innerCSS NEQ "" OR StructCount(local.gridSettings)) {
+		local.hasGrid = local.gridSettings.main != "" OR local.gridSettings.item != "";
+
+		if ( local.innerCSS NEQ "" OR local.hasGrid ) {
 			local.css &= "#arguments.selector# > .inner {\n";
 			local.css &= local.innerCSS;
-			if (StructCount(local.gridSettings)) {
+			if ( local.hasGrid ) {
 				local.css &= local.gridSettings.main;
-			
 			};
 			local.css &= "}\n";
 			// hacky here. Should use format qualifier mechanism from grid cs type
@@ -409,8 +407,7 @@ component {
 				local.css &= "#arguments.selector# .inner > * {\n";
 				local.css  &= local.gridSettings.item;
 				local.css &= "}\n";
-			};
-			
+			};			
 		}
 		
 		return local.css;
@@ -607,7 +604,7 @@ component {
 	}
 
 	/**
-	 * CSS styling for a grid
+	 * @hint CSS styling for a grid
 	 * 
 	 */
 	public void function grid(required struct settings, required struct out) {
