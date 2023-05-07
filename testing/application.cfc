@@ -2,12 +2,12 @@ component {
 
 	this.sessionManagement = false;
 	this.debug = true;
-	this.baseDir = ExpandPath("..\..\..")
+	this.baseDir = ExpandPath("..\..\..");
 	this.componentPaths=[this.baseDir];
 
 	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
 	this.mappings = [
-		"/_assets" = this.baseDir & "\coldlight\_assets",
+		"/_assets" = this.baseDir & "\clikpage\_assets",
 	];
 
 	public void function onApplicationStart()  output=false {
@@ -16,6 +16,9 @@ component {
 	}
 
 	public void function onRequestStart() output=false {
+		request.rc = Duplicate(url);
+		StructAppend(request.rc,form,true);
+		request.prc = {};
 		onApplicationStart();
 	}
 

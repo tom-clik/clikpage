@@ -1,13 +1,17 @@
+<!---
+
+Tried resurrecting this but it looks to require the bundles not just the main
+
+--->
 
 	<head>
-		<link rel="stylesheet" type="text/css" href="_common/_styles/tooltipster/tooltipster.bundle.css" />
-		<link rel="stylesheet" type="text/css" href="_common/_styles/tooltipster/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css" />
-
-		<script src="_common/_scripts/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
-		<script src="_common/_scripts/tooltipster/tooltipster.bundle.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="/_assets/css/tooltipster.css" />
+		
+		<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/_assets/js/tooltipster.main.js" type="text/javascript" charset="utf-8"></script>
 
 		<!-- nb we will be demonstrating combining tooltipster with validate -->
-		<script src="_common/_scripts/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/_assets/js/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
 
 		<style>
 		body {
@@ -84,11 +88,11 @@
 	<script>
 		
 		$(document).ready(function() {
-			$('.tooltip').tooltipster({theme: 'tooltipster-shadow'});
-
+			$('.tooltip').tooltipster({plugins:[]});
+			//{theme: 'tooltipster-shadow'}
 			$('.help').tooltipster({
-				theme: 'tooltipster-shadow',
-				trigger: 'click'
+				trigger: 'click',
+				plugins:[]
 			});
 
 

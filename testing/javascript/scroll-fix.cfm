@@ -90,12 +90,20 @@ Testing scroll fix
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#topnav').scrollFix({
+	$elem = $('#topnav');
+	color = $elem.css("background-color");
+	$elem .scrollFix({
 		resize: "throttledresize",
-		onFix: function() {console.log("fix")},
-		onUnfix: function() {console.log("unfix")}
+		onFix: function() {
+			$elem.css({"background-color":"gray"});
+			console.log("fix")
+		},
+		onUnfix: function() {
+			console.log("unfix")
+			$elem.css({"background-color":color});
+		}
 	});
-	$("body").on("throttledresize",function() {console.log("throttledresize")});
+	// $("body").on("throttledresize",function() {console.log("throttledresize")});
 });
 </script>
 

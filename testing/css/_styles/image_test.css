@@ -1,0 +1,16 @@
+body {
+	color:textcolor;
+	font-family:bodyfont;
+	font-size:80%;
+	padding:0;
+}
+
+#test3 {
+	object-fit: fill;
+}
+
+#test4 {
+	object-position-y: bottom;
+	object-fit: cover;
+}
+		

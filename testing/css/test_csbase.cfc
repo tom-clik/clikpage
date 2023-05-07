@@ -2,7 +2,8 @@
 component {
 	
 	public function init() {
-
+		throw("This should be deprecated.");
+		
 		// See selectorQualifiedCSS. Shorthand to apply css to sub elements
 		this.selectors = [
 			{"name"="main", "selector"=""}

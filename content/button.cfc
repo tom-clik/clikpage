@@ -113,6 +113,10 @@ component extends="contentSection" {
 		}
 	}
 
+	public struct function getShapes() {
+		return variables.shapes;
+	}
+
 	public string function displayShape(required string id) {
 		
 		if (! StructKeyExists(variables.shapes, arguments.id)) {

@@ -102,15 +102,10 @@ Menu Testing
 #pageObj.jsStaticFiles.getLinks(cs.pagecontent.static_js,1)#
 </cfoutput>
 
-
 <script>
-	
-	$(document).ready(function() {
-		
-		<cfoutput>#cs.pagecontent.onready#</cfoutput>
-	
-	});
-
+$(document).ready(function() {
+	<cfoutput>#cs.pagecontent.onready#</cfoutput>
+});
 </script>
 
 </body>
