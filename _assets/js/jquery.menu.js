@@ -1,3 +1,16 @@
+/**
+ * # Menu function
+ *
+ * Add arrow icon to any items with a sub menu
+ *
+ * Ad onclick to those items that adds an open class to the sub menu.
+ *
+ * TODO:
+ *
+ * 1. Auto animate height of sub menus
+ * 2. Position sub menus for any that aren't inline
+ * 
+ */
 
 (function($) {
 
