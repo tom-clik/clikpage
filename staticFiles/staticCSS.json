@@ -19,7 +19,7 @@
                 "title"
             ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.4.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.5.min.css"
         }
     ],
     "scripts": [

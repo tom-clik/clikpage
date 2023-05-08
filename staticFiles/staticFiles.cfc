@@ -243,7 +243,6 @@ component {
 				if (local.out != "") {
 					
 					local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
-					local.compressed = local.out;	
 					if (arguments.type == "css") {
 						local.compressed = minifiyCSS(local.out);
 					}
