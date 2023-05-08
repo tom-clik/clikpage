@@ -57,7 +57,7 @@
 		right:2px;
 	}
 
-	.modal {
+	.m_modal {
 		display: none;
 		position: fixed;
 		top:50%;
@@ -66,7 +66,7 @@
 		width:660px;
 	}
 
-	.modal.open {
+	.m_modal.open {
 		display: block;
 	}
 	
@@ -162,7 +162,7 @@
 	</div>
 </div>
 
-<div id="popup" class="modal">
+<div id="popup" class="m_modal">
 	<div class="wrapper">
 		<div id="closebutton2" class="closebutton button auto">
 			<a href="#popup.cancel">
@@ -213,7 +213,7 @@
 	</div>
 </div>
 
-<div id="popup2" class="modal">
+<div id="popup2" class="m_modal">
 	<div class="wrapper">
 		<div id="popup2_closebutton" class="closebutton button auto">
 			<a href="#popup2.cancel">
@@ -243,7 +243,7 @@
 	</div>
 </div>
 
-<div id="menu" class="side_menu">
+<div id="menu" class="modal side_menu">
 	<div class="inner">
 		<div class="button auto" id="menu_close_button">
 			<a href="#menu.close">
@@ -301,7 +301,7 @@
 	</div>
 </div>
 
-<div id="pulldown" class="pulldown">
+<div id="pulldown" class="animate pulldown">
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -316,6 +316,9 @@
 <script src="/_assets/js/jquery.modal.js"></script>
 <script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>
+
+<!--- this will animate the menus through standard functionality --->
+<script src="/_assets/js/clik_onready.js"></script>
 <script>
 
 	$(document).ready(function() {
@@ -332,36 +335,8 @@
 			modal:false
 		});
 
-		$menu = $("#menu");
-		$menu.modal({
-			draggable:false,
-			modal:true
-		});
-		
-		$pulldown = $("#pulldown");
-		menuAnimationTime = 500;
-				
-		$pulldown.modal({
-			draggable:false,
-			modal:false,
-			onOpen: function() {
-				$pulldown.css({"visibility": "visible"});
-				$pulldown.animateAuto("height", menuAnimationTime, function() {
-					console.log("Animation complete");
-					$(this).css({"height":"auto"});
-				});
-			},
-			onClose: function() {
-				$pulldown.animate({"height":0}, menuAnimationTime, function() {
-					$pulldown.css({"visibility": "hidden"});
-				});
-			}
-		});
-
 		// MUSTDO: put this into the modal
 		$("#popup .textWrap,#menu .content").mCustomScrollbar();
-
-		$(".button.auto").button();
 
 
 	});

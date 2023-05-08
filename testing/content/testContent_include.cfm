@@ -1,15 +1,32 @@
 <cfscript>
 
-path = ExpandPath("../site/preview/config.json");
+path = ExpandPath("../site/preview/config_main.json");
 fileData = fileRead(path );
 config = deserializeJSON(fileData);
-siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
-siteObj.debug = true;
 
-site = siteObj.loadSite(config.siteDef);
+outPath = ExpandPath("_out/");
 
 settingsObj = new clikpage.settings.settings(debug=1);
 contentObj = new clikpage.content.content(settingsObj=settingsObj);
+
+// Style definition -- see link to css file ibid.
+settingsDef = ExpandPath("../styles/testStyles.xml");
+
+settingsObj = new clikpage.settings.settings(debug=1);
+contentObj = new clikpage.content.content(settingsObj=settingsObj);
+contentObj.debug = 1;
+
+styles = settingsObj.loadStyleSettings(settingsDef);
+// writeDump(styles.style);
+
+colorCss = ":root {" &  settingsObj.colorVariablesCSS(settings=styles,debug=false) & "}";
+colorCss = settingsObj.outputFormat(
+	css=colorCss,
+	media=styles.media,
+	debug=contentObj.debug
+);
+
+FileWrite(outPath & "colors.css",colorCss);
 
 pageObjOk = 1;
 try {
@@ -19,17 +36,22 @@ catch (any e) {
 	pageObjOk = 0;
 }
 
-styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 contentObj.debug = 1;
 
 function testCS(required struct cs, boolean getSettings=1) {
 	
 	try {
 		if (arguments.getSettings) {
-			contentObj.settings(arguments.cs,styles.style,styles.media);
+			contentObj.settings(content=arguments.cs,styles=styles.style,media=styles.media);
 		}		
 		writeDump(var=arguments.cs.settings,label="settings");
-		displayCSS(arguments.cs);
+
+		css = CSS(arguments.cs);
+		writeOutput("<pre>" & css & "</pre>");
+
+		
+		FileWrite(outPath & arguments.cs.type & ".css",css);
+
 		param name="request.data" type="struct" default={};
 
 		local.cs = contentObj.display(content=arguments.cs,data=request.data);
@@ -44,30 +66,53 @@ function testCS(required struct cs, boolean getSettings=1) {
 	}
 
 	writeOutput( HTMLEditFormat(local.cs.html));
+	
 	writeDump(var=local.cs.pagecontent,label="Page content");
 
-	staticContent(local.cs.pagecontent);
+	local.static = staticContent(local.cs.pagecontent);
+	writeOutput("<h2>Static links</h2>");
+	writeOutput("<pre>" & HTMLEditFormat( local.static.js )  & HTMLEditFormat( local.static.css ) &"</pre>");
+
+	local.js = "
+	<script>
+	$(document).ready(function() {
+		#local.cs.pagecontent.onready#
+	});
+	</script>
+	";
+	FileWrite(outPath & arguments.cs.type & ".html",samplepage(arguments.cs,local.cs.html,local.static,local.js));
 }
 
-function displayCSS(required struct cs) {
+function CSS(required struct cs) {
 	local.site_data = { "#arguments.cs.id#" = arguments.cs};
 	
-	local.css = contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media);
+	return contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media);
 
-	writeOutput("<pre>" & local.css & "</pre>");
+	
 }
 
 function staticContent(required struct pagecontent) {
 	if (pageObjOk) {
-		var page = "";
+		var page = {};
 		
-		page &= pageObj.cssStaticFiles.getLinks(arguments.pagecontent.static_css,1);
-		page &= pageObj.jsStaticFiles.getLinks(arguments.pagecontent.static_js,1);
-
-		writeOutput("<h2>Static links</h2>");
-		writeOutput("<pre>" & HTMLEditFormat( page ) & "</pre>");
+		page["css"] = pageObj.cssStaticFiles.getLinks(arguments.pagecontent.static_css,1);
+		page["js"] = pageObj.jsStaticFiles.getLinks(arguments.pagecontent.static_js,1);
+		return page;
 
 	}
+}
+
+function samplepage(cs,html,static,js) {
+	var page = "<html><head><title>#arguments.cs.type# test</title>";
+	page &= static.css;
+	page &= "<link rel='stylesheet' href='colors.css'>";
+	page &= "<link rel='stylesheet' href='#arguments.cs.type#.css'>";
+	page &= "</head><body>";
+	page &= html;
+	page &= static.js;
+	page &= arguments.js;
+	page &= "</body>";
+	return page;
 }
 
 </cfscript>

@@ -19,7 +19,7 @@ site = siteObj.loadSite(config.siteDef);
 dataset = {
 	tag="mainmenu",type="sections"
 };
-
+ 
 menu =siteObj.getDataSet(site=site,dataset=dataset);
 menudata = siteObj.menuData(site,menu);
 FileWrite(ExpandPath("_out/sampleMenu.json"), serializeJSON(menudata));

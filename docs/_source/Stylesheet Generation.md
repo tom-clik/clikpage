@@ -22,7 +22,7 @@ Each content section type also defines "panels", which can be styled using stand
 
 Some also define states such as hover, disabled, highlight. 
 
-In a clik stylesheet, the states and panels are easliy applied referring only to the keyword. For instance, for a listing of articles, the stylesheet would look like this[^dream1].
+In a clik stylesheet, the states and panels are easliy applied referring only to the keyword. For instance, for a listing of articles, the stylesheet would look like this.
 
 ```
 .scheme-listing {
@@ -39,7 +39,7 @@ In a clik stylesheet, the states and panels are easliy applied referring only to
 }
 ```
 
-[^dream1]: Of course at the minute they are XML. But they will look like this one day.
+
 
 
 

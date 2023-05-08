@@ -28,27 +28,26 @@ staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=local.jsonData);
 
 count = 1;
 
-for (js in [
-		{"testpackage":true,"main":true,"notdefined":1},
+for (test in [
+		{"testpackage":true,"main":true,"notdefined":1,"metaforms":1,"menus":1,"select2":1,"fuzzy":1},
 		{"fuzzy":true},
 		{"menus":true},
-		{"clikForm":true}
+		{"metaforms":true}
 	]
 	) {
 
 	writeOutput("<h2>Test ###count#</h2>");
 	writeOutput("<h3>Source</h3>");
 	writeOutput("<pre>");
-	writeOutput(htmlEditFormat(serializeJSON(js)));
+	writeOutput(htmlEditFormat(serializeJSON(test)));
 	writeOutput("</pre>");
-
 	writeOutput("<h3>Debug</h3>");
 	writeOutput("<pre>");
-	writeOutput(htmlEditFormat(staticFilesObj.getLinks(js,true)));
+	writeOutput(htmlEditFormat(staticFilesObj.getLinks(test,true)));
 	writeOutput("</pre>");
 	writeOutput("<h3>Live</h3>");
 	writeOutput("<pre>");
-	writeOutput(htmlEditFormat(staticFilesObj.getLinks(js,false)));
+	writeOutput(htmlEditFormat(staticFilesObj.getLinks(test,false)));
 	writeOutput("</pre>");
 	count++;
 }

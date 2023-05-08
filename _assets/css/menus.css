@@ -33,8 +33,8 @@ hi      li.hi a
 	--icon-height:32px;	
 	--menu-icon-valign: middle;/* WIP */
 	--menu-icon-gap: 8px;/* gap between label and icon */
-	--menu-openicon-width:32px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
-	--menu-openicon-height:32px;	
+	--menu-openicon-width:16px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
+	--menu-openicon-height:16px;	
 	--menu-openicon-adjust: -4px;
 	--menu-text-align: center;/* alignment of text in menu items */
 	--menu-anim-time: 0.3s;
@@ -127,8 +127,8 @@ ul.submenu.open, ul.submenu.show  {
 	right:var(--menu-openicon-adjust);
 	max-height:100%;
 	top:0;
-	--menu-openicon-width:32px;
-	--menu-openicon-height:32px;	
+	width: var(--menu-openicon-width);
+	width: var(--menu-openicon-height);
 	fill:var(--link-color);
 	stroke:var(--link-color);
 	transition-property: transform;

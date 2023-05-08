@@ -25,9 +25,7 @@
 					   
 		plugin.init = function() {
 			plugin.settings = $.extend({}, defaults, options);
-			console.log(plugin.settings);
 			if (plugin.settings.draggable) {
-				console.log("Draggable");
 				$element.on("mousedown",plugin.settings.dragTarget,function() {
 					dragMouseDown();
 				});
@@ -35,6 +33,7 @@
 		}
 
 		$element.on("open",function() {
+			console.log("open handler");
 			plugin.open();
 		});
 
@@ -43,12 +42,10 @@
 		});
 
 		$element.on("ok",function() {
-			console.log("ok handler");
 			plugin.ok();
 		});
 
 		$element.on("cancel",function() {
-			console.log("cancel handler");
 			plugin.cancel();
 		});
 
@@ -103,7 +100,6 @@
 		}
 
 		var dragMouseDown = function(e) {
-			console.log("Mouse down");
 			e = e || window.event;
 			e.preventDefault();
 			// get the mouse cursor position at startup:
@@ -117,7 +113,6 @@
 		var elementDrag = function(e) {
 			e = e || window.event;
 			e.preventDefault();
-			console.log("Dragging");
 			// calculate the new cursor position:
 			plugin.pos1 = plugin.pos3 - e.clientX;
 			plugin.pos2 = plugin.pos4 - e.clientY;

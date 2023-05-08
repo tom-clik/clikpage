@@ -1060,7 +1060,7 @@ component accessors="true" extends="utils.baseutils" {
 		return css;
 
 	}
-	/** Get CSS for individial layout 
+	/** Get CSS for individual layout 
 	 * 
 	 * @layoutName    Name of layout
 	 * @site          Site struct

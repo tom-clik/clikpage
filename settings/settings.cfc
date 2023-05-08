@@ -335,7 +335,7 @@ component {
      * 	}
 	 * 
 	 */
-	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
+	public string function colorVariablesCSS(required struct settings) {
 
 		local.css = CSSCommentHeader("Colors");
 
@@ -409,8 +409,19 @@ component {
 				local.css &= "}\n";
 			};			
 		}
+
+		if (StructKeyExists(arguments.settings, "open")) {
+			local.openCss = dimensions(arguments.settings.open);
+			if ( local.openCss NEQ "") {
+				local.css &= "#arguments.selector#.open {\n";
+				local.css  &= local.openCss;
+				local.css &= "}\n";
+			}
+
+		}
 		
 		return local.css;
+		
 
 	}
 
@@ -460,6 +471,13 @@ component {
 			}
 		}
 
+		for (local.property in ['color','link-color']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t--#local.property#:" & displayColor(arguments.settings[local.property]) & ";\n";
+			}
+		}
+
+
 		if (StructKeyExists(arguments.settings,"position")) {
 			local.css &= displayPosition(arguments.settings);
 		}
@@ -499,7 +517,7 @@ component {
 			}
 		}
 
-		for (local.property in ['opacity','z-index','overflow','overflow-x','overflow-y','box-shadow']) {
+		for (local.property in ['opacity','z-index','overflow','overflow-x','overflow-y','box-shadow','transform','transition']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
 			}

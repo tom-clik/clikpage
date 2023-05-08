@@ -10,12 +10,14 @@
         "autoButton",
         "animateAuto",
         "popup",
+        "modal",
         "swipeDetector",
         "flickity",
-        "scrollfix"
+        "scrollfix",
+        "clik_onready"
       ],
-      "pack": false,
-      "name": "main"
+      "name": "main",
+      "min": "/_assets/js/_min/clikmain.0.1.min.js",
     },
     {
       "scripts": [
@@ -173,13 +175,24 @@
       "description": "Fix a div in place when the page is scrolled",
       "name": "scrollfix",
       "requires": "jquery"
-    }
-    ,
+    },
     {
       "min":"/_assets/js/popup.js",
       "description": "Basic image popup script",
       "name": "popup",
       "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/jquery.modal.js",
+      "description": "Show containers as modal overlays",
+      "name": "modal",
+      "requires": "jquery,animateAuto"
+    },
+    {
+      "min":"/_assets/js/clik_onready.js",
+      "description": "Standard clikc functionality",
+      "name": "clik_onready",
+      "requires": "jquery,modal"
     },
     {
       "debug":"/_assets/js/tooltipster.main.js",
