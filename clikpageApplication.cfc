@@ -62,13 +62,10 @@ component {
 	// Check whether a styling file has been modified. Just playing with this
 	// idea at the minute.
 	private boolean function checkStylesChanged() {
-
-		local.fileslastmodified = [Getfileinfo(application.config.styledef).lastmodified];
-		arrayAppend(local.fileslastmodified, Getfileinfo(application.config.siteDef).lastmodified);
-
-		local.list = directoryList(application.config.layoutsFolder,true,"query","*.html");
+		local.dir = GetDirectoryFromPath(application.config.sitedef);
+		local.list = directoryList(local.dir,true,"query");
 		
-		arrayAppend(local.fileslastmodified, local.list.columnData("dateLastModified") , true);
+		local.fileslastmodified = local.list.columnData("dateLastModified");
 
 		local.styleslastmodified = ArrayMax(local.fileslastmodified);
 
@@ -76,10 +73,6 @@ component {
 			application.styleslastmodified = local.styleslastmodified;
 			return 1;
 		}
-
-		// writeDump(application.styleslastmodified);
-		// writeDump(local.styleslastmodified);
-		// abort;
 
 		return 0;
 
@@ -134,10 +127,9 @@ component {
 		if (this.debug) {
 			param name="request.rc.reload" default="false" type="boolean";
 		  	if (request.rc.reload) {
-
 		  		onApplicationStart();
-		  		loadSite(reload=1);
 		  	}
+		  	loadSite(reload=request.rc.reload);
 		}
 		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
