@@ -29,11 +29,11 @@ component {
 		//checkConfig();
 
 		try {
-			
 			application.siteObj = new clikpage.site.site(argumentcollection=application.config,debug = this.debug);
 			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;
 			application.siteObj.pageObj.content.static_css["content"] = 1;
+			application.siteObj.pageObj.content.static_js["clik_onready"] = 1;
 
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			

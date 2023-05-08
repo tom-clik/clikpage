@@ -46,7 +46,7 @@ component extends="contentSection" {
 			"navbuttons"=1
 		};
 		variables.static_js = {
-			"autoButton"=1
+			"autoButton"=1,"clik_onready"=1
 		};
 		this.states = [
 			{"state"="main", "selector"="","name":"Main","description":"The main state"},
@@ -151,18 +151,6 @@ component extends="contentSection" {
 
 		return cshtml;
 
-	}
-
-	public string function onready(required struct content) {
-		
-		if (arguments.content.settings.main.auto) {
-			local.js = "$(""###arguments.content.id#"").button();\n";
-		}
-		else {
-			local.js = "";
-		}
-
-		return local.js;
 	}
 
 	public string function getClasses(required struct content) {

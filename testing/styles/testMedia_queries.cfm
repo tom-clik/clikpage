@@ -7,8 +7,8 @@
  * 
  */
 
-settingsObj = createObject("component", "settingsTest").init();
-styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+settingsObj = new settingsTest();
+styles = settingsObj.loadStyleSettings(ExpandPath("./testStyles.xml"));
 
 for (medium in styles.media) {
 	writeOutput("<h2>#medium#</h2>");

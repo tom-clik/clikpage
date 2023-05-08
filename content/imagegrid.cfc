@@ -14,7 +14,7 @@ component extends="grid" {
 		
 		this.classes = ListAppend(this.classes, "cs-grid", " ");	
 
-		variables.static_css = {"images"=1,"flickity"=1};
+		variables.static_css = {"images"=1,"flickity"=1,"grids"=1};
 		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1};
 		
 		this.selectors = [
@@ -273,7 +273,6 @@ component extends="grid" {
 			js &= "	data:#Replace(SerializeJSON(getData(cs_data=arguments.content.data, data=arguments.data ) ),"\n","","all")#,\n";
 			js &= "});\n";
 			js &= "$popup = $('###arguments.content.id#_popUp').data('popup');\n";
-			js &= "$('.popup .button.auto').button();\n";
 			js &= "count = 0;\n";
 			js &= "$('###arguments.content.id# a').each(function() {\n";
 			js &= "	$(this).data('index', count++);\n";

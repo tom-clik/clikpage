@@ -12,7 +12,7 @@ component extends="item" {
 		
 		super.init(arguments.contentObj);
 		
-		variables.static_css = {"flickity":1};
+		variables.static_css = {"flickity":1,"panels":1};
 		variables.static_js = {"flickity":1};
 
 		this.selectors = [

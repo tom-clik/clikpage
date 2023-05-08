@@ -42,7 +42,19 @@ jQuery.fn.animateAuto = function(prop, duration, callback){
         
         //, elem = el.clone().css({"height":"auto","width":"auto","visibility":"visible"}).appendTo("body");
 
-        $el.css({"height":"auto","width":"auto"});
+        var props = {};
+
+        if(prop === "height") {
+            props = {"height":"auto"};
+        }
+        else if(prop === "width") {
+            props = {"width":"auto"};
+        }
+        else if(prop === "both") {
+           props = {"height":"auto","width":"auto"};
+        }
+
+        $el.css(props);
         height = $el.css("height");
         width = $el.css("width");
 
@@ -50,15 +62,15 @@ jQuery.fn.animateAuto = function(prop, duration, callback){
         
         if(prop === "height") {
             $el.css({"height":0});   
-            $el.animate({"height":height}, duration, callback);
+            $el.animate({"height":height}, {"duration":duration,"complete":callback});
         }
         else if(prop === "width") {
             $el.css({"width":0}); 
-            $el.animate({"width":width}, duration, callback);  
+            $el.animate({"width":width}, {"duration":duration,"complete":callback});  
         }
         else if(prop === "both") {
             $el.css({"height":0,"width":0});   
-            $el.animate({"width":width,"height":height}, duration, callback);
+            $el.animate({"width":width,"height":height}, {"duration":duration,"complete":callback});
         }
     });  
 }
