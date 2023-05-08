@@ -2,16 +2,6 @@
 
 # Jquery Menu Test
 
-## Status
-
-Not done
-
-Currently just a copy of modal with a menu in it.
-
-MUSTDO: rewrite the jquery.menu script using the standard skeleton.
-
-## Synopsis
-
 -->
 
 <!DOCTYPE html>
