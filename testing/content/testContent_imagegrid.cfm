@@ -1,9 +1,20 @@
 <cfscript>
+// MUSTDO: replace siteObject with saved data set
 cfinclude(template="testContent_include.cfm");
+id = "imagegrid";
+cs = contentObj.new(id=id,title="imagegrid",type="imagegrid");
 
-cs = contentObj.new(id="imagegrid",title="imagegrid",type="imagegrid");
-cs.data = siteObj.getDataSet(site=site,dataset={tag="gallery",type="images"});
-request.data = site.images;
+data =  deserializeJSON( FileRead( expandPath( "../site/_out/sampleImages.json" ) ) );
+
+cs.data = data.gallery;
+request.data = data.images;
+
+styles.style["#id#"] = {
+	"main": {
+		"grid-mode":"auto"
+	}
+}
+
 
 testCS(cs);
 </cfscript>

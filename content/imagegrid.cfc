@@ -14,7 +14,7 @@ component extends="grid" {
 		
 		this.classes = ListAppend(this.classes, "cs-grid", " ");	
 
-		variables.static_css = {"images"=1,"flickity"=1};
+		variables.static_css = {"images"=1,"flickity"=1,"grids"=1};
 		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1};
 		
 		this.selectors = [

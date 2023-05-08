@@ -105,6 +105,7 @@ function staticContent(required struct pagecontent) {
 function samplepage(cs,html,static,js) {
 	var page = "<html><head><title>#arguments.cs.type# test</title>";
 	page &= static.css;
+	page &= "<link rel='stylesheet' href='/_assets/css/reset.css'>";
 	page &= "<link rel='stylesheet' href='colors.css'>";
 	page &= "<link rel='stylesheet' href='#arguments.cs.type#.css'>";
 	page &= "</head><body>";

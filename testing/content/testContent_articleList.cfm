@@ -1,11 +1,19 @@
 <cfscript>
 cfinclude(template="testContent_include.cfm");
+id = "list";
+cs = contentObj.new(id=id,title="Articles",type="articlelist");
 
-cs = contentObj.new(id="list",title="Articles",type="articlelist");
+data =  deserializeJSON( FileRead( expandPath( "../site/_out/sampleArticles.json" ) ) );
 
-cs.data = siteObj.getDataSet(site=site,dataset={"tag"="test"});
-request.data = site.articles;
+cs.data = data.test;
+request.data = data.articles;
 
+
+styles.style["#id#"] = {
+	"main": {
+		"image-align":"left"
+	}
+}
 testCS(cs);
 
 </cfscript>
