@@ -1,0 +1,83 @@
+<!--
+
+# Push State Demo Page
+
+
+
+## Synopsis
+
+
+
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="/_assets/css/menus.css">
+	<link rel="stylesheet" href="/_assets/css/schemes/menus-schemes.css">
+	<title>Page Demo</title>
+	<style>
+	body {
+		padding:20px;
+		background-color: #ccc;
+	}
+
+	#ubercontainer {
+		background-color: #fff;
+		border: 1px solid #000;
+		padding:20px;
+		margin: 0 auto;
+		max-width: 660px;
+	}
+
+
+	</style>
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+		
+		<h1>Push state Demp</h1>
+
+		<div id="test1" class="cs-menu  scheme-vertical scheme-main">
+			<ul>
+			<li class="first"><a id="adverts" class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li>
+			<li class="hilite"><a id="articles" class="menu_articles" href="articles_list.cfm">Articles</a></li>
+			<li><a id="images" class="menu_images" href="images_list.cfm">Images</a></li>
+			<li><a id="manage_sections" class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li>
+			<li><a id="orders" class="menu_orders" href="orders_list.cfm">Orders</a></li>
+			<li><a id="resources" class="menu_resources" href="resources_list.cfm">Resources</a></li>
+			<li><a id="site_sections" class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li>
+			<li><a id="users" class="menu_users" href="users_list.cfm">Users</a></li>
+			<li class="last"><a id="login" href="login.cfm?action=logout">Log out</a></li>
+			</ul>
+		</div>
+		
+	</div>
+
+</body>
+
+<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+
+	$(document).ready(function() {
+		
+		$("#test1 a").on("click", function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var $item = $(this);
+			var title = $item.html();
+			var code = $item.attr("id");
+			history.pushState({},"","/" + code);
+			document.title = title;
+
+		});
+	});
+
+</script>
+
+</html>
