@@ -9,7 +9,6 @@ component accessors="true" extends="utils.baseutils" {
 		) {
 
 		this.settingsObj = new clikpage.settings.settings(debug=getdebug());
-		
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj,debug=getdebug());
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
 
@@ -22,6 +21,11 @@ component accessors="true" extends="utils.baseutils" {
 		return this;
 	}
 
+	/* clear any caching */
+	public void function cacheClear() {
+		this.layoutsObj.cacheClear();
+	}
+	
 	/** 
 	 * @hint Set mode for site
 	 *

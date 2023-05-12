@@ -69,6 +69,7 @@ component {
 
 		local.styleslastmodified = ArrayMax(local.fileslastmodified);
 
+
 		if (! StructKeyExists(application,"styleslastmodified" ) OR application.styleslastmodified < local.styleslastmodified) {
 			application.styleslastmodified = local.styleslastmodified;
 			return 1;
@@ -84,6 +85,7 @@ component {
 
 		if (local.update) {
 			
+			application.siteObj.cacheClear();
 			application.site = application.siteObj.loadSite(application.config.siteDef);
 
 			if (StructKeyExists(application.site,"links")) {
@@ -91,9 +93,9 @@ component {
 					application.siteObj.pageObj.addLink(content=application.siteObj.pageObj.content,argumentcollection=local.link);	
 				}
 			}
+			local.css = "/* File written #now()# */" & NewLine();
+			local.css &= application.siteObj.siteCSS(site=application.site);
 			
-			local.css = application.siteObj.siteCSS(site=application.site);
-
 			fileWrite(ExpandPath("styles/styles.css"), local.css);
 
 		}
@@ -131,6 +133,7 @@ component {
 		  	}
 		  	loadSite(reload=request.rc.reload);
 		}
+
 		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 
