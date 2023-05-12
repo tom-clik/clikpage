@@ -1,16 +1,16 @@
 # Image heights
 
-## Note -- seems to have been solved. See testing/css/imageHeights.cfm
-
 Getting images to fit the height of their containers is one of the biggest problems we face.
 
-Unless at some point a container has a fixed height, the images will cause the layout to expand. There is no way around this in pure CSS.
+Unless at some point a container has a fixed height, the images will cause the layout to expand.
 
-If we want to use Grid layouts to size the page (best) we therefore have to use JavaScript to fix the height of the image's container to ensure it fits.
+You can, if every element from the body down has a height of 100%, get the image to fit using pure CSS. You can set the height to 100% and object fit to "scale-down". You can't use a min-height:100% on the ubercontainer to do this, which makes things very difficult.
+
+Without the image "busting" the grid, use can use grids with an expandable ubercontainer to create a cell of the correct size. We can then use JavaScript to fix the height of the image element. The frame and the image then both need height 100% and this will work.
 
 ## Examples
 
-A grid layout has fixed header and footer and variable content. The content expands so the page fills the screen. Adding an image to the Content will force the content to expand even if the height is set to 100%.
+A grid layout has fixed height header and footer and variable content. The content expands so the page fills the screen. Adding an image to the Content will "bust" the grid and push the footer off the screen.
 
 ```
 >Screen top  ===============
@@ -28,11 +28,9 @@ A grid layout has fixed header and footer and variable content. The content expa
                                |-------------------------|
 ```
 
-To solve this, we have to use JavaScript to get the height of the content and fix the height of a container around the image.
-
 ## Solution
 
-If the object-fit property is set on an image, we will need to set the size of the container.
+We define a property "fixheight" on the image. This will enable the following:
 
 1. Set position to absolute and visibility to none
 2. Work out size of parent
