@@ -74,7 +74,7 @@ component extends="grid" {
 				]
 			},
 			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
-
+			
 			"contain" : {"name":"contain","type":"boolean","default":true},
 			"freeScroll" : {"name":"freeScroll","type":"boolean","default":true},
 			"wrapAround" : {"name":"wrapAround","type":"boolean","default":true},
@@ -278,7 +278,7 @@ component extends="grid" {
 			js &= "	$(this).data('index', count++);\n";
 			js &= "})\n";
 			js &= "$('###arguments.content.id# > a').on('click',function(e) {\n";
-			js &= "	console.log('clikced');";
+			js &= "	console.log('clicked');";
 			js &= "	e.preventDefault();\n";
 			js &= "	e.stopPropagation();\n";
 			js &= "	$popup.goTo($(this).data('index'));\n";

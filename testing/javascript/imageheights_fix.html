@@ -39,6 +39,7 @@ has a flexible height.
 		display: block;
 		display: grid;
 		grid-template-rows: minmax(0,1fr) min-content;
+		--heightfix:1;
 	}
 
 	a {
@@ -59,6 +60,12 @@ has a flexible height.
 		display: none;
 		object-position: 0 0;
 	}
+	@media (max-width:800px) {
+		#test {
+			--heightfix:0;
+			max-height: 300px;
+		}
+	}
 
 	</style>
 </head>
@@ -75,15 +82,7 @@ has a flexible height.
 			Lorem iposum
 			</div>
 		</div>
-		<!-- <div id="test2" class="cs-image">
-			<div class="image">
-				<img src="../images/scott-evans-NiOAwBuV8f4-unsplash.jpg"> 
-			</div>
-			<div class='caption'>
-			Lorem iposum
-			</div>
-		</div> -->
-
+		
 	</div>
 
 </body>
@@ -92,15 +91,11 @@ has a flexible height.
 <script src="/_assets/js/mustache.js"></script>
 <script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/swipeDetector.js"></script>
-<script src="/_assets/js/image-height-fix.js"></script>
-
+<script src="/_assets/js/heightFix.js"></script>
+<script src="/_assets/js/clik_onready.js"></script>
 <script>
 $(document).ready(function() {
-	$('.cs-image').heightFix(
-		{
-			resize: 'throttledresize',
-		}
-	);
+	// NB fixHeight handled by clik_onready and --fixHeight css property
 });
 </script>
 

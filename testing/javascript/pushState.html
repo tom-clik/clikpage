@@ -2,11 +2,35 @@
 
 # Push State Demo Page
 
+Demonstrate getting the back and forward buttons to work when using a single page JavaScript paradigm.
 
+Hacked together just to test the techniques for doing this.
+
+## Note
+
+We only update the page url # but you can use the whole thing. You would need a server side route to cope with a reload though.
 
 ## Synopsis
 
+This is done by updating the history, e.g.
 
+```
+history.pushState({page:code},"","/" + code);
+```
+
+The first object is the "state" which can be accessed when the user navigates to a page using back or forward. A `popstate` event is fired when this happens. If using jQuery, you need the `originalEvent`.
+
+```
+$(window).on('popstate', function(e) {
+	if (e.originalEvent.state && "page" in e.originalEvent.state   ) {
+		page = e.originalEvent.state.page;
+	}
+	else {
+		page = defaultPage;
+	}
+	displayPage(page);
+});
+```
 
 -->
 
@@ -32,6 +56,14 @@
 		max-width: 660px;
 	}
 
+	li a:hover {
+		--link-color:#ff00ff;
+	}
+
+	li.hi a {
+		--link-color:red;
+	}
+
 
 	</style>
 </head>
@@ -40,20 +72,10 @@
 
 	<div id="ubercontainer">
 		
-		<h1>Push state Demp</h1>
+		<h1 id="title">Push state Demp</h1>
 
 		<div id="test1" class="cs-menu  scheme-vertical scheme-main">
-			<ul>
-			<li class="first"><a id="adverts" class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li>
-			<li class="hilite"><a id="articles" class="menu_articles" href="articles_list.cfm">Articles</a></li>
-			<li><a id="images" class="menu_images" href="images_list.cfm">Images</a></li>
-			<li><a id="manage_sections" class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li>
-			<li><a id="orders" class="menu_orders" href="orders_list.cfm">Orders</a></li>
-			<li><a id="resources" class="menu_resources" href="resources_list.cfm">Resources</a></li>
-			<li><a id="site_sections" class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li>
-			<li><a id="users" class="menu_users" href="users_list.cfm">Users</a></li>
-			<li class="last"><a id="login" href="login.cfm?action=logout">Log out</a></li>
-			</ul>
+			
 		</div>
 		
 	</div>
@@ -65,16 +87,72 @@
 <script>
 
 	$(document).ready(function() {
+		$(window).on('popstate', function(e) {
+			if (e.originalEvent.state && "page" in e.originalEvent.state   ) {
+				page = e.originalEvent.state.page;
+			}
+			else {
+				page = defaultPage;
+			}
+			displayPage(page);
+	    });
+
+		$title = $("#title");
+		$menu = $("#test1");
+
+		// using hash to get section
+		// If using url mapping you would do map
+		// e.g. /news to index.html#news
+		const urlTemp = window.location.href.split("#");
+		defaultPage = urlTemp.length > 1 ? urlTemp[1] : "adverts";
+
+		sections = [
+			{id:"adverts", name:"Adverts"},
+			{id:"articles", name:"Articles"},
+			{id:"images", name:"Images"},
+			{id:"manage_sections", name:"Manage sections"},
+			{id:"orders", name:"Orders"},
+			{id:"resources", name:"Resources"},
+			{id:"site_sections", name:"Site sections"},
+			{id:"users", name:"Users"}
+		];
+
+		$menu.html(showMenu(sections));
+
+		displayPage(defaultPage);
+
+		function displayPage(page) {
+			section = getSection(page);
+			$menu.find("li").removeClass("hi");
+			$menu.find(".m_" + page).addClass("hi");
+			if (section) {
+				document.title = section.name;
+				$title.html(section.name);
+			}			
+		}
+
+		function getSection(code) {
+			for (let section of sections) {
+				if (section.id == code) return section;
+			}
+		}
+
+		function showMenu(data) {
+			var html = "<ul>";
+			
+			for (let item of data) {
+				html += "<li class='m_" + item.id + "''><a href='#' data-code='" + item.id + "'>" + item.name + "</a></li>";			}
+			html += "</ul>";
+			return html;
+		}
 		
 		$("#test1 a").on("click", function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			var $item = $(this);
-			var title = $item.html();
-			var code = $item.attr("id");
-			history.pushState({},"","/" + code);
-			document.title = title;
-
+			var code =  $item.data("code");
+			history.pushState({page:code},"","#" + code);
+			displayPage(code);			
 		});
 	});
 

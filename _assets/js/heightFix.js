@@ -14,14 +14,15 @@
 	plugin.settings = {}
 
 	var $element = $(element), 
-		element = element; 
+		element = element,
+		$container,
+		$image,
+		paddings; 
 
 	plugin.init = function() {
 
 		plugin.settings = $.extend({}, defaults, options);
-		console.log($element.attr("id"));
 		$container = $element.parent();
-		console.log($container.attr("id"));
 		$image = $element.find("img");
 		paddings = $element.outerHeight(true) - $element.height();
 		resize();
@@ -32,11 +33,17 @@
 	}
 
 	var resize = function() {
-		$image.css({"display":"none"});
-		$element.css("height","auto");
-		var h = $container.height();
-		console.log(h);
-		$element.css("height",(h-paddings) + "px");
+		let resize =  clik.trueFalse( $image.css("--heightfix") ) || false;
+		if (resize) {
+			$element.css("height","auto");
+			$image.css({"display":"none"});
+			let h = $container.height();
+			$element.css("height",(h-paddings) + "px");
+		}
+		else {
+			$image.removeAttr("style");
+		}
+		
 		$image.css({"display":"block"});
 	}
 

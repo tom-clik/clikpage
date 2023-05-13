@@ -25,7 +25,7 @@ component extends="contentSection" {
 		
 		// static css definitions
 		variables.static_css = {"images"=1};
-		variables.static_js = {};
+		variables.static_js = {"heightFix"=1};
 		
 		this.panels = [
 			{"name":"image","panel":"image", "selector": " img"},
@@ -76,12 +76,11 @@ component extends="contentSection" {
 				"type":"valign",
 				"default":"center"
 			},
-			"fitheight": {
+			"heightfix": {
 				"name":"Fit to height",
 				"description": "Ensure the image fits into the height available. Without this, the container will expand",
 				"type":"boolean",
-				"default":false,
-				"inherit":true
+				"default":false
 			}
 		];
 
@@ -114,15 +113,13 @@ component extends="contentSection" {
 		
 	}
 
-	private string function css_settings(required string selector, required struct styles) {
+	// private string function css_settings(required string selector, required struct styles) {
 		
-		var data = getSelectorStruct();
+	// 	var data = getSelectorStruct();
 		
-		data.frame &= "position: " & (arguments.styles.fitheight ? "absolute" : "static") & ";\n";
+	// 	return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
 
-		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
-
-	}
+	// }
 
 	
 }

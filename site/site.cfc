@@ -924,14 +924,14 @@ component accessors="true" extends="utils.baseutils" {
 			
 			
 		}
+		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
 
 		// TODO: setting somewhere to include this or not
 		// pageContent.onready &= "$(""##ubercontainer"").mCustomScrollbar();";
 		// pageContent.css &= "body {height:100vh;overflow:hidden};";
 		// pageContent.static_js["scrollbar"] = 1;
 		// pageContent.static_css["scrollbar"] = 1;
-		
-		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
+			
 
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
 
