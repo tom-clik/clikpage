@@ -190,9 +190,15 @@
     },
     {
       "min":"/_assets/js/clik_onready.js",
-      "description": "Standard clikc functionality",
+      "description": "Standard clik functionality",
       "name": "clik_onready",
       "requires": "jquery,modal"
+    },
+    {
+      "min":"/_assets/js/heightFix.js",
+      "description": "Fix heights of containers to scale down images",
+      "name": "heightFix",
+      "requires": "jquery"
     },
     {
       "debug":"/_assets/js/tooltipster.main.js",

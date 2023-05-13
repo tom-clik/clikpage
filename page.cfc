@@ -117,7 +117,7 @@ component {
 	}
 
 	/**
-	 * @hint      Gneerate HTML page from page content
+	 * @hint      Generate HTML page from page content
 	 *
 	 * @content  Page content
 	 * @debug    Use debug mode for any static files

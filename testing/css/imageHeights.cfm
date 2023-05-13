@@ -4,22 +4,8 @@
 
 ## Synopsis
 
-Began a test page for javaScript to fix the height of image containers.
+Demo of using pure CSS to fit image heights. Every element in the tree has to have a height:100% or have its height set by a grid template row. This is fine if you want the content to fit into the page and maybe have JS scrollbars.
 
-While playing around I found a solution to the problem of image heights. If you put the image inside a grid itself, it will work.
-
-See the solution here. `.cs-image` is a grid with rows `minmax(0,1fr) min-content`. This will constrain the height of the image (needs `height:100%`). Object fit can be applied here as well. scale-down isn't necessary -- it's the default behaviour.
-
-```css
-<div class="cs-image">
-	<div class="image">
-		<img src="../images/#image.image#"> 
-	</div>
-	<div class='caption'>
-	#image.caption#
-	</div>
-</div>
-```
 --->
 
 <cfscript>

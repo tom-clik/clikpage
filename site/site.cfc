@@ -9,7 +9,6 @@ component accessors="true" extends="utils.baseutils" {
 		) {
 
 		this.settingsObj = new clikpage.settings.settings(debug=getdebug());
-		
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj,debug=getdebug());
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
 
@@ -17,11 +16,16 @@ component accessors="true" extends="utils.baseutils" {
 		
 		super.utils();
 
-		variables.pattern = variables.utils.patternObj.compile("\{+[\w\.]+?\}+" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
+		variables.pattern = variables.utils.patternObj.compile("\{\{[\w\.]+?\}\}" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
 
 		return this;
 	}
 
+	/* clear any caching */
+	public void function cacheClear() {
+		this.layoutsObj.cacheClear();
+	}
+	
 	/** 
 	 * @hint Set mode for site
 	 *
@@ -920,18 +924,19 @@ component accessors="true" extends="utils.baseutils" {
 			
 			
 		}
+		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
 
 		// TODO: setting somewhere to include this or not
 		// pageContent.onready &= "$(""##ubercontainer"").mCustomScrollbar();";
 		// pageContent.css &= "body {height:100vh;overflow:hidden};";
 		// pageContent.static_js["scrollbar"] = 1;
 		// pageContent.static_css["scrollbar"] = 1;
-		
-		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
+			
 
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
 
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
+		
 		pageContent.body &= local.errorsHtml;
 
 		// WILLDO: remove this. Leave for now as it's useful sometimes
@@ -940,8 +945,6 @@ component accessors="true" extends="utils.baseutils" {
 		// 	// writeDump(arguments.site.content["sectionmenu"]);
 		// }
 		// pageContent.body &= local.temp;
-
-
 
 		return pageContent;
 	}

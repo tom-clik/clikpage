@@ -144,13 +144,15 @@
 			}
 			
 		}
-
+		// This resize function looks at the whole window and then resizes the actual
+		// img. This is fine but often it's better to let a grid layout
+		// take the strain of calculating the heights and then fixing the height of an element
 		plugin.resize = function() {
 			var img_record = plugin.settings.data[plugin.settings.index];
 			var img = plugin.images[plugin.settings.index];
-			
-			var vw = $(window).width() - 60;// TODO: padding calcs
-			var vh = $(window).height() - 60;
+			$window = $(window);
+			var vw = $window.width() - 60;// TODO: padding calcs
+			var vh = $window.height() - 60;
 			var dw = vw / img.width;
 			var dh = vh / img.height;
 			
