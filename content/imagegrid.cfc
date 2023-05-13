@@ -190,7 +190,7 @@ component extends="grid" {
 					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
 				}
 				else {
-					local.link = " href='{link.{section.id}.view.#local.id#}'";
+					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
 				}
 			}
 

@@ -16,7 +16,7 @@ component accessors="true" extends="utils.baseutils" {
 		
 		super.utils();
 
-		variables.pattern = variables.utils.patternObj.compile("\{+[\w\.]+?\}+" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
+		variables.pattern = variables.utils.patternObj.compile("\{\{[\w\.]+?\}\}" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
 
 		return this;
 	}
@@ -936,6 +936,7 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
 
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
+		
 		pageContent.body &= local.errorsHtml;
 
 		// WILLDO: remove this. Leave for now as it's useful sometimes
@@ -944,8 +945,6 @@ component accessors="true" extends="utils.baseutils" {
 		// 	// writeDump(arguments.site.content["sectionmenu"]);
 		// }
 		// pageContent.body &= local.temp;
-
-
 
 		return pageContent;
 	}

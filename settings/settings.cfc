@@ -632,12 +632,12 @@ component {
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
 		
-		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width']) {
+		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width','grid-template-rows']) {
 			if (StructKeyExists(styles,local.setting)) {
 				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
 			}
 		}
-
+		
 		if (StructKeyExists(styles,"grid-mode")) {
 			switch (styles["grid-mode"]) {
 				case "none":
