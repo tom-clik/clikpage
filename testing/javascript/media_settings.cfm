@@ -4,10 +4,13 @@ Testing media settings
 
 see _notes/Medium based JavaScript options.md
 
-## NOtes
+## Notes
 
-STOP: check whether we can use css custom properties to define the behaviour
-we want.
+Triggers a displayMedia() function when we transition between media queries.
+
+This just queries the element for some random custom prperties and displays their values.
+
+The plan is to use a similar script to trigger a custom window event that causes elements to rebuild.
 
 */
 settingsObj = new clikpage.settings.settings();
@@ -64,7 +67,6 @@ styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
-
 
 <script type="text/javascript">
 
