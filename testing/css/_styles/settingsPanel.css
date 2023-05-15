@@ -9,10 +9,11 @@
 	min-height: 260px;
 	z-index: 500;
 	max-width:480px;
+	display: none;
 }
 
-.modal {
-	display: none;
+.settings_panel.open {
+	display: block;
 }
 
 #settings_panel_open {
