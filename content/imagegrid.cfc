@@ -14,7 +14,7 @@ component extends="grid" {
 		
 		this.classes = ListAppend(this.classes, "cs-grid", " ");	
 
-		variables.static_css = {"images"=1,"flickity"=1};
+		variables.static_css = {"images"=1,"flickity"=1,"grids"=1};
 		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1};
 		
 		this.selectors = [
@@ -74,7 +74,7 @@ component extends="grid" {
 				]
 			},
 			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
-
+			
 			"contain" : {"name":"contain","type":"boolean","default":true},
 			"freeScroll" : {"name":"freeScroll","type":"boolean","default":true},
 			"wrapAround" : {"name":"wrapAround","type":"boolean","default":true},
@@ -190,7 +190,7 @@ component extends="grid" {
 					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
 				}
 				else {
-					local.link = " href='{link.{section.id}.view.#local.id#}'";
+					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
 				}
 			}
 
@@ -273,13 +273,12 @@ component extends="grid" {
 			js &= "	data:#Replace(SerializeJSON(getData(cs_data=arguments.content.data, data=arguments.data ) ),"\n","","all")#,\n";
 			js &= "});\n";
 			js &= "$popup = $('###arguments.content.id#_popUp').data('popup');\n";
-			js &= "$('.popup .button.auto').button();\n";
 			js &= "count = 0;\n";
 			js &= "$('###arguments.content.id# a').each(function() {\n";
 			js &= "	$(this).data('index', count++);\n";
 			js &= "})\n";
 			js &= "$('###arguments.content.id# > a').on('click',function(e) {\n";
-			js &= "	console.log('clikced');";
+			js &= "	console.log('clicked');";
 			js &= "	e.preventDefault();\n";
 			js &= "	e.stopPropagation();\n";
 			js &= "	$popup.goTo($(this).data('index'));\n";

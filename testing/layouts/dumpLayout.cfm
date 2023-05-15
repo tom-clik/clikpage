@@ -1,11 +1,11 @@
 <cfscript>
 /* 
 
-*/
-//inputDir = expandPath("testlayout1");
-inputDir = expandPath("../../sample/_data/layouts");
+Use to quickly dump any layout
 
-layoutsObj = new clikpage.layouts.layouts("C:\git\dm\clikdesign\samples\speaker\data\layouts");
+*/
+
+layoutsObj = new clikpage.layouts.layouts("C:\git\dm\clikdesign\samples\webb\layouts");
 data = layoutsObj.getLayout("main");
 writeDump(data);
 </cfscript>

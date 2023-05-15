@@ -1,5 +1,5 @@
 /**
- * Menu function
+ * # Menu function
  *
  * Add arrow icon to any items with a sub menu
  *
@@ -12,99 +12,96 @@
  * 
  */
 
-$.fn.menu = function(ops) {
- 	
-	var defaults = {
+(function($) {
+
+	$.menu = function(element, options) {
+
+		var defaults = {
 			debug: false,
 			arrow: "<i class='icon icon-next openicon'></i>",
-			menuAnimationTime: "0.3s"
-		},
-		options = $.extend({},defaults,ops);
+			animate: "none", // animate "width", "height" or "both". Use when these CSS props are "auto" and you can use CSS animations
+			menuAnimationTime: "0.3s",
+			onOpen: function() {},
+			onClose: function() {}
+		}
 
-	$(".submenu").on("open",function() {
-		var id = $(this).attr("id");
-		console.log("opening " + id);
-		
-		// close children
-		$(this).find("ul.submenu").each(function() {
-			let $childmenu = $(this);
-			if ($childmenu.hasClass("open")) {
-				$childmenu.trigger("close");
-			}
-		});
+		var plugin = this;
 
-		$(this).animateAuto("height", options.menuAnimationTime, function() {
-			console.log("Open animation complete for " + id);	
-			$(this).css({"height":""}).addClass("open");
-		});
-		return false;
+		plugin.settings = {}
 
-	}).on("close",function() {
-		var id = $(this).attr("id");
-		console.log("closing " + id);
-		$(this).animate({"height":0}, options.menuAnimationTime, function() {
-			console.log("Close animation complete for " + id);	
-			$(this).removeClass("open").css({"height":""});
-		});
-		return false;
-	});
-	
+		var $element = $(element), 
+			element = element; 
 
-	return this.each(function() {
-    	var self = this;
-			
-		$(self).find(".submenu").each(function() {
-			$(this).prev("a").append(options.arrow).addClass("hasmenu");
-		});
+		plugin.init = function() {
 
-		$(self).on("click",".hasmenu",function(e) {
-			
-			console.log("opening submenu");
+			// the plugin's final properties are the merged default and
+			// user-provided options (if any)
+			plugin.settings = $.extend({}, defaults, options);
 
-			e.preventDefault();
-			e.stopPropagation(); 
-			
-			var $li = $(this).closest("li");
-			var open = $li.hasClass("open");
-			
-			// close siblings
-			$(this).closest("ul").find("li").each(function() {
-				if ($(this).hasClass("open")) {
-					let $submenu = $(this).find("> ul").first();
-					$submenu.trigger("close");
+			// code goes here
+			$element.find(".submenu").each(function() {
+				let $submenu = $(this);
+				$submenu.prev("a").append("<i class='icon'>" + plugin.settings.arrow + "</i>").addClass("hasmenu");
+				$submenu.on("open",function(e) {
+					e.stopPropagation();
+					$(this).addClass("open");
+				}).on("close",function(e) {
+					e.stopPropagation();
 					$(this).removeClass("open");
+				});
+			});
+
+			$element.on("click",".hasmenu .icon",function(e) {
+				
+				$item = $(this);
+				e.preventDefault();
+				e.stopPropagation(); 
+				
+				var $li = $item.closest("li");
+				var open = $li.hasClass("open");
+				
+				// close siblings
+				$li.closest("ul").find("li").each(function() {
+					if ($(this).hasClass("open")) {
+						let $submenu = $(this).find("> ul").first();
+						$submenu.trigger("close");
+						$(this).removeClass("open");
+					}
+				});
+				
+				var $submenu = $li.find("> ul").first();
+
+				if (!open) {
+					$li.addClass("open");
+					$submenu.trigger("open");
 				}
-			});
-			
-			var $submenu = $li.find("> ul").first();
+				else {
+					$submenu.trigger("close");	
+				}
+				
+				return false;
 
-			if (!open) {
-				$li.addClass("open");
-				console.log($submenu.html());
-				$submenu.trigger("open");
-			}
-			else {
-				$submenu.trigger("close");	
-			}
-			
-			return false;
+			});
+		}
+
+		plugin.init();
+
+	}
+
+	$.fn.menu = function(options) {
+
+		return this.each(function() {
+
+		  if (undefined == $(this).data('menu')) {
+
+			  var plugin = new $.menu(this, options);
+
+			  $(this).data('menu', plugin);
+
+		   }
 
 		});
 
-		$(self).on("open",function(){
-			console.log(options);
-			console.log("opening " + $(self).attr("id"));
-			$(self).show().animateAuto("height", options.menuAnimationTime, function() {
-				console.log("Animation complete");	
-				$(self).css({"height":"auto"});
-			});
-		}).on("close",function(){
-			console.log("closing " + $(self).attr("id"));
-			$(self).animate({"height":0}, options.menuAnimationTime, function() {
-				console.log("Animation complete");	
-				$(self).css({"height":0}).hide();
-			});
-		});
-		
-	});
-}
+	}
+
+})(jQuery);

@@ -9,16 +9,17 @@
 	link-color: brown;
 	menu-background: Bisque;
 	menu-item-border: 0 0 4px 0;
-	
-	hover {
-		link-color : DarkCyan;
-		menu-background : DarkKhaki;
-		menu-border-color : pink;
-	}
-	
-	hi {
-		link-color : Cornsilk;
-		menu-background : darkslategray;
+	item {
+		hover {
+			link-color : DarkCyan;
+			menu-background : DarkKhaki;
+			menu-border-color : pink;
+		}
+		
+		hi {
+			link-color : Cornsilk;
+			menu-background : darkslategray;
+		}
 	}
 	
 	@max {

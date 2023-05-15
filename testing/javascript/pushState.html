@@ -1,0 +1,161 @@
+<!--
+
+# Push State Demo Page
+
+Demonstrate getting the back and forward buttons to work when using a single page JavaScript paradigm.
+
+Hacked together just to test the techniques for doing this.
+
+## Note
+
+We only update the page url # but you can use the whole thing. You would need a server side route to cope with a reload though.
+
+## Synopsis
+
+This is done by updating the history, e.g.
+
+```
+history.pushState({page:code},"","/" + code);
+```
+
+The first object is the "state" which can be accessed when the user navigates to a page using back or forward. A `popstate` event is fired when this happens. If using jQuery, you need the `originalEvent`.
+
+```
+$(window).on('popstate', function(e) {
+	if (e.originalEvent.state && "page" in e.originalEvent.state   ) {
+		page = e.originalEvent.state.page;
+	}
+	else {
+		page = defaultPage;
+	}
+	displayPage(page);
+});
+```
+
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="/_assets/css/menus.css">
+	<link rel="stylesheet" href="/_assets/css/schemes/menus-schemes.css">
+	<title>Page Demo</title>
+	<style>
+	body {
+		padding:20px;
+		background-color: #ccc;
+	}
+
+	#ubercontainer {
+		background-color: #fff;
+		border: 1px solid #000;
+		padding:20px;
+		margin: 0 auto;
+		max-width: 660px;
+	}
+
+	li a:hover {
+		--link-color:#ff00ff;
+	}
+
+	li.hi a {
+		--link-color:red;
+	}
+
+
+	</style>
+</head>
+
+<body>
+
+	<div id="ubercontainer">
+		
+		<h1 id="title">Push state Demp</h1>
+
+		<div id="test1" class="cs-menu  scheme-vertical scheme-main">
+			
+		</div>
+		
+	</div>
+
+</body>
+
+<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+
+	$(document).ready(function() {
+		$(window).on('popstate', function(e) {
+			if (e.originalEvent.state && "page" in e.originalEvent.state   ) {
+				page = e.originalEvent.state.page;
+			}
+			else {
+				page = defaultPage;
+			}
+			displayPage(page);
+	    });
+
+		$title = $("#title");
+		$menu = $("#test1");
+
+		// using hash to get section
+		// If using url mapping you would do map
+		// e.g. /news to index.html#news
+		const urlTemp = window.location.href.split("#");
+		defaultPage = urlTemp.length > 1 ? urlTemp[1] : "adverts";
+
+		sections = [
+			{id:"adverts", name:"Adverts"},
+			{id:"articles", name:"Articles"},
+			{id:"images", name:"Images"},
+			{id:"manage_sections", name:"Manage sections"},
+			{id:"orders", name:"Orders"},
+			{id:"resources", name:"Resources"},
+			{id:"site_sections", name:"Site sections"},
+			{id:"users", name:"Users"}
+		];
+
+		$menu.html(showMenu(sections));
+
+		displayPage(defaultPage);
+
+		function displayPage(page) {
+			section = getSection(page);
+			$menu.find("li").removeClass("hi");
+			$menu.find(".m_" + page).addClass("hi");
+			if (section) {
+				document.title = section.name;
+				$title.html(section.name);
+			}			
+		}
+
+		function getSection(code) {
+			for (let section of sections) {
+				if (section.id == code) return section;
+			}
+		}
+
+		function showMenu(data) {
+			var html = "<ul>";
+			
+			for (let item of data) {
+				html += "<li class='m_" + item.id + "''><a href='#' data-code='" + item.id + "'>" + item.name + "</a></li>";			}
+			html += "</ul>";
+			return html;
+		}
+		
+		$("#test1 a").on("click", function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var $item = $(this);
+			var code =  $item.data("code");
+			history.pushState({page:code},"","#" + code);
+			displayPage(code);			
+		});
+	});
+
+</script>
+
+</html>

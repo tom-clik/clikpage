@@ -13,26 +13,21 @@
 	--align-content:normal;/* alignment for multiple rows */
 	--flex-stretch:0;/* treat as boolean */
 	--flex-wrap: wrap;
+	--grid-template-rows:none;
 }
 
-.cs-grid {
-	display:grid;
-	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
-	grid-gap:var(--grid-gap);
-	flex-direction: var(--flex-direction);
-	align-items: var(--align-items);
-	justify-content: var(--justify-content);
-	flex-wrap: var(--flex-wrap);
-	/*grid-row-gap: var(--gridrowgap); too hard -- need to think about how this will work and inherit */
-}
-
-.inner {
+.cs-grid, .inner {
 	display:block;
 	grid-gap:var(--grid-gap);
 	flex-direction: var(--flex-direction);
 	align-items: var(--align-items);
 	justify-content: var(--justify-content);
 	flex-wrap: var(--flex-wrap);
+	grid-template-rows: var(--grid-template-rows);
+}
+
+.cs-grid {
+	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
 }
 
 .cs-grid > * {

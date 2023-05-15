@@ -335,7 +335,7 @@ component {
      * 	}
 	 * 
 	 */
-	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
+	public string function colorVariablesCSS(required struct settings) {
 
 		local.css = CSSCommentHeader("Colors");
 
@@ -375,17 +375,17 @@ component {
 					 boolean debug=this.debug
 			) {
 		local.css = "";
+
+		local.mainCSS = "";
 		local.innerCSS = "";
 		local.gridcss = "";
 		
-		local.css &= "#arguments.selector# {\n";
-		local.css &= dimensions(settings=arguments.settings);
 		
-		// if (StructKeyExists(arguments.settings,"show")) {
-		// 	if (NOT arguments.settings.show) {
-		// 		local.css &= "}\n";
-		// 	}
-		// }
+		local.mainCSS = dimensions(settings=arguments.settings);
+		
+		if ( local.mainCSS neq "") {
+			local.css &= "#arguments.selector# {\n" & local.mainCSS & "}\n";
+		}
 
 		if (StructKeyExists(arguments.settings, "inner")) {
 			local.innerCSS &= dimensions(arguments.settings.inner);
@@ -393,15 +393,13 @@ component {
 		
 		local.gridSettings = {"main"="","item"=""};
 		grid(arguments.settings,local.gridSettings);
-		
-		local.css &= "}\n";
-		
-		if (local.innerCSS NEQ "" OR StructCount(local.gridSettings)) {
+		local.hasGrid = local.gridSettings.main != "" OR local.gridSettings.item != "";
+
+		if ( local.innerCSS NEQ "" OR local.hasGrid ) {
 			local.css &= "#arguments.selector# > .inner {\n";
 			local.css &= local.innerCSS;
-			if (StructCount(local.gridSettings)) {
+			if ( local.hasGrid ) {
 				local.css &= local.gridSettings.main;
-			
 			};
 			local.css &= "}\n";
 			// hacky here. Should use format qualifier mechanism from grid cs type
@@ -409,11 +407,21 @@ component {
 				local.css &= "#arguments.selector# .inner > * {\n";
 				local.css  &= local.gridSettings.item;
 				local.css &= "}\n";
-			};
-			
+			};			
+		}
+
+		if (StructKeyExists(arguments.settings, "open")) {
+			local.openCss = dimensions(arguments.settings.open);
+			if ( local.openCss NEQ "") {
+				local.css &= "#arguments.selector#.open {\n";
+				local.css  &= local.openCss;
+				local.css &= "}\n";
+			}
+
 		}
 		
 		return local.css;
+		
 
 	}
 
@@ -463,6 +471,13 @@ component {
 			}
 		}
 
+		for (local.property in ['color','link-color']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t--#local.property#:" & displayColor(arguments.settings[local.property]) & ";\n";
+			}
+		}
+
+
 		if (StructKeyExists(arguments.settings,"position")) {
 			local.css &= displayPosition(arguments.settings);
 		}
@@ -502,7 +517,7 @@ component {
 			}
 		}
 
-		for (local.property in ['opacity','z-index','overflow','overflow-x','overflow-y','box-shadow']) {
+		for (local.property in ['opacity','z-index','overflow','overflow-x','overflow-y','box-shadow','transform','transition']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
 			}
@@ -607,7 +622,7 @@ component {
 	}
 
 	/**
-	 * CSS styling for a grid
+	 * @hint CSS styling for a grid
 	 * 
 	 */
 	public void function grid(required struct settings, required struct out) {
@@ -617,12 +632,12 @@ component {
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
 		
-		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width']) {
+		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width','grid-template-rows']) {
 			if (StructKeyExists(styles,local.setting)) {
 				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
 			}
 		}
-
+		
 		if (StructKeyExists(styles,"grid-mode")) {
 			switch (styles["grid-mode"]) {
 				case "none":

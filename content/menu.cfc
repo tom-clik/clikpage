@@ -17,13 +17,16 @@ component extends="contentSection" {
 		variables.static_js ={"menus"=1};
 		
 		this.panels = [
-			{"panel":"item", "name":"Item", "selector": " li a"}
+			{"panel":"item", "name":"Item", "selector": " li a"},
+			{"panel":"subitem", "name":"Sub menu Item", "selector": " .submenu li a"},
+			{"panel":"first", "name":"First", "selector": " > li:first-of-type a"},
+			{"panel":"last", "name":"Last", "selector": " > li:last-of-type a"}
 		];
 
 		this.states = [
 			{"state"="main", "selector"="","name":"Main","description":"The main state"},
-			{"state"="hover", "selector"=" li a:hover","name":"Hover","description":"The hover state for menu items"},
-			{"state"="hi", "selector"=" li.hi a","name":"Hilighted","description":"The state for the currently selected menu item"}
+			{"state"="hover", "selector"=":hover","name":"Hover","description":"The hover state for menu items"},
+			{"state"="hi", "selector"=".hi","name":"Hilighted","description":"The state for the currently selected menu item"}
 		];		
 
 		this.selectors = [
@@ -50,11 +53,7 @@ component extends="contentSection" {
 				"inherit":true
 			},
 			"link-color":{"type":"color"},
-			"menu-border-color":{"type":"color"},
-			"menu-background":{"type":"color"},
 			"menu-gap":{"type":"dimension"},
-			"menu-item-padding":{"type":"padding"},
-			"menu-item-border":{"type":"border-width"},
 			"menu-text-align":{"type":"halign"},
 			"menu-anim-time":{"type":"time"},
 			"menu-label-display": {
@@ -95,6 +94,11 @@ component extends="contentSection" {
 				"inherit":true,
 				"default":false
 			},
+			"flex-wrap":{"name":"Flex wrap","dependson":"flex","dependvalue":true,"description":"Wrap items onto multiple lines","type"="list","default"="wrap","options"=[
+				{"name"="Wrap","value"="wrap","description"=""},
+				{"name"="No Wrap","value"="nowrap","description"=""},
+				{"name"="Wrap reverse","value"="wrap-reverse","description"=""}
+			]},
 			"align":{
 				"type":"halign",
 				"name": "Alignment",
@@ -108,13 +112,6 @@ component extends="contentSection" {
 				"description":"Show as popup (you will need to ensure a button is present that opens the menu",
 				"inherit":true,
 				"default":false
-			},
-			"padding-adjust": {
-				"type":"boolean",
-				"name":"Padding adjust",
-				"description":"adjust padding for first and last item",
-				"inherit":true,
-				"default":false
 			}
 		];
 		
@@ -123,7 +120,6 @@ component extends="contentSection" {
 		// orientation    | ul Grid columns
 		// align          | ul justify-content (NB only works for flex modes. See notes)
 		// border-type    | adjust border widths for edges
-		// padding-adjust | adjust padding for first and last items
 		// flex           | ul display flex
 		// stretch        | li {flex-grow:1 }
 		// popup          | height: 0   NB .open  applies height:auto
@@ -240,25 +236,13 @@ component extends="contentSection" {
 
 		}
 
-		//padding-adjust | boolean               | adjust padding for first and last items (only makes sense for flex)
-		if (arguments.styles["padding-adjust"] AND NOT local.isVertical) {
-			// TODO: check we don't have  specificity nightmare
-			data.first &= "/* padding-adjust  */\n";
-			data.first &= "padding-left:0;\n";
-			data.last &= "/* padding-adjust  */\n";
-			data.last &= "padding-right:0;\n";
-		}
-		else {
-			data.first &= "/* padding-adjust  */\n";
-			data.first &= "padding:var(--menu-item-padding);\n";
-			data.last &= "/* padding-adjust  */\n";
-			data.last &= "padding:var(--menu-item-padding);\n";
-		}
-
 		//flex           | boolean               | ul display flex
 		if (StructKeyExists(arguments.styles,"flex")) {
 			data.ul &= "/* flex */\n";
 			data.ul  &= "display: " & (arguments.styles.flex AND NOT local.isVertical ? "flex" : "grid") & ";\n";
+			if (StructKeyExists(arguments.styles,"flex-wrap")) {
+				data.ul  &= "flex-wrap: " & arguments.styles["flex-wrap"] & ";\n";
+			}
 		}
 		//stretch        | boolean               | li flex-grow:1
 		if (StructKeyExists(arguments.styles,"stretch")) {
