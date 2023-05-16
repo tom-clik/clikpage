@@ -56,6 +56,8 @@ Mess - copied form somewhere else.
 --->
 
 
+<!--- MUSTDO: have moved this into settings.cfc need to update this page
+(OR bin it??? seems duplicate of imagegrid.cfm) --->
 <cfinclude template="images_include.cfm">
 
 <cfscript>

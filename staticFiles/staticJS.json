@@ -15,6 +15,7 @@
         "flickity",
         "scrollfix",
         "clik_onready"
+        
       ],
       "name": "main",
       "min": "/_assets/js/_min/clikmain.0.1.min.js",
@@ -28,6 +29,20 @@
       ],
       "min": "/_assets/js/_min/coldlightpackage.0.2.min.js",
       "name": "coldlight"
+    },
+    {
+      "scripts": [
+        "serializeData"
+      ],
+      "min": "/_assets/js/_min/clikutils.0.1.min.js",
+      "name": "clikutils"
+    },
+    {
+      "scripts": [
+        "content_settings"
+      ],
+      "min": "/_assets/js/_min/clikadmin.0.1.min.js",
+      "name": "admin"
     }
   ],
   "scripts": [
@@ -134,7 +149,7 @@
     },
     {
       "min": "/_assets/js/jquery.form.js",
-      "description": "Legacy ajax form thing",
+      "description": "Ajax form submission plug in. Showing its age now, probably neater ways of doing this",
       "name": "forms",
       "requires": "jquery"
     },
@@ -146,9 +161,9 @@
     },
     {
       "min": "/_assets/js/jquery.clikForm.js",
-      "description": "",
+      "description": "Combines forms and validate in one plug-in to submit a form and display a returned|supplied message",
       "name": "clikForm",
-      "requires": "jquery,forms,elastic,select2,validate"
+      "requires": "jquery,forms,elastic,select2,validate,clikutils"
     },
     {
       "min": "/_assets/js/jquery.autoButton.js",
@@ -207,6 +222,23 @@
       "name": "tooltipster",
       "requires": "jquery",
       "packageExclude": 1
+    },
+    {
+      "min":"/_assets/js/serializeData.js",
+      "description": "Proper serialization of form data to submit via Ajax",
+      "name": "serializeData",
+      "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/content_settings.js",
+      "description": "Auto generated data file of style definitions for editing",
+      "name": "content_settings"
+    },
+    {
+      "min":"/_assets/js/getSettings.js",
+      "description": "Get content item settings from css custom vars",
+      "name": "getSettings",
+      "requires": "jquery,content_settings"
     }
     
   ]

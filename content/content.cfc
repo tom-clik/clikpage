@@ -479,6 +479,16 @@ component extends="utils.baseutils" {
 
 		return html;
 	}
+
+	/** Tools function to get all settings definitions */
+	public struct function getSettings() {
+		var settings = {};
+		for (local.type in this.contentSections) {
+			settings[local.type] = this.contentSections[local.type].styleDefs;
+		}
+
+		return settings;
+	}
 	 
 	
 	/** 

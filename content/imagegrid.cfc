@@ -75,13 +75,15 @@ component extends="grid" {
 			},
 			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
 			
-			"contain" : {"name":"contain","type":"boolean","default":true},
-			"freeScroll" : {"name":"freeScroll","type":"boolean","default":true},
-			"wrapAround" : {"name":"wrapAround","type":"boolean","default":true},
-			"pageDots" : {"name":"pageDots","type":"boolean","default":true},
-			"prevNextButtons" : {"name":"prevNextButtons","type":"boolean","default":true}
+			"contain" : {"name":"Contain","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"freeScroll" : {"name":"Free Scroll","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"wrapAround" : {"name":"Wrap Around","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"pageDots" : {"name":"Page Dots","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"prevNextButtons" : {"name":"Previous Next Buttons","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"}
 
 		]);
+		
+		removeOptions("grid-mode","templateareas,flex");
 
 		updateDefaults();
 
@@ -220,7 +222,8 @@ component extends="grid" {
 		
 	}
 
-	public string function onready(
+	/* TODO: remove once new plug in is working */
+	public string function onreadyOLD(
 		required struct content, 
 		required struct pageContent,
 		required struct data) {
@@ -240,8 +243,7 @@ component extends="grid" {
 			}
 			js &= "\n\t},\n";
 			js &= "});\n";
-			js &= "/* layout Masonry after each image loads*/\n";
-			// js &= "$#arguments.content.id#Grid.imagesLoaded().progress( function() {\n";
+			js &= "/* layout Masonry after images loaded */\n";
 			js &= "$#arguments.content.id#Grid.imagesLoaded( function() {\n";
 			js &= "\t$#arguments.content.id#Grid.isotope();\n";
 			js &= "});\n";

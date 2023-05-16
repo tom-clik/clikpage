@@ -10,6 +10,8 @@ Currently working as a proof of concept albeit with a bit of a lash up.
 
 I did this late at night and rembered that to submit an ajax form you have to serialie the form fields properly. What I've done is lashed it so it submits the form, waits a second and then reloads...
 
+SEE CLIKFORM
+
 TODO: 
 1. rewrite the form submissions as a proper .ajax request that returns a promise
 2. Take all the meat out of this and into a component that we can call from here or from an API.
@@ -32,15 +34,18 @@ Now working in standard fashion.
 
 --->
 
-<cfinclude template="images_include.cfm">
 
 <cfscript>
 param name="request.rc.action" default='index';
 param name="request.rc.test" default='auto';
 param name="request.rc.medium" default='main';
 
-// Style definition -- see link to css file ibid.
-settingsDef = ExpandPath("../styles/testStyles.xml");
+settings = new settings(testname=request.rc.test);
+
+pageData = settings.pageData();
+form_html = settings.settingsForm();
+
+FileWrite( settings.stylePath(), settings.css() );
 
 tests = [
 	{id="auto",title="Auto grid"},
@@ -54,45 +59,6 @@ tests = [
 	{id="carousel",title="Carousel"}
 ];
 
-settingsObj = new clikpage.settings.settings(debug=1);
-contentObj = new clikpage.content.content(settingsObj=settingsObj);
-contentObj.debug = 1;
-site={};
-image_sets = getImages(site);
-
-styles = settingsObj.loadStyleSettings(settingsDef);
-
-grid_cs = contentObj.new(id="testgrid",type="imagegrid");
-grid_cs.data = image_sets;
-grid_cs.class = "scheme-grid scheme-#request.rc.test#";
-
-for (setting in contentObj.contentSections["imagegrid"].styleDefs) {
-	if (structKeyExists(url, setting) AND url[setting] != "") {
-		styles.style[grid_cs.id][request.rc.medium][setting] = url[setting];
-	}
-}
-
-contentObj.settings(content=grid_cs,styles=styles.style,media=styles.media);
-
-css = ":root {\n";
-css &= settingsObj.colorVariablesCSS(styles);
-css &= settingsObj.fontVariablesCSS(styles);
-css &=  "\n}\n";
-css &= settingsObj.CSSCommentHeader("Content styling");
-css &= contentCSS(grid_cs);
-css = settingsObj.outputFormat(css=css,media=styles.media,debug=contentObj.debug);
-
-FileWrite( ExpandPath("_generated/imagegrid.css"), css );
-
-if (request.rc.action eq "save") {
-	ret = {"status":"200"};
-	cfcontent( reset="true", type="application/json;charset=utf-8");
-	writeOutput( serializeJSON(ret) );
-	abort; 
-}
-pageData = contentObj.display(content=grid_cs,data=site.images);
-html = pageData.html;
-form_html = settingsForm(settings=grid_cs.settings.main);
 </cfscript>
 
 <html>
@@ -105,6 +71,7 @@ form_html = settingsForm(settings=grid_cs.settings.main);
 		<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
 		<link rel="stylesheet" type="text/css" href="_styles/settingsPanel.css">
 		<link rel="stylesheet" id="css" type="text/css" href="_generated/imagegrid.css">
+		<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.min.css">
 
 		<style id="main">
 			body {
@@ -120,7 +87,7 @@ form_html = settingsForm(settings=grid_cs.settings.main);
 
 		<div>
 			
-			<cfoutput>#html#</cfoutput>
+			<cfoutput>#pageData.html#</cfoutput>
 		
 		</div>
 		<div>
@@ -143,19 +110,22 @@ form_html = settingsForm(settings=grid_cs.settings.main);
 
 		<div id="settings_panel" class="settings_panel modal">
 
-			
 			<form id="settingsForm" action="imagegrid.cfm">
-
-				<h2>Test mode</h2>
 				
-				<cfoutput>#form_html#</cfoutput>
-					
-				<label></label>				
-				<div class="button"><input type="submit" value="Update"></div>
+				<div class="formInner">
+					<div class="title">
+						<h2>Settings</h2>
+					</div>
+					<div class="wrap">
+					<cfoutput>#form_html#</cfoutput>
+					</div>
+					<div class="submit">
+						<label></label>				
+						<div class="button"><input type="submit" value="Update"></div>
+					</div>
+				</div>
 			</form>
 		</div>
-
-
 
 		<div id="settings_panel_open"><div class="button auto"><a href="#settings_panel.open">Settings</a></div></div>
 
@@ -166,13 +136,9 @@ form_html = settingsForm(settings=grid_cs.settings.main);
 		<script src="/_assets/js/flickity.pkgd.min.js"></script>
 		<script src="/_assets/js/jquery.modal.js"></script>
 		<script src="/_assets/js/jquery.autoButton.js"></script>
-		<script src="/_assets/js/jquery.form.js"></script>
+		<script src="/_assets/js/jquery.serializeData.js"></script>
+		<script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
 
-		<cfset pageData.pagecontent.onready &= "
-			$('##settings_panel').modal({modal:0,draggable:1});
-			$('.button').button();
-		">
-		
 		<script>
 		function sleep(milliseconds) {
 		  var start = new Date().getTime();
@@ -189,20 +155,35 @@ form_html = settingsForm(settings=grid_cs.settings.main);
 			#pageData.pagecontent.onready#
 			</cfoutput>
 
-			$('#settingsForm').ajaxForm(); 
+			$("#settings_panel").modal({
+				draggable:true,
+				modal:false
+			});
+			$('.button').button();
 
-            // attach handler to form's submit event 
+			$("#settings_panel .wrap").mCustomScrollbar();
+
+			// attach handler to form's submit event 
 			$('#settingsForm').submit(function() { 
 			    // submit the form 
-			    $(this).ajaxSubmit(); 
-			    console.log("Reloaded"); 
-			    sleep(500);
-			    $('#css').replaceWith('<link id="css" rel="stylesheet" href="_generated/imagegrid.css?t=' + Date.now() + '"></link>');
-			    // return false to prevent normal browser submit and page navigation 
+			    var data = $(this).serializeData(); 
+			    console.log(data); 
+
+			    $.ajax({
+			    	url:"settings_api.cfc?method=css",
+			    	data: {"settings": JSON.stringify(data)},
+			    	method: "post"
+			    }).done(function(e) {
+			    	console.log(e); 
+			    	$('#css').replaceWith('<link id="css" rel="stylesheet" href="_generated/imagegrid.css?t=' + Date.now() + '"></link>');
+			    });
+
+			    // sleep(500);
+			    // 
+			    // // return false to prevent normal browser submit and page navigation 
+			     
 			    return false; 
 			});
-
-
 
 		});	
 		</script>
@@ -210,53 +191,3 @@ form_html = settingsForm(settings=grid_cs.settings.main);
 	
 </html>
 
-<cfscript>
-
-string function settingsForm(required struct settings) {
-	var retval = "";
-	retval &= "<fieldset>";
-	for (local.setting in contentObj.contentSections["imagegrid"].styleDefs) {
-		local.settingDef = contentObj.contentSections["imagegrid"].styleDefs[local.setting];
-		local.description = local.settingDef.description? : "No description";
-
-		retval &= "<label title='#encodeForHTMLAttribute(local.description)#'>#local.settingDef.name#</label>";
-		local.value = arguments.settings[local.setting] ? : "";
-		
-		switch(local.settingDef.type) {
-			case "dimension":
-			case "dimensionlist":
-			case "text":
-			case "integer":
-				retval &= "<input name='#local.setting#' value='#local.value#'>";
-				break;
-			case "boolean":
-			local.selected = isBoolean(local.value) AND local.value ? " selected": "";
-				retval &= "<div class='field'><input type='checkbox' name='#local.setting#' #local.selected#value='1'>Yes</div>";
-				break;
-			case "list":
-				local.options = contentObj.options("imagegrid",local.setting);
-				retval &= "<select name='#local.setting#'>";
-				for (local.mode in local.options) {
-					try {
-						local.selected = local.mode.value eq local.value ? " selected": "";
-						retval &= "<option value='#local.mode.value#' #local.selected# title='#encodeForHTMLAttribute(local.mode.description)#'>#encodeForHTML(local.mode.name)#</option>";
-					}
-					catch (any e) {
-						local.extendedinfo = {"tagcontext"=e.tagcontext,mode=local.mode};
-						throw(
-							extendedinfo = SerializeJSON(local.extendedinfo),
-							message      = "Error:" & e.message, 
-							detail       = e.detail
-						);
-					}
-				}
-				retval &= "</select>";
-				break;
-
-		}
-		
-	}
-	retval &= "</fieldset>";
-	return retval;
-}
-</cfscript>

@@ -8,7 +8,8 @@
 	min-width:200px;
 	min-height: 260px;
 	z-index: 500;
-	max-width:480px;
+	width:480px;
+	height: 460px;
 	display: none;
 }
 
@@ -21,6 +22,16 @@
 	top:10px;
 	left:10px;
 
+}
+
+.settings_panel .formInner {
+	height: 100%;
+	display: grid;
+	grid-template-rows: min-content minmax(0, 1fr) min-content;
+}
+
+.settingsForm .wrap {
+	overflow: hidden;
 }
 
 .button {
