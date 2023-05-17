@@ -19,7 +19,7 @@ contentObj.debug = 1;
 data = contentObj.getSettings(contentObj);
 
 js = "clik_settings = #serializeJSON(data)#;";
-filePath = ExpandPath("../_assets/js/content_settings.js");
+filePath = ExpandPath("../_assets/js/clik_settings.js");
 FileWrite(filePath,js);
 
 

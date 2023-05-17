@@ -11,7 +11,7 @@ component {
 				local.settingsVals = deserializeJSON(arguments.settings);
 				var settingsObj = new settings();
 				settingsObj.updateSettings(local.settingsVals);
-				FileWrite( settingsObj.stylePath(), settingsObj.css() );
+				ret["css"] = settingsObj.css();
 			}
 			else {
 				ret.status = 400;

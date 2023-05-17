@@ -2,7 +2,7 @@
 	
 	grid-mode: auto;
 	grid-width: 160px;
-	grid-gap:10px;
+	grid-gap:10;
 	
 	@mid {
 		grid-width: 220px;
@@ -31,7 +31,6 @@
 .scheme-setcols {
 	
 	grid-mode: fixedcols;
-	grid-gap:10px;
 	grid-template-columns:200px 300px 200px 200px;
 	@mid {
 		grid-template-columns:190px 190px 190px 190px;
@@ -48,7 +47,6 @@
 .scheme-fixedwidth {
 	grid-width:280px;
 	grid-mode: fixedwidth;
-	grid-gap:10px;
 	
 }
 

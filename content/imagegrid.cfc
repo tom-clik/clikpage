@@ -75,10 +75,10 @@ component extends="grid" {
 			},
 			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
 			
-			"contain" : {"name":"Contain","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"contain" : {"name":"Contain","type":"boolean","default":false,"dependson":"layout","dependvalue":"carousel"},
 			"freeScroll" : {"name":"Free Scroll","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
 			"wrapAround" : {"name":"Wrap Around","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
-			"pageDots" : {"name":"Page Dots","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"pageDots" : {"name":"Page Dots","type":"boolean","default":false,"dependson":"layout","dependvalue":"carousel"},
 			"prevNextButtons" : {"name":"Previous Next Buttons","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"}
 
 		]);
@@ -143,12 +143,9 @@ component extends="grid" {
 				break;
 		}
 
-		if (arguments.styles.layout eq "masonry") {
-			data.main &= "\tdisplay:block;\n";
-			data.item &= "\twidth:var(--grid-width);\n";
-		}
-		else if (arguments.styles.layout eq "carousel") {
-			data.main &= "\tdisplay:block;\n";
+		if (arguments.styles.layout eq "masonry" OR arguments.styles.layout eq "carousel") {
+			data.main &= "\tdisplay:block;/* added for masonry/carousel styles */\n";
+			data.item &= "\twidth:var(--grid-width);/* added for masonry/carousel styles */\n";
 		}
 		else {
 			local.gridstyles = {};
@@ -221,15 +218,23 @@ component extends="grid" {
 		return local.html;
 		
 	}
+	/* TODO: remove once new plug in is working */
+	public string function onready(
+		required struct content, 
+		required struct pageContent,
+		required struct data) {
 
+		var js = "$#arguments.content.id# = $('###arguments.content.id#');\n";
+		js &= "$#arguments.content.id#.photoGrid();\n";
+		return js;
+
+	}
 	/* TODO: remove once new plug in is working */
 	public string function onreadyOLD(
 		required struct content, 
 		required struct pageContent,
 		required struct data) {
 
-		var js = "";
-			
 		if (arguments.content.settings.main.layout eq "masonry") {
 			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').isotope({\n";
 			js &= "\t/* options*/\n";

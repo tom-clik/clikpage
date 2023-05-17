@@ -39,7 +39,7 @@
     },
     {
       "scripts": [
-        "content_settings"
+        "clik_settings"
       ],
       "min": "/_assets/js/_min/clikadmin.0.1.min.js",
       "name": "admin"
@@ -230,15 +230,15 @@
       "requires": "jquery"
     },
     {
-      "min":"/_assets/js/content_settings.js",
+      "min":"/_assets/js/clik_settings.js",
       "description": "Auto generated data file of style definitions for editing",
-      "name": "content_settings"
+      "name": "clik_settings"
     },
     {
       "min":"/_assets/js/getSettings.js",
       "description": "Get content item settings from css custom vars",
       "name": "getSettings",
-      "requires": "jquery,content_settings"
+      "requires": "jquery,clik_settings"
     }
     
   ]

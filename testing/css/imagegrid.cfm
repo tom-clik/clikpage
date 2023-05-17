@@ -8,18 +8,14 @@ Currently working as a proof of concept albeit with a bit of a lash up.
 
 ## WIP
 
-I did this late at night and rembered that to submit an ajax form you have to serialie the form fields properly. What I've done is lashed it so it submits the form, waits a second and then reloads...
+Now sort of working for dynamic updates. The javaScript doesn't reload when you change layout mode, so I'm working on that.
 
-SEE CLIKFORM
+
 
 TODO: 
-1. rewrite the form submissions as a proper .ajax request that returns a promise
-2. Take all the meat out of this and into a component that we can call from here or from an API.
-3. Somehow redo javascript for e.g. masonry once everything has reloaded. This might have to wait pending a general review of how we do this on resize etc.
 
-## Notes
-
-This page originally had a sort of prototype settings form in it. It's been removed from here but it's sort of done in branch 22. Will need a tricky merge now as it's really diverged.
+1. Somehow redo javascript for e.g. masonry once everything has reloaded. This might have to wait pending a general review of how we do this on resize etc.
+2. Redo component as a singleton and persist the objects etc.
 
 ## Status
 
@@ -45,8 +41,6 @@ settings = new settings(testname=request.rc.test);
 pageData = settings.pageData();
 form_html = settings.settingsForm();
 
-FileWrite( settings.stylePath(), settings.css() );
-
 tests = [
 	{id="auto",title="Auto grid"},
 	{id="fixedwidth",title="Columns have set width"},
@@ -70,7 +64,6 @@ tests = [
 		<link rel="stylesheet" type="text/css" href="/_assets/css/flickity.css">
 		<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
 		<link rel="stylesheet" type="text/css" href="_styles/settingsPanel.css">
-		<link rel="stylesheet" id="css" type="text/css" href="_generated/imagegrid.css">
 		<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.min.css">
 
 		<style id="main">
@@ -80,13 +73,16 @@ tests = [
 			}
 			
 		</style>
+		<style id="css">
+			<cfoutput>#settings.css()#</cfoutput>
+		</style>
+		
 		
 	</head>
 
 	<body class="body">
-
-		<div>
-			
+		
+		<div>			
 			<cfoutput>#pageData.html#</cfoutput>
 		
 		</div>
@@ -137,18 +133,13 @@ tests = [
 		<script src="/_assets/js/jquery.modal.js"></script>
 		<script src="/_assets/js/jquery.autoButton.js"></script>
 		<script src="/_assets/js/jquery.serializeData.js"></script>
+		<script src="/_assets/js/clik_settings.js"></script>
+		<script src="/_assets/js/getSettings.js"></script>
+		<script src="/_assets/js/photogrid.js"></script>
 		<script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
 
 		<script>
-		function sleep(milliseconds) {
-		  var start = new Date().getTime();
-		  for (var i = 0; i < 1e7; i++) {
-		    if ((new Date().getTime() - start) > milliseconds){
-		      break;
-		    }
-		  }
-		}
-
+		
 		$( document ).ready( function() {
 			
 			<cfoutput>
@@ -174,13 +165,12 @@ tests = [
 			    	data: {"settings": JSON.stringify(data)},
 			    	method: "post"
 			    }).done(function(e) {
-			    	console.log(e); 
-			    	$('#css').replaceWith('<link id="css" rel="stylesheet" href="_generated/imagegrid.css?t=' + Date.now() + '"></link>');
+			    	$('#css').html(e.css);
+			    	console.log($('#css').html()); 
+			    	console.log("we have updated");
+			    	$testgrid.data("photoGrid").reload();
 			    });
 
-			    // sleep(500);
-			    // 
-			    // // return false to prevent normal browser submit and page navigation 
 			     
 			    return false; 
 			});
