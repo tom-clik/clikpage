@@ -1,19 +1,17 @@
 component {
 
-	request.prc.isAjaxRequest = 1;
-
-	remote function testError() returnformat="plain" {
-		local.extendedinfo = {"Cat":"Gingy","did":[1,2,3,4]};
-		
-		throw(message="Test message",type="ajaxError",detail="this is the detail",extendedinfo=serializeJson(local.extendedinfo));
+	request.isAjaxRequest = 1;
+	
+	// VIRTUAL
+	private boolean function isLoggedIn() {
+		throw("You need to create your own isLoggedIn() method.");
 	}
-
 	/**
 	 * Set http headers for status
 	 */
 	private void function setStatus(required struct returnData) {
 		
-		StructAppend(arguments.returnData, {"statuscode":200,"ok":true},false);
+		StructAppend(arguments.returnData, {"statuscode":200},false);
 		
 		cfheader( name="statuscode", value=arguments.returnData.statuscode );
 		
@@ -22,27 +20,33 @@ component {
 		}
 
 	}
-	
+
+	/**
+	 * Check user is logged in
+	 */
+	remote string function checkAuth() {
+		return rep( _checkAuth() );
+	}
 	/** 
-	 * Check auth status of request
+	 * @hint Check auth status of request
 	 * 
 	 * Only continue after this is status is 200
 	 * 
 	 */
-
-	remote struct function checkAuth() returnformat="json" {
+	private struct function _checkAuth() {
 		
-		if(true){
+		if ( isLoggedIn() ) {
 			local.return = {
-				'status': 200,
+				'statuscode': 200,
 				'statustext': 'ok'
 			};
 		}
 		else {
 			local.return = {
-				'status': 401,
+				'statuscode': 401,
 				'statustext': 'login required'
 			};
+			rep ( local.return )
 		}
 
 		return local.return;
@@ -58,7 +62,7 @@ component {
 		if (! StructKeyExists(arguments.return, "errors")) {
 			arguments.return["errors"] = [];
 		}
-		arguments.return.status = 400;
+		arguments.return.statuscode = 400;
 		arguments.return.statustext = 'badrequest';
 
 		ArrayAppend(arguments.return["errors"], arguments.error);
@@ -90,30 +94,37 @@ component {
 	*/
 	private boolean function statusOk(required struct return) {
 		
-		return arguments.status eq 200;
+		return arguments.return.statuscode eq 200;
 
 	}
 
+	private string function rep(required struct return) {
+		setJSON();
+		setStatus(arguments.return);
+		writeOutput( serializeJSON( arguments.return ) );
+		abort;
+	}
+
+	private void function setJSON() {
+		content type="application/json; charset=utf-8";
+	}
 	/**
-	remote struct function sampleFunction(
-			required string action
-		) returnformat="json"
+	remote function sampleFunction(
+			string action
+		)
 		{
 		
-		local.return = checkAuth( );
-		if (local.return.status == 200) {
-			if(ListFind("add,remove", arguments.action)){
-				local.return["data"] = {"hello"="world"};
-			}
-			else {
-				local.return = {
-					'status': '400',
-					'message': 'badrequest'
-				};
-			}
+		local.return = _checkAuth();
+		
+		if(ListFind("add,remove", arguments.action)){
+			local.return["data"] = {"hello"="world"};
+		}
+		else {
+			addError(local.return,"Action is required");
 		}
 		
-		return local.return;
+		
+		rep (local.return);
 	
 	}
 	*/
