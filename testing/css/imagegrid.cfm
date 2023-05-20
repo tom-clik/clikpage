@@ -14,12 +14,22 @@ Now sort of working for dynamic updates. The javaScript doesn't reload when you 
 
 TODO: 
 
-1. Somehow redo javascript for e.g. masonry once everything has reloaded. This might have to wait pending a general review of how we do this on resize etc.
-2. Redo component as a singleton and persist the objects etc.
+1. Make generic for all components
+2. Reload on media change
+3. Panels
+4. Persist and save results
+
+## Notes
+
+The plan:
+
+1. Persist the content sections in an application variable
+2. Write out CSS for all of them where here we are just doing the CSS for one.
+3. 
 
 ## Status
 
-Now working in standard fashion.
+Working of a fashion. All hardwired to grids.
 
 ## History
 
@@ -30,16 +40,38 @@ Now working in standard fashion.
 
 --->
 
-
 <cfscript>
-param name="request.rc.action" default='index';
-param name="request.rc.test" default='auto';
-param name="request.rc.medium" default='main';
 
-settings = new settings(testname=request.rc.test);
+include template="css_test_inc.cfm";
+param name="request.rc.test" default="";
 
-pageData = settings.pageData();
-form_html = settings.settingsForm();
+id = "test_imagegrid";
+class = "scheme-grid";
+if (request.rc.test != "") {
+	class = ListAppend(class, "scheme-#request.rc.test#", " ");
+}
+
+application.settingsTest.addCs(
+	site=application.settingsTest.site, 
+	type="imagegrid",
+	class=class,
+	data=application.settingsTest.image_sets,
+	id=id
+);
+
+application.settingsEdit.updateSettings(
+	cs=application.settingsTest.site.cs["test_imagegrid"],
+	styles=application.settingsTest.styles,
+	values=request.rc
+);
+
+pageData = application.settingsTest.pageData(
+	cs=application.settingsTest.site.cs["test_imagegrid"],
+	data=application.settingsTest.site.images
+);
+
+
+form_html = application.settingsEdit.settingsForm(contentsection=application.settingsTest.site.cs["test_imagegrid"]);
 
 tests = [
 	{id="auto",title="Auto grid"},
@@ -52,7 +84,7 @@ tests = [
 	{id="masonry",title="Masonry"},
 	{id="carousel",title="Carousel"}
 ];
-
+css = application.settingsTest.css();
 </cfscript>
 
 <html>
@@ -74,7 +106,7 @@ tests = [
 			
 		</style>
 		<style id="css">
-			<cfoutput>#settings.css()#</cfoutput>
+			<cfoutput>#css#</cfoutput>
 		</style>
 		
 		
@@ -105,22 +137,9 @@ tests = [
 		</div>
 
 		<div id="settings_panel" class="settings_panel modal">
-
-			<form id="settingsForm" action="imagegrid.cfm">
-				
-				<div class="formInner">
-					<div class="title">
-						<h2>Settings</h2>
-					</div>
-					<div class="wrap">
-					<cfoutput>#form_html#</cfoutput>
-					</div>
-					<div class="submit">
-						<label></label>				
-						<div class="button"><input type="submit" value="Update"></div>
-					</div>
-				</div>
-			</form>
+			<cfoutput>
+			#form_html#
+			</cfoutput>
 		</div>
 
 		<div id="settings_panel_open"><div class="button auto"><a href="#settings_panel.open">Settings</a></div></div>
@@ -154,26 +173,9 @@ tests = [
 
 			$("#settings_panel .wrap").mCustomScrollbar();
 
-			// attach handler to form's submit event 
-			$('#settingsForm').submit(function() { 
-			    // submit the form 
-			    var data = $(this).serializeData(); 
-			    console.log(data); 
-
-			    $.ajax({
-			    	url:"settings_api.cfc?method=css",
-			    	data: {"settings": JSON.stringify(data)},
-			    	method: "post"
-			    }).done(function(e) {
-			    	$('#css').html(e.css);
-			    	console.log($('#css').html()); 
-			    	console.log("we have updated");
-			    	$testgrid.data("photoGrid").reload();
-			    });
-
-			     
-			    return false; 
-			});
+			<cfoutput>
+			#application.settingsEdit.settingsFormJS(id)#
+			</cfoutput>
 
 		});	
 		</script>

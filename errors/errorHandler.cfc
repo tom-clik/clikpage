@@ -79,9 +79,9 @@ component {
 			local.error = {
 				"statustext": niceError.statustext,
 				"statuscode": niceError.statuscode,
-				"message" : niceError.usermessage
-			}			
-
+				"message" : arguments.debug ? niceError.message : niceError.usermessage
+			}
+			
 			if (niceError.report) {
 				local.error["id"] = niceError.id;
 				logError(niceError);

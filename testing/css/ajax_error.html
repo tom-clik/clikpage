@@ -148,3 +148,399 @@ div#x3xx td.luceeH2 {color:#336600;border-color:#336600;background-color:#9c3;}
 14: 				FileWrite( settingsObj.stylePath(), settingsObj.css() );
 15: 			}
 </td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">13</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">clikpage.testing.css.settings_api_cfc$cf$4q.udfCall(/clikpage/testing/css/settings_api.cfc:13)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">C:\git\libraries\clikpage\testing\css\settings_api.cfc</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">expression</td></tr></table></td></tr></table></div>
+<div id="x5ye" class="-lucee-dump"><style>
+.-lucee-dump .disp-none { display: none; }
+</style>
+<script>
+window.__Lucee = { initialized : false,
+				addEventListeners : function(selector, event, handler, useCapture){
+					useCapture = useCapture || false;
+					Array.prototype.forEach.call(
+						 document.querySelectorAll(selector)
+						,function(el, ix) {
+						  el.addEventListener(event, handler, useCapture);
+						}
+					);
+				}
+				,getNextSiblings   : function(el){
+					var  orig = el
+						,result = [];
+					while (el && el.nodeType === Node.ELEMENT_NODE) {
+						if (el !== orig)
+							result.push(el);
+						el = el.nextElementSibling || el.nextSibling;
+					}
+					return result;
+				}
+				,onDocumentReady		   : function(){
+					var L = window.__Lucee;
+					if (L.initialized)
+						return;
+					L.addEventListeners(".collapse-trigger", "click", function(evt){
+						var tr = evt.target.closest("tr");
+						var siblings = L.getNextSiblings(tr);
+						siblings.forEach(function(el, ix){
+							el.classList.toggle("disp-none");
+						});
+					});
+					L.initialized = true;
+				}
+			}
+			
+document.addEventListener("DOMContentLoaded", __Lucee.onDocumentReady);
+</script>
+<style type="text/css">
+div#x5ye table {font-family:Verdana, Geneva, Arial, Helvetica, sans-serif; font-size:11px; empty-cells:show; color:#000; border-collapse:collapse;}
+div#x5ye td {border:1px solid #000; vertical-align:top; padding:2px; empty-cells:show;}
+div#x5ye td span {font-weight:bold;}
+div#x5ye td.luceeN0 {color:#333399;border-color:#333399;background-color:#ccf;}
+div#x5ye td.luceeH0 {color:#333399;border-color:#333399;background-color:#99f;}
+div#x5ye td.luceeN1 {color:#990000;border-color:#990000;background-color:#fc9;}
+div#x5ye td.luceeH1 {color:#990000;border-color:#990000;background-color:#f60;}
+div#x5ye td.luceeN2 {color:#336600;border-color:#336600;background-color:#cf3;}
+div#x5ye td.luceeH2 {color:#336600;border-color:#336600;background-color:#9c3;}
+</style>
+<table title="C:\git\libraries\clikpage\testing\css\settings_api.cfc:21"><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Catch</span></td></tr><tr><td class="luceeH0">additional</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH0" colspan="0" style="cursor:pointer;"><span>Struct (ordered)</span></td></tr></table></td></tr><tr><td class="luceeH0">Detail</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ErrNumber</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">ErrorCode</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">Extended_Info</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ExtendedInfo</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">Message</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">invalid component definition, can't find component [settings]</td></tr></table></td></tr><tr><td class="luceeH0">StackTrace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">lucee.runtime.exp.ExpressionException: invalid component definition, can't find component [settings]
+	at lucee.runtime.component.ComponentLoader._search(ComponentLoader.java:125)
+	at lucee.runtime.component.ComponentLoader.searchComponent(ComponentLoader.java:79)
+	at lucee.runtime.PageContextImpl.loadComponent(PageContextImpl.java:3247)
+	at lucee.runtime.functions.other.CreateObject.doComponent(CreateObject.java:148)
+	at lucee.runtime.functions.other._CreateComponent.call(_CreateComponent.java:42)
+	at clikpage.testing.css.settings_api_cfc$cf$6j.udfCall(/clikpage/testing/css/settings_api.cfc:12)
+	at lucee.runtime.type.UDFImpl.implementation(UDFImpl.java:106)
+	at lucee.runtime.type.UDFImpl._call(UDFImpl.java:344)
+	at lucee.runtime.type.UDFImpl.callWithNamedValues(UDFImpl.java:207)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:685)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:580)
+	at lucee.runtime.ComponentImpl.callWithNamedValues(ComponentImpl.java:1939)
+	at lucee.runtime.ComponentSpecificAccess.callWithNamedValues(ComponentSpecificAccess.java:156)
+	at lucee.runtime.ComponentPageImpl.callWDDX(ComponentPageImpl.java:632)
+	at lucee.runtime.ComponentPageImpl.call(ComponentPageImpl.java:188)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:1034)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:926)
+	at lucee.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:217)
+	at lucee.runtime.listener.MixedAppListener.onRequest(MixedAppListener.java:44)
+	at lucee.runtime.PageContextImpl.execute(PageContextImpl.java:2460)
+	at lucee.runtime.PageContextImpl._execute(PageContextImpl.java:2450)
+	at lucee.runtime.PageContextImpl.executeCFML(PageContextImpl.java:2421)
+	at lucee.runtime.engine.Request.exe(Request.java:45)
+	at lucee.runtime.engine.CFMLEngineImpl._service(CFMLEngineImpl.java:1179)
+	at lucee.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:1125)
+	at lucee.loader.engine.CFMLEngineWrapper.serviceCFML(CFMLEngineWrapper.java:97)
+	at lucee.loader.servlet.CFMLServlet.service(CFMLServlet.java:51)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at io.undertow.servlet.handlers.ServletHandler.handleRequest(ServletHandler.java:74)
+	at io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandler.java:129)
+	at org.cfmlprojects.regexpathinfofilter.RegexPathInfoFilter.doFilter(RegexPathInfoFilter.java:47)
+	at io.undertow.servlet.core.ManagedFilter.doFilter(ManagedFilter.java:67)
+	at io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandler.java:131)
+	at io.undertow.servlet.handlers.FilterHandler.handleRequest(FilterHandler.java:84)
+	at io.undertow.servlet.handlers.security.ServletSecurityRoleHandler.handleRequest(ServletSecurityRoleHandler.java:62)
+	at io.undertow.servlet.handlers.ServletChain$1.handleRequest(ServletChain.java:68)
+	at io.undertow.servlet.handlers.ServletDispatchingHandler.handleRequest(ServletDispatchingHandler.java:36)
+	at runwar.undertow.SSLClientCertHeaderHandler.handleRequest(SSLClientCertHeaderHandler.java:144)
+	at io.undertow.servlet.handlers.RedirectDirHandler.handleRequest(RedirectDirHandler.java:68)
+	at io.undertow.servlet.handlers.security.SSLInformationAssociationHandler.handleRequest(SSLInformationAssociationHandler.java:117)
+	at io.undertow.servlet.handlers.security.ServletAuthenticationCallHandler.handleRequest(ServletAuthenticationCallHandler.java:57)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.security.handlers.AbstractConfidentialityHandler.handleRequest(AbstractConfidentialityHandler.java:46)
+	at io.undertow.servlet.handlers.security.ServletConfidentialityConstraintHandler.handleRequest(ServletConfidentialityConstraintHandler.java:64)
+	at io.undertow.security.handlers.AuthenticationMechanismsHandler.handleRequest(AuthenticationMechanismsHandler.java:60)
+	at io.undertow.servlet.handlers.security.CachedAuthenticatedSessionHandler.handleRequest(CachedAuthenticatedSessionHandler.java:77)
+	at io.undertow.security.handlers.AbstractSecurityContextAssociationHandler.handleRequest(AbstractSecurityContextAssociationHandler.java:43)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.servlet.handlers.SendErrorPageHandler.handleRequest(SendErrorPageHandler.java:52)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.servlet.handlers.ServletInitialHandler.handleFirstRequest(ServletInitialHandler.java:275)
+	at io.undertow.servlet.handlers.ServletInitialHandler.access$100(ServletInitialHandler.java:79)
+	at io.undertow.servlet.handlers.ServletInitialHandler$2.call(ServletInitialHandler.java:134)
+	at io.undertow.servlet.handlers.ServletInitialHandler$2.call(ServletInitialHandler.java:131)
+	at io.undertow.servlet.core.ServletRequestContextThreadSetupAction$1.call(ServletRequestContextThreadSetupAction.java:48)
+	at io.undertow.servlet.core.ContextClassLoaderSetupAction$1.call(ContextClassLoaderSetupAction.java:43)
+	at io.undertow.servlet.api.LegacyThreadSetupActionWrapper$1.call(LegacyThreadSetupActionWrapper.java:44)
+	at io.undertow.servlet.handlers.ServletInitialHandler.dispatchRequest(ServletInitialHandler.java:255)
+	at io.undertow.servlet.handlers.ServletInitialHandler.access$000(ServletInitialHandler.java:79)
+	at io.undertow.servlet.handlers.ServletInitialHandler$1.handleRequest(ServletInitialHandler.java:100)
+	at io.undertow.server.Connectors.executeRootHandler(Connectors.java:391)
+	at io.undertow.server.HttpServerExchange$1.run(HttpServerExchange.java:852)
+	at org.jboss.threads.ContextClassLoaderSavingRunnable.run(ContextClassLoaderSavingRunnable.java:35)
+	at org.jboss.threads.EnhancedQueueExecutor.safeRun(EnhancedQueueExecutor.java:2019)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.doRunTask(EnhancedQueueExecutor.java:1558)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1449)
+	at org.xnio.XnioWorker$WorkerThreadFactory$1$1.run(XnioWorker.java:1282)
+	at java.base/java.lang.Thread.run(Unknown Source)
+</td></tr></table></td></tr><tr><td class="luceeH0">TagContext</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH2" colspan="3" style="cursor:pointer;"><span>Array</span></td></tr><tr><td class="luceeH2">1</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">10: 			if ( arguments.keyExists(&amp;quot;settings&amp;quot;) ) { &lt;br&gt;
+11: 				local.settingsVals = deserializeJSON(arguments.settings);&lt;br&gt;
+&lt;b&gt;12: 				var settingsObj = new settings();&lt;/b&gt;&lt;br&gt;
+13: 				settingsObj.updateSettings(local.settingsVals);&lt;br&gt;
+14: 				ret[&amp;quot;css&amp;quot;] = settingsObj.css();&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">10: 			if ( arguments.keyExists(&quot;settings&quot;) ) { 
+11: 				local.settingsVals = deserializeJSON(arguments.settings);
+12: 				var settingsObj = new settings();
+13: 				settingsObj.updateSettings(local.settingsVals);
+14: 				ret[&quot;css&quot;] = settingsObj.css();
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">12</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">clikpage.testing.css.settings_api_cfc$cf$6j.udfCall(/clikpage/testing/css/settings_api.cfc:12)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">C:\git\libraries\clikpage\testing\css\settings_api.cfc</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">expression</td></tr></table></td></tr></table></div>
+<div id="x5yz" class="-lucee-dump"><style>
+.-lucee-dump .disp-none { display: none; }
+</style>
+<script>
+window.__Lucee = { initialized : false,
+				addEventListeners : function(selector, event, handler, useCapture){
+					useCapture = useCapture || false;
+					Array.prototype.forEach.call(
+						 document.querySelectorAll(selector)
+						,function(el, ix) {
+						  el.addEventListener(event, handler, useCapture);
+						}
+					);
+				}
+				,getNextSiblings   : function(el){
+					var  orig = el
+						,result = [];
+					while (el && el.nodeType === Node.ELEMENT_NODE) {
+						if (el !== orig)
+							result.push(el);
+						el = el.nextElementSibling || el.nextSibling;
+					}
+					return result;
+				}
+				,onDocumentReady		   : function(){
+					var L = window.__Lucee;
+					if (L.initialized)
+						return;
+					L.addEventListeners(".collapse-trigger", "click", function(evt){
+						var tr = evt.target.closest("tr");
+						var siblings = L.getNextSiblings(tr);
+						siblings.forEach(function(el, ix){
+							el.classList.toggle("disp-none");
+						});
+					});
+					L.initialized = true;
+				}
+			}
+			
+document.addEventListener("DOMContentLoaded", __Lucee.onDocumentReady);
+</script>
+<style type="text/css">
+div#x5yz table {font-family:Verdana, Geneva, Arial, Helvetica, sans-serif; font-size:11px; empty-cells:show; color:#000; border-collapse:collapse;}
+div#x5yz td {border:1px solid #000; vertical-align:top; padding:2px; empty-cells:show;}
+div#x5yz td span {font-weight:bold;}
+div#x5yz td.luceeN0 {color:#333399;border-color:#333399;background-color:#ccf;}
+div#x5yz td.luceeH0 {color:#333399;border-color:#333399;background-color:#99f;}
+div#x5yz td.luceeN1 {color:#990000;border-color:#990000;background-color:#fc9;}
+div#x5yz td.luceeH1 {color:#990000;border-color:#990000;background-color:#f60;}
+div#x5yz td.luceeN2 {color:#336600;border-color:#336600;background-color:#cf3;}
+div#x5yz td.luceeH2 {color:#336600;border-color:#336600;background-color:#9c3;}
+</style>
+<table title="C:\git\libraries\clikpage\testing\css\settings_api.cfc:21"><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Catch</span></td></tr><tr><td class="luceeH0">additional</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH0" colspan="0" style="cursor:pointer;"><span>Struct (ordered)</span></td></tr></table></td></tr><tr><td class="luceeH0">Detail</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ErrNumber</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">ErrorCode</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">Extended_Info</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ExtendedInfo</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">Message</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">invalid component definition, can't find component [settings]</td></tr></table></td></tr><tr><td class="luceeH0">StackTrace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">lucee.runtime.exp.ExpressionException: invalid component definition, can't find component [settings]
+	at lucee.runtime.component.ComponentLoader._search(ComponentLoader.java:125)
+	at lucee.runtime.component.ComponentLoader.searchComponent(ComponentLoader.java:79)
+	at lucee.runtime.PageContextImpl.loadComponent(PageContextImpl.java:3247)
+	at lucee.runtime.functions.other.CreateObject.doComponent(CreateObject.java:148)
+	at lucee.runtime.functions.other._CreateComponent.call(_CreateComponent.java:42)
+	at clikpage.testing.css.settings_api_cfc$cf$6j.udfCall(/clikpage/testing/css/settings_api.cfc:12)
+	at lucee.runtime.type.UDFImpl.implementation(UDFImpl.java:106)
+	at lucee.runtime.type.UDFImpl._call(UDFImpl.java:344)
+	at lucee.runtime.type.UDFImpl.callWithNamedValues(UDFImpl.java:207)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:685)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:580)
+	at lucee.runtime.ComponentImpl.callWithNamedValues(ComponentImpl.java:1939)
+	at lucee.runtime.ComponentSpecificAccess.callWithNamedValues(ComponentSpecificAccess.java:156)
+	at lucee.runtime.ComponentPageImpl.callWDDX(ComponentPageImpl.java:632)
+	at lucee.runtime.ComponentPageImpl.call(ComponentPageImpl.java:188)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:1034)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:926)
+	at lucee.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:217)
+	at lucee.runtime.listener.MixedAppListener.onRequest(MixedAppListener.java:44)
+	at lucee.runtime.PageContextImpl.execute(PageContextImpl.java:2460)
+	at lucee.runtime.PageContextImpl._execute(PageContextImpl.java:2450)
+	at lucee.runtime.PageContextImpl.executeCFML(PageContextImpl.java:2421)
+	at lucee.runtime.engine.Request.exe(Request.java:45)
+	at lucee.runtime.engine.CFMLEngineImpl._service(CFMLEngineImpl.java:1179)
+	at lucee.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:1125)
+	at lucee.loader.engine.CFMLEngineWrapper.serviceCFML(CFMLEngineWrapper.java:97)
+	at lucee.loader.servlet.CFMLServlet.service(CFMLServlet.java:51)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at io.undertow.servlet.handlers.ServletHandler.handleRequest(ServletHandler.java:74)
+	at io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandler.java:129)
+	at org.cfmlprojects.regexpathinfofilter.RegexPathInfoFilter.doFilter(RegexPathInfoFilter.java:47)
+	at io.undertow.servlet.core.ManagedFilter.doFilter(ManagedFilter.java:67)
+	at io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandler.java:131)
+	at io.undertow.servlet.handlers.FilterHandler.handleRequest(FilterHandler.java:84)
+	at io.undertow.servlet.handlers.security.ServletSecurityRoleHandler.handleRequest(ServletSecurityRoleHandler.java:62)
+	at io.undertow.servlet.handlers.ServletChain$1.handleRequest(ServletChain.java:68)
+	at io.undertow.servlet.handlers.ServletDispatchingHandler.handleRequest(ServletDispatchingHandler.java:36)
+	at runwar.undertow.SSLClientCertHeaderHandler.handleRequest(SSLClientCertHeaderHandler.java:144)
+	at io.undertow.servlet.handlers.RedirectDirHandler.handleRequest(RedirectDirHandler.java:68)
+	at io.undertow.servlet.handlers.security.SSLInformationAssociationHandler.handleRequest(SSLInformationAssociationHandler.java:117)
+	at io.undertow.servlet.handlers.security.ServletAuthenticationCallHandler.handleRequest(ServletAuthenticationCallHandler.java:57)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.security.handlers.AbstractConfidentialityHandler.handleRequest(AbstractConfidentialityHandler.java:46)
+	at io.undertow.servlet.handlers.security.ServletConfidentialityConstraintHandler.handleRequest(ServletConfidentialityConstraintHandler.java:64)
+	at io.undertow.security.handlers.AuthenticationMechanismsHandler.handleRequest(AuthenticationMechanismsHandler.java:60)
+	at io.undertow.servlet.handlers.security.CachedAuthenticatedSessionHandler.handleRequest(CachedAuthenticatedSessionHandler.java:77)
+	at io.undertow.security.handlers.AbstractSecurityContextAssociationHandler.handleRequest(AbstractSecurityContextAssociationHandler.java:43)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.servlet.handlers.SendErrorPageHandler.handleRequest(SendErrorPageHandler.java:52)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.servlet.handlers.ServletInitialHandler.handleFirstRequest(ServletInitialHandler.java:275)
+	at io.undertow.servlet.handlers.ServletInitialHandler.access$100(ServletInitialHandler.java:79)
+	at io.undertow.servlet.handlers.ServletInitialHandler$2.call(ServletInitialHandler.java:134)
+	at io.undertow.servlet.handlers.ServletInitialHandler$2.call(ServletInitialHandler.java:131)
+	at io.undertow.servlet.core.ServletRequestContextThreadSetupAction$1.call(ServletRequestContextThreadSetupAction.java:48)
+	at io.undertow.servlet.core.ContextClassLoaderSetupAction$1.call(ContextClassLoaderSetupAction.java:43)
+	at io.undertow.servlet.api.LegacyThreadSetupActionWrapper$1.call(LegacyThreadSetupActionWrapper.java:44)
+	at io.undertow.servlet.handlers.ServletInitialHandler.dispatchRequest(ServletInitialHandler.java:255)
+	at io.undertow.servlet.handlers.ServletInitialHandler.access$000(ServletInitialHandler.java:79)
+	at io.undertow.servlet.handlers.ServletInitialHandler$1.handleRequest(ServletInitialHandler.java:100)
+	at io.undertow.server.Connectors.executeRootHandler(Connectors.java:391)
+	at io.undertow.server.HttpServerExchange$1.run(HttpServerExchange.java:852)
+	at org.jboss.threads.ContextClassLoaderSavingRunnable.run(ContextClassLoaderSavingRunnable.java:35)
+	at org.jboss.threads.EnhancedQueueExecutor.safeRun(EnhancedQueueExecutor.java:2019)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.doRunTask(EnhancedQueueExecutor.java:1558)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1449)
+	at org.xnio.XnioWorker$WorkerThreadFactory$1$1.run(XnioWorker.java:1282)
+	at java.base/java.lang.Thread.run(Unknown Source)
+</td></tr></table></td></tr><tr><td class="luceeH0">TagContext</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH2" colspan="3" style="cursor:pointer;"><span>Array</span></td></tr><tr><td class="luceeH2">1</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">10: 			if ( arguments.keyExists(&amp;quot;settings&amp;quot;) ) { &lt;br&gt;
+11: 				local.settingsVals = deserializeJSON(arguments.settings);&lt;br&gt;
+&lt;b&gt;12: 				var settingsObj = new settings();&lt;/b&gt;&lt;br&gt;
+13: 				settingsObj.updateSettings(local.settingsVals);&lt;br&gt;
+14: 				ret[&amp;quot;css&amp;quot;] = settingsObj.css();&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">10: 			if ( arguments.keyExists(&quot;settings&quot;) ) { 
+11: 				local.settingsVals = deserializeJSON(arguments.settings);
+12: 				var settingsObj = new settings();
+13: 				settingsObj.updateSettings(local.settingsVals);
+14: 				ret[&quot;css&quot;] = settingsObj.css();
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">12</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">clikpage.testing.css.settings_api_cfc$cf$6j.udfCall(/clikpage/testing/css/settings_api.cfc:12)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">C:\git\libraries\clikpage\testing\css\settings_api.cfc</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">expression</td></tr></table></td></tr></table></div>
+<div id="x5zk" class="-lucee-dump"><style>
+.-lucee-dump .disp-none { display: none; }
+</style>
+<script>
+window.__Lucee = { initialized : false,
+				addEventListeners : function(selector, event, handler, useCapture){
+					useCapture = useCapture || false;
+					Array.prototype.forEach.call(
+						 document.querySelectorAll(selector)
+						,function(el, ix) {
+						  el.addEventListener(event, handler, useCapture);
+						}
+					);
+				}
+				,getNextSiblings   : function(el){
+					var  orig = el
+						,result = [];
+					while (el && el.nodeType === Node.ELEMENT_NODE) {
+						if (el !== orig)
+							result.push(el);
+						el = el.nextElementSibling || el.nextSibling;
+					}
+					return result;
+				}
+				,onDocumentReady		   : function(){
+					var L = window.__Lucee;
+					if (L.initialized)
+						return;
+					L.addEventListeners(".collapse-trigger", "click", function(evt){
+						var tr = evt.target.closest("tr");
+						var siblings = L.getNextSiblings(tr);
+						siblings.forEach(function(el, ix){
+							el.classList.toggle("disp-none");
+						});
+					});
+					L.initialized = true;
+				}
+			}
+			
+document.addEventListener("DOMContentLoaded", __Lucee.onDocumentReady);
+</script>
+<style type="text/css">
+div#x5zk table {font-family:Verdana, Geneva, Arial, Helvetica, sans-serif; font-size:11px; empty-cells:show; color:#000; border-collapse:collapse;}
+div#x5zk td {border:1px solid #000; vertical-align:top; padding:2px; empty-cells:show;}
+div#x5zk td span {font-weight:bold;}
+div#x5zk td.luceeN0 {color:#333399;border-color:#333399;background-color:#ccf;}
+div#x5zk td.luceeH0 {color:#333399;border-color:#333399;background-color:#99f;}
+div#x5zk td.luceeN1 {color:#990000;border-color:#990000;background-color:#fc9;}
+div#x5zk td.luceeH1 {color:#990000;border-color:#990000;background-color:#f60;}
+div#x5zk td.luceeN2 {color:#336600;border-color:#336600;background-color:#cf3;}
+div#x5zk td.luceeH2 {color:#336600;border-color:#336600;background-color:#9c3;}
+</style>
+<table title="C:\git\libraries\clikpage\testing\css\settings_api.cfc:21"><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Catch</span></td></tr><tr><td class="luceeH0">additional</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH0" colspan="0" style="cursor:pointer;"><span>Struct (ordered)</span></td></tr></table></td></tr><tr><td class="luceeH0">Detail</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ErrNumber</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">ErrorCode</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">Extended_Info</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">ExtendedInfo</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1"></td></tr></table></td></tr><tr><td class="luceeH0">Message</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">invalid component definition, can't find component [settings]</td></tr></table></td></tr><tr><td class="luceeH0">StackTrace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">lucee.runtime.exp.ExpressionException: invalid component definition, can't find component [settings]
+	at lucee.runtime.component.ComponentLoader._search(ComponentLoader.java:125)
+	at lucee.runtime.component.ComponentLoader.searchComponent(ComponentLoader.java:79)
+	at lucee.runtime.PageContextImpl.loadComponent(PageContextImpl.java:3247)
+	at lucee.runtime.functions.other.CreateObject.doComponent(CreateObject.java:148)
+	at lucee.runtime.functions.other._CreateComponent.call(_CreateComponent.java:42)
+	at clikpage.testing.css.settings_api_cfc$cf$6j.udfCall(/clikpage/testing/css/settings_api.cfc:12)
+	at lucee.runtime.type.UDFImpl.implementation(UDFImpl.java:106)
+	at lucee.runtime.type.UDFImpl._call(UDFImpl.java:344)
+	at lucee.runtime.type.UDFImpl.callWithNamedValues(UDFImpl.java:207)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:685)
+	at lucee.runtime.ComponentImpl._call(ComponentImpl.java:580)
+	at lucee.runtime.ComponentImpl.callWithNamedValues(ComponentImpl.java:1939)
+	at lucee.runtime.ComponentSpecificAccess.callWithNamedValues(ComponentSpecificAccess.java:156)
+	at lucee.runtime.ComponentPageImpl.callWDDX(ComponentPageImpl.java:632)
+	at lucee.runtime.ComponentPageImpl.call(ComponentPageImpl.java:188)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:1034)
+	at lucee.runtime.PageContextImpl._doInclude(PageContextImpl.java:926)
+	at lucee.runtime.listener.ModernAppListener._onRequest(ModernAppListener.java:217)
+	at lucee.runtime.listener.MixedAppListener.onRequest(MixedAppListener.java:44)
+	at lucee.runtime.PageContextImpl.execute(PageContextImpl.java:2460)
+	at lucee.runtime.PageContextImpl._execute(PageContextImpl.java:2450)
+	at lucee.runtime.PageContextImpl.executeCFML(PageContextImpl.java:2421)
+	at lucee.runtime.engine.Request.exe(Request.java:45)
+	at lucee.runtime.engine.CFMLEngineImpl._service(CFMLEngineImpl.java:1179)
+	at lucee.runtime.engine.CFMLEngineImpl.serviceCFML(CFMLEngineImpl.java:1125)
+	at lucee.loader.engine.CFMLEngineWrapper.serviceCFML(CFMLEngineWrapper.java:97)
+	at lucee.loader.servlet.CFMLServlet.service(CFMLServlet.java:51)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at io.undertow.servlet.handlers.ServletHandler.handleRequest(ServletHandler.java:74)
+	at io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandler.java:129)
+	at org.cfmlprojects.regexpathinfofilter.RegexPathInfoFilter.doFilter(RegexPathInfoFilter.java:47)
+	at io.undertow.servlet.core.ManagedFilter.doFilter(ManagedFilter.java:67)
+	at io.undertow.servlet.handlers.FilterHandler$FilterChainImpl.doFilter(FilterHandler.java:131)
+	at io.undertow.servlet.handlers.FilterHandler.handleRequest(FilterHandler.java:84)
+	at io.undertow.servlet.handlers.security.ServletSecurityRoleHandler.handleRequest(ServletSecurityRoleHandler.java:62)
+	at io.undertow.servlet.handlers.ServletChain$1.handleRequest(ServletChain.java:68)
+	at io.undertow.servlet.handlers.ServletDispatchingHandler.handleRequest(ServletDispatchingHandler.java:36)
+	at runwar.undertow.SSLClientCertHeaderHandler.handleRequest(SSLClientCertHeaderHandler.java:144)
+	at io.undertow.servlet.handlers.RedirectDirHandler.handleRequest(RedirectDirHandler.java:68)
+	at io.undertow.servlet.handlers.security.SSLInformationAssociationHandler.handleRequest(SSLInformationAssociationHandler.java:117)
+	at io.undertow.servlet.handlers.security.ServletAuthenticationCallHandler.handleRequest(ServletAuthenticationCallHandler.java:57)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.security.handlers.AbstractConfidentialityHandler.handleRequest(AbstractConfidentialityHandler.java:46)
+	at io.undertow.servlet.handlers.security.ServletConfidentialityConstraintHandler.handleRequest(ServletConfidentialityConstraintHandler.java:64)
+	at io.undertow.security.handlers.AuthenticationMechanismsHandler.handleRequest(AuthenticationMechanismsHandler.java:60)
+	at io.undertow.servlet.handlers.security.CachedAuthenticatedSessionHandler.handleRequest(CachedAuthenticatedSessionHandler.java:77)
+	at io.undertow.security.handlers.AbstractSecurityContextAssociationHandler.handleRequest(AbstractSecurityContextAssociationHandler.java:43)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.servlet.handlers.SendErrorPageHandler.handleRequest(SendErrorPageHandler.java:52)
+	at io.undertow.server.handlers.PredicateHandler.handleRequest(PredicateHandler.java:43)
+	at io.undertow.servlet.handlers.ServletInitialHandler.handleFirstRequest(ServletInitialHandler.java:275)
+	at io.undertow.servlet.handlers.ServletInitialHandler.access$100(ServletInitialHandler.java:79)
+	at io.undertow.servlet.handlers.ServletInitialHandler$2.call(ServletInitialHandler.java:134)
+	at io.undertow.servlet.handlers.ServletInitialHandler$2.call(ServletInitialHandler.java:131)
+	at io.undertow.servlet.core.ServletRequestContextThreadSetupAction$1.call(ServletRequestContextThreadSetupAction.java:48)
+	at io.undertow.servlet.core.ContextClassLoaderSetupAction$1.call(ContextClassLoaderSetupAction.java:43)
+	at io.undertow.servlet.api.LegacyThreadSetupActionWrapper$1.call(LegacyThreadSetupActionWrapper.java:44)
+	at io.undertow.servlet.handlers.ServletInitialHandler.dispatchRequest(ServletInitialHandler.java:255)
+	at io.undertow.servlet.handlers.ServletInitialHandler.access$000(ServletInitialHandler.java:79)
+	at io.undertow.servlet.handlers.ServletInitialHandler$1.handleRequest(ServletInitialHandler.java:100)
+	at io.undertow.server.Connectors.executeRootHandler(Connectors.java:391)
+	at io.undertow.server.HttpServerExchange$1.run(HttpServerExchange.java:852)
+	at org.jboss.threads.ContextClassLoaderSavingRunnable.run(ContextClassLoaderSavingRunnable.java:35)
+	at org.jboss.threads.EnhancedQueueExecutor.safeRun(EnhancedQueueExecutor.java:2019)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.doRunTask(EnhancedQueueExecutor.java:1558)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1449)
+	at org.xnio.XnioWorker$WorkerThreadFactory$1$1.run(XnioWorker.java:1282)
+	at java.base/java.lang.Thread.run(Unknown Source)
+</td></tr></table></td></tr><tr><td class="luceeH0">TagContext</td><td class="luceeN0"><table><tr><td class="collapse-trigger luceeH2" colspan="3" style="cursor:pointer;"><span>Array</span></td></tr><tr><td class="luceeH2">1</td><td class="luceeN2"><table><tr><td class="collapse-trigger luceeH0" colspan="3" style="cursor:pointer;"><span>Struct</span></td></tr><tr><td class="luceeH0">codePrintHTML</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">10: 			if ( arguments.keyExists(&amp;quot;settings&amp;quot;) ) { &lt;br&gt;
+11: 				local.settingsVals = deserializeJSON(arguments.settings);&lt;br&gt;
+&lt;b&gt;12: 				var settingsObj = new settings();&lt;/b&gt;&lt;br&gt;
+13: 				settingsObj.updateSettings(local.settingsVals);&lt;br&gt;
+14: 				ret[&amp;quot;css&amp;quot;] = settingsObj.css();&lt;br&gt;
+</td></tr></table></td></tr><tr><td class="luceeH0">codePrintPlain</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">10: 			if ( arguments.keyExists(&quot;settings&quot;) ) { 
+11: 				local.settingsVals = deserializeJSON(arguments.settings);
+12: 				var settingsObj = new settings();
+13: 				settingsObj.updateSettings(local.settingsVals);
+14: 				ret[&quot;css&quot;] = settingsObj.css();
+</td></tr></table></td></tr><tr><td class="luceeH0">column</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">0</td></tr></table></td></tr><tr><td class="luceeH0">id</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">??</td></tr></table></td></tr><tr><td class="luceeH0">line</td><td class="luceeN0"><table><tr><td class="luceeH1">number</td><td class="luceeN1">12</td></tr></table></td></tr><tr><td class="luceeH0">Raw_Trace</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">clikpage.testing.css.settings_api_cfc$cf$6j.udfCall(/clikpage/testing/css/settings_api.cfc:12)</td></tr></table></td></tr><tr><td class="luceeH0">template</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">C:\git\libraries\clikpage\testing\css\settings_api.cfc</td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">cfml</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td class="luceeH0">type</td><td class="luceeN0"><table><tr><td class="luceeH1">string</td><td class="luceeN1">expression</td></tr></table></td></tr></table></div>

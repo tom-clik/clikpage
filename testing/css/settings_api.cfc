@@ -1,29 +1,45 @@
-component {
+/**
+ * # API for the content testing system
+ *
+ * Mainly WIP. Bit of a scratchpad while I work through how this is all going to
+ * work.
+ * 
+ */
+component extends="clikpage.api.baseApi" {
 
-	remote struct function css(settings) returnformat="json" {
+	include template="css_test_inc.cfm";
+
+	private boolean function isLoggedIn() {
+		return true;
+	}
+	
+	remote function css(required string cs_id, string settings="") {
+
+		var ret = _checkAuth();
 
 		// FileWrite( ExpandPath("_generated/imagegrid.css"), css );
-		
-		try {
-			var ret = {"status":"200"};
-			
-			if ( arguments.keyExists("settings") ) { 
-				local.settingsVals = deserializeJSON(arguments.settings);
-				var settingsObj = new settings();
-				settingsObj.updateSettings(local.settingsVals);
-				ret["css"] = settingsObj.css();
-			}
-			else {
-				ret.status = 400;
-			}
-		}
-		catch (any e) {
-			writeDump(var=e,output=ExpandPath("ajax_error.html"),format="html");
-			ret.status = 500;
-		}
+		if ( arguments.keyExists("settings") ) { 
+			local.settingsVals = deserializeJSON(arguments.settings);
+			application.settingsEdit.updateSettings(
+				cs     = application.settingsTest.site.cs[arguments.cs_id],
+				styles = application.settingsTest.styles,
+				values = local.settingsVals,
+				medium = "main"
+			);
 
-		return ret;
+			ret["css"] = application.settingsTest.css();
+		}
+		else {
+			ret.statuscode = 400;
+			ret.statustext = "Bad request";
+		}
 		
+		return rep ( ret );
+		
+	}
+
+	remote function errorTest() {
+		throw("My error");
 	}
 
 }

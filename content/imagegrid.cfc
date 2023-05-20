@@ -31,6 +31,9 @@ component extends="grid" {
 			{"name"="subcaption","panel":"subcaption", "selector"=" .subcaption"}
 		];
 
+		StructDelete(this.styleDefs,"justify-content");
+		StructDelete(this.styleDefs,"align-items");
+
 		StructAppend(this.styleDefs, [
 			"layout": {
 				"name":"Layout type","description":"","type":"list","options":[
