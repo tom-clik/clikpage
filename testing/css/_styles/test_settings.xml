@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stylesheet>
+
+	<link rel="stylesheet" href="menu_test.css" />
+	<link rel="stylesheet" href="imagegrid_test.css" />
+	<link rel="stylesheet" href="general_test.css" />
+	<link rel="stylesheet" href="button_test.css" />
+	<link rel="stylesheet" href="articlelist_test.css" />
+
+	<colors>
+		<textcolor title="Main text color" value="#333333" />
+		<panel-bg name="panel-bg" title="Darker panel bg" value="#01798a" />
+		<accent name="accent" title="Accent colour" value="#38bbcd" />
+		<panel-text  title="Panel text" value="#ffffff">
+			<description>To stand out against darker panel or accent</description>
+		</panel-text>
+		<light-panel-bg title="Light panel packground" value="#eaeaea" />
+		<linkcolor title="Link color" value="#38bbcd" />
+		<bordercolor title="Border color" value="#333" />
+		<imageborder title="Image border color" value="teal" />
+		<brown value="Brown" />
+		<Bisque value="Bisque" />
+		<DarkCyan value="DarkCyan" />
+		<DarkKhaki value="DarkKhaki" />
+		<pink value="pink" />
+		<Cornsilk value="Cornsilk" />
+		<darkslategray value="darkslategray" />
+	</colors>
+
+	<media>
+		<max min="1200" description="Full size only" />
+		<mid max="800"  description="Medium width for tablets"/>
+		<mobile max="600" description="mobile" />
+		<print media="print" description="Print only" />
+	</media>
+
+	<fonts>
+		<bodyfont title="Body font" family="Open Sans" />
+		<titlefont title="Title font" family="Lato" />
+	</fonts>
+
+</stylesheet>
+
+
+

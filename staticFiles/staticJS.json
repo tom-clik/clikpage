@@ -32,17 +32,10 @@
     },
     {
       "scripts": [
-        "serializeData"
+        "serializeData","clik_settings","getSettings"
       ],
-      "min": "/_assets/js/_min/clikutils.0.1.min.js",
+      "min": "/_assets/js/_min/clikutils.0.2.min.js",
       "name": "clikutils"
-    },
-    {
-      "scripts": [
-        "clik_settings"
-      ],
-      "min": "/_assets/js/_min/clikadmin.0.1.min.js",
-      "name": "admin"
     }
   ],
   "scripts": [
@@ -224,7 +217,13 @@
       "packageExclude": 1
     },
     {
-      "min":"/_assets/js/serializeData.js",
+      "min":"/_assets/js/photogrid.js",
+      "description": "Proper serialization of form data to submit via Ajax",
+      "name": "photogrid",
+      "requires": "jquery,getSettings"
+    },
+    {
+      "min":"/_assets/js/jquery.serializeData.js",
       "description": "Proper serialization of form data to submit via Ajax",
       "name": "serializeData",
       "requires": "jquery"

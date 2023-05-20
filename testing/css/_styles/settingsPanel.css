@@ -1,5 +1,5 @@
 .settings_panel {
-	position: absolute;
+	position: fixed;
 	top:20px;
 	left:20px;
 	border:1px solid #3c3c3c;

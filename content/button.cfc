@@ -60,15 +60,16 @@ component extends="contentSection" {
 		];
 
 		this.styleDefs = [
-			"label-align":{"type":"halign","default":"left","description":"text alignment of label."},
-			"label-display" = {"type":"list","options"=[{"value":"block","display"="Yes"},{"value":"none","display"="No"}],"default":"block"},
-			"icon-display" = {"type":"list","options"=[{"value":"block","display"="Yes"},{"value":"none","display"="No"}],"default":"block"},
-			"shape" = {"type":"text"},
-			"label-gap" = {"type":"dimension"},
+			
+			"shape" = {"type":"shape","name":"Shape"},
 			"button-direction" = {"name":"Label alignment","description":"Show the label on the left or right of the button","type":"list","options"=[{"value":"row", "display":"Right"},{"value":"row-reverse", "display":"Left"}],"default":"row"},
-			"button-align" = {"name":"Button alignment","description":"Align button in container","type":"list","options"=[{"value":"flex-start"},{"value":"center"},{"value":"flex-end"}],"default":"center"},
-			"link-color" = {"type":"color"},
-			"link-color" = {"type":"color"},
+			"button-align" = {"name":"Button alignment","description":"Align button icon and text. Note this is incompatible with Stretch","type":"list","options"=[{"value":"flex-end","name":"Label side"},{"value":"center","name":"Center"},{"value":"flex-start","name":"Icon side"}],"default":"center"},
+			"stretch" = {"name":"Stretch text","type"="flexgrow","description":"Stretch the text label to fill the space","default":0},
+			"label-align" = {"type":"halign","name":"Align text","default":"left","description":"In stretch mode, align the text within the space","default"="0"},
+			"label-display" = {"name":"Show text label","type":"list","options"=[{"value":"block","display"="Yes"},{"value":"none","display"="No"}],"default":"block"},
+			"icon-display" = {"name":"Show icon","type":"list","options"=[{"value":"block","display"="Yes"},{"value":"none","display"="No"}],"default":"block"},
+			"label-gap" = {"type":"dimension","Name":"Label gap","description":"The gap between the label and the icon"},			
+			"link-color" = {"type":"color","name":"Color"},
 			"icon-width" = {"type":"dimension"},
 			"icon-height" = {"type":"dimension"},
 			"auto" = {"type":"boolean","default": false,"name":"Auto open target","description":"function WIP. Calls open method on target specified in link."}
@@ -98,8 +99,9 @@ component extends="contentSection" {
 	 * @src    URL of SVG file. 
 	 * @viewbox  Copy of viewbox attribute from SVG file
 	 */
-	public void function addShape(required string id, required string src, required string viewbox) {
-		variables.shapes[arguments.id] = {"src"=arguments.src, "viewbox"=arguments.viewbox};
+	public void function addShape(required string id, required string src, required string viewbox, string name) {
+		if (! arguments.keyExists("name")) arguments.name = arguments.id;
+		variables.shapes[arguments.id] = {"name"=arguments.name,"src"=arguments.src, "viewbox"=arguments.viewbox};
 	}
 
 	/**
@@ -109,10 +111,13 @@ component extends="contentSection" {
 	 */
 	public void function addShapes(required array shapeList) {
 		for (local.shape in arguments.shapeList) {
-			variables.shapes[local.shape.id] = {"src"=local.shape.src, "viewbox"=local.shape.viewbox};
+			addShape(argumentCollection = local.shape);
 		}
 	}
 
+	/**
+	 * Return complete set of available shapes
+	 */
 	public struct function getShapes() {
 		return variables.shapes;
 	}

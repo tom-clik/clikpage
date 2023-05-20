@@ -22,21 +22,7 @@ function getSettings($elem, type) {
 		if (true || clik_settings[type][setting].inherit) {
 			let val = $elem.css("--" + setting);
 			if (val) {
-				if (clik_settings[type][setting].type.toLowerCase() == "boolean") {
-					let bVal =parseInt(val);
-					if (Number.isNaN(bVal)) {
-						bVal = (val.toLowerCase() == "true");
-					}
-					else {
-						// keep consistency on booleans
-						bVal = bVal ? true : false;
-					}
-					settings[setting] = bVal;
-				}
-				else {
-					settings[setting] = val;
-				}
-				
+				settings[setting] = parseCssVar(val, clik_settings[type][setting].type.toLowerCase() );
 			}
 		}
 	}
@@ -44,3 +30,19 @@ function getSettings($elem, type) {
 	return settings;
 }
 
+function parseCssVar(stringVal, type) {
+	let val = stringVal;
+	if (type == "boolean") {
+		val = parseInt(stringVal);
+		if (Number.isNaN(val)) {
+			val = (stringVal.toLowerCase() == "true");
+		}
+		else {
+			// keep consistency on booleans
+			val = val ? true : false;
+		}
+		
+	}
+	
+	return val;
+}

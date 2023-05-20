@@ -15,5 +15,4 @@ if (request.rc.reload OR ! StructKeyExists(application, "settingsTest") ) {
 	);
 }
 
-
 </cfscript>

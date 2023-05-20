@@ -22,8 +22,9 @@ component extends="item" {
 			{"name"="text", "selector"=" .textWrap"}
 		];
 
-		this.styleDefs["carousel"] = {"type":"boolean","description":"use carousel for list"};
-		this.settings["carousel"] = false;
+		this.styleDefs["carousel"] = {"type":"boolean","description":"use carousel for list",default=false,inherit=1};
+		
+		updateDefaults();
 		
 		this.panels.prepend({"name":"Item","panel":"item","selector":" .item"});
 

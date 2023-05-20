@@ -1,50 +1,26 @@
 <!---
 
-# Image Grid testing page
-
-Test styling for image grids. Also contains all our work on the settings form.
-
-Currently working as a proof of concept albeit with a bit of a lash up.
-
-## WIP
-
-Now sort of working for dynamic updates. The javaScript doesn't reload when you change layout mode, so I'm working on that.
-
-
-
-TODO: 
-
-1. Make generic for all components
-2. Reload on media change
-3. Panels
-4. Persist and save results
+# Content section testing page
 
 ## Notes
 
-The plan:
-
-1. Persist the content sections in an application variable
-2. Write out CSS for all of them where here we are just doing the CSS for one.
-3. 
 
 ## Status
 
-Working of a fashion. All hardwired to grids.
+Working of a fashion. 
 
 ## History
 
-2023-05-15 THP Merged back in the form stuff. This has broken the idea of a "test". Need to separate out the selection of a test and the settings form.
-2023-05-01  THP   Wasn't using the cs obj (??).
-2023-04-15  THP   Updated to use the grid styling in settingsObj 
-2022-03-05  THP   Created
+2023-05-20 Getting something close to a generic test page
 
 --->
 
 <cfscript>
 
 include template="css_test_inc.cfm";
+
 param name="request.rc.test" default="";
-param name="request.rc.type" default="item";
+param name="request.rc.type" default="articlelist";
 
 id = "#request.rc.type#";
 class = "";
@@ -60,7 +36,9 @@ application.settingsTest.addCs(
 	id=id
 );
 
+
 cs = application.settingsTest.site.cs[id];
+
 application.settingsEdit.updateSettings(
 	cs=cs,
 	styles=application.settingsTest.styles,
@@ -83,6 +61,7 @@ application.settingsTest.contentObj.addPageContent(pageContent,application.setti
 
 form_html = application.settingsEdit.settingsForm(contentsection=application.settingsTest.site.cs[id],type=request.rc.type);
 
+// TODO: define schemes in some sort of data format.
 tests = [
 	{id="auto",title="Auto grid"},
 	{id="fixedwidth",title="Columns have set width"},
@@ -99,7 +78,7 @@ css = application.settingsTest.css();
 
 <html>
 	<head>
-		<title>Grids CSS Samples</title>
+		<title>Content Section Testing Page</title>
 
 		<cfoutput>
 		#application.settingsTest.pageObj.cssStaticFiles.getLinks(pagecontent.static_css,1)#
@@ -116,6 +95,7 @@ css = application.settingsTest.css();
 			#settings_panel {
 				--draggable:true;
 				--modal:false;
+				--fixed:true;
 			}
 
 			#settings_panel .wrap {
@@ -136,17 +116,16 @@ css = application.settingsTest.css();
 		</style>
 		<style id="css">
 			<cfoutput>#css#</cfoutput>
-		</style>
-		
+		</style>		
 		
 	</head>
 
 	<body class="body">
 		
 		<div>			
-			<cfoutput>#pageData.html#</cfoutput>
-		
+			<cfoutput>#pageData.html#</cfoutput>		
 		</div>
+
 		<div>
 			<form action="imagegrid.cfm">
 
@@ -165,47 +144,27 @@ css = application.settingsTest.css();
 			</form>
 		</div>
 
-			
-			<cfoutput>
-			#form_html#
-			</cfoutput>
+		<cfoutput>
+		#form_html#
+		</cfoutput>
 		
-
 		<div id="settings_panel_open"><div class="button auto"><a href="#settings_panel.open">Settings</a></div></div>
 
 		<cfoutput>
 		#application.settingsTest.pageObj.jsStaticFiles.getLinks(pagecontent.static_js,1)#
 		</cfoutput>
-		<!---
-		<script src="/_assets/js/jquery-3.4.1.js"></script>
-		<script src="/_assets/js/imagesloaded.pkgd.js"></script>
-		<script src="/_assets/js/isotope.pkgd.min.js"></script>
-		<script src="/_assets/js/masonry-horizontal.js"></script>
-		<script src="/_assets/js/flickity.pkgd.min.js"></script>
-		<script src="/_assets/js/jquery.modal.js"></script>
-		<script src="/_assets/js/jquery.autoButton.js"></script>
-		<script src="/_assets/js/jquery.serializeData.js"></script>
-		<script src="/_assets/js/clik_settings.js"></script>
-		<script src="/_assets/js/getSettings.js"></script>
-		<script src="/_assets/js/photogrid.js"></script>
-		<script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
-		--->
-		<script>
 		
+		<script>
 		$( document ).ready( function() {
 			
 			<cfoutput>
 			#pageData.pagecontent.onready#
-			</cfoutput>
-
-
-
-			<cfoutput>
 			#application.settingsEdit.settingsFormJS(id)#
 			</cfoutput>
 
 		});	
 		</script>
+
 	</body>
 	
 </html>

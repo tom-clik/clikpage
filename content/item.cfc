@@ -29,29 +29,27 @@ component extends="contentSection" {
 		];
 
 		this.styleDefs = [
-			"htop":{"type":"boolean","description":"Put headline before image"},
+			"htop":{"type":"boolean","description":"Put headline before image","default"="false","inherit"=1},
+			"htop":{"type":"boolean","description":"Put headline before image","default"="false","inherit"=1},
 			"image-align":{"type":"halign"},
-			"flow":{"type":"boolean"},
+			"flow":{"type":"boolean","default":false,"inherit":1},
 			"image-gap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances","default":"10px"},
 			"image-width":{"type":"dimension","default":"40%"},
-			"titletag":{"type":"list","list":"h1,h2,h3,h4,h5,h6"},
-			"showtitle":{"type":"boolean"}
+			"titletag":{"type":"list","options": [
+				{"value":"h1"},
+				{"value":"h2"},
+				{"value":"h3"},
+				{"value":"h4"},
+				{"value":"h5"},
+				{"value":"h6"}
+			],"default":"h3"},
+			"showtitle":{"type":"displayblock","default"="block"},
+			"showimage":{"type":"displayblock","default"="block"},
+			"showcaption":{"type":"displayblock","default"="none"},
+			"image-align": {"type":"halign","default"="center","inherit"=1}
 		];
 
-		this.settings = {
-			"flow":false,
-			"titletag":"h3",
-			"showtitle":true,
-			"htop": false,
-			"image-align": 'center'
-		};
-
-		this.defaultStyles = {
-			"image-width":"40%",
-			"image-gap":"10px",
-			"htop": false,
-			"image-align": 'center'
-		};
+		updateDefaults();
 
 		return this;
 	}

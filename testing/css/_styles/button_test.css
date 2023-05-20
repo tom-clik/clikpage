@@ -1,11 +1,5 @@
-body {
-	color:textcolor;
-	font-family:bodyfont;
-	font-size:80%;
-	padding:0;
-}
-
-scheme-button {
+#button {
+	shape:popup;
 	link-color:linkcolor;
 	padding:4px;
 	border {
@@ -23,19 +17,18 @@ scheme-button {
 	button-align:flex-start;
 }
 
-#test2 {
+.scheme-buttontest2 {
 	label-align:right;
 	button-direction:row-reverse;
 	shape:right_arrow;
 }
 
-
-#test3 {
+.scheme-buttontest3 {
 	button-align:center;
 	icon-display:none;
 }
 
-#test4 {
+.scheme-buttontest4 {
 	label-display:none;
 	shape:facebook;
 }

@@ -9,6 +9,9 @@ NB I'm sure we can do this with the standard grid functionality
 	--item-gridgap: 10px;
 	--item-rowgap: 0px;
 	--item-grid-template-columns: 1fr;
+	--showtitle: block;
+	--showimage: block;
+	--showcaption: block;
 }
 
 .imageWrap img {
@@ -30,12 +33,19 @@ NB I'm sure we can do this with the standard grid functionality
 }
 
 .item .title {
+	display: var(--showtitle);
 	grid-area: title;
 }
 
 .item .imageWrap {
-	grid-area: imageWrap;;
+	display: var(--showimage);
+	grid-area: imageWrap;
 }
+
+.item .imageWrap .caption {
+	display: var(--showcaption);
+}
+
 
 .item .textWrap{
 	grid-area: textWrap;
