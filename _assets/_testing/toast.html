@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>jQuery Toaster.js Demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../css/toast.css" rel="stylesheet">
+        <style>
+        body { background-color:#fafafa; font-family:'Roboto'; }
+        h1 { margin:150px auto 50px auto; }
+        </style>
+    </head>
+    <body>
+
+        <h1>jQuery Toaster.js Demo</h1>
+
+        <div id="errors"></div>
+
+        <button onclick="addToast('error')" >Error</button>
+        <button onclick="addToast('info')" >Info</button>
+        <button onclick="addToast('notice')" >Notice</button>
+        <button onclick="addToast('success')" >Success</button>
+        <button onclick="addToast('warning')" >Warning</button>
+
+        <div id="text"></div>
+        <script src="../js/jquery-3.4.1.js"></script>
+        <script src="../js/toast.js"></script>
+        <script type="text/javascript">
+
+        function addToast(type){
+            $.Toast("test", "this is a test message.", type, {
+                has_icon:true,
+                has_close_btn:true,
+                fullscreen:false,
+                timeout:2000,
+                stack:true,
+                has_progress:true,
+                rtl:false,
+                appendTo: '#errors',// use 'body' to auto apply fixed class
+                position_class: "toast-top-right"
+            });
+        }
+
+        $(document).ready(function() {
+            let text = "";
+            for (let i = 1; i <= 20 ; i++) {
+                text += "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
+            }
+            $("#text").html(text);
+        });
+        </script>
+    </body>
+</html>
