@@ -19,8 +19,10 @@ Working of a fashion.
 
 include template="css_test_inc.cfm";
 
-param name="request.rc.test" default="";
-param name="request.rc.type" default="articlelist";
+// MUSTDO: remove and fix this.
+request.rc.test ="";
+
+param name="request.rc.type" default="imagegrid";
 
 id = "#request.rc.type#";
 class = "";
@@ -35,7 +37,6 @@ application.settingsTest.addCs(
 	class=class,
 	id=id
 );
-
 
 cs = application.settingsTest.site.cs[id];
 
@@ -62,17 +63,12 @@ application.settingsTest.contentObj.addPageContent(pageContent,application.setti
 form_html = application.settingsEdit.settingsForm(contentsection=application.settingsTest.site.cs[id],type=request.rc.type);
 
 // TODO: define schemes in some sort of data format.
-tests = [
-	{id="auto",title="Auto grid"},
-	{id="fixedwidth",title="Columns have set width"},
-	{id="fixedcols",title="Fixed number of columns"},
-	{id="setcols",title="Specified columns"},
-	{id="heights",title="Limit the height of images"},
-	{id="captiontop",title="Caption at the top plus some frame styling"},
-	{id="overlay",title="Caption overlay"},
-	{id="masonry",title="Masonry"},
-	{id="carousel",title="Carousel"}
-];
+hasTests = 0;
+schemesFile = expandPath("_styles/#request.rc.type#.json");
+if (FileExists(schemesFile)) {
+	tests = deserializeJSON( FileRead( schemesFile ) );
+	hasTests = 1;
+}
 css = application.settingsTest.css();
 </cfscript>
 
@@ -126,23 +122,27 @@ css = application.settingsTest.css();
 			<cfoutput>#pageData.html#</cfoutput>		
 		</div>
 
-		<div>
-			<form action="imagegrid.cfm">
+		<cfif hasTests>
+			<div>
+				<form>
+					<cfoutput>
+						<input type="hidden" name="type" value="#request.rc.type#">
+					</cfoutput>
+					<h2>Test mode</h2>
+					<select name="test">
+						<cfloop index="test" array="#tests#">
+							<cfset selected =request.rc.test eq test.id ? "selected" : "">
+							<cfoutput>
+							<option #selected# value="#test.id#">#test.title#</option>
+							</cfoutput>
+						</cfloop>
+					</select>
 
-				<h2>Test mode</h2>
-				<select name="test">
-					<cfloop index="test" array="#tests#">
-						<cfset selected =request.rc.test eq test.id ? "selected" : "">
-						<cfoutput>
-						<option #selected# value="#test.id#">#test.title#</option>
-						</cfoutput>
-					</cfloop>
-				</select>
-
-				<label></label>				
-				<div class="button"><input type="submit" value="Update"></div>
-			</form>
-		</div>
+					<label></label>				
+					<div class="button"><input type="submit" value="Update"></div>
+				</form>
+			</div>
+		</cfif>
 
 		<cfoutput>
 		#form_html#

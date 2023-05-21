@@ -124,13 +124,14 @@ component {
 	private void function addContent(required struct cs) {
 		switch (arguments.cs.type) {
 			case "item":
+			case "image":
 				local.image = this.imagesData[this.imagesSetData[2]];
 				arguments.cs.title = "title content";	
 				arguments.cs.content = lorem(255);
 				arguments.cs.image = local.image.image;
 				arguments.cs.caption = local.image.description;				
 				break;
-
+			
 			case "button":
 				arguments.cs.content = "button label";
 				break;

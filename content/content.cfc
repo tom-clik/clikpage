@@ -7,7 +7,7 @@ component extends="utils.baseutils" {
 	*/
 	public content function init (
 		    required   any      settingsObj,
-			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button,form",
+			           string   types="item,grid,title,menu,text,image,imagegrid,articlelist,button,form",
 					   boolean  debug=false
 		)  output=false {
 		

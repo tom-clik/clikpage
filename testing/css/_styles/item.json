@@ -1,0 +1,12 @@
+[
+	{"id":"item_test1","title":"No formatting"},
+	{"id":"item_test2","title":"Headline before image except in mobile"},
+	{"id":"item_test3","title":"Larger image with scheme 'panels'"},
+	{"id":"item_test4","title":"Larger image left"},
+	{"id":"item_test5","title":"No image with space still showing"},
+	{"id":"item_test6","title":"No image with no space [broken]"},
+	{"id":"item_test7","title":"Headline is inline"},
+	{"id":"item_test8","title":"Headline is inline left"},
+	{"id":"item_test9","title":"Flow left"},
+	{"id":"item_test10","title":"Flow right"}
+]

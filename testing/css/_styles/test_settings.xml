@@ -3,9 +3,10 @@
 
 	<link rel="stylesheet" href="menu_test.css" />
 	<link rel="stylesheet" href="imagegrid_test.css" />
-	<link rel="stylesheet" href="general_test.css" />
+	<link rel="stylesheet" href="item_test.css" /> 
 	<link rel="stylesheet" href="button_test.css" />
 	<link rel="stylesheet" href="articlelist_test.css" />
+	<link rel="stylesheet" href="image_test.css" />
 
 	<colors>
 		<textcolor title="Main text color" value="#333333" />
