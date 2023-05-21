@@ -143,15 +143,20 @@ component {
 			    console.log(data); 
 
 			    $.ajax({
-			    	url:'#variables.api#?method=css',
+			    	url:'api/#variables.api#?method=css',
 			    	data: {'cs_id':data.cs_id, 'settings': JSON.stringify(data)},
 			    	method: 'post'
 			    }).done(function(e) {
-			    	$('##css').html(e.css);
-			    	console.log($('##css').html()); 
-			    	console.log('we have updated');
-			    	$#arguments.id#.data('photoGrid').reload();
-			    });
+			    	if (e.statuscode == 200) {
+				    	$('##css').html(e.css);
+				    	$#arguments.id#.data('photoGrid').reload();
+			    	}
+			    	else {
+			    		messageHandler.error(e.statustext);
+			    	}
+			    }).fail(function (request, status, error) {
+			    	messageHandler.error(error);
+				});
 
 			    return false; 
 

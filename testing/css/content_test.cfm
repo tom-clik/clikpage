@@ -17,12 +17,18 @@ Working of a fashion.
 
 <cfscript>
 
-include template="css_test_inc.cfm";
-
-// MUSTDO: remove and fix this.
-request.rc.test ="";
-
+param name="request.rc.reload" type="boolean" default="0";
+param name="request.rc.action" default='index';
+param name="request.rc.test" default='';
+param name="request.rc.medium" default='main';
 param name="request.rc.type" default="imagegrid";
+
+if (request.rc.reload OR ! StructKeyExists(application, "settingsTest") ) {
+	application.settingsTest = new settingsTest();
+	application.settingsEdit = new clikpage.settings.settingsEdit(
+		contentObj = application.settingsTest.contentObj
+	);
+}
 
 id = "#request.rc.type#";
 class = "";

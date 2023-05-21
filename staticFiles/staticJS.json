@@ -32,7 +32,7 @@
     },
     {
       "scripts": [
-        "serializeData","clik_settings","getSettings"
+        "serializeData","clik_settings","getSettings","messageHandler"
       ],
       "min": "/_assets/js/_min/clikutils.0.2.min.js",
       "name": "clikutils"
@@ -201,6 +201,12 @@
       "description": "Standard clik functionality",
       "name": "clik_onready",
       "requires": "jquery,modal"
+    },
+    {
+      "min":"/_assets/js/messageHandler.js",
+      "description": "Show messages and errors on the client side",
+      "name": "messageHandler",
+      "requires": "jquery"
     },
     {
       "min":"/_assets/js/heightFix.js",

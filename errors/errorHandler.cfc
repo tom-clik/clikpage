@@ -58,7 +58,8 @@ component {
 				niceError.statustext="Unauthorized";
 				niceError.report = 0;
 				break;
-			case  "notfound": case  "notfounddetail":case "not found":
+
+			case "missinginclude": case  "notfound": case  "notfounddetail":case "not found":
 				niceError.statuscode="410";
 				niceError.statustext="Page not found";
 				niceError.report = 0;
@@ -91,11 +92,11 @@ component {
 		}
 		else {
 			if (arguments.debug) {
+				cfheader( statuscode=niceError.statuscode, statustext=niceError.statustext );
 				writeDump(var=niceError,label="Error");
 			}
 			else {
-				cfheader( name="statuscode", value=niceError.statuscode );
-				cfheader( name="statustext", value=niceError.statustext );	
+				cfheader( statuscode=niceError.statuscode, statustext=niceError.statustext );
 				if (! niceError.report) {
 					abort;
 				}
