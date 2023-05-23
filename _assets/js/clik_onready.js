@@ -55,7 +55,9 @@ $(document).ready(function() {
 			}
 		);
 	}
-	
+	if(jQuery().tabs) {
+		$(".cs-tabs").tabs({"resize":"throttledresize","fit":true,"fixedheight":false,"allowClosed":false});
+	}
 	/**
 	 * Attach a custom scrollbar to any element with a class of .wrap
 	 * and a setting of --scrollbar:1

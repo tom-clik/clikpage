@@ -60,9 +60,11 @@ pageData = application.settingsTest.pageData(
 pageContent = application.settingsTest.pageObj.getContent();
 pageContent.static_css["navbuttons"] = 1;
 pageContent.static_css["scrollbar"] = 1;
+pageContent.static_css["tabs"] = 1;
 pageContent.static_js["main"] = 1;
 pageContent.static_js["clikutils"] = 1;
 pageContent.static_js["scrollbar"] = 1;
+pageContent.static_js["tabs"] = 1;
 
 application.settingsTest.contentObj.addPageContent(pageContent,application.settingsTest.contentObj.getPageContent(cs,{}));
 
@@ -94,26 +96,7 @@ css = application.settingsTest.css();
 				background-color: #f3f3f3;
 				padding:20px;
 			}
-			#settings_panel {
-				--draggable:true;
-				--modal:false;
-				--fixed:true;
-			}
-
-			#settings_panel .wrap {
-				--scrollbar:1;
-			}
-
-			#settings_panel_close {
-				--label-display:none;
-				--icon-display:block;
-				--shape:close;
-				--icon-width:16px;
-				--icon-height:16px;
-				position: absolute;
-				top:4px;
-				right:4px;
-			}
+			
 			
 		</style>
 		<style id="css">

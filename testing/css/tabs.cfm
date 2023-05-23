@@ -24,7 +24,7 @@ Different ideas for tabs. Working nicely.
 			max-width: 100%;
 		}
 		.cs-tabs {
-			background-color: #9d9d9d;
+/*			background-color: #9d9d9d;*/
 			margin:20px 0;
 		}
 		.cs-tabs:not(.vertical) {
@@ -36,15 +36,7 @@ Different ideas for tabs. Working nicely.
 			--tab-font-size:.8em;
 			--tab-border-radius:0;
 		}
-
-		#test1 {
-			--tab-border-radius:4px;
-			background-color: transparent;
-		}
-
-		#test1.cs-tabs .item {
-			border: 1px solid #9c9c9c;
-		}
+		
 		.cs-tabs .item {
 			border-top: 1px solid #9c9c9c;
 			--tab-border-color: #9c9c9c;
@@ -59,7 +51,14 @@ Different ideas for tabs. Working nicely.
 			--tab-background: #9c9c9c;
 		}
 
-		
+		#test1 {
+			--tab-border-radius:4px;
+			background-color: transparent;
+		}
+
+		#test1.cs-tabs .item {
+			border: 1px solid #9c9c9c;
+		}
 		#test3.cs-tabs .item {
 			--tab-border-width: 1px;
 			border-top-width: 0px;
@@ -98,8 +97,8 @@ function getTabs(required string id, string class="", numeric count=4) {
 	ret &= "<div class='#local.class#' id='#arguments.id#'>\n";
 	for (var i = 1; i lte arguments.count; i++) {
 		local.open = i eq 2 ? " state_open": "";
-		ret &= "	<div class='tab#local.open#' id='#arguments.id#_tab#i#' title='Test #i#'>\n";
-		ret &= "		<h3 class='title' data-target='###arguments.id#_tab#i#'>tab #i#</h3>\n";
+		ret &= "	<div class='tab#local.open#' id='#arguments.id#_tab#i#'>\n";
+		ret &= "		<h3 class='title'>tab #i#</h3>\n";
 		ret &= "		<div class='item'>\n";
 		for (var p=1 ; p lte i; p++) {
 			ret &= "			<p>Tab #i# Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n";

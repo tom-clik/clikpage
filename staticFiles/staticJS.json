@@ -14,7 +14,8 @@
         "swipeDetector",
         "flickity",
         "scrollfix",
-        "clik_onready"
+        "clik_onready",
+        "tabs"
         
       ],
       "name": "main",
@@ -244,6 +245,12 @@
       "description": "Get content item settings from css custom vars",
       "name": "getSettings",
       "requires": "jquery,clik_settings"
+    },
+    {
+      "min":"/_assets/js/jquery.tabs.js",
+      "description": "Tabbed content",
+      "name": "tabs",
+      "requires": "jquery,throttledresize"
     }
     
   ]
