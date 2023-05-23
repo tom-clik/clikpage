@@ -7,7 +7,7 @@ component {
 
 	public any function init() {
 		// Style definition -- see link to css file ibid.
-		local.settingsDef = ExpandPath("_styles/test_settings.xml");
+		local.settingsDef = ExpandPath("../css/_styles/test_settings.xml");
 		this.settingsObj = new clikpage.settings.settings(debug=1);
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj);
 		this.contentObj.debug = 1;

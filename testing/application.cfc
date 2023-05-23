@@ -9,6 +9,7 @@ component {
 	this.mappings = [
 		"/_assets" = this.baseDir & "\clikpage\_assets",
 	];
+
 	this.errorsFolder = this.rootDir & "\testing\_errors";
 	
 	public void function onApplicationStart()  output=false {

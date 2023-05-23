@@ -18,35 +18,35 @@ component {
 		variables.contentObj = arguments.contentObj;
 		variables.api = arguments.api;
 
-		variables.settingOptions = {};
-		variables.settingOptions["displayblock"] = [
+		this.settingsOptions = {};
+		this.settingsOptions["displayblock"] = [
 			{"value":"none","name":"Hide","description":""},
 			{"value":"block","name":"Show","description":""}
 		];
-		variables.settingOptions["halign"] = [
+		this.settingsOptions["halign"] = [
 			{"value":"left","name":"Left","description":""},
 			{"value":"center","name":"Centre","description":""},
 			{"value":"right","name":"Right","description":""}
 		];
-		variables.settingOptions["valign"] = [
+		this.settingsOptions["valign"] = [
 			{"value":"top","name":"Top","description":""},
 			{"value":"middle","name":"Middle","description":""},
 			{"value":"bottom","name":"Bottom","description":""}
 		];
-		variables.settingOptions["flexgrow"] = [
+		this.settingsOptions["flexgrow"] = [
 			{"value":"1","name":"Yes","description":"Item will expand to fit width (if set)"},
 			{"value":"0","name":"No","description":"Item will not expand."}
 		];
-		variables.settingOptions["overflow"] = [
+		this.settingsOptions["overflow"] = [
 			{"value":"hidden","name":"Hidden","description":""},
 			{"value":"show","name":"show","description":""}
 		];
-		variables.settingOptions["float"] = [
+		this.settingsOptions["float"] = [
 			{"value":"left","name":"Left","description":""},
 			{"value":"right","name":"Right","description":""},
 			{"value":"none","name":"None","description":""}
 		];
-		variables.settingOptions["position"] = [
+		this.settingsOptions["position"] = [
 			{"value":"static","name":"Normal","description":""},
 			{"value":"fixed","name":"Fixed to screen","description":""},
 			{"value":"absolute","name":"Relative to container","description":""},
@@ -265,6 +265,7 @@ component {
 			local.description = local.settingDef.description? : "No description";
 			local.name = local.settingDef.name? : local.setting;
 			retval &= "<label title='#encodeForHTMLAttribute(local.description)#'>#local.name#</label>";
+
 			local.value = local.settings[local.setting] ? : "";
 			
 			switch(local.settingDef.type) {
@@ -286,7 +287,6 @@ component {
 					);
 					break;
 				case "shape":	
-					/* MUSTDO: add shapeOptions to contentObj */
 					retval &= displayOptions(
 						options = variables.contentObj.shapeOptions(),
 						setting = local.setting, 
@@ -301,7 +301,7 @@ component {
 				case "flexgrow": 
 				case "position":
 					retval &= displayOptions(
-						options = variables.settingOptions[local.settingDef.type],
+						options = this.settingsOptions[local.settingDef.type],
 						setting = local.setting, 
 						value   = local.value
 					);
