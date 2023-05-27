@@ -1,4 +1,4 @@
-#panel {
+.settings_panel {
 	position: fixed;
 	top:20px;
 	left:20px;
@@ -8,7 +8,75 @@
 	min-width:200px;
 	min-height: 260px;
 	z-index: 500;
+	width:480px;
+	height: 460px;
+	display: none;
 }
+
+.settings_panel {
+	--draggable:true;
+	--modal:false;
+	--fixed:true;
+}
+
+.settings_panel .wrap {
+	--scrollbar:1;
+}
+
+#settings_panel_close {
+	--label-display:none;
+	--icon-display:block;
+	--shape:close;
+	--icon-width:16px;
+	--icon-height:16px;
+	position: absolute;
+	top:4px;
+	right:4px;
+	z-index: 2000;
+}
+
+.settings_panel.open {
+	display: block;
+}
+
+#settings_panel_open {
+	position: fixed;
+	top:10px;
+	left:10px;
+
+}
+
+.settings_panel .formInner {
+	height: 100%;
+	display: grid;
+	grid-template-rows: minmax(0,1fr) min-content;
+	
+}
+
+.settings_panel .formBody {
+	overflow: hidden;
+}
+
+.settings_panel .tab {
+	
+}
+
+
+.settingsForm .wrap {
+	overflow: hidden;
+}
+
+.button {
+	padding:4px 8px;
+	border:1px solid #333;
+	background-color:white;
+	margin-top:12px;
+}
+
+.button:hover {
+	background-color:#efefef;
+}
+
 
 fieldset {
 	display: grid;
@@ -26,4 +94,13 @@ input, select {
 	display: grid;
 	grid-template-columns: min-content auto;
 	grid-gap: 4px;
+}
+
+.settings_panel .title  {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.settings_panel .item  {
+	padding:8px;
 }

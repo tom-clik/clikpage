@@ -42,20 +42,20 @@ component extends="contentSection" {
 
 		this.styleDefs = [
 			"orientation":{
-				"type":"options",
+				"type":"list",
 				"name": "Orientation",
 				"description": "Align the menu horizontally or vertically.",
 				"default":"horizontal",
 				"options":[
-					{"value":"horizontal"},
-					{"value":"vertical"}
+					{"name":"Horizontal","value":"horizontal"},
+					{"name":"Vertical","value":"vertical"}
 				],
 				"inherit":true
 			},
-			"link-color":{"type":"color"},
-			"menu-gap":{"type":"dimension"},
-			"menu-text-align":{"type":"halign"},
-			"menu-anim-time":{"type":"time"},
+			"link-color":{"type":"color","name":"Link colour","description":"Colour of the menu items"},
+			"menu-gap":{"type":"dimension","name":"Gap","description":"Gap between menu items"},
+			"menu-text-align":{"type":"halign","name":"Text align","description":"Alignment of the menu items"},
+			"menu-anim-time":{"type":"time","name":"","description":""},
 			"menu-label-display": {
 				"type":"displayblock",
 				"name":"Display label",
@@ -75,9 +75,9 @@ component extends="contentSection" {
 				"default":"none",
 				"inherit":true,
 				"options":[
-					{"value":"normal","display":"Normal"},
-					{"value":"dividers","display":"Dividers"},
-					{"value":"boxes","display":"Boxes"}
+					{"value":"normal","name":"Normal"},
+					{"value":"dividers","name":"Dividers"},
+					{"value":"boxes","name":"Boxes"}
 				]
 			},
 			"flex": {
@@ -101,17 +101,43 @@ component extends="contentSection" {
 			]},
 			"align":{
 				"type":"halign",
-				"name": "Alignment",
+				"name": "Menu alignment",
 				"default":"left",
 				"inherit":true,
-				"description":"For flexible layouts (see Flex mode), which direction to align the items in"
+				"description":"Which direction to align the menu. Only applies if you have set a width or are using Flex mode without stretch"
 			},
-			"popup": {
-				"type":"boolean",
-				"name":"Popup",
-				"description":"Show as popup (you will need to ensure a button is present that opens the menu",
-				"inherit":true,
-				"default":false
+			"menu-border-color": {
+				"name":"Border colour","type":"color","description":"", "default":"--link-color"
+			},
+			"menu-background": {
+				"name":"Background","type":"color","description":"", "default":"transparent"
+			},
+			"menu-item-padding": {
+				"name":"","type":"dimensionlist","description":"", "default":"0 8px"
+			},
+			"menu-item-border": {
+				"name":"Border with","type":"dimensionlist","description":"", "default":"0"
+			},
+			"icon-width": {
+				"name":"Width of menu icons","type":"dimension","description":"", "default":"32px"
+			},
+			"icon-height": {
+				"name":"Height of menu icons","type":"dimension","description":"", "default":"32px"
+			},	
+			"menu-icon-gap": {
+				"name":"Gape between icon and text","type":"dimension","description":"", "default":"8px"
+			},
+			"menu-openicon-width": {
+				"name":"Open icon width","type":"dimension","description":"", "default":"16px"
+			},
+			"menu-openicon-height": {
+				"name":"Open icon height","type":"dimension","description":"", "default":"16px"
+			},	
+			"menu-openicon-adjust": {
+				"name":"Menu open icon adjustment","type":"dimension","description":"", "default":"-4px"
+			},
+			"menu-anim-time": {
+				"name":"Menu animation time","type":"dimension","description":"", "default":"0.3s"
 			}
 		];
 		

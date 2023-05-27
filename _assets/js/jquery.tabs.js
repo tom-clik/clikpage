@@ -7,7 +7,7 @@ and call this on the container. No need for separate header div
 
 ## Synopsis
 
-Works by positioning the tab content absolutely. On seleting a tab, has to work out the height of the tab and expand the container. Other that that it's all CSS.
+Works by positioning the tab content absolutely. On seleting a tab, has to work out the height of the tab and expand the container. Other than that it's all CSS.
 
 ## Usage
 
@@ -46,6 +46,7 @@ $.fn.tabs = function(ops) {
 			accordian: false, // use accordion mode (vertical ignored)
 			resize: "resize", // window event to trigger resize. use e.g. throttledresize
 			fixedheight:true,// height is always maximum size
+			fitheight:true,
 			menuAnimationTime: 600,
 			allowClosed: true // all tabs can close in accordion
 		},
@@ -56,8 +57,6 @@ $.fn.tabs = function(ops) {
     	var $tabs = $(this);
     	var vertical = options.vertical || $tabs.hasClass("vertical");
     	var accordian = options.accordian || $tabs.hasClass("accordian");
-
-    	setHeight($tabs.find(".tab.state_open"));
     	
     	$tabs.on("resize",function() {
     		console.log("Resizing ", $tabs.attr("id"));
@@ -71,34 +70,40 @@ $.fn.tabs = function(ops) {
 
     	function setHeight($tab) {
     		if (accordian) return;
-    		$tabs.css({"height":"auto"});
-    		let t_height = vertical ? 0 : $tab.outerHeight(); // add height of tab panel if horizontal
+    		let t_height = vertical ? 0 : $tabs.outerHeight(); // add height of tab panel if horizontal
     		console.log("tab panel height: " + t_height);
-    		var maxheight = 0;
-    		if (options.fixedheight) {
-	    		$tabs.find(".item").each(function() {
-	    			let height = $(this).outerHeight();
-	    			if (height > maxheight) maxheight = height;
-	    		});
+    		if (options.fitheight) {
+    			$parent = $tabs.parent();
+    			console.log($parent.height());
+    			$tab.find(".item").outerHeight($parent.height() - t_height);
     		}
     		else {
-    			// adjust height to selected item
-    			let $item = $tab.find(".item").first();
-    			maxheight = $item.outerHeight();
-    		}
-    		t_height += maxheight;
-    		
-    		
-    		// make sure height is enough to accomadate vertical tab panel
-    		if (vertical && ( t_height < $tabs.outerHeight() ) ) { 
-    			t_height = $tabs.outerHeight();
-    		}
-    		$tabs.outerHeight(t_height);
+    			$tabs.css({"height":"auto"});
+    			var maxheight = 0;
+	    		if (options.fixedheight) {
+		    		$tabs.find(".item").each(function() {
+		    			let height = $(this).outerHeight();
+		    			if (height > maxheight) maxheight = height;
+		    		});
+	    		}
+	    		else {
+	    			// adjust height to selected item
+	    			let $item = $tab.find(".item").first();
+	    			maxheight = $item.outerHeight();
+	    		}
+	    		t_height += maxheight;
+	    		    		
+	    		// make sure height is enough to accomadate vertical tab panel
+	    		if (vertical && ( t_height < $tabs.outerHeight() ) ) { 
+	    			t_height = $tabs.outerHeight();
+	    		}
+	    		$tabs.outerHeight(t_height);
+	    	}
     	}
 
     	$tabs.on("click",".title",function() {	
-			
-			let $tab = $($(this).data("target"));
+			console.log( "clicked " + $(this).html() );
+			let $tab = $(this).parent();
 
 			if ($tab) {
 				console.log("opening " + $tab.attr("id"));
@@ -129,7 +134,6 @@ $.fn.tabs = function(ops) {
 						return;
 					}
 					$tab.addClass("state_open").siblings().removeClass("state_open");
-					setHeight($tab);
 				}
 				setHeight($tab);
 			}

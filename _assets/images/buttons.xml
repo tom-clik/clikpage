@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>	
 
 <buttons>
-	<button src="/_assets/images/arrow_down.svg" id="arrow_down" viewBox="0 0 284.929 284.929" />
-	<button src="/_assets/images/chevron-left.svg" id="chevron-left" viewBox="0 0 16 16" />
-	<button src="/_assets/images/chevron-right.svg" id="chevron-right" viewBox="0 0 16 16" />
-	<button src="/_assets/images/left_arrow.svg" id="left_arrow" viewBox="0 0 197.4 197.4" />
-	<button src="/_assets/images/right_arrow.svg" id="right_arrow" viewBox="0 0 223.413 223.413" />
-	<button src="/_assets/images/menu.svg" id="menu" viewBox="0 0 24 24" />
-	<button src="/_assets/images/bars.svg" id="bars" viewBox="0 0 448 512" />
-	<button src="/_assets/images/close47.svg" id="close" viewBox="0 0 357 357" />
-	<button src="/_assets/images/social/facebook.svg" id="facebook" viewBox="0 0 64 64" />
-	<button src="/_assets/images/social/twitter.svg" id="twitter" viewBox="0 0 16 16" />
-	<button src="/_assets/images/social/whatspp.svg" id="whatspp" viewBox="0 0 16 16" />
-	<button src="/_assets/images/social/instagram.svg" id="instagram" viewBox="0 0 16 16" />
+	<button name="Arrow down" src="/_assets/images/arrow_down.svg" id="arrow_down" viewBox="0 0 284.929 284.929" />
+	<button name="Left chevron" src="/_assets/images/chevron-left.svg" id="chevron-left" viewBox="0 0 16 16" />
+	<button name="Right chevron" src="/_assets/images/chevron-right.svg" id="chevron-right" viewBox="0 0 16 16" />
+	<button name="Left arrow" src="/_assets/images/left_arrow.svg" id="left_arrow" viewBox="0 0 197.4 197.4" />
+	<button name="Right arrow" src="/_assets/images/right_arrow.svg" id="right_arrow" viewBox="0 0 223.413 223.413" />
+	<button name="Menu" src="/_assets/images/menu.svg" id="menu" viewBox="0 0 24 24" />
+	<button name="Bars" src="/_assets/images/bars.svg" id="bars" viewBox="0 0 448 512" />
+	<button name="Close" src="/_assets/images/close47.svg" id="close" viewBox="0 0 357 357" />
+	<button name="Open full" src="/_assets/images/open_in_full.svg" id="open_in_full" viewBox="0 0 24 24" />
+	<button name="Pop up" src="/_assets/images/popup.svg" id="popup" viewBox="0 0 283.922 283.922" />
+	<button name="Thumbnails" src="/_assets/images/thumbnails.svg" id="thumbnails" viewBox="0 0 408 408" />
+	<button name="Shopping cart" src="/_assets/images/shopping_cart_black_24dp.svg" id="cart" viewBox="0 0 24 24" />
+	<button name="Facebook" src="/_assets/images/social/facebook.svg" id="facebook" viewBox="0 0 64 64" />
 
-	
+	<button name="Twitter" src="/_assets/images/social/twitter.svg" id="twitter" viewBox="0 0 16 16" />
+	<button name="Whatsapp" src="/_assets/images/social/whatspp.svg" id="whatspp" viewBox="0 0 16 16" />
+	<button name="Instagram" src="/_assets/images/social/instagram.svg" id="instagram" viewBox="0 0 16 16" />
 </buttons>

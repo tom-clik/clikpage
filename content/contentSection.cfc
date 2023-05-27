@@ -227,32 +227,30 @@ component {
 			
 			for (local.style in this.styleDefs) {
 				local.def = this.styleDefs[local.style];
-				// ignore complex settings
-				if (NOT StructKeyExists(this.settings, local.style)) {
-					if (StructKeyExists(local.state_styles,local.style)) {
-						if (isStruct(local.state_styles[local.style])) {
-							throw("incorrect value for #local.style#");
-						}
-						else {
-							switch (local.def.type) {
-								case "dimension":
-									local.val = variables.contentObj.settingsObj.displayDimension(local.state_styles[local.style]);
-								break;
-								case "color":
-									local.val = variables.contentObj.settingsObj.displayColor(local.state_styles[local.style]);
-								break;
-								default:
-									local.val = local.state_styles[local.style];
-								break;
-							}
-							// css &= this.settingsObj.CSSCommentHeader("Content styling");
-							ret &= "\t--#local.style#: " & local.val & ";\n";
-						}
+				if (StructKeyExists(local.state_styles,local.style)) {
+					if (isStruct(local.state_styles[local.style])) {
+						throw("incorrect value for #local.style#");
 					}
 					else {
-						ret &= "\t/* no style for #local.style# */\n";	
+						switch (local.def.type) {
+							case "dimension":
+								local.val = variables.contentObj.settingsObj.displayDimension(local.state_styles[local.style]);
+							break;
+							case "color":
+								local.val = variables.contentObj.settingsObj.displayColor(local.state_styles[local.style]);
+							break;
+							default:
+								local.val = local.state_styles[local.style];
+							break;
+						}
+						// css &= this.settingsObj.CSSCommentHeader("Content styling");
+						ret &= "\t--#local.style#: " & local.val & ";\n";
 					}
 				}
+				else {
+					ret &= "\t/* no style for #local.style# */\n";	
+				}
+				
 			}
 
 			ret &= variables.contentObj.settingsObj.css(local.state_styles);
@@ -462,6 +460,16 @@ component {
 			}
 		}
 		
+	}
+
+	/**
+	 * Remove style def options e.g. for imagegrid which inherits from grid we don't want flex or named positions.
+	 */
+	public void function removeOptions(required settingname, required string options) {
+		var voptions = arguments.options;
+		this.styleDefs[arguments.settingname]["options"] = arrayFilter(this.styleDefs[arguments.settingname]["options"], function(item,options) {
+			return !ListFind(variables.voptions,item.value);
+		});
 	}
 	
 	public struct function getStaticCss() {
