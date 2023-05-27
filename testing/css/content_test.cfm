@@ -65,10 +65,12 @@ pageContent.static_js["main"] = 1;
 pageContent.static_js["clikutils"] = 1;
 pageContent.static_js["scrollbar"] = 1;
 pageContent.static_js["tabs"] = 1;
+pageContent.static_js["settingsForm"] = 1;
 
 application.settingsTest.contentObj.addPageContent(pageContent,application.settingsTest.contentObj.getPageContent(cs,{}));
 
-form_html = application.settingsEdit.settingsForm(contentsection=application.settingsTest.site.cs[id],type=request.rc.type);
+// DEPRECTAED: Moving to JS plug-in
+// form_html = application.settingsEdit.settingsForm(contentsection=application.settingsTest.site.cs[id],type=request.rc.type);
 
 // TODO: define schemes in some sort of data format.
 hasTests = 0;
@@ -133,9 +135,7 @@ css = application.settingsTest.css();
 			</div>
 		</cfif>
 
-		<cfoutput>
-		#form_html#
-		</cfoutput>
+		<div id='settings_panel' class='settings_panel modal'></div>
 		
 		<div id="settings_panel_open"><div class="button auto"><a href="#settings_panel.open">Settings</a></div></div>
 
@@ -143,12 +143,18 @@ css = application.settingsTest.css();
 		#application.settingsTest.pageObj.jsStaticFiles.getLinks(pagecontent.static_js,1)#
 		</cfoutput>
 		
+		
 		<script>
 		$( document ).ready( function() {
-			
 			<cfoutput>
+			$("##settings_panel").settingsForm({
+				id: '#cs.id#',
+				type: '#cs.type#',
+				settings: #serializeJSON(cs.settings.main)#,
+				api: 
+			});
+			
 			#pageData.pagecontent.onready#
-			#application.settingsEdit.settingsFormJS(id)#
 			</cfoutput>
 
 		});	

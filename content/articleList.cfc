@@ -22,7 +22,7 @@ component extends="item" {
 			{"name"="text", "selector"=" .textWrap"}
 		];
 
-		this.styleDefs["carousel"] = {"type":"boolean","description":"use carousel for list",default=false,inherit=1};
+		this.styleDefs["carousel"] = {"type":"boolean","description":"use carousel for list","default"=false,"inherit"=1};
 		
 		updateDefaults();
 		

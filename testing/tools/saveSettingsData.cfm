@@ -16,7 +16,7 @@ settingsTest = new clikpage.testing.css.settingsTest();
 settingsEditObj = new clikpage.settings.settingsEdit(contentObj=settingsTest.contentObj);
 
 clik_settings = settingsTest.contentObj.getSettings();
-clik_settings["panel"] = settingsEditObj.styleDefs;
+clik_settings["panel"]["styleDefs"] = settingsEditObj.styleDefs;
 
 settingsOptions = settingsEditObj.settingsOptions;
 settingsOptions["shapes"] = settingsTest.contentObj.shapeOptions();

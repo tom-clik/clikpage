@@ -490,11 +490,15 @@ component extends="utils.baseutils" {
 		return html;
 	}
 
-	/** Tools function to get all settings definitions */
+	/**
+	 * Tools function to get all settings definitions
+	 */
 	public struct function getSettings() {
 		var settings = {};
 		for (local.type in this.contentSections) {
-			settings[local.type] = this.contentSections[local.type].styleDefs;
+			settings[local.type]["styleDefs"] = this.contentSections[local.type].styleDefs;
+			settings[local.type]["states"] = this.contentSections[local.type].states;
+			settings[local.type]["panels"] = this.contentSections[local.type].panels;
 		}
 
 		return settings;

@@ -235,21 +235,21 @@ component {
 			type = arguments.type
 		);
 
-		retval &= "
-								</fieldset>
-							</div>
-						</div>	
+			retval &= "
+									</fieldset>
+								</div>
+							</div>	
+						</div>
+					</div>
+				
+					<div class='submit'>
+						<label></label>				
+						<div class='button'><input type='submit' value='Update'></div>
 					</div>
 				</div>
+			</form>
 			
-				<div class='submit'>
-					<label></label>				
-					<div class='button'><input type='submit' value='Update'></div>
-				</div>
-			</div>
-		</form>
-		
-	</div>";
+		</div>";
 
 		return retval;
 	}

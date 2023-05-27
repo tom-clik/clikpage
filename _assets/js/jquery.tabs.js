@@ -102,7 +102,7 @@ $.fn.tabs = function(ops) {
     	}
 
     	$tabs.on("click",".title",function() {	
-			
+			console.log( "clicked " + $(this).html() );
 			let $tab = $(this).parent();
 
 			if ($tab) {
