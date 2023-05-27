@@ -86,10 +86,11 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 			    console.log(data); 
 
 			    $.ajax({
-			    	url:`api/${plugin.settings.api}?method=css`,
+			    	url:`${plugin.settings.api}?method=css`,
 			    	data: {'cs_id':data.cs_id, 'settings': JSON.stringify(data)},
 			    	method: 'post'
 			    }).done(function(e) {
+			    	console.log(e);
 			    	if (e.statuscode == 200) {
 				    	$('#css').html(e.css);
 				    	// MUSTDO: generic reference to this -- if they need it
@@ -116,7 +117,7 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 			<form id='settingsForm'>	
 				<div class='formInner'>
 				
-				<input type='hidden' name='cs_id' value='{plugin.settings.id}'>
+				<input type='hidden' name='cs_id' value='${plugin.settings.id}'>
 					<div class='formBody'>
 						<div class='cs-tabs'>
 							<div class='tab state_open' id='${plugin.settings.id}_tab_settings'>
@@ -175,16 +176,18 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 					case "list":
 						let options = settingDef.options;
 						retval += displayOptions(
-							options = options,
-							setting = setting, 
-							value   = value
+							options,
+							setting, 
+							value,
+							("default" in settingDef)
 						);
 						break;
 					case "shape":	
 						retval += displayOptions(
 							settingsOptions.shapes,
 							setting, 
-							value
+							value,
+							true
 						);
 						break;
 					case "displayblock":
@@ -194,10 +197,12 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 					case "overflow":
 					case "flexgrow": 
 					case "position":
+						console.log("setting:" + setting, settingDef,("default" in settingDef));
 						retval += displayOptions(
 							settingsOptions[settingDef.type],
 							setting, 
-							value
+							value,
+							("default" in settingDef)
 						);
 						break;
 					default:
@@ -217,11 +222,12 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 			return value ? " selected" : "";
 		}
 
-		var displayOptions = function (options, setting, value, optional) {
-			console.log(options);
-			optional = optional || false;
+		var displayOptions = function (options, setting, value, required) {
+			if ( required == undefined) required = true;
+			console.log(required);
+			
 			var retval = `<select name='${setting}'>`;
-			if (optional) {
+			if (!required) {
 				let selected = arguments.value == "" ? " selected": "";
 				retval += `<option value="${selected}"></option>`;
 			}
