@@ -280,8 +280,12 @@ component {
 	}
 
 	public string function minifiyJS(required string js) {
-		arguments.js =	variables.consolepattern.matcher(arguments.js).replaceAll("");
+		arguments.js = removeJsComments(arguments.js);
 		return callCompressAPI(input=arguments.js, apiendpoint="https://www.toptal.com/developers/javascript-minifier/api/raw");
+	}
+
+	public string function removeJsComments(required string js) {
+		return variables.consolepattern.matcher(arguments.js).replaceAll("");
 	}
 
 	private string function callCompressAPI(required string input, required string apiendpoint) {

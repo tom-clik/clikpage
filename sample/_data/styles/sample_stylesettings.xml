@@ -24,9 +24,9 @@
 	</media>
 
 	<fonts>
-		<bodyfont title="Body font" family="Open Sans" />
-		<titlefont title="Title font" family="Lato" />
-		<subtitlefont title="Sub Title font" family="--titlefont" description="Used by sub titles" />
+		<text-font title="Body font" family="Open Sans" />
+		<title-font title="Title font" family="Lato" />
+		<subtitle-font title="Sub Title font" family="--titlefont" description="Used by sub titles" />
 		<test font-family="broken"  weights="" styles="" variants="" stretch="" />
 	</fonts>
 

@@ -3,21 +3,21 @@
     {
       "scripts": [
         "jquery",
-        "jqueryui",
-        "validate",
-        "fuzzy",
-        "clikForm",
         "autoButton",
         "animateAuto",
         "popup",
+        "menus",
         "modal",
         "swipeDetector",
-        "flickity",
         "scrollfix",
-        "clik_onready"
+        "clik_onready",
+        "tabs",
+        "getSettings",
+        "serializeData",
+        "throttledresize"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.1.min.js",
+      "min": "/_assets/js/_min/clikmain.0.2.min.js",
     },
     {
       "scripts": [
@@ -207,6 +207,41 @@
       "name": "tooltipster",
       "requires": "jquery",
       "packageExclude": 1
+    },
+    {
+      "min":"/_assets/js/photogrid.js",
+      "description": "Proper serialization of form data to submit via Ajax",
+      "name": "photogrid",
+      "requires": "jquery,getSettings"
+    },
+    {
+      "min":"/_assets/js/jquery.serializeData.js",
+      "description": "Proper serialization of form data to submit via Ajax",
+      "name": "serializeData",
+      "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/clik_settings.js",
+      "description": "Auto generated data file of style definitions for editing",
+      "name": "clik_settings"
+    },
+    {
+      "min":"/_assets/js/getSettings.js",
+      "description": "Get content item settings from css custom vars",
+      "name": "getSettings",
+      "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/jquery.tabs.js",
+      "description": "Tabbed content",
+      "name": "tabs",
+      "requires": "jquery,throttledresize"
+    },
+    {
+      "min":"/_assets/js/clik.settingsForm.js",
+      "description": "Settings Editing form",
+      "name": "settingsForm",
+      "requires": "jquery,clik_settings,messageHandler"
     }
     
   ]
