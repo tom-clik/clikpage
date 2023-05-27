@@ -2,9 +2,17 @@
 
 # Colors Test
 
+Colour editing page.
+
+## Status
+
+Not done. Just shows some boxes. 
+
+Really wants to be a JavaScript plugin anyway. 
+
 ## History
 
-2022-03-18  THP   Created
+2022-03-18  THP   rough start
 
 --->
 

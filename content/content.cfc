@@ -7,7 +7,7 @@ component extends="utils.baseutils" {
 	*/
 	public content function init (
 		    required   any      settingsObj,
-			           string   types="item,grid,container,columns,title,menu,text,image,imagegrid,articlelist,button,form",
+			           string   types="item,grid,title,menu,text,image,imagegrid,articlelist,button,form",
 					   boolean  debug=false
 		)  output=false {
 		
@@ -454,7 +454,6 @@ component extends="utils.baseutils" {
 			
 			local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
 			local.buttons = variables.utils.xml.xml2data(local.xmlData);
-			
 			this.contentSections["button"].addShapes(local.buttons);
 			
 		}
@@ -463,6 +462,17 @@ component extends="utils.baseutils" {
 		}
 		
 
+	}
+
+	/* Get list of available shapes to display in a settings edit form */
+	public array function shapeOptions() {
+		local.ret = [];
+		local.shapes =this.contentSections["button"].getShapes();
+		for ( local.shape in  local.shapes) {
+			local.shapeObj = 
+			arrayAppend( local.ret, {"name":local.shapes[local.shape].name,"value":local.shape} );
+		}
+		return local.ret;
 	}
 
 	/** Documentation function to  list the available types */
@@ -478,6 +488,20 @@ component extends="utils.baseutils" {
 		}
 
 		return html;
+	}
+
+	/**
+	 * Tools function to get all settings definitions
+	 */
+	public struct function getSettings() {
+		var settings = {};
+		for (local.type in this.contentSections) {
+			settings[local.type]["styleDefs"] = this.contentSections[local.type].styleDefs;
+			settings[local.type]["states"] = this.contentSections[local.type].states;
+			settings[local.type]["panels"] = this.contentSections[local.type].panels;
+		}
+
+		return settings;
 	}
 	 
 	

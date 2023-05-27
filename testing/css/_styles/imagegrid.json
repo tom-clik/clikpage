@@ -1,0 +1,11 @@
+[
+	{"id":"auto","title":"Auto grid"},
+	{"id":"fixedwidth","title":"Columns have set width"},
+	{"id":"fixedcols","title":"Fixed number of columns"},
+	{"id":"setcols","title":"Specified columns"},
+	{"id":"heights","title":"Limit the height of images"},
+	{"id":"captiontop","title":"Caption at the top plus some frame styling"},
+	{"id":"overlay","title":"Caption overlay"},
+	{"id":"masonry","title":"Masonry"},
+	{"id":"carousel","title":"Carousel"}
+]

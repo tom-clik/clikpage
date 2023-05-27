@@ -28,6 +28,14 @@
       ],
       "min": "/_assets/js/_min/coldlightpackage.0.2.min.js",
       "name": "coldlight"
+    },
+    {
+      "scripts": [
+        "clik_settings","messageHandler","settingsForm"
+      ],
+      "description": "Clik editing tools",
+      "min": "/_assets/js/_min/clikutils.0.2.min.js",
+      "name": "clikutils"
     }
   ],
   "scripts": [
@@ -134,7 +142,7 @@
     },
     {
       "min": "/_assets/js/jquery.form.js",
-      "description": "Legacy ajax form thing",
+      "description": "Ajax form submission plug in. Showing its age now, probably neater ways of doing this",
       "name": "forms",
       "requires": "jquery"
     },
@@ -146,9 +154,9 @@
     },
     {
       "min": "/_assets/js/jquery.clikForm.js",
-      "description": "",
+      "description": "Combines forms and validate in one plug-in to submit a form and display a returned|supplied message",
       "name": "clikForm",
-      "requires": "jquery,forms,elastic,select2,validate"
+      "requires": "jquery,forms,elastic,select2,validate,clikutils"
     },
     {
       "min": "/_assets/js/jquery.autoButton.js",
@@ -163,12 +171,20 @@
       "requires": "jquery"
     },
     {
-      "debug":"/_assets/js/jquery.mCustomScrollbar.min.js",
+      "debug":"/_assets/js/jquery.mousewheel.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js",
+      "description": "Jquery mouse wheel function",
+      "name": "mousewheel",
+      "requires": "jquery"
+    },
+    
+    {
+      "debug":"/_assets/js/jquery.mCustomScrollbar.js",
       "min":"https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js",
       "description": "Custom scroll bar library.",
+      "note": "Not we have customised the debug version ever so slightly just to get it to run locally",
       "name": "scrollbar",
-      "requires": "jquery",
-      "packageExclude": 1
+      "requires": "jquery,mousewheel"
     },
     {
       "min":"/_assets/js/scroll-fix.js",
@@ -193,6 +209,12 @@
       "description": "Standard clik functionality",
       "name": "clik_onready",
       "requires": "jquery,modal"
+    },
+    {
+      "min":"/_assets/js/messageHandler.js",
+      "description": "Show messages and errors on the client side",
+      "name": "messageHandler",
+      "requires": "jquery"
     },
     {
       "min":"/_assets/js/heightFix.js",

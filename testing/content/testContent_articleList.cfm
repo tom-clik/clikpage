@@ -8,7 +8,6 @@ data =  deserializeJSON( FileRead( expandPath( "../site/_out/sampleArticles.json
 cs.data = data.test;
 request.data = data.articles;
 
-
 styles.style["#id#"] = {
 	"main": {
 		"image-align":"left"

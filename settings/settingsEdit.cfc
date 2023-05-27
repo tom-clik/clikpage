@@ -45,7 +45,6 @@ component {
 			{"value":"none","name":"None","description":""},
 			{"value":"left","name":"Left","description":""},
 			{"value":"right","name":"Right","description":""}
-			
 		];
 		this.settingsOptions["position"] = [
 			{"value":"static","name":"Normal","description":""},
