@@ -16,7 +16,7 @@ styleSettings = siteObj.settingsObj.loadStyleSettings(ExpandPath("../../sample/_
 outfile = ExpandPath("output/test_settings.css");
 
 siteObj.contentObj.debug = true;
-css = siteObj.siteCSS(site=site,styleSettings=styleSettings);
+css = siteObj.siteCSS(site=site,debug=false);
 
 fileWrite(outfile, css);
 

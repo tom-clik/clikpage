@@ -110,7 +110,7 @@ css = application.settingsTest.css();
 	<body class="body">
 		
 		<div>			
-			<cfoutput>#pageData.html#</cfoutput>		
+			<cfoutput>#pageData.html#</cfoutput>
 		</div>
 
 		<cfif hasTests>
@@ -151,7 +151,7 @@ css = application.settingsTest.css();
 				id: '#cs.id#',
 				type: '#cs.type#',
 				settings: #serializeJSON(cs.settings.main)#,
-				api: 
+				api: 'api/settings_api.cfc'
 			});
 			
 			#pageData.pagecontent.onready#

@@ -42,9 +42,9 @@ component {
 			{"value":"show","name":"show","description":""}
 		];
 		this.settingsOptions["float"] = [
+			{"value":"none","name":"None","description":""},
 			{"value":"left","name":"Left","description":""},
-			{"value":"right","name":"Right","description":""},
-			{"value":"none","name":"None","description":""}
+			{"value":"right","name":"Right","description":""}
 		];
 		this.settingsOptions["position"] = [
 			{"value":"static","name":"Normal","description":""},
@@ -90,8 +90,7 @@ component {
 			"float": {
 				"name":"float",
 				"type":"float",
-				"description":"",
-				"default": ""
+				"description":""
 			},
 			"float-margin": {
 				"name":"Float margin",

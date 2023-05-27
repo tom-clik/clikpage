@@ -347,7 +347,7 @@ component accessors="true" extends="utils.baseutils" {
 		local.menuData = [];
 		for (local.sectioncode in arguments.sections) {
 			local.section = arguments.site.sections[local.sectioncode];
-			local.menuitem = {"link"="?section=#local.sectioncode#","id"="#local.sectioncode#","title"=local.section.title};
+			local.menuitem = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
 			if (StructKeyExists(local.section,"dataset")) {
 				local.useSubmenu = ListFindNoCase("articles,sections",getDataSetType(local.section.dataset));
 				if ( local.useSubmenu ) {
@@ -363,10 +363,10 @@ component accessors="true" extends="utils.baseutils" {
 						for (local.record in local.records) {
 							switch (local.section.dataset.type)	{
 								case "articles":
-									local.link = "{link.#local.sectioncode#.view.#local.record.id#}";
+									local.link = "{{link.#local.sectioncode#.view.#local.record.id#}}";
 									break;
 								case "sections":
-									local.link = "{link.#local.record.id#}";
+									local.link = "{{link.#local.record.id#}}";
 									break;
 
 							}
@@ -417,7 +417,7 @@ component accessors="true" extends="utils.baseutils" {
 		local.tag =  arguments.dataset.tag;
 
 		for (local.field in arguments.fields) {
-			local.tag = Replace(local.tag, "{" & local.field & "}", arguments.fields[local.field])
+			local.tag = Replace(local.tag, "{{" & local.field & "}}", arguments.fields[local.field])
 		}
 
 		for (local.id in local.ref) {
@@ -685,11 +685,11 @@ component accessors="true" extends="utils.baseutils" {
 		}
 		else {
 			local.link = local.sectionStr.id;	
-			if (arguments.action neq "index") {
+			if (arguments.action neq "index" and arguments.id eq "") {
 				local.link &= "_#arguments.action#";
 			}
 			if (arguments.id neq "") {
-				local.link &= "_#arguments.action#";
+				local.link &= "_#arguments.id#";
 			}
 			local.link &= ".html";
 		}
@@ -782,7 +782,7 @@ component accessors="true" extends="utils.baseutils" {
 		local.rc = {};
 		local.rc.sectionObj = getSection(site=arguments.site,section=arguments.pageRequest.section);
 
-		// WTF. TO DO: sort this
+		// WTF. TODO: sort this
 		arguments.site.sections[arguments.pageRequest.section].location = sectionLocation(site=arguments.site,section=arguments.pageRequest.section);
 
 		pageContent.layoutname = getLayoutName(section=local.rc.sectionObj,action=arguments.pageRequest.action,site=arguments.site);
@@ -892,6 +892,7 @@ component accessors="true" extends="utils.baseutils" {
 							local.datatype = "sections";
 						}
 						arguments.site.content[contentid].data = menuData(arguments.site,local.menuDataSet);
+
 						
 						break;
 					
@@ -1024,7 +1025,7 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 	
-	string function siteCSS(required struct site) {
+	string function siteCSS(required struct site, boolean debug=variables.debug) {
 	
 		var css = "";
 		
@@ -1058,7 +1059,7 @@ component accessors="true" extends="utils.baseutils" {
 		
 		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.style,media=arguments.site.styleSettings.media, format=false);
 		
-		css = this.settingsObj.outputFormat(css=css,media=arguments.site.styleSettings.media,debug=variables.debug);
+		css = this.settingsObj.outputFormat(css=css,media=arguments.site.styleSettings.media,debug=arguments.debug);
 		
 		return css;
 
@@ -1095,4 +1096,75 @@ component accessors="true" extends="utils.baseutils" {
 		
 		return local.css;
 	}
+
+	// Save a static version of a site
+	public struct function save(required struct site, required string outputDir) {
+
+		arguments.site.mode = "static";
+		
+		var ret = {
+			"pages": [=]
+		};
+
+		local.outfile = arguments.outputDir & "/styles.css";
+
+		local.css = siteCSS(site=arguments.site,debug=1);
+		FileWrite(local.outfile, local.css);
+
+		for (local.section in arguments.site.sections) {
+			local.sectionObj = getSection(site=arguments.site,section=local.section);
+			loadSectionData(site=arguments.site, section=local.sectionObj);
+
+			local.pageRequest = {"section":local.section,"action":"index","id":""};
+			local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
+			ret.pages[local.page] = 1;
+
+			for (local.id in local.sectionObj.data) {
+				local.pageRequest = {"section":local.section,"action":"view","id":local.id};
+				local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
+				ret.pages[local.page] = 1;
+			}
+
+		}
+
+		return ret;
+
+	}
+
+	// See save()
+	public string function saveStaticPage(
+		required struct site,
+		required struct pageRequest,
+		required string outputDir
+		) {
+		
+		local.filename = pageLink(
+			site    = arguments.site, 
+			section = arguments.pageRequest.section, 
+			action  = arguments.pageRequest.action, 
+			id      = arguments.pageRequest.id
+		);
+		
+		local.content = page(arguments.pageRequest, arguments.site);
+
+		local.content.onready = this.pageObj.jsStaticFiles.removeJsComments(local.content.onready);
+
+		local.content.static_js["main"] = 1;
+		local.content.static_css["content"] = 1;
+
+		this.pageObj.addCss(local.content,"styles.css");
+
+		if (StructKeyExists(arguments.site,"links")) {
+			for (local.link in arguments.site.links) {
+				this.pageObj.addLink(content=local.content,argumentcollection=local.link);	
+			}
+		}
+
+		local.html = this.pageObj.buildPage(content=local.content,debug=false);
+		FileWrite(arguments.outputDir & "/" & local.filename, local.html);
+
+		return local.filename;
+
+	}
+
 }

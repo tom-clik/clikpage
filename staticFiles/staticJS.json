@@ -3,26 +3,21 @@
     {
       "scripts": [
         "jquery",
-        "jqueryui",
-        "validate",
-        "fuzzy",
-        "clikForm",
         "autoButton",
         "animateAuto",
         "popup",
+        "menus",
         "modal",
         "swipeDetector",
-        "flickity",
         "scrollfix",
         "clik_onready",
         "tabs",
         "getSettings",
         "serializeData",
-        "menus"
-        
+        "throttledresize"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.1.min.js",
+      "min": "/_assets/js/_min/clikmain.0.2.min.js",
     },
     {
       "scripts": [
@@ -256,7 +251,7 @@
       "min":"/_assets/js/getSettings.js",
       "description": "Get content item settings from css custom vars",
       "name": "getSettings",
-      "requires": "jquery,clik_settings"
+      "requires": "jquery"
     },
     {
       "min":"/_assets/js/jquery.tabs.js",
