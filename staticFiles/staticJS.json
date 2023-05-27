@@ -15,7 +15,10 @@
         "flickity",
         "scrollfix",
         "clik_onready",
-        "tabs"
+        "tabs",
+        "getSettings",
+        "serializeData",
+        "menus"
         
       ],
       "name": "main",
@@ -33,8 +36,9 @@
     },
     {
       "scripts": [
-        "serializeData","clik_settings","getSettings","messageHandler"
+        "clik_settings","messageHandler","settingsForm"
       ],
+      "description": "Clik editing tools",
       "min": "/_assets/js/_min/clikutils.0.2.min.js",
       "name": "clikutils"
     }
@@ -172,12 +176,20 @@
       "requires": "jquery"
     },
     {
-      "debug":"/_assets/js/jquery.mCustomScrollbar.min.js",
+      "debug":"/_assets/js/jquery.mousewheel.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js",
+      "description": "Jquery mouse wheel function",
+      "name": "mousewheel",
+      "requires": "jquery"
+    },
+    
+    {
+      "debug":"/_assets/js/jquery.mCustomScrollbar.js",
       "min":"https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js",
       "description": "Custom scroll bar library.",
+      "note": "Not we have customised the debug version ever so slightly just to get it to run locally",
       "name": "scrollbar",
-      "requires": "jquery",
-      "packageExclude": 1
+      "requires": "jquery,mousewheel"
     },
     {
       "min":"/_assets/js/scroll-fix.js",
@@ -251,6 +263,12 @@
       "description": "Tabbed content",
       "name": "tabs",
       "requires": "jquery,throttledresize"
+    },
+    {
+      "min":"/_assets/js/clik.settingsForm.js",
+      "description": "Settings Editing form",
+      "name": "settingsForm",
+      "requires": "jquery,clik_settings,messageHandler"
     }
     
   ]
