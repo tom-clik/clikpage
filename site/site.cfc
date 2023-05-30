@@ -172,8 +172,10 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 
-	// Add children (array) to parent sections
-	// And also {parent} tag to sub sections
+	/**
+	 * Use parent tag in sub sections to generate list of children
+	 * in the parent section (array section.children)
+	 */
 	private void function checkParentSections( required struct site ) {
 
 		for ( local.section_code in arguments.site.sections ) {
@@ -540,7 +542,45 @@ component accessors="true" extends="utils.baseutils" {
 			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=arguments.dataset[info.previous], type=arguments.type)["title"];
 		}
 
+	}
 
+	/**
+	 * add links to a sub section for next,previous,parent
+	 */
+	public void function addSectionLinks(
+		required struct section, 
+		required array  dataset, 
+		required struct site, 
+		) {
+
+		var info = getRecordSetInfo(site=arguments.site,dataset=arguments.dataset,id=arguments.section.id);
+		
+		StructAppend(arguments.section,
+			{
+				"next_link" = "",
+				"next_title" = "",
+				"previous_link" = "",
+				"previous_title" = "",
+				"parent_title" = "",
+				"parent_link" = ""
+			}
+		);
+
+		if (info.next neq "") {
+			local.next = arguments.dataset[info.next];
+			arguments.section["next_link"] = pageLink(site=arguments.site, section=local.next);
+			arguments.section["next_title"] = arguments.site.sections[local.next]["title"];
+		}
+
+		if (info.previous neq "") {
+			local.previous = arguments.dataset[info.previous];
+			arguments.section["previous_link"] = pageLink(site=arguments.site, section=local.previous)
+			arguments.section["previous_title"] = arguments.site.sections[local.previous]["title"];
+		}
+
+		arguments.section["parent_title"] = arguments.site.sections[arguments.section.parent]["title"];
+		arguments.section["parent_link"] = pageLink(site=arguments.site, section=arguments.section.parent);
+		
 	}
 	
 
@@ -801,11 +841,8 @@ component accessors="true" extends="utils.baseutils" {
 
 			A section can have a dataset and the default dataset for an
 			item can be that.
-
-			Note that a child section will by default inherit the parent
-			data set.
-			
-			They can also define their data sets themselves. For a menu,
+		
+			The cs can also define their data sets themselves. For a menu,
 			this default is a search by a tag.
 
 			We want to cache the results.
@@ -961,17 +998,27 @@ component accessors="true" extends="utils.baseutils" {
 					site=arguments.site,
 					dataset=arguments.section.dataset
 				);
-			}
+			} 
 			else if ( StructKeyExists(arguments.section, "children") ) {
+				arguments.section.dataset = {"type":"sections"};
 				arguments.section.data = arguments.section.children;
-			}
-			else if ( StructKeyExists(arguments.section, "parent") ) {
-				arguments.section.data = arguments.site.sections[arguments.section.parent].children;
 			}
 			else {
 				arguments.section.data = [];
 			}
+			// NOT ideal...we add the sub section links here as well
+			// Possibly need a separate check
+			if ( StructKeyExists(arguments.section, "parent") ) {
+				local.parent = arguments.site.sections[arguments.section.parent];
+				loadSectionData(site=arguments.site,section=local.parent);
+				addSectionLinks(
+					section=arguments.section,
+					dataset=local.parent.data,
+					site=arguments.site
+				);
+			}
 		}
+
 	}
 
 	/**
@@ -1119,10 +1166,16 @@ component accessors="true" extends="utils.baseutils" {
 			local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
 			ret.pages[local.page] = 1;
 
-			for (local.id in local.sectionObj.data) {
-				local.pageRequest = {"section":local.section,"action":"view","id":local.id};
-				local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
-				ret.pages[local.page] = 1;
+			// TODO: better definitions of whether we have sub pages or not
+			// Need to think about galleries and sections with single items.
+			// 
+			if ( StructKeyExists( local.sectionObj, "dataset") AND  local.sectionObj.dataset.type NEQ "sections"
+				AND arrayLen(local.sectionObj.data) GT 1) {
+				for (local.id in local.sectionObj.data) {
+					local.pageRequest = {"section":local.section,"action":"view","id":local.id};
+					local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
+					ret.pages[local.page] = 1;
+				}
 			}
 
 		}

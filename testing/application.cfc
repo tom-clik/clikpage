@@ -18,16 +18,14 @@ component {
 	}
 
 	public void function onRequestStart() output=false {
+
 		request.rc = Duplicate(url);
 		StructAppend(request.rc,form,true);
 		request.prc = {};
 		onApplicationStart();
 	}
 
-	function onError(e,method) {
-		param name="request.isAjaxRequest" type="boolean" default="0";
-		new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=1);
-	}
+	
 
 }
 
