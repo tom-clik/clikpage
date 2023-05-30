@@ -18,7 +18,7 @@ component extends="clikpage.clikpageApplication" { //
 	this.mappings = [
 		"/_assets" = this.rootDir & "clikpage\_assets",
 	];
-	
+	this.errorsFolder = this.rootDir & "\testing\_errors";
 	this.debug = 1;
 	
 	public boolean function startApp(){

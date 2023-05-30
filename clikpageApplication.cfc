@@ -134,7 +134,6 @@ component {
 		  	loadSite(reload=request.rc.reload);
 		}
 
-		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 
 	}
@@ -174,7 +173,12 @@ component {
 
 	function onError(e,method) {
 		param name="request.isAjaxRequest" type="boolean" default="0";
-		new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);
+		try {
+			new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);
+		}
+		catch (any n) {
+			throw(object=e);
+		}
 	}
 
 }
