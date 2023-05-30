@@ -93,7 +93,7 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 			    	console.log(e);
 			    	if (e.statuscode == 200) {
 				    	$('#css').html(e.css);
-				    	// MUSTDO: generic reference to this -- if they need it
+				    	// TODO: generic reference to this -- if they need it
 				    	//$cs.data('photoGrid').reload();
 			    	}
 			    	else {

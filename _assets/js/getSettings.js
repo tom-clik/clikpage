@@ -16,17 +16,17 @@ function getSettings($elem, type) {
 	
 	let settings = {};
 	
-	for (let setting in clik_settings[type]) {
+	for (let setting in clik_settings[type].styleDefs) {
 		// problems with things like grid-gap
 		// Need a better test than inherit.
 		if (true || clik_settings[type][setting].inherit) {
 			let val = $elem.css("--" + setting);
 			if (val) {
-				settings[setting] = parseCssVar(val, clik_settings[type][setting].type.toLowerCase() );
+				settings[setting] = parseCssVar(val, clik_settings[type].styleDefs[setting].type.toLowerCase() );
 			}
 		}
 	}
-
+		
 	return settings;
 }
 
