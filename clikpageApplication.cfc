@@ -87,16 +87,25 @@ component {
 			
 			application.siteObj.cacheClear();
 			application.site = application.siteObj.loadSite(application.config.siteDef);
-
+			/** What on earth are these doing here
+			 * TODO: put this into the site object somewhere.
+			 * I get the idea that we wanted to change the pageContent
+			 * but this is the wrong place.
+			 * */
 			if (StructKeyExists(application.site,"links")) {
 				for (local.link in application.site.links) {
 					application.siteObj.pageObj.addLink(content=application.siteObj.pageObj.content,argumentcollection=local.link);	
 				}
 			}
+			/* TODO: proper output dir definition */
+			local.outputDir = GetDirectoryFromPath(getCurrentTemplatePath());
+			/* TODO: put this into the site object somewhere. */
 			local.css = "/* File written #now()# */" & NewLine();
 			local.css &= application.siteObj.siteCSS(site=application.site);
-			
-			fileWrite(ExpandPath("styles/styles.css"), local.css);
+			fileWrite(local.outputDir & "styles/styles.css", local.css);
+
+			/* TODO: put this into the site object somewhere. */
+			application.siteObj.saveData(site=application.site, outputDir=local.outputDir);
 
 		}
 

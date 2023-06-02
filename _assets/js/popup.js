@@ -6,7 +6,7 @@
 		var defaults = {
 			index: 0,
 			imagepath: "",
-			data:[],// array of image objects
+			data:[],// array of image objects (image.image, image.description)
 			onNext: function() {},
 			onPrevious: function() {},
 			onOpen: function() {},

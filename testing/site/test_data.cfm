@@ -57,4 +57,6 @@ data = siteObj.getRecords(site=site,dataset=sections,type="sections");
 writeDump(var=sections,label="Sub sections data set");
 writeDump(var=data,label="Sub sections records");
 
+siteObj.saveData(site=site,outputDir=ExpandPath("preview/scripts"));
+
 </cfscript>

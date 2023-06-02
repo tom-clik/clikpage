@@ -8,18 +8,22 @@ and then calls carousel or masonry if required.
     $.photoGrid = function(element, options) {
 
       var plugin = this;
-
+      var defaults = {
+        dataset: []
+      };
       plugin.settings = {};
-
+      plugin.options = $.extend({}, defaults, options);
+      
       var $element = $(element), 
           element = element, 
           id = $element.attr("id"),
           $grid,
           $carousel,
+          $popup,
           layout='grid';
 
-      plugin.init = function() {
-
+      plugin.init = function(options) {
+        
         plugin.reload();
 
         // code goes here
@@ -75,7 +79,26 @@ and then calls carousel or masonry if required.
            });
         
         }
-        // MUSTDO: popups -- see original JS in imagegrid.cfc
+        
+        if ( plugin.settings.popup )  {
+          $('#' + id + '_popUp').popup({
+            imagepath : '',
+            data: clik.getImages(plugin.options.dataset),
+          });
+          $popup = $('#' + id + '_popUp').data('popup');
+          let count = 0;
+          $('#' + id + ' a').each(function() {
+            $(this).data('index', count++);
+          })
+          $('#' + id + ' > a').on('click',function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $popup.goTo($(this).data('index'));
+            $popup.open();
+          });
+          
+        }
+        
       }
 
       plugin.init();

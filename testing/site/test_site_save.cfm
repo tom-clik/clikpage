@@ -19,7 +19,7 @@ siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 
 site = siteObj.loadSite(config.siteDef);
 start = getTickCount();
-files = siteObj.save(site=site,outputDir=ExpandPath("_out"));
+files = siteObj.save(site=site,outputDir=ExpandPath("_out"),debug=1);
 runtime = getTickCount() -start;
 writeDump(files);
 
