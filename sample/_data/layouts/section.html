@@ -9,21 +9,16 @@
 <body data-extends="main">
 
 	<div id="contentheader">
-		
-		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-			<title>Section title</title>
-			<content>
-			{{section.title}}
-			</content>
-		</content>	
-
-		<content id="mainsectionnav" type="button" class="scheme-button scheme-navbutton">
-			<title>Parent link button</title>
-			<content>
-				{{section.parent_title}}
-			</content>
-			<link>{{section.parent_link}}</link>
-		</content>
+		<div id="contentheader_title">
+			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
+				<title>Section title</title>
+				<content>
+				{{section.title}}
+				</content>
+			</content>	
+		</div>
+		<div id="contentheader_nav">
+		</div>
 	</div>
 	
 	<div id="maincol">

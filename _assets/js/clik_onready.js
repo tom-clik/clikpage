@@ -109,6 +109,18 @@ clik = {
 	        .replace(/"/g, '&quot')
 	        .replace(/>/g, '&gt')   
 	        .replace(/</g, '&lt');    
-	}
+	},
 
+	getImages: function( dataset ) {
+		if (typeof site == undefined || ! "data" in site || ! "images" in site.data ) {
+			console.log("images not defined");
+			return [];
+		}
+		var data = [];
+		for (let image of dataset) {
+			if (image in site.data.images);
+			data.push(site.data.images[image]);
+		}
+		return data;
+	}
 }

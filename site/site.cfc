@@ -808,6 +808,18 @@ component accessors="true" extends="utils.baseutils" {
 		return local.layoutName;
 		
 	}
+	/**
+	 * @hint Add javascript files for data definitions to a page struct
+	 *
+	 * TODO: break down by gallery/category or similar. Only load the ones we
+	 * need
+	 * TODO: Configure location of saved files (also styles)
+	 */
+	private void function addJSData(required struct pageContent) {
+
+		this.pageObj.addJs(arguments.pageContent,"scripts/sitedata.js");
+
+	}
 
 	/**
 	 * @hint Display a page.
@@ -818,7 +830,8 @@ component accessors="true" extends="utils.baseutils" {
 	public struct function page(required struct pageRequest, required struct site) {
 
 		var pageContent = this.pageObj.getContent();
-		
+		addJSData(pageContent);
+
 		local.rc = {};
 		local.rc.sectionObj = getSection(site=arguments.site,section=arguments.pageRequest.section);
 
@@ -1145,7 +1158,10 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 	// Save a static version of a site
-	public struct function save(required struct site, required string outputDir) {
+	public struct function save(
+		required struct site, 
+		required string outputDir,
+				 boolean debug=0) {
 
 		arguments.site.mode = "static";
 		
@@ -1153,17 +1169,20 @@ component accessors="true" extends="utils.baseutils" {
 			"pages": [=]
 		};
 
-		local.outfile = arguments.outputDir & "/styles.css";
-
-		local.css = siteCSS(site=arguments.site,debug=1);
+		checkoutputDirectories(arguments.outputDir)
+		
+		local.outfile = arguments.outputDir & "/styles/styles.css";
+		local.css = siteCSS(site=arguments.site,debug=arguments.debug);
 		FileWrite(local.outfile, local.css);
+
+		saveData(site=arguments.site,outputDir=arguments.outputDir & "/scripts");
 
 		for (local.section in arguments.site.sections) {
 			local.sectionObj = getSection(site=arguments.site,section=local.section);
 			loadSectionData(site=arguments.site, section=local.sectionObj);
 
 			local.pageRequest = {"section":local.section,"action":"index","id":""};
-			local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
+			local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
 			ret.pages[local.page] = 1;
 
 			// TODO: better definitions of whether we have sub pages or not
@@ -1173,7 +1192,7 @@ component accessors="true" extends="utils.baseutils" {
 				AND arrayLen(local.sectionObj.data) GT 1) {
 				for (local.id in local.sectionObj.data) {
 					local.pageRequest = {"section":local.section,"action":"view","id":local.id};
-					local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir);
+					local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
 					ret.pages[local.page] = 1;
 				}
 			}
@@ -1183,12 +1202,41 @@ component accessors="true" extends="utils.baseutils" {
 		return ret;
 
 	}
+	
+	/**
+	 * Check all sub folders for a site exists: See save()
+	 */
+	private void function checkoutputDirectories(required string outputDir) {
+		
+		if (! DirectoryExists(arguments.outputDir)) {
+			throw("Directory #arguments.outputDir# not found");
+		}
+		local.subFolders = ["scripts","styles"];
+
+		for (local.folder in local.subFolders) {
+			local.scriptFolder = arguments.outputDir & "/" & local.folder;
+			if (! DirectoryExists( local.scriptFolder ) ) {
+				try{
+					DirectoryCreate(local.scriptFolder);
+				} 
+				catch (any e) {
+					throw(
+						message      = "Unable to create output directory #local.scriptFolder#:" & e.message, 
+						detail       = e.detail,
+						errorcode    = "site.save.001"		
+					);
+				}
+			}
+		}
+	}
+
 
 	// See save()
-	public string function saveStaticPage(
+	private string function saveStaticPage(
 		required struct site,
 		required struct pageRequest,
-		required string outputDir
+		required string outputDir,
+		         boolean debug=0
 		) {
 		
 		local.filename = pageLink(
@@ -1200,12 +1248,14 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.content = page(arguments.pageRequest, arguments.site);
 
-		local.content.onready = this.pageObj.jsStaticFiles.removeJsComments(local.content.onready);
+		if (arguments.debug) {
+			local.content.onready = this.pageObj.jsStaticFiles.removeJsComments(local.content.onready);
+		}
 
 		local.content.static_js["main"] = 1;
 		local.content.static_css["content"] = 1;
 
-		this.pageObj.addCss(local.content,"styles.css");
+		this.pageObj.addCss(local.content,"styles/styles.css");
 
 		if (StructKeyExists(arguments.site,"links")) {
 			for (local.link in arguments.site.links) {
@@ -1213,11 +1263,29 @@ component accessors="true" extends="utils.baseutils" {
 			}
 		}
 
-		local.html = this.pageObj.buildPage(content=local.content,debug=false);
+		local.html = this.pageObj.buildPage(content=local.content,debug=arguments.debug);
 		FileWrite(arguments.outputDir & "/" & local.filename, local.html);
 
 		return local.filename;
 
+	}
+
+	/**
+	 * @hint Save site data to JavaScript data objects
+	 * 
+	 * Save the complete records of data. 
+	 *
+	 * TODO: split this into chunks of some sort.
+	 */
+	public void function saveData(
+		required struct site,
+		required string outputDir
+		) {
+		local.js = "if ( typeof site == 'undefined' ) site = {};";
+		local.js &= "site.data = {};"
+		local.js &= "site.data.images = " & serializeJSON(arguments.site.images) & ";";
+		local.js &= "site.data.articles = " & serializeJSON(arguments.site.articles) & ";";
+		FileWrite(arguments.outputDir & "/" & "sitedata.js", local.js);
 	}
 
 }

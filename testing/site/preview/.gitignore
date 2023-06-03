@@ -1,2 +1,3 @@
 config*.json
 styles/*.css
+scripts/*.js

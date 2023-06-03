@@ -1,0 +1,4 @@
+# output folder for testing site save
+*.css
+*.js
+*.html

@@ -192,7 +192,7 @@ component extends="grid" {
 					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
 				}
 				else {
-					local.link = " href='{{link.{{section.id}}.#local.id#}}'";
+					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
 				}
 			}
 
@@ -228,7 +228,7 @@ component extends="grid" {
 		required struct data) {
 
 		var js = "$#arguments.content.id# = $('###arguments.content.id#');\n";
-		js &= "$#arguments.content.id#.photoGrid();\n";
+		js &= "$#arguments.content.id#.photoGrid({dataset:#serializeJSON(arguments.content.data)#});\n";
 		return js;
 
 	}
