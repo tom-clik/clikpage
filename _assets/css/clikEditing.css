@@ -1,0 +1,33 @@
+:root {
+	--edit-border-color:#cecece;
+	--edit-bg-color:#333;
+	--edit-gap:8px;
+}
+
+body.wireframe {
+	padding:var(--edit-gap);
+}
+
+body.wireframe div:not(.cs):not(.inner) {
+	padding:var(--edit-gap);
+	margin:var(--edit-gap);
+	border:1px solid transparent;
+}
+body.wireframe div.hover:not(.cs):not(.inner) {
+	border:1px dotted var(--edit-border-color);
+}
+
+body.wireframe div.inner {
+	border:1px solid var(--edit-border-color);
+	padding:var(--edit-gap);
+	background-color: none;
+}
+
+body.wireframe .cs {
+	border:1px solid var(--edit-border-color);
+	background-color: var(--edit-bg-color);;
+}
+
+body.wireframe .cs * {
+	visibility:hidden;
+}

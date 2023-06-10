@@ -264,6 +264,12 @@
       "description": "Settings Editing form",
       "name": "settingsForm",
       "requires": "jquery,clik_settings,messageHandler"
+    },
+    {
+      "min":"/_assets/js/clik.editing.js",
+      "description": "General Editing functions",
+      "name": "clikEditing",
+      "requires": "jquery,clik_settings,messageHandler"
     }
     
   ]

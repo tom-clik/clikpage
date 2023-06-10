@@ -477,7 +477,6 @@ component {
 			}
 		}
 
-
 		if (StructKeyExists(arguments.settings,"position")) {
 			local.css &= displayPosition(arguments.settings);
 		}

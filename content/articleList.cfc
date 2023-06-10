@@ -38,7 +38,7 @@ component extends="item" {
 		var cshtml = "<div class='list'>\n";
 		var classes = {};
 
-		local.link_format = arguments.content.link ? : "{{link.{{section.id}}.{{data.id}}}}";
+		local.link_format = arguments.content.link ? : "{{link.{{section.id}}.view.{{data.id}}}}";
 		
 		for (local.id in arguments.content.data) {
 			local.item = arguments.data[local.id];
