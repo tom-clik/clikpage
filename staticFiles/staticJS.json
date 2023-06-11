@@ -251,7 +251,8 @@
       "requires": "jquery"
     },
     {
-      "min":"/_assets/js/clik_settings.js",
+      "min":"/_assets/js/clik_settings_live.js",
+      "debug":"/_assets/js/clik_settings.js",
       "description": "Auto generated data file of style definitions for editing",
       "name": "clik_settings"
     },
