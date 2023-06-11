@@ -19,7 +19,7 @@
         "throttledresize"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.3.min.js",
+      "min": "/_assets/js/_min/clikmain.0.4.min.js",
     },
     {
       "scripts": [
@@ -251,7 +251,8 @@
       "requires": "jquery"
     },
     {
-      "min":"/_assets/js/clik_settings.js",
+      "min":"/_assets/js/clik_settings_live.js",
+      "debug":"/_assets/js/clik_settings.js",
       "description": "Auto generated data file of style definitions for editing",
       "name": "clik_settings"
     },

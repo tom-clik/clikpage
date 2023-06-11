@@ -16,8 +16,21 @@ settingsTest = new clikpage.testing.css.settingsTest();
 settingsEditObj = new clikpage.settings.settingsEdit(contentObj=settingsTest.contentObj);
 
 clik_settings = settingsTest.contentObj.getSettings();
-clik_settings["panel"]["styleDefs"] = settingsEditObj.styleDefs;
 
+/* Save only data needed for live site */
+live_data = {};
+for (cs_type in clik_settings) {
+	live_data[cs_type] = {"styleDefs"={}};
+	for (setting in clik_settings[cs_type].styleDefs) {
+		live_data[cs_type]["styleDefs"][setting] = {"type":clik_settings[cs_type].styleDefs[setting].type};
+	}
+}
+
+live_js = "clik_settings = #serializeJSON(live_data)#;";
+filePath = ExpandPath("/_assets/js/clik_settings_live.js");
+FileWrite(filePath,live_js);
+
+clik_settings["panel"]["styleDefs"] = settingsEditObj.styleDefs;
 settingsOptions = settingsEditObj.settingsOptions;
 settingsOptions["shapes"] = settingsTest.contentObj.shapeOptions();
 

@@ -20,7 +20,7 @@
                 "title"
             ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.6.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.7.min.css"
         }
     ],
     "scripts": [
