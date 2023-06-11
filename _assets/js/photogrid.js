@@ -73,11 +73,11 @@ and then calls carousel or masonry if required.
         else if (plugin.settings.layout == "carousel") {
           console.log("Applying carousel",plugin.settings);
           $grid = $element.flickity({
-              contain: 1, //plugin.settings.contain,
-              freeScroll: 1, //plugin.settings.freeScroll,
-              wrapAround: 1, //plugin.settings.wrapAround,
-              pageDots: 1, //plugin.settings.pageDots,
-              prevNextButtons: 1 //plugin.settings.prevNextButton
+              contain: plugin.settings.contain,
+              freeScroll: plugin.settings.freeScroll,
+              wrapAround: plugin.settings.wrapAround,
+              pageDots: plugin.settings.pageDots,
+              prevNextButtons: plugin.settings.prevNextButtons
             }).on( 'change.flickity', function( event, index ) {
              console.log( 'Slide changed to ' + index );
              var cellElements = $element.flickity('getCellElements')

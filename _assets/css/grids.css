@@ -30,7 +30,7 @@
 	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
 }
 
-.cs-grid:not(.masonry) > * {
+.cs-grid > * {
 	height: var(--grid-max-height);
 }
 

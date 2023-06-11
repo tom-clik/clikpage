@@ -15,6 +15,14 @@
 	--transition-time:1s;/* time for rollover transition */
 }
 
+.cs-imagegrid.masonry > * {
+	height: auto;
+}
+
+.cs-grid .flickity-page-dots {
+	height: auto;
+}
+
 .cs-imagegrid:not(.justified-gallery) .frame:not(.flickity-cell ) {
 	position: relative;
 }
@@ -24,6 +32,10 @@
 	flex-direction: var(--frame-flex-direction);
 	align-items: var(--align-frame);
 	justify-content: var(--justify-frame);
+}
+
+.cs-imagegrid:.flickity-enabled  .frame {
+	margin-right: var(--grid-gap);
 }
 
 .cs-imagegrid:not(.justified-gallery) .frame img {
@@ -69,6 +81,7 @@
 	width: 100%;
 	height:100%;
 }
+
 .cs-image img {
 	width: 100%;
 	height:100%;
@@ -118,8 +131,8 @@
 	--button-align:flex-start; 
 	--button-direction: row-reverse;
 	right:60x;
-	
 }
+
 .previousButton.button{
 	right:unset;
 	top:40%;
