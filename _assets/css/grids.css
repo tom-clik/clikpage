@@ -32,9 +32,6 @@
 
 .cs-grid > * {
 	height: var(--grid-max-height);
-}
-
-.cs-grid {
 	flex-grow: var(--flex-stretch);
 }
 
