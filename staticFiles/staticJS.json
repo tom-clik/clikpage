@@ -13,11 +13,13 @@
         "clik_onready",
         "tabs",
         "getSettings",
+        "photogrid",
+        "justifiedGallery",
         "serializeData",
         "throttledresize"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.2.min.js",
+      "min": "/_assets/js/_min/clikmain.0.3.min.js",
     },
     {
       "scripts": [
@@ -232,9 +234,15 @@
     },
     {
       "min":"/_assets/js/photogrid.js",
-      "description": "Proper serialization of form data to submit via Ajax",
+      "description": "Clik wrapper for all photogrid functions. ",
       "name": "photogrid",
-      "requires": "jquery,getSettings"
+      "requires": "jquery,getSettings,justifiedGallery,masonry"
+    },
+    {
+      "min":"/_assets/js/jquery.justifiedGallery.js",
+      "description": "Proper serialization of form data to submit via Ajax",
+      "name": "justifiedGallery",
+      "requires": "jquery"
     },
     {
       "min":"/_assets/js/jquery.serializeData.js",

@@ -14,8 +14,8 @@ component extends="grid" {
 		
 		this.classes = ListAppend(this.classes, "cs-grid", " ");	
 
-		variables.static_css = {"images"=1,"flickity"=1,"grids"=1};
-		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1,"photogrid"=1,"getSettings"=1};
+		variables.static_css = {"images"=1,"flickity"=1,"grids"=1,"justifiedGallery"=1};
+		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1,"photogrid"=1,"getSettings"=1,"justifiedGallery"=1};
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
@@ -39,7 +39,8 @@ component extends="grid" {
 				"name":"Layout type","description":"","type":"list","options":[
 					{"name":"Standard","description":"Standard grid","value":"standard"},
 					{"name":"Masonry","description":"Arrange images in a best fit alignment according to their height","value":"masonry"},
-					{"name":"Carousel","description":"A horizontal scrolling panel","value":"carousel"}
+					{"name":"Carousel","description":"A horizontal scrolling panel","value":"carousel"},
+					{"name":"Justified Gallery","description":"Justify images horizontally","value":"justifiedGallery"}
 				],
 				"default":"standard","inherit":1
 			},
@@ -82,7 +83,8 @@ component extends="grid" {
 			"freeScroll" : {"name":"Free Scroll","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
 			"wrapAround" : {"name":"Wrap Around","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
 			"pageDots" : {"name":"Page Dots","type":"boolean","default":false,"dependson":"layout","dependvalue":"carousel"},
-			"prevNextButtons" : {"name":"Previous Next Buttons","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"}
+			"prevNextButtons" : {"name":"Previous Next Buttons","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
+			"rowHeight" : {"name":"Row height","type":"dimension","description":"Only for justified gallery layout mode"}
 
 		]);
 		
@@ -146,18 +148,20 @@ component extends="grid" {
 				break;
 		}
 
-		if (arguments.styles.layout eq "masonry" OR arguments.styles.layout eq "carousel") {
-			data.main &= "\tdisplay:block;/* added for masonry/carousel styles */\n";
-			data.item &= "\twidth:var(--grid-width);/* added for masonry/carousel styles */\n";
+		switch (arguments.styles["layout"]) {
+			case "masonry": case "carousel":
+				data.item &= "\twidth:var(--grid-width);/* added for masonry/carousel styles */\n";
+			case "justifiedGallery":
+				data.main &= "\tdisplay:block;\n";
+				break;
+			default:
+				local.gridstyles = {};
+				variables.contentObj.settingsObj.grid(arguments.styles,local.gridstyles);
+				for (local.item in local.gridstyles) {
+					data[local.item] &= local.gridstyles[local.item];
+				}
 		}
-		else {
-			local.gridstyles = {};
-			variables.contentObj.settingsObj.grid(arguments.styles,local.gridstyles);
-			for (local.item in local.gridstyles) {
-				data[local.item] &= local.gridstyles[local.item];
-			}
-		}
-
+		
 		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
 
 	}
