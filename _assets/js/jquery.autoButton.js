@@ -53,80 +53,82 @@ Typical actions are open, close (or the special case openclose which can be appl
 @version 1.0
 
 */
+(function($) {
 
-$.fn.button = function() {
- 	
-    return this.each(function() {
+	$.fn.button = function() {
+	 	
+	    return this.each(function() {
 
-    	var $button = $(this);
-    	 
-    	var $links = $(this).find("a");
+	    	var $button = $(this);
+	    	 
+	    	var $links = $(this).find("a");
 
-    	let state = $button.data("state");
-    	
-    	$button.find("a").each(function() {
-    		let $link  = $(this);
-    		let href = $link.attr("href");
-    		if (href !== undefined) {
-    			let attrs = $link.attr("href").split(".");
-	    		$link.data("action",attrs[1]);
-	    		$link.data("target",$(attrs[0]));
-	    		console.log("Adding ", attrs[0], attrs[1]);
-    		}
-    		// DEBUG
-    		else {
-    			console.log("No href tag found for <a> tag in button");
-    		}
-    		// /debug
-    	});
+	    	let state = $button.data("state");
+	    	
+	    	$button.find("a").each(function() {
+	    		let $link  = $(this);
+	    		let href = $link.attr("href");
+	    		if (href !== undefined) {
+	    			let attrs = $link.attr("href").split(".");
+		    		$link.data("action",attrs[1]);
+		    		$link.data("target",$(attrs[0]));
+		    		console.log("Adding ", attrs[0], attrs[1]);
+	    		}
+	    		// DEBUG
+	    		else {
+	    			console.log("No href tag found for <a> tag in button");
+	    		}
+	    		// /debug
+	    	});
 
-    	$(this).on("click","a",function(e) {
+	    	$(this).on("click","a",function(e) {
 
-			e.preventDefault();
-			e.stopPropagation();
+				e.preventDefault();
+				e.stopPropagation();
 
-			var $self = $(this);
-			let action = $self.data("action");
-			let $target = $self.data("target");
+				var $self = $(this);
+				let action = $self.data("action");
+				let $target = $self.data("target");
 
-			if ($target && action) {
-				let index = 0;
-		    	if (action == "openclose") {
-					let state = $button.data("state");
-					if (!state) {
-						state = "close";
+				if ($target && action) {
+					let index = 0;
+			    	if (action == "openclose") {
+						let state = $button.data("state");
+						if (!state) {
+							state = "close";
+						}
+						action = state == "open" ? "close" : "open";
+						$button.removeClass("state_" + state);
+						$button.addClass("state_" + action);
+						$button.data("state",action);
 					}
-					action = state == "open" ? "close" : "open";
-					$button.removeClass("state_" + state);
-					$button.addClass("state_" + action);
-					$button.data("state",action);
+					else {
+						index = $button.data("index");
+						if (!index) {
+							index = 0;
+						}
+						index++;
+						if (index == $links.length) index = 0; 
+						$button.data("index",index);
+
+					}
+					
+					console.log("triggering " + action + " on " + $target.attr("id"));
+					
+					$target.trigger(action);
+
+					if ($links.length > 1) {
+						$links.css({"display":"none"});
+						$($links[index]).css({"display":"flex"});
+					}
 				}
+				// debug
 				else {
-					index = $button.data("index");
-					if (!index) {
-						index = 0;
-					}
-					index++;
-					if (index == $links.length) index = 0; 
-					$button.data("index",index);
-
+					console.log("No auto actions for button");
 				}
+				// /debug
 				
-				console.log("triggering " + action + " on " + $target.attr("id"));
-				
-				$target.trigger(action);
-
-				if ($links.length > 1) {
-					$links.css({"display":"none"});
-					$($links[index]).css({"display":"flex"});
-				}
-			}
-			// debug
-			else {
-				console.log("No auto actions for button");
-			}
-			// /debug
-			
-		});
-	})
-}
+			});
+		})
+	}
+})(jQuery);

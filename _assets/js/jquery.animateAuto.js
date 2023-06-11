@@ -26,51 +26,54 @@ It might be that it causes FOUCs and then we will need to revert to cloning and 
 the correct width.
 */
 
-/**
- * 
- * Animate to auto values for height or width
- *
- * @param  {string}    prop     "width", "height", or "both"
- * @param  {numeric}   duration    Duration
- * @param  {Function}  callback [description]
- */
-jQuery.fn.animateAuto = function(prop, duration, callback){
-    var elem, height, width;
-    return this.each(function(i, el){
+(function($) {
 
-        let $el = jQuery(el); 
-        
-        //, elem = el.clone().css({"height":"auto","width":"auto","visibility":"visible"}).appendTo("body");
+    /**
+     * 
+     * Animate to auto values for height or width
+     *
+     * @param  {string}    prop     "width", "height", or "both"
+     * @param  {numeric}   duration    Duration
+     * @param  {Function}  callback [description]
+     */
+    $.fn.animateAuto = function(prop, duration, callback){
+        var elem, height, width;
+        return this.each(function(i, el){
 
-        var props = {};
+            let $el = jQuery(el); 
+            
+            //, elem = el.clone().css({"height":"auto","width":"auto","visibility":"visible"}).appendTo("body");
 
-        if(prop === "height") {
-            props = {"height":"auto"};
-        }
-        else if(prop === "width") {
-            props = {"width":"auto"};
-        }
-        else if(prop === "both") {
-           props = {"height":"auto","width":"auto"};
-        }
+            var props = {};
 
-        $el.css(props);
-        height = $el.css("height");
-        width = $el.css("width");
+            if(prop === "height") {
+                props = {"height":"auto"};
+            }
+            else if(prop === "width") {
+                props = {"width":"auto"};
+            }
+            else if(prop === "both") {
+               props = {"height":"auto","width":"auto"};
+            }
 
-        // $elem.remove();
-        
-        if(prop === "height") {
-            $el.css({"height":0});   
-            $el.animate({"height":height}, {"duration":duration,"complete":callback});
-        }
-        else if(prop === "width") {
-            $el.css({"width":0}); 
-            $el.animate({"width":width}, {"duration":duration,"complete":callback});  
-        }
-        else if(prop === "both") {
-            $el.css({"height":0,"width":0});   
-            $el.animate({"width":width,"height":height}, {"duration":duration,"complete":callback});
-        }
-    });  
-}
+            $el.css(props);
+            height = $el.css("height");
+            width = $el.css("width");
+
+            // $elem.remove();
+            
+            if(prop === "height") {
+                $el.css({"height":0});   
+                $el.animate({"height":height}, {"duration":duration,"complete":callback});
+            }
+            else if(prop === "width") {
+                $el.css({"width":0}); 
+                $el.animate({"width":width}, {"duration":duration,"complete":callback});  
+            }
+            else if(prop === "both") {
+                $el.css({"height":0,"width":0});   
+                $el.animate({"width":width,"height":height}, {"duration":duration,"complete":callback});
+            }
+        });  
+    }
+})(jQuery);
