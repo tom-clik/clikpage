@@ -7,7 +7,7 @@ component {
 
 	public any function init() {
 		// Style definition -- see link to css file ibid.
-		local.settingsDef = ExpandPath("../css/_styles/test_settings.xml");
+		variables.settingsDef = ExpandPath("../css/_styles/test_settings.xml");
 		this.settingsObj = new clikpage.settings.settings(debug=1);
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj);
 		this.contentObj.debug = 1;
@@ -25,7 +25,12 @@ component {
 		this.articlesData = tmp.articles;
 		this.articlesSetData = tmp.test;
 
-		this.styles = this.settingsObj.loadStyleSettings(local.settingsDef);
+		loadSettings();
+
+	}
+
+	public void function loadSettings() {
+		this.styles = this.settingsObj.loadStyleSettings(variables.settingsDef);
 	}
 
 	/**

@@ -29,9 +29,12 @@ if (request.rc.reload OR ! StructKeyExists(application, "settingsTest") ) {
 		contentObj = application.settingsTest.contentObj
 	);
 }
+else {
+	application.settingsTest.loadSettings();
+}
 
 id = "#request.rc.type#";
-class = "";
+class = "scheme-#request.rc.type#";
 
 if (request.rc.test != "") {
 	class = ListAppend(class, "scheme-#request.rc.test#", " ");
@@ -45,6 +48,7 @@ application.settingsTest.addCs(
 );
 
 cs = application.settingsTest.site.cs[id];
+cs.settings = {};
 
 application.settingsEdit.updateSettings(
 	cs=cs,
@@ -76,7 +80,8 @@ application.settingsTest.contentObj.addPageContent(pageContent,application.setti
 hasTests = 0;
 schemesFile = expandPath("_styles/#request.rc.type#.json");
 if (FileExists(schemesFile)) {
-	tests = deserializeJSON( FileRead( schemesFile ) );
+	jsonData = FileRead( schemesFile );
+	tests = deserializeJSON( jsonData );
 	hasTests = 1;
 }
 css = application.settingsTest.css();
