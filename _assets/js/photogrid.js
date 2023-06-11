@@ -26,8 +26,12 @@ and then calls carousel or masonry if required.
         
         plugin.reload();
 
-        // code goes here
-
+        // Editing reload function
+        $(window).on("clik.reload",function() {
+          console.log("Window reload trigger");
+          plugin.reload();
+        });
+      
       }
 
       plugin.reload = function() {
@@ -37,15 +41,23 @@ and then calls carousel or masonry if required.
         
         // remove any existing plug ins
         if (layout == "masonry") {
+            $element.removeClass("masonry");
             $grid.isotope('destroy');
         }
         else if (layout == "carousel") {
-            $carousel.flickity('destroy');
+            $grid.flickity('destroy');
         }
+        else if (layout == "justifiedGallery") {
+            $element.removeClass("justifiedGallery");
+            $grid.justifiedGallery('destroy');
+        }
+
         layout = plugin.settings.layout;
                 
         if (plugin.settings.layout == "masonry") {
-          $grid = $('#' + id).isotope({
+          console.log("Applying masonry",plugin.settings);
+          $element.addClass("masonry");
+          $grid = $element.isotope({
             layoutMode: 'masonry',
             itemSelector: '.frame',
             masonry: {
@@ -60,23 +72,37 @@ and then calls carousel or masonry if required.
         }
         else if (plugin.settings.layout == "carousel") {
           console.log("Applying carousel",plugin.settings);
-          $carousel = $('#' + id);
-          $carousel.flickity({
-              contain: 1, //plugin.settings.contain,
-              freeScroll: 1, //plugin.settings.freeScroll,
-              wrapAround: 1, //plugin.settings.wrapAround,
-              pageDots: 1, //plugin.settings.pageDots,
-              prevNextButtons: 1 //plugin.settings.prevNextButton
+          $grid = $element.flickity({
+              contain: plugin.settings.contain,
+              freeScroll: plugin.settings.freeScroll,
+              wrapAround: plugin.settings.wrapAround,
+              pageDots: plugin.settings.pageDots,
+              prevNextButtons: plugin.settings.prevNextButtons
             }).on( 'change.flickity', function( event, index ) {
              console.log( 'Slide changed to ' + index );
-             var cellElements = $carousel.flickity('getCellElements')
+             var cellElements = $element.flickity('getCellElements')
            }).on( 'staticClick.flickity', function( event, pointer,cellElement, cellIndex ) {
              // dismiss if cell was not clicked
              if ( !cellElement ) {
                return;
              }
-             $carousel.flickity("select", cellIndex,true);
+             $element.flickity("select", cellIndex,true);
            });
+        
+        } else if (plugin.settings.layout == "justifiedGallery") {
+          console.log("Applying justifiedGallery",plugin.settings);
+          let jgSettings = {
+            imgSelector:".image > img",
+            selector: "a"
+          };
+          if ("grid-max-height" in plugin.settings) {
+            jgSettings.rowHeight = plugin.settings["grid-max-height"];
+          }
+           if ("grid-gap" in plugin.settings) {
+            jgSettings.margins = plugin.settings["grid-gap"];
+          }
+          
+          $grid = $element.justifiedGallery(jgSettings);
         
         }
         

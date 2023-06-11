@@ -1,4 +1,4 @@
-#imagegrid {
+.scheme-imagegrid {
 	
 	grid-mode: auto;
 	grid-width: 160px;
@@ -115,5 +115,14 @@
 
 .scheme-carousel {
 	layout: carousel;
+	grid-max-height: 220px;
+	grid-gap: 4px;
+	wrapAround: 1;
+	pageDots: 1;
+	prevNextButtons: 0;
+}
+
+.scheme-justifiedGallery {
+	layout: justifiedGallery;
 	grid-max-height: 220px;
 }

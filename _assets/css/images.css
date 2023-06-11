@@ -15,25 +15,37 @@
 	--transition-time:1s;/* time for rollover transition */
 }
 
-.frame:not(.flickity-cell ) {
+.cs-imagegrid.masonry > * {
+	height: auto;
+}
+
+.cs-grid .flickity-page-dots {
+	height: auto;
+}
+
+.cs-imagegrid:not(.justified-gallery) .frame:not(.flickity-cell ) {
 	position: relative;
 }
 
-.cs-imagegrid .frame {
+.cs-imagegrid:not(.justified-gallery)  .frame {
 	display: flex;
 	flex-direction: var(--frame-flex-direction);
 	align-items: var(--align-frame);
 	justify-content: var(--justify-frame);
 }
 
-.cs-imagegrid .frame img {
+.cs-imagegrid:.flickity-enabled  .frame {
+	margin-right: var(--grid-gap);
+}
+
+.cs-imagegrid:not(.justified-gallery) .frame img {
 	display: block;
 	width: 100%;
 	height:100%;
 	object-fit: var(--object-fit);
 }
 
-.cs-imagegrid .image {
+.cs-imagegrid:not(.justified-gallery) .image {
 	height: var(--image-max-height);
 	width: var(--image-max-width);
 	flex-grow: var(--image-grow);
@@ -56,7 +68,6 @@
 	opacity: 1 !important;
 }
 
-
 .cs-image {
 	--object-fit: scale-down;
 	--object-position-x: center;
@@ -70,6 +81,7 @@
 	width: 100%;
 	height:100%;
 }
+
 .cs-image img {
 	width: 100%;
 	height:100%;
@@ -119,8 +131,8 @@
 	--button-align:flex-start; 
 	--button-direction: row-reverse;
 	right:60x;
-	
 }
+
 .previousButton.button{
 	right:unset;
 	top:40%;

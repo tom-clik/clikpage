@@ -10,7 +10,6 @@
 			$field = $(this);
 			let type = $field.attr('type');
 			let name = $field.attr("name");
-			console.log("Field ", name, type);
 			// have weird bug where multiple submissions
 			// create hidden field with no name and value of submit button
 			if (name == "") {
