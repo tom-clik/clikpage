@@ -8,7 +8,7 @@
 	
 	<meta>
 		<description>A fine site indeed</description>
-		<detailright><![CDATA[&detail; 2022 Tom Peer]]></detailright>
+		<copyright><![CDATA[&copy; 2022 Tom Peer]]></copyright>
 		<author>Tom Peer</author>
 		<contacttel>+44 12345 545454</contacttel>
 	</meta>
@@ -57,46 +57,19 @@
 			<tags>mainmenu,footermenu</tags>
 		</section>
 
-		<section id="about1">
-			<title>About sub 1</title>
+		<section id="about1" src="data/sections/about1.md">
 			<parent>about</parent>
 			<layout>subsection</layout>
-			<description> 
-				<![CDATA[<p>Simple sub section 1</p>]]>
-			</description>
-			<detail>
-				<![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]>
-			</detail>
 		</section>
 
-		<section id="about2">
-			<title>About sub 2</title>
+		<section id="about2" src="data/sections/about2.md">
 			<parent>about</parent>
 			<layout>subsection</layout>
-			<description> 
-				<![CDATA[<p>Simple sub section 2</p>]]>
-			</description>
 		</section>
 
-		<section id="about3">
-			<title>About sub 3</title>
+		<section id="about3" src="data/sections/about3.md">
 			<parent>about</parent>
 			<layout>subsection</layout>
-			<description> 
-				<![CDATA[<p>Simple sub section 3</p>]]>
-			</description>
 		</section>
 
 		<section id="contact">
@@ -108,11 +81,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]]>
 			<tags>footermenu</tags>
 		</section>
 
-		<section id="privacy">
-			<title>Privacy</title>
-			<detail>
-				<![CDATA[Your privacy statement must accurately reflect your site's data collection and use. Your privacy statement should be clear, direct and easy to understand. Keep technical jargon and legal terminology to a minimum. If you decide to modify how you use personal information, you must inform your users.]]>
-			</detail>
+		<section id="privacy"  src="data/sections/privacy.md">
 			<tags>footermenu</tags>
 		</section>
 		
