@@ -23,9 +23,22 @@ component {
 		StructAppend(request.rc,form,true);
 		request.prc = {};
 		onApplicationStart();
+		param name="request.rc.reload" type="boolean" default="0";
+		if (request.rc.reload) {
+			server.utils = StructNew();
+		}
 	}
 
-	
+	function onError(e,method) {
+		param name="request.isAjaxRequest" type="boolean" default="0";
+		try {
+			new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);
+		}
+		catch (any n) {
+			writeDump(n);
+			writeDump(e);
+		}
+	}
 
 }
 

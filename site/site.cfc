@@ -69,7 +69,7 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		// load sections
-		parseData(site=local.site,data=local.site.sections,type="sections");
+		parseData(site=local.site,data=local.site.sections,type="sections",root=local.root);
 		checkParentSections(site=local.site);
 
 		// load other data from files
@@ -152,11 +152,14 @@ component accessors="true" extends="utils.baseutils" {
 				if (NOT StructKeyExists(local.data,"type")) {
 					local.data.type = "articles";
 				}
-				parseData(site=arguments.site,data=local.records,type=local.data.type,image_path=local.image_path);
+				parseData(site=arguments.site,data=local.records,type=local.data.type,image_path=local.image_path,root=arguments.directory);
 			}
 			catch (any e) {
 				if (e.type eq "filenotfound") {
 					throw(message="Data file #local.filepath# not found");	
+				}
+				else if (e.type eq "custom") {
+					throw(object=e);	
 				}
 				local.extendedinfo = {"tagcontext"=e.tagcontext};
 				throw(
@@ -247,7 +250,7 @@ component accessors="true" extends="utils.baseutils" {
 	 * @data Array of data records
 	 * @type Data type (key from site.data)
 	 */
-	private void function parseData(required struct site, required array data, required string type, string image_path="") {
+	private void function parseData(required struct site, required array data, required string type, string root="", string image_path="") {
 		
 		arguments.site[arguments.type] = [=];
 
@@ -259,14 +262,15 @@ component accessors="true" extends="utils.baseutils" {
 					break;
 			}
 			try {
-				checkFields(data=local.data,type=arguments.type,image_path=arguments.image_path);
+				checkFields(data=local.data,type=arguments.type,image_path=arguments.image_path,root=arguments.root);
 			}
 			catch (any e) {
-				local.extendedinfo = {"data"=local.data,"type"=arguments.type};
+				local.extendedinfo = {"tagcontext"=e.tagcontext,"data"=local.data,"type"=arguments.type};
 				throw(
 					extendedinfo = SerializeJSON(local.extendedinfo),
 					message      = "Unable to parse record:" & e.message, 
-					detail       = e.detail
+					detail       = e.detail,
+					type         = "custom"
 				);
 			}
 
@@ -277,11 +281,21 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 	// TODO: formal definition of records with checking, defaults etc
-	private void function checkFields(required struct data, string type, string image_path="") {
+	private void function checkFields(required struct data, string type, string image_path="", string root="") {
 		
+		local.metaData = {};
+
+		if ( StructKeyExists (arguments.data, "src") ) {
+			local.filename = GetCanonicalPath( arguments.root & arguments.data.src );
+			local.file = FileRead( local.filename ) ;
+			arguments.data["detail"] = variables.utils.flexmark.toHtml(local.file, local.metaData);
+			StructAppend( arguments.data,local.metaData );
+		}
+
 		if (!StructKeyExists(arguments.data,"id")) {
 			throw(message="No id defined for data record");
 		}
+
 		if (!StructKeyExists(arguments.data,"title")) {
 			throw(message="No title defined for record");	
 		}
@@ -291,9 +305,10 @@ component accessors="true" extends="utils.baseutils" {
 		}	
 
 		for (local.field in ['detail','description']) {
-			if (structKeyExists(arguments.data, local.field)) {
-				arguments.data[local.field] = variables.utils.flexmark.toHtml(arguments.data[local.field]);
-				arguments.data[local.field] = Trim(arguments.data[local.field])	;
+			if ( StructKeyExists(arguments.data, local.field) AND 
+				NOT StructKeyExists(local.metaData, local.field) 
+				) {
+				arguments.data[local.field] = Trim( variables.utils.flexmark.toHtml(arguments.data[local.field]) );
 			}
 		}
 

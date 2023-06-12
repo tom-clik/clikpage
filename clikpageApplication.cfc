@@ -105,7 +105,7 @@ component {
 			fileWrite(local.outputDir & "styles/styles.css", local.css);
 
 			/* TODO: put this into the site object somewhere. */
-			application.siteObj.saveData(site=application.site, outputDir=local.outputDir);
+			application.siteObj.saveData(site=application.site, outputDir=local.outputDir & "scripts");
 
 		}
 
