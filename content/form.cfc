@@ -15,7 +15,8 @@ component extends="contentSection" {
 	function init(required content contentObj) {
 		
 		super.init(arguments.contentObj);
-		
+		this.recordsObj = new articlemanager.records();
+
 		variables.static_css = {
 			"forms"=1,
 			"select2"=1
@@ -24,39 +25,54 @@ component extends="contentSection" {
 			"clikForm"=1
 		};
 
-		this.settings = {
-			"form" = {
-				"showlabel" = 1,
-				"align" = "left"
-			}
-		};
-		
-		/* TODO: modernise to panels */
 		this.styleDefs = [
-			"field-border-color": {"type":"color"},
+			"form-display": {
+				"type":"list","options": [
+					{"name":"Grid","value":"grid"},
+					{"name":"Normal","value":"block"}
+				],
+				"default":"grid"
+			},
 			"form-stripe-background-color": {"type":"color"},
 			"form-label-width": {"type":"dimension"},
 			"form-label-gap": {"type":"dimension"},
 			"form-row-gap": {"type":"dimension"},
 			"field-padding": {"type":"dimensionlist"},
-			"input-padding": {"type":"dimensionlist"},
-			"form-width": {"type":"dimension"},
+			"row-padding": {"type":"dimensionlist"},
 			"field-checkbox-width": {"type":"dimension"},
+			"field-border-color": {"type":"color"},
 			"field-border-width": {"type":"dimension"},
-			"field-border-style": {"type":"text"},
-			"field-background-color": {"type":"color"},
-			"form-font": {"type":"text"},
-			"form-color": {"type":"color"}
+			"field-background-color": {"type":"color"}
 		];
 
 		return this;
 	}
 
 	public string function html(required struct content) {
+		if (! StructKeyExists(arguments.content, "data") ) {
+			//local.text = FileRead("form_html_temp.html")
+			//arguments.content.data = parseForm(local.text);
+			throw("data not defined for cs form");
+		}
+
+		var html = this.recordsObj.form(
+			record=arguments.content.data,
+			data={},
+			errors={}
+		);
 		
-		return fileRead("form_html_temp.html");
+		return html;
 
 	}
+
+	public string function sampleForm() {
+		return fileRead("form_html_temp.html");
+	}
+
+	public struct function parseForm(required formdata) {
+		return this.recordsObj.record(arguments.formdata);
+	}
+
 
 	public string function onready(required struct content) {
 		var js = "$(""###arguments.content.id#"").clikForm({

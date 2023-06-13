@@ -1,199 +1,87 @@
 :root {
-	--border-color:#8f8f8f;
-}
-
-.form {
-	--field-border-color: var(--border-color);
-	--form-stripe-background-color: transparent;
+	--border-color:gray;
 	--form-label-width: 33%;
 	--form-label-gap: 20px;
 	--form-row-gap: 4px;
-	--field-padding: 4px;
-	--input-padding:2px;
-	--form-width: 100%;
 	--field-checkbox-width:28px;
+	--form-display:grid;
+	--field-border-color: var(--border-color);
+	--form-stripe-background-color: transparent;
+	--row-padding: 4px;
+	--field-padding: 4px;
 	--field-border-width: 1px;
-	--field-border-style:solid;
 	--field-background-color: transparent;
-	--form-font:1em inherit;
-	--form-color:inherit;
 }
 
-.form {
-	max-width: var(--form-width);
-}
-
-.form .error {
-	--form-font:bold 1em inherit;
-	--form-color:red;
-}
-
-.form .error label {
-	--form-font:bold 1em inherit;
-	--form-color:red;
-}
-
-label, field, .error {
-	font:var(--form-font);
-	color:var(--form-color);
-}
-
-
-
-div.fieldrow, .am_table > tbody > tr {
-	display:grid;
+div.fieldrow, div.fieldButtons{
+	display:var(--form-display);
 	grid-template-columns: var(--form-label-width) auto;
 	grid-template-areas: "label field";
+	margin-bottom: var(--form-row-gap);
+	grid-gap: var(--form-label-gap);
+	padding: var(--row-padding);
 }
+div.fieldrow:nth-of-type(2n) {
+    background-color: var(--form-stripe-background-color);
+}
+
 div.fieldrow .error {
 	grid-area:error;
 }
 
-div.fieldrow.error, .am_table > tbody > tr.error {
-	display:grid;
-	grid-template-columns: var(--form-label-width) auto;
+div.fieldrow.error {
 	grid-template-areas: "label field" "label error";
 }
 
-div.fieldrow.action-find, .am_table.action-find > tbody > tr {
-	display:grid;
-	grid-template-areas: "label search field";
-	grid-template-columns: var(--form-label-width) 33% auto;
-	grid-column-gap:var(--form-label-gap);
-	grid-row-gap: var(--form-row-gap);
-}
-
-.am_table.action-find {
-	--form-label-width: 25%;
-}
-
-.fieldrow > label {
-	position: relative;
-	--icon-height:12px;
-	font:var(--form-font);
-	color:var(--form-color);
-}
-.fieldrow > label, td.label {
+.fieldrow > .fieldLabel , .fieldrow > .fieldSpacer {
 	grid-area:label;
+	display: flex;
 }
 
-.fieldrow > label  .button {
+.fieldrow > .fieldLabel label {
+	flex-grow: 1;
+}
+
+.fieldLabel > label  .button {
 	position: absolute;
 	right:0;
-	top:var(--field-padding);
 }
 
-.fieldrow > field, td.field {
+.fieldrow > .field, .fieldrow > .buttons {
 	grid-area:field;
-}
-
-
-/* don't ask... */
-.am_table.action-find > tbody > tr td:nth-of-type(2) {
-	grid-area:search;
-}
-
-
-.am_table.action-find > tbody > tr {
-	grid-template-columns: var(--form-label-width) 25% auto;
-}
-
-
-.am_table  > tbody tr.colspan {
-	grid-template-columns: 1fr;
-	grid-template-areas:unset;
-}
-
-@media screen and (max-width:630px) {
-
-	div.fieldrow, .am_table > tbody > tr {
-		grid-template-columns: 1fr;
-		grid-template-areas: "label" "field";
-	}
-
-	div.fieldrow.error, .am_table > tbody > tr.error {
-		grid-template-columns: 1fr;
-		grid-template-areas: "label" "field" "error";
-	}
-
-	.am_table.action-find > tbody > tr:not(.colspan) {
-		display:grid;
-		grid-template-areas: "label search" "label field";
-		grid-template-columns: var(--form-label-width) auto;
-		grid-row-gap:2px;
-	}
-
-}
-
-div.fieldrow > label, div.fieldrow field, .form .label, .form .field,  .am_table td {
-	padding:var(--field-padding);
-}
-
-.form div.fieldrow:nth-of-type(2n) {
-    background-color: var(--form-stripe-background-color);
-}
-
-
-div.fieldrow > label {
-	display: inline-block;
-	line-height: 1;
-}
-
-div.fieldrow .label,.fieldrow .field.right {
-	text-align: right;
-}
-@media screen and (max-width:630px) {
-	div.fieldrow .label {
-		text-align: left;
-	}
 }
 
 .fieldrow .field + label {
 	text-align: left;	
 }
 
-
-.form input[type=text], .form input[type=password], .form textarea, .form select,
-td.field input[type=text], td.field input[type=password], td.field textarea, td.field select
+.form input, .form textarea, .form select
  {
-	border-width: var(--field-border-width);
-	border-style: var(--field-border-style);
-	border-color: var(--field-border-color);
-	background-color: var(--field-background-color);
-	padding:var(--input-padding);
-	width: 100%;
+ 	background-color: transparent;
+ 	width: 100%;
+ 	border: none;
+ 	outline: none;
 }
 
+div.field:not(.field_boolean) {
+	padding:var(--field-padding);
+	border:var(--field-border-width) solid var(--field-border-color);
+	;
+	background-color: var(--field-background-color);
+}
+
+.field_boolean, .buttons {
+	justify-self: flex-start;
+}
+
+div.fieldLabel {
+	padding:4px;
+}
 
 field.checkbox, field.radio {
 	display: grid;
 	grid-template-columns: var(--field-checkbox-width) auto ;
 	grid-row-gap: 2px;
-}
-
-
-/* legacy stuff TO DO: remove */
-.scheme-narrow {
-	--form-width:600px;
-}
-
-.scheme-minimal div.fieldrow {
-	display: grid;
- 	grid-template-columns: auto 1fr;
-	--form-label-gap:8px;
-}
-
-.scheme-minimal div.fieldrow label {
-	text-align: left;
-}
-
-td.field .helpicon {
-	float:right;
-	margin-right:-36px;
-}
-
-td.field.hasHelp {
-	padding-right:40px;
 }
 
 

@@ -960,6 +960,12 @@ component accessors="true" extends="utils.baseutils" {
 
 						
 						break;
+					case "form":
+
+						local.xmlData = XmlParse( this.contentObj.contentSections.form.sampleForm() );
+						local.formdata = variables.utils.XML.xml2data(local.xmlData);
+
+						arguments.site.content[contentid].data = this.contentObj.contentSections.form.parseForm(local.formdata);
 					
 				}
 
@@ -988,8 +994,8 @@ component accessors="true" extends="utils.baseutils" {
 			
 			this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.content[contentid],local.data));
 			
-			
 		}
+
 		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
 
 		// TODO: setting somewhere to include this or not
@@ -1000,7 +1006,7 @@ component accessors="true" extends="utils.baseutils" {
 			
 
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
-
+		
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		
 		pageContent.body &= local.errorsHtml;

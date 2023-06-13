@@ -4,7 +4,7 @@ component {
 	this.debug = true;
 	this.baseDir = ExpandPath("..\..\..");
 	this.componentPaths=[this.baseDir];
-
+	
 	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
 	this.mappings = [
 		"/_assets" = this.baseDir & "\clikpage\_assets",

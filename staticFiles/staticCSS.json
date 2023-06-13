@@ -79,10 +79,9 @@
             "name": "tabs"
         },
         {
-        	"debug": "/_assets/css/select2.min.css",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css",
-            "name": "select2",
-            "packageExclude": 1
+        	"debug": "/_assets/css/select2_clik.css",
+            "min": "/_assets/css/min/select2_clik.min.css",
+            "name": "select2"
         },
         {
         	"debug": "/_assets/css/jquery-ui.css",
