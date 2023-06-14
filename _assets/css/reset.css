@@ -172,7 +172,10 @@ a:hover {
 }
 
 /* Use inner divs to stop a host of issues like margin expanding etc */
+div.container {
+  display: flex;
+}
 div.inner {
   position: relative;
-  height:100%;
+  flex-grow: 1;
 }
