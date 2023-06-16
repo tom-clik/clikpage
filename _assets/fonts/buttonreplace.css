@@ -1,4 +1,6 @@
 /* subset of font awesome for some button replacement characters 
+See uniform_replace.html testing page
+for details of chars (tickbox and radio both checked and unchecked)
 */
 @font-face {
   font-family: 'buttonreplace';

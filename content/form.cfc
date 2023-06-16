@@ -112,5 +112,5 @@ component extends="contentSection" {
 		return js;
 	}
 
-
+	
 }

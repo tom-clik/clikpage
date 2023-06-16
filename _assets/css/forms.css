@@ -11,6 +11,9 @@
 	--field-padding: 4px;
 	--field-border-width: 1px;
 	--field-background-color: transparent;
+	--checkbox-display: inline-block;/* turn on uniform replace with 'none' */
+	--checkbox-replace-display: none;/* turn on uniform replace with 'inline-block' */
+	--checkbox-label-display: inline-block;/* turn on uniform replace with 'flex' */
 }
 
 div.fieldrow, div.fieldButtons{
@@ -55,7 +58,7 @@ div.fieldrow.error {
 	text-align: left;	
 }
 
-.form input, .form textarea, .form select
+.field:not(.field_boolean) input, .field textarea, .field select
  {
  	background-color: transparent;
  	width: 100%;
@@ -85,34 +88,40 @@ field.checkbox, field.radio {
 }
 
 
-.buttonreplace input[type="checkbox"],.buttonreplace input[type="radio"]  {
-	    display:none;
+/* checkbox replace 
+--checkbox-display: none;
+--checkbox-label-display:flex;
+--checkbox-replace-display:inline-block;
+
+*/ 
+input[type="checkbox"],  input[type="radio"]  {
+	display:var(--checkbox-display);
 }
-.buttonreplace input[type="checkbox"] + label:before, .buttonreplace input[type="radio"] + label:before {
-    display:inline-block;
+
+input[type="checkbox"] + label, input[type="radio"] + label {
+	display: var(--checkbox-label-display);
+	align-items: center;
+}
+
+input[type="checkbox"] + label:before, input[type="radio"] + label:before {
+    display:var(--checkbox-replace-display);
     width:18px;
-    height:17px;
-    margin:0px 10px 0 0;
+    height:18px;
+    margin:-1px 4px 0px 0;
+    padding:0 0 4px 0;
     vertical-align:middle;
-   cursor:pointer;
-    content:" ";
+    cursor:pointer;
+    content:"";
+    background:url(/_assets/images/forms/square.svg) left center no-repeat;
+    background-size: contain;
 }
 
-/* font version */
-.buttonreplace  input[type="checkbox"] + label:before, .buttonreplace  input[type="radio"] + label:before {
-	background:none;
-	font-family: buttonreplace;
+input[type="checkbox"]:checked + label:before {
+  	background-image:url(/_assets/images/forms/square-check.svg);
 }
-
-.buttonreplace  input[type="checkbox"] + label:before {
-	content:"\f096";
+input[type="radio"] + label:before {
+	background-image:url(/_assets/images/forms/circle.svg);
 }
-.buttonreplace  input[type="checkbox"]:checked + label:before {
-	content:"\e800";
-}
-.buttonreplace  input[type="radio"] + label:before {
-	content:"\f10c";
-}
-.buttonreplace  input[type="radio"]:checked + label:before {
-	content:"\f192";
+input[type="radio"]:checked + label:before {
+	background-image:url(/_assets/images/forms/circle-check.svg);
 }
