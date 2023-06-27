@@ -50,8 +50,6 @@ component extends="contentSection" {
 
 	public string function html(required struct content) {
 		if (! StructKeyExists(arguments.content, "data") ) {
-			//local.text = FileRead("form_html_temp.html")
-			//arguments.content.data = parseForm(local.text);
 			throw("data not defined for cs form");
 		}
 
