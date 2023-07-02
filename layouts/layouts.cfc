@@ -339,7 +339,7 @@ component name="layouts" {
 		local.test = arguments.layoutObj.layout.select("div");
 		
 		for (local.div in local.test) {
-			if (local.div.id() != "") {
+			if (local.div.id() != "" AND Find( "_", local.div.id()) eq 0 ) {
 				arrayAppend(local.divs, local.div.id());
 			}
 		}

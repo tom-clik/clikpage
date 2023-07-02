@@ -1,9 +1,13 @@
 // on ready to include in all pages
 $(document).ready(function() {
+	clik.clikContainers();
 	clik.clikContent();
 });
 
 clik = {
+	clikContainers: function () {
+		$(".inner").parent().addClass("container");
+	},
 	clikContent: function () {
 
 		resizeMethod = jQuery().throttledresize ? 'throttledresize' : 'resize';

@@ -72,3 +72,8 @@ scheme-carousel {
 	carousel:1;
 }
 
+.scheme-forms {
+	@mobile {
+		form-display:block;
+	}
+}

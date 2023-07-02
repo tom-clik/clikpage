@@ -7,6 +7,7 @@
 		<textcolor title="Main text color" value="#333333" />
 		<myfavcolor title="My favourite colour" value="#ff0000" />
 		<panelbg title="Darker panel bg" value="#01798a" />
+		<border-color value="#01798a" />
 		<accent title="Accent colour" value="#38bbcd" />
 		<paneltext title="Panel text" value="#ffffff">
 			<description>To stand out against darker panel or accent</description>

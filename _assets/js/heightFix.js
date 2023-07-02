@@ -35,12 +35,14 @@
 	var resize = function() {
 		let resize =  clik.trueFalse( $image.css("--heightfix") ) || false;
 		if (resize) {
+			$element.addClass("fixedheight");
 			$element.css("height","auto");
 			$image.css({"display":"none"});
 			let h = $container.height();
 			$element.css("height",(h-paddings) + "px");
 		}
 		else {
+			$element.removeClass("fixedheight");
 			$image.removeAttr("style");
 		}
 		

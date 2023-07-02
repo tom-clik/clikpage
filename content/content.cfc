@@ -153,8 +153,37 @@ component extends="utils.baseutils" {
 			}
 
 			if (arguments.reload OR NOT StructKeyExists(local.cs,"settings")) {
-				arguments.content_sections[id] =  new(argumentCollection=local.cs);
-				settings(arguments.content_sections[id],arguments.styles,arguments.media);
+				try {
+					arguments.content_sections[id] =  new(argumentCollection=local.cs);
+				}
+				catch (any e) {
+					local.extendedinfo = {
+						"tagcontext"=e.tagcontext,
+						"arguments"=local.cs
+					};
+					throw(
+						extendedinfo = SerializeJSON(local.extendedinfo),
+						message      = "Unable to create cs:" & e.message, 
+						detail       = e.detail,
+						errorcode    = "content.loadSettings.001"		
+					);
+					
+				}
+				try {
+					settings(arguments.content_sections[id],arguments.styles,arguments.media);
+				}
+				catch (any e) {
+					local.extendedinfo = {
+						"tagcontext"=e.tagcontext,
+						 "content_section"=arguments.content_sections[id]
+					};
+					throw(
+						extendedinfo = SerializeJSON(local.extendedinfo),
+						message      = "Unable to add settings for cs:" & e.message, 
+						detail       = e.detail,
+						errorcode    = "content.loadSettings.002"		
+					);
+				}
 			}
 		}
 

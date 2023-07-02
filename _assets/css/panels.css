@@ -1,7 +1,4 @@
 /* Static CSS for new var style grid styling of "items"
-
-NB I'm sure we can do this with the standard grid functionality
-
  */
 :root {
 	--item-grid-template-areas: "imageWrap" "title"  "textWrap";

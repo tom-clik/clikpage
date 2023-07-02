@@ -544,10 +544,10 @@ component accessors="true" extends="utils.baseutils" {
 		) {
 
 		var info = getRecordSetInfo(site=arguments.site,dataset=arguments.dataset,id=arguments.record.id);
+		
+		arguments.record["next_link"] = info.next neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = arguments.dataset[info.next]) : "";
 
-		arguments.record["next_link"] = info.next neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.next) : "";
-
-		arguments.record["previous_link"] = info.previous neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = info.previous) : "";
+		arguments.record["previous_link"] = info.previous neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = arguments.dataset[info.previous]) : "";
 		
 		if (info.next neq "") {
 			arguments.record["next_title"] = getRecord(site=arguments.site, ID=arguments.dataset[info.next], type=arguments.type)["title"];
@@ -960,6 +960,12 @@ component accessors="true" extends="utils.baseutils" {
 
 						
 						break;
+					case "form":
+
+						local.xmlData = XmlParse( this.contentObj.contentSections.form.sampleForm() );
+						local.formdata = variables.utils.XML.xml2data(local.xmlData);
+
+						arguments.site.content[contentid].data = this.contentObj.contentSections.form.parseForm(local.formdata);
 					
 				}
 
@@ -988,8 +994,8 @@ component accessors="true" extends="utils.baseutils" {
 			
 			this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.content[contentid],local.data));
 			
-			
 		}
+
 		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
 
 		// TODO: setting somewhere to include this or not
@@ -997,17 +1003,18 @@ component accessors="true" extends="utils.baseutils" {
 		// pageContent.css &= "body {height:100vh;overflow:hidden};";
 		// pageContent.static_js["scrollbar"] = 1;
 		// pageContent.static_css["scrollbar"] = 1;
-			
-
+		
 		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
-
+		
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		
 		pageContent.body &= local.errorsHtml;
 
+
 		// WILLDO: remove this. Leave for now as it's useful sometimes
 		// savecontent variable="local.temp" {
-		// 	writeDump(local.rc.sectionObj);
+		// 	writeDump(local.rc.record);
+		// 	writeDump(local.rc.sectionObj.data);
 		// 	// writeDump(arguments.site.content["sectionmenu"]);
 		// }
 		// pageContent.body &= local.temp;
