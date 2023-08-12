@@ -86,7 +86,6 @@ clik = {
 						options[option] = parseCssVar(val,optionTypes[option]);
 					}
 				}
-				console.log(options);
 				if (options.scrollbar) {
 					$wrap.mCustomScrollbar();
 				}

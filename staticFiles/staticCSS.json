@@ -20,7 +20,7 @@
                 "title"
             ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.7.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.9.min.css"
         }
     ],
     "scripts": [
@@ -73,6 +73,10 @@
         {
             "min": "/_assets/css/title.css",
             "name": "title"
+        },
+        {
+            "min": "/_assets/css/tables.css",
+            "name": "tables"
         },
         {
             "min": "/_assets/css/tabs.css",

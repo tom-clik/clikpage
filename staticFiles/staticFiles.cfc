@@ -200,6 +200,7 @@ component {
 	 * @type        css|javascript
 	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF. 
 	 *              You should always bump the version
+	 * @mappings    Struct of mappings to expand for file paths
 	 * @return      Array of results (result.name, result.saved [won't save if 
 	 *              pack=false or all scripts are excluded from packages], 	
 	 *              result.filename, result.files)
@@ -301,8 +302,12 @@ component {
 		}
 
 		if ((! (StructKeyExists(local.result,"text") && local.result.text)) OR !StructKeyExists(local.result,"filecontent") OR NOT local.result.status_code eq 200)  {
+			local.extendedinfo = {data:arguments.input};
 			StructAppend(local.result,{"errordetail":"Unknown error"},false);
-			throw(message="Compression API return an error",detail=local.result.errordetail);
+			throw(
+					message="Compression API returned an error",
+					detail=local.result.errordetail,
+					extendedinfo=SerializeJSON(local.extendedinfo));
 		}
 
 				

@@ -17,4 +17,4 @@ messageHandler = {
 		alert(message);
 	}
 
-}
+};

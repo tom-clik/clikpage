@@ -33,19 +33,6 @@ button, input[type=submit], input[type=button] {
   background-color: transparent;
 }
 
-/*
-tried this to stop margin collapse between inner and outer.
-
-div {
-  overflow:hidden;
-}
-
-div.outer {
-  overflow:visible; 
-}*/
-
-
-
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -92,17 +79,23 @@ img {
 	display:block;
 }
 
-.container {
-  position:relative;
+/* Use inner divs to stop a host of issues like margin expanding etc */
+div.container {
+  display: flex;
 }
 
-.contentsection:after, .container:after, .clear:after, .clearfix:after {
-  content: " ";
-  display: block;
+div.inner {
+  position: relative;
+  flex-grow: 1;
+}
+
+.clear:after, .clearfix:after {
+  content: "";
+  line-height:0px;
+  font-size:0px;
+  display: table;
   height: 0;
   clear: both;
-  visibility: hidden;
-  overflow: hidden;
 }
 
 /* common elements */
@@ -171,11 +164,3 @@ a:hover {
 	color: inherit;
 }
 
-/* Use inner divs to stop a host of issues like margin expanding etc */
-div.container {
-  display: flex;
-}
-div.inner {
-  position: relative;
-  flex-grow: 1;
-}

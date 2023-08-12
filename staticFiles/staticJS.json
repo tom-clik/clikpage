@@ -19,7 +19,7 @@
         "throttledresize"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.4.min.js",
+      "min": "/_assets/js/_min/clikmain.0.8.min.js",
     },
     {
       "scripts": [

@@ -69,4 +69,7 @@ for (opts in ["CSS","JS"]) {
 	}
 }
 
+copyFile = ExpandPath("_output/copy.bat");
+execute name=""
+
 </cfscript>
