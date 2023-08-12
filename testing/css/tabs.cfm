@@ -27,9 +27,7 @@ Different ideas for tabs. Working nicely.
 /*			background-color: #9d9d9d;*/
 			margin:20px 0;
 		}
-		.cs-tabs:not(.vertical) {
-			width:400px;
-		}
+		
 		.container {
 			margin:40px;
 			--tab-font-weight:300;
@@ -51,19 +49,37 @@ Different ideas for tabs. Working nicely.
 			--tab-background: #9c9c9c;
 		}
 
-		#test1 {
+		#test {
 			--tab-border-radius:4px;
 			background-color: transparent;
+			--fixedheight:false;
 		}
 
-		#test1.cs-tabs .item {
+		#test.cs-tabs .item {
 			border: 1px solid #9c9c9c;
 		}
-		#test3.cs-tabs .item {
-			--tab-border-width: 1px;
-			border-top-width: 0px;
+
+		#test {
+			--vertical:true;
+			--fixedheight:true;
 		}
 		
+		@media screen and (min-width:1200px) {
+			
+			#test {
+				--vertical:false;
+				--fixedheight:false;
+			}
+
+		}
+
+		@media screen and (max-width:800px) {
+			#test {
+				--vertical:false;
+				--accordian:true;
+			}
+
+		}
 	</style>
 </head>
 <body>
@@ -73,17 +89,21 @@ Tab/Accordion/info panel Testing
 </div>
 
 <cfoutput>
-	#getTabs(id="test1")#
-	#getTabs(id="test2",class="vertical",count=10)#
-	#getTabs(id="test3",class="accordian")#
+	<!--- #getTabs(id="test1")# --->
+	#getTabs(id="test",count=10)#
+	<!--- #getTabs(id="test3")# --->
 </cfoutput>
+
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>	
 <script src="/_assets/js/jquery.tabs.js"></script>	
 <script src="/_assets/js/jquery.throttledresize.js"></script>
+<!-- TODO: need a parseCSS function in the general distribution -->
+<script src="/articlemanager/_assets/js/am_common.js"></script>
+
 <script>
 $( document ).ready(function() {
-	$(".cs-tabs").tabs({"resize":"throttledresize","fixedheight":false,"allowClosed":false});
+	$(".cs-tabs").tabs({"resize":"throttledresize","allowClosed":false});
 });
 </script>
 </body>
@@ -97,7 +117,7 @@ function getTabs(required string id, string class="", numeric count=4) {
 	ret &= "<div class='#local.class#' id='#arguments.id#'>\n";
 	for (var i = 1; i lte arguments.count; i++) {
 		local.open = i eq 2 ? " state_open": "";
-		ret &= "	<div class='tab#local.open#' id='#arguments.id#_tab#i#'>\n";
+		ret &= "	<div class='#local.open#' id='#arguments.id#_tab#i#'>\n";
 		ret &= "		<h3 class='title'>tab #i#</h3>\n";
 		ret &= "		<div class='item'>\n";
 		for (var p=1 ; p lte i; p++) {

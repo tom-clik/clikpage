@@ -1,6 +1,6 @@
 :root {
 	--border-color:gray;
-	--form-label-width: 33%;
+	--form-label-width: 160px;
 	--form-label-gap: 20px;
 	--form-row-gap: 4px;
 	--field-checkbox-width:28px;
@@ -24,6 +24,13 @@ div.fieldrow, div.fieldButtons{
 	grid-gap: var(--form-label-gap);
 	padding: var(--row-padding);
 }
+
+
+div.fieldrow.search {
+	grid-template-columns: var(--form-label-width) 26% auto;
+	grid-template-areas: "label search field";
+}
+
 div.fieldrow:nth-of-type(2n) {
     background-color: var(--form-stripe-background-color);
 }
@@ -53,6 +60,10 @@ div.fieldrow.error {
 .fieldrow > .field, .fieldrow > .buttons {
 	grid-area:field;
 }
+.fieldrow > .field.search {
+	grid-area:search;
+}
+
 
 .fieldrow .field + label {
 	text-align: left;	
@@ -66,7 +77,7 @@ div.fieldrow.error {
  	outline: none;
 }
 
-div.field:not(.field_boolean) {
+.fieldrow .field:not(.field_boolean)  {
 	padding:var(--field-padding);
 	border:var(--field-border-width) solid var(--field-border-color);
 	;

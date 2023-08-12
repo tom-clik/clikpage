@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="/_assets/css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="/_assets/css/forms.css">
 	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
-	<link rel="stylesheet" href="/_assets/css/select2.min.css" />
+	<link rel="stylesheet" href="/_assets/css/select2_clik.css" />
 	
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/jquery.validate.js"></script>
@@ -14,7 +14,6 @@
 	<script src="/_assets/js/select2.min.js"></script>
 	<script src="/_assets/js/jquery.elastic.1.6.11.js"></script>
 	<script src="/_assets/js/jquery.clikForm.js"></script>
-
 
 	<meta charset="UTF-8">
 	<style>

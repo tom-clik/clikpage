@@ -141,6 +141,8 @@ component {
 				local.errorCode = 1;
 			}
 			catch (any e) {
+				writeOutput("Can't write to #local.filename# ");
+				abort;
 				// ignore failure to write to log
 			}
 		}

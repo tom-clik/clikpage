@@ -96,6 +96,7 @@ E.g.
 	height:var(--icon-height);
 	line-height:var(--icon-height);
 	font-size: var(--icon-height);
+	overflow: visible;/* very weird bug with "use" part of svgs */
 }
 
 .button label {

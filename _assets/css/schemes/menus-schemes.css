@@ -104,7 +104,6 @@ Settings:
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
-	grid-gap:0; /* Applying a grid gap seems to work in some browsers */
 }
 
 .cs-menu.scheme-flex.stretch li {

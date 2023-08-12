@@ -33,7 +33,6 @@
 		}
 
 		$element.on("open",function() {
-			console.log("open handler");
 			plugin.open();
 		});
 

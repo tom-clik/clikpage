@@ -153,7 +153,7 @@ Requires icons.css and navbuttons.css
 	overflow: hidden;
 }
 
-.cs-menu a span {
+.cs-menu a span:not(.accessKey) {
 	display: var(--menu-label-display);	
 }
 
@@ -165,7 +165,7 @@ Requires icons.css and navbuttons.css
 	transform: rotate(90deg);
 }
 
-.cs-menu a > span {
+.cs-menu a > span:not(.accessKey) {
 	flex-grow: 1;
 }
 

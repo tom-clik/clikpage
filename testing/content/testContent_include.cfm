@@ -6,10 +6,7 @@ config = deserializeJSON(fileData);
 
 outPath = ExpandPath("_out/");
 
-settingsObj = new clikpage.settings.settings(debug=1);
-contentObj = new clikpage.content.content(settingsObj=settingsObj);
-
-// Style definition -- see link to css file ibid.
+Style definition -- see link to css file ibid.
 settingsDef = ExpandPath("../styles/testStyles.xml");
 
 settingsObj = new clikpage.settings.settings(debug=1);

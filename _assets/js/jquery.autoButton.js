@@ -72,7 +72,7 @@ Typical actions are open, close (or the special case openclose which can be appl
 	    			let attrs = $link.attr("href").split(".");
 		    		$link.data("action",attrs[1]);
 		    		$link.data("target",$(attrs[0]));
-		    		console.log("Adding ", attrs[0], attrs[1]);
+		    		console.log("Adding auto link for ", attrs[0], attrs[1]);
 	    		}
 	    		// DEBUG
 	    		else {
@@ -92,6 +92,7 @@ Typical actions are open, close (or the special case openclose which can be appl
 
 				if ($target && action) {
 					let index = 0;
+			    	// single button toggle
 			    	if (action == "openclose") {
 						let state = $button.data("state");
 						if (!state) {
@@ -102,6 +103,7 @@ Typical actions are open, close (or the special case openclose which can be appl
 						$button.addClass("state_" + action);
 						$button.data("state",action);
 					}
+					// multiple buttons cycl through states
 					else {
 						index = $button.data("index");
 						if (!index) {
@@ -110,7 +112,6 @@ Typical actions are open, close (or the special case openclose which can be appl
 						index++;
 						if (index == $links.length) index = 0; 
 						$button.data("index",index);
-
 					}
 					
 					console.log("triggering " + action + " on " + $target.attr("id"));
