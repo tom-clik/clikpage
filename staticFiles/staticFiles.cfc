@@ -205,7 +205,7 @@ component {
 	 *              pack=false or all scripts are excluded from packages], 	
 	 *              result.filename, result.files)
 	 */
-	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=]) {
+	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=],boolean minify=true) {
 		
 		local.results = [];
 		
@@ -244,14 +244,16 @@ component {
 				if (local.out != "") {
 					
 					local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
-					if (arguments.type == "css") {
-						local.compressed = minifiyCSS(local.out);
-					}
-					else {
-						local.compressed = minifiyJS(local.out);
+					if (arguments.minify) {
+						if (arguments.type == "css") {
+							local.out = minifiyCSS(local.out);
+						}
+						else {
+							local.out = minifiyJS(local.out);
+						}
 					}
 					try {
-						FileWrite(local.outputFile, local.compressed, "utf-8");
+						FileWrite(local.outputFile, local.out, "utf-8");
 					}
 					catch (any e) {
 						local.extendedinfo = {"tagcontext"=e.tagcontext};

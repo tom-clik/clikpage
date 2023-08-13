@@ -9,8 +9,6 @@
 	--lightcolor:#e4e4e4;
 	--border-color:#ffffff;
 	--item-padding:8px;
-
-
 }
 
 .cs-tabs {
@@ -97,7 +95,7 @@
 	visibility: hidden;
 	position:absolute;
 	left:0;
-	max-width: 100%;
+	width: 100%;
 	border-style:solid;
 	border-width:var(--tab-border-width);
 	border-color:var(--tab-border-color);

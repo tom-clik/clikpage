@@ -92,6 +92,8 @@ Tab/Accordion/info panel Testing
 	<!--- #getTabs(id="test1")# --->
 	#getTabs(id="test",count=10)#
 	<!--- #getTabs(id="test3")# --->
+
+	<a id="resize">Resize</a>
 </cfoutput>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
@@ -103,7 +105,14 @@ Tab/Accordion/info panel Testing
 
 <script>
 $( document ).ready(function() {
-	$(".cs-tabs").tabs({"resize":"throttledresize","allowClosed":false});
+	$(".cs-tabs").tabs({"resize":"throttledresize","allowClosed":false });
+	$("#resize").on("click",function(e) {
+		e.stopPropagation;
+		text = $("#test_tab1 .item").html();
+		$("#test_tab1 .item").html(text + text + text);
+		console.log("resize");
+		$(".cs-tabs").trigger("resize");
+	 });
 });
 </script>
 </body>
@@ -116,7 +125,7 @@ function getTabs(required string id, string class="", numeric count=4) {
 	local.class = ListAppend("container cs-tabs",arguments.class," ");
 	ret &= "<div class='#local.class#' id='#arguments.id#'>\n";
 	for (var i = 1; i lte arguments.count; i++) {
-		local.open = i eq 2 ? " state_open": "";
+		local.open = false and i eq 2 ? " state_open": "";
 		ret &= "	<div class='#local.open#' id='#arguments.id#_tab#i#'>\n";
 		ret &= "		<h3 class='title'>tab #i#</h3>\n";
 		ret &= "		<div class='item'>\n";
