@@ -6,7 +6,6 @@
                 "breadcrumb",
                 "definitions",
                 "footnotes",
-                "forms",
                 "grids",
                 "icons",
                 "images",
@@ -17,7 +16,9 @@
                 "tables",
                 "tabs",
                 "text",
-                "title"
+                "title",
+                "select2",
+                "forms"
             ],
             "name":"content",
             "min":"/_assets/css/_min/mainpackage.0.9.min.css"
@@ -67,6 +68,10 @@
             "name": "definitions"
         },
         {
+            "min": "/_assets/css/select2.min.css",
+            "name": "select2"
+        },
+        {
             "min": "/_assets/css/forms.css",
             "name": "forms"
         },
@@ -81,11 +86,6 @@
         {
             "min": "/_assets/css/tabs.css",
             "name": "tabs"
-        },
-        {
-        	"debug": "/_assets/css/select2_clik.css",
-            "min": "/_assets/css/min/select2_clik.min.css",
-            "name": "select2"
         },
         {
         	"debug": "/_assets/css/jquery-ui.css",

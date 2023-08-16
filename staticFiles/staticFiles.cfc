@@ -243,8 +243,10 @@ component {
 				}
 				if (local.out != "") {
 					
-					local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
+					
 					if (arguments.minify) {
+						local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
+						
 						if (arguments.type == "css") {
 							local.out = minifiyCSS(local.out);
 						}

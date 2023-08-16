@@ -13,13 +13,14 @@ To assign icons we can use icons or svgs. For icons, always use our standard ico
 
 Either way the icon needs a class of "icon".
 
+Note that the button must always have and <a> tag or and <input> as the first child.
+
 ```
 <div class="button"><a href="#"><i class="icon icon-close"></i><label>Button text</label></a></div>
 
-<div class="button"><input type="submit" value="">Button text
-Button text</div>
+<div class="button"><input type="submit" value="Button text"></div>
 
-<div class="button"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></svg></div>
+<div class="button"><a href="#"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></a></div>
 ```
 
 # Notes
@@ -91,6 +92,7 @@ E.g.
 }
 
 .button .icon {
+	cursor: inherit;
 	display: var(--icon-display);
 	width:var(--icon-width);
 	height:var(--icon-height);
@@ -100,6 +102,7 @@ E.g.
 }
 
 .button label {
+	cursor: inherit;
 	display:  var(--label-display);
 	line-height: var(--icon-height);
 	text-align: var(--label-align);

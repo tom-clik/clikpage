@@ -1,6 +1,0 @@
-component extends="cliksetting" {
-
-	new
-
-
-}

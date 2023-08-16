@@ -16,8 +16,8 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/select2.min.css" />
+	<link rel="stylesheet" type="text/css" href="/_assets/css/forms.css">
 	<style>
 	body {
 		padding:20px;
@@ -51,49 +51,51 @@
 		<form class="form">
 			
 			<div class="fieldrow">
-				<label>basic single</label>
-
-				<field>
+				<div class="fieldLabel">
+					<label>basic single</label>
+				</div>	
+				<div class="field">
 					<select name="js-example-basic-single" class="basic">
 						<cfoutput>#options#</cfoutput>
 					</select>
-				<field>
+				</div>
+				
 			</div>
 			<div class="fieldrow">
 				<label>basic multiple</label>
 
-				<field>
+				<div class="field">
 					<select name="js-example-basic-multiple" class="basic" multiple>
 						<cfoutput>#options#</cfoutput>
 					</select>
-				<field>
+				</div>
 			</div>
 			<div class="fieldrow">
 				<label>basic multiple placeholder</label>
 
-				<field>
+				<div class="field">
 					<select name="js-example-basic-multiple-placeholder" class="basic" multiple>
 						<cfoutput>#options#</cfoutput>
 					</select>
-				<field>
+				</div>
 			</div>
 			<div class="fieldrow">
 				<label>basic multiple max 3</label>
 
-				<field>
+				<div class="field">
 					<select name="js-example-basic-multiple-max" class="basic" multiple>
 						<cfoutput>#options#</cfoutput>
 					</select>
-				<field>
+				</div>
 			</div>
 			<div class="fieldrow">
 				<label>Ajax</label>
 
-				<field>
+				<div class="field">
 					<select name="js-example-ajax" class="basic" multiple>
 						
 					</select>
-				<field>
+				</div>
 			</div>
 
 		</form>
@@ -112,7 +114,6 @@ minimumResultsForSearch	integer
 --->
 <script>
 
-
 	$(document).ready(function() {
 		
 		$('select.basic').select2();
@@ -130,7 +131,7 @@ minimumResultsForSearch	integer
 			    url: 'select2_testapi.cfc?method=search',
 			    dataType: 'json'
 			},
-			minimumInputLength:3
+			minimumInputLength:2
     	});
 
 	});

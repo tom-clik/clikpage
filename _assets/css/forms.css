@@ -2,27 +2,40 @@
 	--border-color:gray;
 	--form-label-width: 160px;
 	--form-label-gap: 20px;
-	--form-row-gap: 4px;
-	--field-checkbox-width:28px;
+	--form-row-gap: 0px;
+	--field-checkbox-width:16px;
 	--form-display:grid;
 	--field-border-color: var(--border-color);
 	--form-stripe-background-color: transparent;
 	--row-padding: 4px;
 	--field-padding: 4px;
 	--field-border-width: 1px;
+	--field-border-radius: 0px;
 	--field-background-color: transparent;
+	--checkbox-field-display: grid;/* turn on uniform replace with 'block' */
 	--checkbox-display: inline-block;/* turn on uniform replace with 'none' */
 	--checkbox-replace-display: none;/* turn on uniform replace with 'inline-block' */
 	--checkbox-label-display: inline-block;/* turn on uniform replace with 'flex' */
 }
 
-div.fieldrow, div.fieldButtons{
+div.uniform {
+	--checkbox-field-display: block;/* turn on uniform replace with 'block' */
+	--checkbox-display: none;/* turn on uniform replace with 'none' */
+	--checkbox-replace-display:  inline-block;
+	--checkbox-label-display: flex;
+	--field-checkbox-width:auto;
+}
+
+div.fieldrow, div.fieldButtons {
 	display:var(--form-display);
 	grid-template-columns: var(--form-label-width) auto;
-	grid-template-areas: "label field";
 	margin-bottom: var(--form-row-gap);
 	grid-gap: var(--form-label-gap);
 	padding: var(--row-padding);
+}
+
+div.fieldrow, div.fieldButtons {
+	grid-template-areas: "label field";
 }
 
 
@@ -46,15 +59,16 @@ div.fieldrow.error {
 .fieldrow > .fieldLabel , .fieldrow > .fieldSpacer {
 	grid-area:label;
 	display: flex;
+	width: 100%;
 }
 
 .fieldrow > .fieldLabel label {
 	flex-grow: 1;
 }
 
-.fieldLabel > label  .button {
-	position: absolute;
-	right:0;
+.fieldLabel  {
+	--icon-width:1em;
+	--icon-height:1em;
 }
 
 .fieldrow > .field, .fieldrow > .buttons {
@@ -77,11 +91,21 @@ div.fieldrow.error {
  	outline: none;
 }
 
-.fieldrow .field:not(.field_boolean)  {
+.fieldrow input:not([type='checkbox']):not([type='radio']):not([type='search']), 
+.fieldrow textarea,
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple   {
 	padding:var(--field-padding);
 	border:var(--field-border-width) solid var(--field-border-color);
-	;
 	background-color: var(--field-background-color);
+	border-radius: var(--field-border-radius);
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+	line-height: 1;
+	padding-left: 0px;
+    padding-right: 0px;
+    padding:var(--field-padding);
 }
 
 .field_boolean, .buttons {
@@ -92,10 +116,12 @@ div.fieldLabel {
 	padding:4px;
 }
 
-field.checkbox, field.radio {
-	display: grid;
+.field.checkbox, .field.radio {
+	display: var(--checkbox-field-display);
+	align-items: center;
 	grid-template-columns: var(--field-checkbox-width) auto ;
 	grid-row-gap: 2px;
+	grid-gap: 2px;
 }
 
 
@@ -103,15 +129,15 @@ field.checkbox, field.radio {
 --checkbox-display: none;
 --checkbox-label-display:flex;
 --checkbox-replace-display:inline-block;
-
 */ 
+
 input[type="checkbox"],  input[type="radio"]  {
 	display:var(--checkbox-display);
 }
 
 input[type="checkbox"] + label, input[type="radio"] + label {
 	display: var(--checkbox-label-display);
-	align-items: center;
+	align-items: center;	
 }
 
 input[type="checkbox"] + label:before, input[type="radio"] + label:before {
