@@ -2,6 +2,7 @@
 // A boilerplate for jumpstarting jQuery plugins development
 // version 1.1, May 14th, 2011
 // by Stefan Gabos
+// This version modified by Tom Peer
 
 // remember to change every instance of "pluginName" to the name of your plugin!
 (function($) {
