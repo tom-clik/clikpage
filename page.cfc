@@ -203,25 +203,53 @@ component {
 	}
 
 	/**
-	 * @hint      Add a css file to the content
+	 * @hint      Add a css/css file/static def to the content. Note it assumes it's a static def unless it ends in .css (a query string can be ignored (e.g. ?cachebuster=147334) or it contains "{"
 	 *
 	 * @content  The page content
 	 * @js       url of css file
 	 *
 	 */
 	public void function addCss(required struct content, required string css) {
-		ArrayAppend(arguments.content.css_files, arguments.css);
+		
+		if (Find("{", arguments.css)) {
+			arguments.content.css &= arguments.css;
+		}
+		else {
+			local.ext = ListLast(ListFirst(arguments.css,"?"), ".");
+			if (local.ext eq "css") {
+				ArrayAppend(arguments.content.css_files, arguments.css);
+			}
+			else {
+				arguments.content.static_css[arguments.css] = 1;
+			}
+		}
 	}
 	
 	/**
-	 * @hint      Add a javascript file to the content
+	 * @hint      Add a javascript file to the content. Same logic as addCss except adhoc script goes into onready
 	 *
 	 * @content  The page content
 	 * @js       url of javascritp file
 	 *
 	 */
 	public void function addJs(required struct content, required string js) {
-		ArrayAppend(arguments.content.js_files, arguments.js);
+		if (ListLen(arguments.js, "{}();") gt 1) {
+			local.js = trim(arguments.js) ;
+			if ( Right( local.js, 1 ) neq ";") {
+				local.js &= ";";
+			}
+			arguments.content.onready &= local.js & newLine();
+		}
+		else {
+			local.ext = ListLast(ListFirst(arguments.js,"?"), ".");
+			if (local.ext eq "js") {
+				ArrayAppend(arguments.content.js_files, arguments.js);
+			}
+			else {
+				arguments.content.static_js[arguments.js] = 1;
+			}
+		}
+		
 	}
 
 	/**
