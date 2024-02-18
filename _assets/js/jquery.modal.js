@@ -51,6 +51,7 @@
 		// public methods
 		plugin.open = function() {
 			var cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
+			console.log("Adding class open");
 			$element.css(cssSettings).addClass("open");
 			if (plugin.settings.modal) {
 				backdrop = $("<div class='backdrop'></div>").appendTo("body")

@@ -6,7 +6,7 @@ config = deserializeJSON(fileData);
 
 outPath = ExpandPath("_out/");
 
-Style definition -- see link to css file ibid.
+//Style definition -- see link to css file ibid.
 settingsDef = ExpandPath("../styles/testStyles.xml");
 
 settingsObj = new clikpage.settings.settings(debug=1);
@@ -14,7 +14,6 @@ contentObj = new clikpage.content.content(settingsObj=settingsObj);
 contentObj.debug = 1;
 
 styles = settingsObj.loadStyleSettings(settingsDef);
-// writeDump(styles.style);
 
 colorCss = ":root {" &  settingsObj.colorVariablesCSS(settings=styles,debug=false) & "}";
 colorCss = settingsObj.outputFormat(
@@ -26,6 +25,7 @@ colorCss = settingsObj.outputFormat(
 FileWrite(outPath & "colors.css",colorCss);
 
 pageObjOk = 1;
+
 try {
 	pageObj = new clikpage.page(debug=1);
 }
@@ -38,14 +38,16 @@ contentObj.debug = 1;
 function testCS(required struct cs, boolean getSettings=1) {
 	
 	try {
+
 		if (arguments.getSettings) {
 			contentObj.settings(content=arguments.cs,styles=styles.style,media=styles.media);
 		}		
-		writeDump(var=arguments.cs.settings,label="settings");
+
+		WriteDump(var=arguments.cs.settings,label="settings");
 
 		css = CSS(arguments.cs);
-		writeOutput("<pre>" & css & "</pre>");
 
+		WriteOutput("<pre>" & css & "</pre>");
 		
 		FileWrite(outPath & arguments.cs.type & ".css",css);
 
@@ -62,13 +64,14 @@ function testCS(required struct cs, boolean getSettings=1) {
 		);
 	}
 
-	writeOutput( HTMLEditFormat(local.cs.html));
+	WriteOutput( HTMLEditFormat(local.cs.html));
 	
-	writeDump(var=local.cs.pagecontent,label="Page content");
+	WriteDump(var=local.cs.pagecontent,label="Page content");
 
 	local.static = staticContent(local.cs.pagecontent);
-	writeOutput("<h2>Static links</h2>");
-	writeOutput("<pre>" & HTMLEditFormat( local.static.js )  & HTMLEditFormat( local.static.css ) &"</pre>");
+	
+	WriteOutput("<h2>Static links</h2>");
+	WriteOutput("<pre>" & HTMLEditFormat( local.static.js )  & HTMLEditFormat( local.static.css ) &"</pre>");
 
 	local.js = "
 	<script>
@@ -81,10 +84,10 @@ function testCS(required struct cs, boolean getSettings=1) {
 }
 
 function CSS(required struct cs) {
+
 	local.site_data = { "#arguments.cs.id#" = arguments.cs};
 	
 	return contentObj.contentCSS(styles=styles, content_sections=local.site_data, media=styles.media);
-
 	
 }
 

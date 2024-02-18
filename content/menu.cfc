@@ -13,7 +13,7 @@ component extends="contentSection" {
 		super.init(arguments.contentObj);
 		
 		// static css definitions
-		variables.static_css = {"menus"=1};
+		variables.static_css = {"menus"=1,"icons"=1};
 		variables.static_js ={"menus"=1};
 		
 		this.panels = [

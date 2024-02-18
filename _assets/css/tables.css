@@ -49,7 +49,9 @@ Better mechanism for first and last column paddings? (not pa priority).
 	--table-cell-padding:0;
 	--table-font:inherit;
 	--table-text-align:inherit;
-	--table-stripe-bg: transparent;
+	--table-vertical-align: top;
+	--table-background: transparent;
+	--table-stripe-bg: var(--table-background);
 }
 
 th {
@@ -75,10 +77,15 @@ th, td  {
 	background-color: var(--table-bg);
 	color: var(--table-text);
 	padding: var(--table-cell-padding);
+	vertical-align:var(--table-vertical-align);
+}
+
+table tbody tr {
+	background: var(--table-background);
 }
 
 table tbody tr:nth-of-type(2n) {
-	background-color: var(--table-stripe-bg);
+	--table-background: var(--table-stripe-bg);
 }
 
 

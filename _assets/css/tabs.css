@@ -2,13 +2,14 @@
 
 # Tabs styling
 
+
+
 */
 
 :root {
 	--dark-color: #ccc;
 	--lightcolor:#e4e4e4;
 	--border-color:#ffffff;
-	--item-padding:8px;
 }
 
 .cs-tabs {
@@ -23,16 +24,22 @@
 	--fitheight: false;
 	--menuAnimationTime: 300;
 	--allowClosed: false;
-	--tab-closed-color:var(--dark-color);
 	--tab-padding:8px 14px;
 	--tab-font-size:inherit;
 	--tab-font-weight:inherit;
 	--tab-font:inherit;
-	--tab-background-color:var(--lightcolor);
+	--tab-background:var(--lightcolor);
 	--tab-border-width:1px;
 	--tab-border-color:var(--border-color);
 	--tab-border-radius: 8px 6px;
 	--tab-width:160px;
+	--tab-first-inset:6px;
+}
+.cs-tabs .tab:not(.state_open) .title {
+	--tab-background:var(--dark-color);
+}
+.cs-tabs .tab .title:hover {
+	--tab-background:var(--lightcolor);
 }
 
 .cs-tabs.vertical {
@@ -64,7 +71,7 @@
 	border-color:var(--tab-border-color);
 	position: relative;
 	z-index: 200;
-	background-color: var(--tab-closed-color);
+	background: var(--tab-background);
 }
 
 .cs-tabs:not(.vertical, .accordian) .title {
@@ -83,23 +90,28 @@
 }
 
 .cs-tabs:not(.vertical, .accordian) .tab:first-of-type .title {
-	margin-left:6px;
+	margin-left:var(--tab-first-inset);
 } 
 
 .cs-tabs .state_open .title { 
-	border-bottom-color: var(--tab-background-color);
-	background-color: var(--tab-background-color);
+	border-bottom-color: transparent;
+	background: var(--tab-background);
 } 
 
 .cs-tabs .item {
 	visibility: hidden;
+	height:0;
 	position:absolute;
 	left:0;
-	width: 100%;
 	border-style:solid;
 	border-width:var(--tab-border-width);
 	border-color:var(--tab-border-color);
-	background-color: var(--tab-background-color);
+	background: var(--tab-background);
+	overflow: hidden;
+	padding: var(--tab-padding);
+	font-size: var(--tab-font-size);
+	font-weight: var(--tab-font-weight);
+	font-family: var(--tab-font);
 }
 
 .cs-tabs .state_open .item {

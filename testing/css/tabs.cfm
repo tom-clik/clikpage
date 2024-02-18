@@ -77,6 +77,7 @@ Different ideas for tabs. Working nicely.
 			#test {
 				--vertical:false;
 				--accordian:true;
+				--allowClosed:true;
 			}
 
 		}
@@ -89,9 +90,7 @@ Tab/Accordion/info panel Testing
 </div>
 
 <cfoutput>
-	<!--- #getTabs(id="test1")# --->
-	#getTabs(id="test",count=10)#
-	<!--- #getTabs(id="test3")# --->
+	#getTabs(id="test",count=6)#
 
 	<a id="resize">Resize</a>
 </cfoutput>
@@ -105,7 +104,9 @@ Tab/Accordion/info panel Testing
 
 <script>
 $( document ).ready(function() {
-	$(".cs-tabs").tabs({"resize":"throttledresize","allowClosed":false });
+	<cfoutput>
+	$(".cs-tabs").tabs( { "resize":"throttledresize" } );
+	</cfoutput>
 	$("#resize").on("click",function(e) {
 		e.stopPropagation;
 		text = $("#test_tab1 .item").html();
@@ -119,11 +120,13 @@ $( document ).ready(function() {
 </html>
 
 <cfscript>
-function getTabs(required string id, string class="", numeric count=4) {
+function getTabs(required string id, numeric count=4) {
 
+	
 	var ret="";
-	local.class = ListAppend("container cs-tabs",arguments.class," ");
-	ret &= "<div class='#local.class#' id='#arguments.id#'>\n";
+	
+	ret &= "<div class='container cs-tabs' id='#arguments.id#'>\n";
+	
 	for (var i = 1; i lte arguments.count; i++) {
 		local.open = false and i eq 2 ? " state_open": "";
 		ret &= "	<div class='#local.open#' id='#arguments.id#_tab#i#'>\n";

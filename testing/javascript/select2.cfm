@@ -56,10 +56,9 @@
 				</div>	
 				<div class="field">
 					<select name="js-example-basic-single" class="basic">
-						<cfoutput>#options#</cfoutput>
+						
 					</select>
 				</div>
-				
 			</div>
 			<div class="fieldrow">
 				<label>basic multiple</label>
@@ -113,10 +112,19 @@ minimumInputLength	integer	0	Minimum number of characters required to start a se
 minimumResultsForSearch	integer	
 --->
 <script>
-
+	<cfoutput>
+	valueLists = {
+		test: #serializeJSON(select2.getData())#
+	};
+	</cfoutput>
 	$(document).ready(function() {
 		
-		$('select.basic').select2();
+		$('select.basic').select2({data: valueLists.test}).on('select2:select', function (e) {
+	  		const data = e.params.data;
+		    console.log(data);
+		});
+
+		$('#mySelect2')
 
 		$('select[name=js-example-basic-multiple-placeholder]').select2({
 		  placeholder: 'Select some options option'

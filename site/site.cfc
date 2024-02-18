@@ -1307,7 +1307,20 @@ component accessors="true" extends="utils.baseutils" {
 		local.js &= "site.data = {};"
 		local.js &= "site.data.images = " & serializeJSON(arguments.site.images) & ";";
 		local.js &= "site.data.articles = " & serializeJSON(arguments.site.articles) & ";";
-		FileWrite(arguments.outputDir & "/" & "sitedata.js", local.js);
+		local.filePath = arguments.outputDir & "/" & "sitedata.js";
+		try{
+			FileWrite(local.filePath, local.js);
+		} 
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext,file=local.filePath};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "unable to save js to #local.filePath#:" & e.message, 
+				detail       = e.detail,
+				errorcode    = ""		
+			);
+		}
+		
 	}
 
 }

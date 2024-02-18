@@ -12,7 +12,7 @@ TODO: style this up to use vars.
 	<title>Scrollbar test</title>
 	<link rel="stylesheet" href="/_assets/css/reset.css">
 	<link rel="stylesheet" href="/_assets/css/text.css">
-	<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.min.css">
+	<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<style>
@@ -80,7 +80,7 @@ TODO: style this up to use vars.
 </div>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/jquery.mCustomScrollbar.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {

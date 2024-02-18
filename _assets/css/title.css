@@ -57,6 +57,15 @@ a, a:hover, input.button, input.button:hover {
 	font-size: var(--title-font-size);
 }
 
+.cs-title h1, .cs-title h2, .cs-title h3, .cs-title h4, .cs-title h5, .cs-title h6,
+.title h1, .title h2, .title h3, .title h4, .title h5, .title h6 {
+	font-family: inherit;
+	font-weight:  inherit;
+	text-align: inherit;
+	color:  inherit;
+	font-size: inherit;
+}
+
 .cs-title a, .cs-title a:hover {
 	color:inherit;
 }

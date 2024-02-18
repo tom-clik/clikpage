@@ -84,6 +84,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 				$($tabItems[1]).addClass("item");
 			});
 
+			console.log(plugin.settings);
 			getCssSettings();
 			console.log(plugin.settings);
 
@@ -189,7 +190,6 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
     		}
     		else {
     			$element.css({"height":"auto"});
-    			$element.find(".item").css({"height":"auto"});
     			var maxheight = 0;
 	    		if (plugin.settings.fixedheight) {
 		    		$element.find(".item").each(function() {
@@ -222,6 +222,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 			
 			for (let setting in settingTypes) {
 				let val = am.parseCssVar($element,setting,settingTypes[setting]);
+				
 				if (val != null) plugin.settings[setting] = val;
 			}
 

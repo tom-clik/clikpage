@@ -292,7 +292,7 @@ component {
 	public string function removeJsComments(required string js) {
 		return variables.consolepattern.matcher(arguments.js).replaceAll("");
 	}
-
+	
 	private string function callCompressAPI(required string input, required string apiendpoint) {
 		local.httpService = new http(method = "POST", charset = "utf-8", url = arguments.apiendpoint,multipart="false");
 		local.httpService.addParam(type = "formfield",name="input", value = arguments.input);

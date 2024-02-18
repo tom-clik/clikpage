@@ -14,7 +14,7 @@ Create a page struct and then output the links for debug mode and live mode.
 
 <cfscript>
 defFile = ExpandPath("test_js.json");
-// defFile = ExpandPath("../../staticFiles/staticJS.json");
+defFile = ExpandPath("../../staticFiles/staticJS.json");
 local.tempData = FileRead(defFile);
 
 try {
@@ -32,7 +32,7 @@ for (test in [
 		{"testpackage":true,"main":true,"notdefined":1,"metaforms":1,"menus":1,"select2":1,"fuzzy":1},
 		{"fuzzy":true},
 		{"menus":true},
-		{"metaforms":true}
+		{"main":true}
 	]
 	) {
 

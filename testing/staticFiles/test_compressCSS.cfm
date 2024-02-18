@@ -62,7 +62,7 @@ for (opts in ["CSS","JS"]) {
 
 	staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=jsonData);
 
-	packages = staticFilesObj.compressPackage(type=opts,overwrite=true,mappings=mappings);
+	packages = staticFilesObj.compressPackage(type=opts,overwrite=true,mappings=mappings,minify=false);
 
 	for (res in packages) {
 		writeDump(res);
@@ -70,6 +70,5 @@ for (opts in ["CSS","JS"]) {
 }
 
 copyFile = ExpandPath("_output/copy.bat");
-execute name=""
 
 </cfscript>

@@ -37,7 +37,7 @@
 			// the plugin's final properties are the merged default and
 			// user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
-
+			console.log(plugin.settings);
 			// code goes here
 			$element.find(".submenu").each(function() {
 				let $submenu = $(this);

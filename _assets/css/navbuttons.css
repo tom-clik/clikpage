@@ -13,7 +13,7 @@ To assign icons we can use icons or svgs. For icons, always use our standard ico
 
 Either way the icon needs a class of "icon".
 
-Note that the button must always have and <a> tag or and <input> as the first child.
+Note that the button must always have an <a> tag or an <input> as the first child.
 
 ```
 <div class="button"><a href="#"><i class="icon icon-close"></i><label>Button text</label></a></div>

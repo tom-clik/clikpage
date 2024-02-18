@@ -6,6 +6,8 @@
 
 Demo of using pure CSS to fit image heights. Every element in the tree has to have a height:100% or have its height set by a grid template row. This is fine if you want the content to fit into the page and maybe have JS scrollbars.
 
+We have decided not to do this in the actual system, and instead fix a height with JavaScript on the element to do the containing. See clikpage\testing\javascript\imageheights_fix.html
+
 --->
 
 <cfscript>

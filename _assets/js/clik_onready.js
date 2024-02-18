@@ -65,7 +65,7 @@ clik = {
 			);
 		}
 		if(jQuery().tabs) {
-			$(".cs-tabs").tabs({"resize":"throttledresize","fit":true,"fixedheight":false,"allowClosed":false});
+			$(".cs-tabs").tabs({"resize":"throttledresize"});
 		}
 		/**
 		 * Attach a custom scrollbar to any element with a class of .wrap
