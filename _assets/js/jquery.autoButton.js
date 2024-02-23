@@ -59,77 +59,83 @@ Typical actions are open, close (or the special case openclose which can be appl
 	 	
 	    return this.each(function() {
 
-	    	var $button = $(this);
-	    	 
-	    	var $links = $(this).find("a");
+	    	if (undefined == $(this).data('button')) {
 
-	    	let state = $button.data("state");
-	    	
-	    	$button.find("a").each(function() {
-	    		let $link  = $(this);
-	    		let href = $link.attr("href");
-	    		if (href !== undefined) {
-	    			let attrs = $link.attr("href").split(".");
-		    		$link.data("action",attrs[1]);
-		    		$link.data("target",$(attrs[0]));
-		    		console.log("Adding auto link for ", attrs[0], attrs[1]);
-	    		}
-	    		// DEBUG
-	    		else {
-	    			console.log("No href tag found for <a> tag in button");
-	    		}
-	    		// /debug
-	    	});
+		    	var $button = $(this);
+		    	 
+		    	var $links = $(this).find("a");
 
-	    	$(this).on("click","a",function(e) {
+		    	let state = $button.data("state");
+		    	
+		    	$button.find("a").each(function() {
+		    		let $link  = $(this);
+		    		let href = $link.attr("href");
+		    		if (href !== undefined) {
+		    			let attrs = $link.attr("href").split(".");
+			    		$link.data("action",attrs[1]);
+			    		$link.data("target",$(attrs[0]));
+			    		console.log("Adding auto link for ", attrs[0], attrs[1]);
+		    		}
+		    		// DEBUG
+		    		else {
+		    			console.log("No href tag found for <a> tag in button");
+		    		}
+		    		// /debug
+		    	});
 
-				e.preventDefault();
-				e.stopPropagation();
+		    	$(this).on("click","a",function(e) {
 
-				var $self = $(this);
-				let action = $self.data("action");
-				let $target = $self.data("target");
+					e.preventDefault();
+					e.stopPropagation();
 
-				if ($target && action) {
-					let index = 0;
-			    	// single button toggle
-			    	if (action == "openclose") {
-						let state = $button.data("state");
-						if (!state) {
-							state = "close";
+					var $self = $(this);
+					let action = $self.data("action");
+					let $target = $self.data("target");
+
+					if ($target && action) {
+						let index = 0;
+				    	// single button toggle
+				    	if (action == "openclose") {
+							let state = $button.data("state");
+							if (!state) {
+								state = "close";
+							}
+							action = state == "open" ? "close" : "open";
+							$button.removeClass("state_" + state);
+							$button.addClass("state_" + action);
+							$button.data("state",action);
 						}
-						action = state == "open" ? "close" : "open";
-						$button.removeClass("state_" + state);
-						$button.addClass("state_" + action);
-						$button.data("state",action);
+						// multiple buttons cycl through states
+						else {
+							index = $button.data("index");
+							if (!index) {
+								index = 0;
+							}
+							index++;
+							if (index == $links.length) index = 0; 
+							$button.data("index",index);
+						}
+						
+						console.log("triggering " + action + " on " + $target.attr("id"));
+						
+						$target.trigger(action);
+
+						if ($links.length > 1) {
+							$links.css({"display":"none"});
+							$($links[index]).css({"display":"flex"});
+						}
 					}
-					// multiple buttons cycl through states
+					// debug
 					else {
-						index = $button.data("index");
-						if (!index) {
-							index = 0;
-						}
-						index++;
-						if (index == $links.length) index = 0; 
-						$button.data("index",index);
+						console.log("No auto actions for button");
 					}
+					// /debug
 					
-					console.log("triggering " + action + " on " + $target.attr("id"));
-					
-					$target.trigger(action);
-
-					if ($links.length > 1) {
-						$links.css({"display":"none"});
-						$($links[index]).css({"display":"flex"});
-					}
-				}
-				// debug
-				else {
-					console.log("No auto actions for button");
-				}
-				// /debug
+				});
 				
-			});
+				$(this).data('button', 1);
+
+			}
 		})
 	}
 })(jQuery);

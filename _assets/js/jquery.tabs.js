@@ -221,7 +221,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
     	var getCssSettings = function() {
 			
 			for (let setting in settingTypes) {
-				let val = am.parseCssVar($element,setting,settingTypes[setting]);
+				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
 				
 				if (val != null) plugin.settings[setting] = val;
 			}

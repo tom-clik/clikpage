@@ -6,11 +6,16 @@
 			modal: true,
 			draggable: false,
 			dragTarget: "h2",
-			closebutton: "<svg class=\"icon\"  viewBox=\"0 0 357 357\"><use xlink:href=\"/_assets/images/close47.svg#close\"></svg>",
 			onOpen: function() {},
 			onClose: function() {},
 			onOk: function() {},
 			onCancel: function() {}
+		}
+
+		var settingTypes = {
+			modal: "boolean",
+			draggable: "boolean",
+			dragTarget: "string"
 		}
 
 		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
@@ -25,6 +30,8 @@
 					   
 		plugin.init = function() {
 			plugin.settings = $.extend({}, defaults, options);
+			getCssSettings();
+			console.log(plugin.settings);
 			if (plugin.settings.draggable) {
 				$element.on("mousedown",plugin.settings.dragTarget,function() {
 					dragMouseDown();
@@ -127,6 +134,16 @@
 			/* stop moving when mouse button is released:*/
 			document.onmouseup = null;
 			document.onmousemove = null;
+		}
+
+		var getCssSettings = function() {
+			
+			for (let setting in settingTypes) {
+				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
+				
+				if (val != null) plugin.settings[setting] = val;
+			}
+
 		}
 
 		plugin.init();

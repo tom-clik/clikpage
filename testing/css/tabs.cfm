@@ -99,14 +99,12 @@ Tab/Accordion/info panel Testing
 <script src="/_assets/js/jquery.animateAuto.js"></script>	
 <script src="/_assets/js/jquery.tabs.js"></script>	
 <script src="/_assets/js/jquery.throttledresize.js"></script>
-<!-- TODO: need a parseCSS function in the general distribution -->
-<script src="/articlemanager/_assets/js/am_common.js"></script>
+<script src="/_assets/js/clik_common.js"></script>
+<script src="/_assets/js/clik_onready.js"></script>
 
 <script>
+	// nothing to do with the tabs - just adds text to tab
 $( document ).ready(function() {
-	<cfoutput>
-	$(".cs-tabs").tabs( { "resize":"throttledresize" } );
-	</cfoutput>
 	$("#resize").on("click",function(e) {
 		e.stopPropagation;
 		text = $("#test_tab1 .item").html();

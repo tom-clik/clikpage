@@ -3,15 +3,27 @@
 # Table styling
 
 --table-cell-padding:0;
---table-font:inherit;
 --table-text-align:inherit;
---table-stripe-bg: transparent;
+
+# Backgrounds 
+
+--table-background: transparent
+--table-stripe-bg: var(--table-background)
 
 ## Borders
 
 --table-border-width:0px;
 --table-border-style:solid;
 --table-border-color:initial;
+
+## Sticky header
+
+--table-sticky: sticky || table-row 
+--table-sticky-top:0;
+
+## font/text color 
+
+Apply to td/th as you like
 
 Notes: 
 
@@ -37,7 +49,7 @@ table.info tr td:nth-of-type(3) {
 
 ## To do
 
-Better mechanism for first and last column paddings? (not pa priority).
+Better mechanism for first and last column paddings? (not a priority).
 
 */
 
@@ -45,17 +57,17 @@ Better mechanism for first and last column paddings? (not pa priority).
 	--table-border-width:0px;
 	--table-border-style:solid;
 	--table-border-color:initial;
-	--table-margin:0;
 	--table-cell-padding:0;
-	--table-font:inherit;
 	--table-text-align:inherit;
 	--table-vertical-align: top;
 	--table-background: transparent;
 	--table-stripe-bg: var(--table-background);
+	--table-sticky: block;/* sticky || block */
+	--table-sticky-top:0;
 }
 
 th {
-	--table-font:bold 1em var(--text-font);
+	font-weight:bold;
 	--table-text-align:center;
 }
 
@@ -63,7 +75,6 @@ table {
 	border-width: var(--table-border-width);
 	border-style: var(--table-border-style);
 	border-color: var(--table-border-color);
-	margin: var(--table-margin);
 	border-collapse: separate;
 	width: auto;/* will override leagcy table width= settings */
 }
@@ -73,32 +84,35 @@ th, td  {
 	border-style: var(--table-border-style);
 	border-color: var(--table-border-color);
 	text-align: var(--table-text-align);
-	font: var(--table-font);
-	background-color: var(--table-bg);
-	color: var(--table-text);
 	padding: var(--table-cell-padding);
 	vertical-align:var(--table-vertical-align);
 }
 
-table tbody tr {
+tbody tr {
 	background: var(--table-background);
 }
 
-table tbody tr:nth-of-type(2n) {
+tbody tr:nth-of-type(2n) {
 	--table-background: var(--table-stripe-bg);
 }
 
+thead {
+	z-index: 1000;
+}
 
-/* Plcae th in tfoot tags to apply border */
-body thead tr th {
+tbody {
+	z-index: 100;
+}
+
+thead tr th {
 	border-top-width: 0;
 }
 
-body tfoot  th {
+tfoot  th {
 	border-bottom-width: 0;
 }
 /* tables have to have body for effective styling */
-body tbody  tr {
+tbody  tr {
 	border-top-width: 0;
 }
 
@@ -114,30 +128,28 @@ tr td:last-of-type, tr th:last-of-type {
 	border-right-width:0;
 }
 
-body tbody  tr:last-of-type td {
+tbody  tr:last-of-type td {
 	border-bottom-width: 0;
 }
-
-
-
 
 table.info {
 	--table-border-width: 1px;
 	--table-cell-padding: 2px;
 	--table-margin:0 0 1em 0;
+	--table-sticky:sticky;
 }
 
 table.info td, table.info th {
 	--table-border-width: 1px;
 }
 
-table.recordlist {
+table {
   position:relative;
 }
 
-table.recordlist th {
-  position: sticky;
-  top: 0;
+thead {
+  position: var(--table-sticky);
+  top: var(--table-sticky-top);
 }
 
 

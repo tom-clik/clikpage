@@ -6,8 +6,8 @@ body {
 	--icon-squares: "apps";
 	--icon-fullscreen: "fullscreen";
 	--icon-fullscreen_exit: "fullscreen_exit";
-	--icon-first_page: "first_page";
-	--icon-last_page: "last_page";
+	--icon-first_page: "keyboard_double_arrow_left";
+	--icon-last_page: "keyboard_double_arrow_right";
 	--icon-help: "help";
 	--icon-cart: "shopping_cart";
 	--icon-done: "done";
@@ -16,5 +16,9 @@ body {
 	--icon-search: "search";
 	--icon-account: "account_circle";
 	--icon-list: "list";
+	--icon-sortasc: "keyboard_arrow_up";
+	--icon-sort: "unfold_more";
+	--icon-sortdesc: "keyboard_arrow_down";
     --icon-font: normal 400 1em/1 "Material Icons"; 
 }
+

@@ -143,3 +143,8 @@ E.g.
 	visibility: visible;
 	width:200px;
 }
+
+.button .accessKey {
+	display: inline-block;
+	margin:0;
+}
