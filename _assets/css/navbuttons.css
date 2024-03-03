@@ -7,7 +7,7 @@ Both of these get styled through the browser defaults and reset.
 To get around this and preserve inheritance, all buttons need to be wrapped in
 another div with a class of .button which allows us to provide the consistency.
 
-Styling should be applied to the .button element.
+Most styling should be applied to the .button element, but padding needs to be on the inner `<a>`.
 
 To assign icons we can use icons or svgs. For icons, always use our standard icon vars, see icons.css.
 
@@ -54,11 +54,13 @@ E.g.
 	--label-gap: 10px;
 	--label-display:block;/* Turn button or label off with block|none */
 	--icon-display:block;/* ---- " ---- */
-	--button-align:center; /* icon valign flex-start|center|flex-end */
+	--button-align:center; /* icon halign flex-start|center|flex-end */
+	--button-vertical-align:center; /* icon valign flex-start|center|flex-end */
 	--button-direction: row;/* row or row reverse to align left or right */
 	--link-color:inherit;
 	--label-align:left;
 	--stretch:0;/* expand text label */
+	--button-padding:4px;
 }
 
 .button {
@@ -68,6 +70,10 @@ E.g.
 	color:var(--link-color);
 	stroke:var(--link-color);
 	fill:var(--link-color);
+}
+
+.button a {
+	padding: var(--button-padding);
 }
 
 .button input {
@@ -80,7 +86,7 @@ E.g.
 	stroke: inherit;
 	fill:inherit;
 	justify-content: var(--button-align);
-  	align-items: center;
+  	align-items: var(--button-vertical-align);
   	flex-direction: var(--button-direction);
   	grid-gap:var(--label-gap);
 }
@@ -91,7 +97,7 @@ E.g.
 	display:block;
 }
 
-.button .icon {
+.button *[class^="icon"] {
 	cursor: inherit;
 	display: var(--icon-display);
 	width:var(--icon-width);
@@ -128,7 +134,8 @@ E.g.
 	position: absolute;
 	width: 0;
 	overflow: hidden;
-	top: calc(-1 * var(--button-padding));
+	top:0;
+	/*	top: calc(-1 * var(--button-padding));*/
 	left:calc(var(--icon-width) + var(--button-padding));
 	transition: width 0.3s ease-in-out;
 	white-space: nowrap;

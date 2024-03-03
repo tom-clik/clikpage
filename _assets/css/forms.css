@@ -18,6 +18,11 @@
 	--checkbox-label-display: inline-block;/* turn on uniform replace with 'flex' */
 }
 
+body.media-mid {
+	--form-row-gap: 8px;
+	--form-label-gap: 8px;
+}
+
 div.uniform {
 	--checkbox-field-display: block;/* turn on uniform replace with 'block' */
 	--checkbox-display: none;/* turn on uniform replace with 'none' */
@@ -38,10 +43,24 @@ div.fieldrow, div.fieldButtons {
 	grid-template-areas: "label field";
 }
 
+body.media-mid div.fieldrow, body.media-mid div.fieldButtons {
+	grid-template-columns: 1fr;
+	grid-template-areas: "label" "field";
+}
 
 div.fieldrow.search {
 	grid-template-columns: var(--form-label-width) 26% auto;
 	grid-template-areas: "label search field";
+}
+
+body.media-mid div.fieldrow.search {
+	grid-template-columns: 33% auto;
+	grid-template-areas: "label label"  "search field";
+}
+
+body.media-mobile div.fieldrow.search {
+	grid-template-columns: 1fr;
+	grid-template-areas: "label" "search" "field";
 }
 
 div.fieldrow:nth-of-type(2n) {

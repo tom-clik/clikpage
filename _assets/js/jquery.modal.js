@@ -6,6 +6,10 @@
 			modal: true,
 			draggable: false,
 			dragTarget: "h2",
+			close_icon: "<i class='icon-close'></i>",
+			position:"",
+			position_at:"",
+			position_of:"",
 			onOpen: function() {},
 			onClose: function() {},
 			onOk: function() {},
@@ -14,8 +18,12 @@
 
 		var settingTypes = {
 			modal: "boolean",
+			close_icon: "string",
 			draggable: "boolean",
-			dragTarget: "string"
+			dragTarget: "string",
+			position:"string",
+			position_at:"string",
+			position_of:"string"
 		}
 
 		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
@@ -37,6 +45,32 @@
 					dragMouseDown();
 				});
 			}
+
+			if (plugin.settings.position != "") {
+				plugin.settings.position_of = plugin.settings.position_of.replace("element.id", $element.attr("id"));
+				$element.position({
+					my: plugin.settings.position,
+					at: plugin.settings.position_at,
+					of: "#pulldown_pulldown"
+				});
+			}
+			
+			$element.addClass("modal").wrapInner("<div class='inner'></div>");
+			var $wrapper = $element.find(".inner");
+			if (plugin.settings.close_icon != "") {
+				let id = $element.attr("id") || "";
+				var $closebutton = $(`<div id="${id}_closebutton" class="closebutton button">
+					<a href="#popup.cancel">
+					${plugin.settings.close_icon}
+					<label>Close</label>
+					</a>				
+				</div>`).appendTo($wrapper);
+				
+				$closebutton.on("click",`a`, function() {
+					$element.trigger("close");
+				});
+			}
+
 		}
 
 		$element.on("open",function() {
@@ -126,8 +160,13 @@
 			plugin.pos3 = e.clientX;
 			plugin.pos4 = e.clientY;
 			// set the element's new position:
-			element.style.top = (element.offsetTop - plugin.pos2) + "px";
-			element.style.left = (element.offsetLeft - plugin.pos1) + "px";
+			let top = element.offsetTop - plugin.pos2;
+			let left = element.offsetLeft - plugin.pos1;
+			// TODO: restrict. Need to cope with translate styling 
+			// on modal popups. Don't use translate on draggable
+			// Then we can just restrict to window
+			element.style.top = top + "px";
+			element.style.left = left + "px";
 		}
 
 		var closeDragElement = function() {

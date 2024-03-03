@@ -1,11 +1,13 @@
 clik = {
 	resize: 'resize',
-
+	$body: false,
 	clikContainers: function () {
 		$(".inner").parent().addClass("container");
-	},
+	},  
 	clikContent: function () {
-
+		clik.$body = $("body");
+		clik.getMedia();
+		$(window).on(clik.resize,clik.getMedia);
 		// clikWidgets can be safely re-run after dynamic content creation
 		clik.clikWidgets();
 
@@ -40,10 +42,27 @@ clik = {
 		clik.heightFix();
 		clik.modals();
 		clik.tabs();
+		clik.autoopen();
+	},
+	getMedia: function() {
+		var media = clik.parseCssVar(clik.$body, "media");
+		clik.$body.removeClass(function (index, className) {
+		    return (className.match (/(^|\s)media-\S+/g) || []).join(' ');
+		});
+		if (media) {
+			for (let medium of media.split(",")) {
+				clik.$body.addClass("media-" + medium);
+			}
+		}
 	},
 	buttons: function() {
 		if(jQuery().button) {
 			$('.button.auto').button();
+		}
+	},
+	autoopen: function() {
+		if(jQuery().autoopen) {
+			$('.container,.autoopen').autoopen();
 		}
 	},
 	heightFix: function() {
@@ -66,19 +85,21 @@ clik = {
 			// Need to iterate to apply the callback functions
 			$('.modal,.pulldown').each(function( index ) {
 				let $modal = $(this);
-				let isModal = !$modal.hasClass('pulldown');
-				options = {};
+				var options = {};
+				console.log($modal.attr("id"));
+				// TODO: add as general option then we can drop this each loop
 				if ($modal.hasClass('animate')) {
 					options.onOpen =  function() {
 						$modal.css({"visibility": "visible"});
-						$modal.animateAuto("height", options/menuAnimationTime, function() {
+						$modal.animateAuto("height", menuAnimationTime, function() {
 							console.log("Animation complete");
 							$(this).css({"height":"auto"});
 						});
 					};
 					options.onClose = function() {
+						$modal.addClass("open");
 						$modal.animate({"height":0}, menuAnimationTime, function() {
-							$modal.css({"visibility": "hidden"});
+							$modal.removeClass("open");
 						});
 					}
 				}
@@ -149,6 +170,8 @@ clik = {
 				if (Number.isNaN(val)) {
 					return;
 				}
+			case "string":
+				val = val.replace(/^"|"$/g, '');
 		}
 		
 		return val;

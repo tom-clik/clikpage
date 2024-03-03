@@ -26,11 +26,6 @@
 	--heading-padding:0;
 	--link-color:inherit;
 
-	--button-border-color:var(--link-color);
-	--button-border-width:1px;
-	--button-background-color: transparent;
-	--button-border-style:solid;
-	--button-padding: 8px;
 }
 
 body {
@@ -40,13 +35,8 @@ body {
 }
 
 /* Need the hover to override reset.css value */
-a, a:hover, input.button, input.button:hover {
+a, a:hover {
 	color:var(--link-color);
-}
-
-.noicon {
-	--buttonwidth:0px;
-	--buttongap: 0px;
 }
 
 .cs-title, .title {

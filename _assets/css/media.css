@@ -1,0 +1,42 @@
+/* Sample media set up */
+body {
+	--media: main;
+}
+
+@media screen  and (min-width:630px) and (max-width:800px) {
+	body {
+		--media: mid,midonly;
+	}
+}
+
+@media screen  and (max-width:630px) {
+	body {
+		--media: mid,mobile;
+	}
+}
+
+@media screen  and (min-width:1200px) {
+	body {
+		--media:max;
+	}
+}
+
+body *[class^="media-"] {
+	display: none;
+}
+
+body.media-mobile .media-mobile {
+	display: block;
+}
+body.media-mid .media-mid {
+	display: block;
+}
+body.media-midonly .media-midonly {
+	display: block;
+}
+body.media-main .media-main {
+	display: block;
+}
+body.media-max .media-max {
+	display: block;
+}

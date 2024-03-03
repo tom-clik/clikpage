@@ -15,10 +15,11 @@
         "getSettings",
         "photogrid",
         "justifiedGallery",
-        "throttledresize"
+        "throttledresize",
+        "autoopen"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.8.min.js",
+      "min": "/_assets/js/_min/clikmain.0.9.min.js",
     },
     {
       "scripts": [
@@ -279,6 +280,13 @@
       "description": "Settings Editing form",
       "name": "settingsForm",
       "requires": "jquery,clik_settings,messageHandler"
+    }
+    ,
+    {
+      "min":"/_assets/js/jquery.autoopen.js",
+      "description": "Add open close methods to containers",
+      "name": "autoopen",
+      "requires": "jquery"
     }
     
   ]
