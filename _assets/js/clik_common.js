@@ -54,6 +54,7 @@ clik = {
 				clik.$body.addClass("media-" + medium);
 			}
 		}
+		clik.$body.removeClass("media-hide");
 	},
 	buttons: function() {
 		if(jQuery().button) {

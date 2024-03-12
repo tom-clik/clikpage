@@ -75,6 +75,8 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 
 		plugin.init = function() {
 
+			console.log("Tabs init");
+			
 			plugin.settings = $.extend({}, defaults, options);
 			
 			$element.children().addClass("tab");

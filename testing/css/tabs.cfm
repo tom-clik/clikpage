@@ -120,7 +120,6 @@ $( document ).ready(function() {
 <cfscript>
 function getTabs(required string id, numeric count=4) {
 
-	
 	var ret="";
 	
 	ret &= "<div class='container cs-tabs' id='#arguments.id#'>\n";

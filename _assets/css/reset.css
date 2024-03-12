@@ -82,6 +82,7 @@ img {
 /* Use inner divs to stop a host of issues like margin expanding etc */
 div.container {
   display: flex;
+  flex-direction: column;
 }
 
 div.inner {

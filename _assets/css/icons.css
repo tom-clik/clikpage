@@ -35,6 +35,7 @@ google icons. Some of the names are a bit funny though.
 	--icon-credit_card: "credit_card";
 	--icon-edit: "edit";
 	--icon-add: "add";
+	--icon-run: "run";
 }
 i[class^="icon"] {
 	font:var(--icon-font);
@@ -124,4 +125,7 @@ i[class^="icon"] {
 }
 .icon-add:before {
 	content: var(--icon-add);
+}
+.icon-run:before {
+	content: var(--icon-run);
 }

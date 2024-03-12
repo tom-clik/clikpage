@@ -1,5 +1,14 @@
 /* Sample media set up */
+body.media-hide {
+	visibility: hide;
+	opacity: 0;
+}
+
+
 body {
+	visibility: visible;
+	opacity: 1;
+	transition: opacity 0.05s ease-in;
 	--media: main;
 }
 

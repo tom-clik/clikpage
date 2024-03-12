@@ -97,7 +97,7 @@ tbody tr:nth-of-type(2n) {
 }
 
 thead {
-	z-index: 1000;
+	z-index: 990;
 }
 
 tbody {

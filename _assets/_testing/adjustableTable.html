@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Adjustable Table</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="../css/tables.css">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			padding:20px;
+			--title-font:font-family: 'Open Sans';
+		}
+		
+		table {
+			--table-cell-padding:8px;
+		}
+
+		table.info {
+			--table-border-color: #303030;
+			--table-border-width:1px;
+			--table-stripe-bg: #c3c3c3;
+		}
+		table.info th, table.info td {
+			--table-border-color: #c3c3c3;
+		}
+
+		table.info th {
+			background-color: black;
+			color: white;
+			text-transform: uppercase;
+		}
+
+		table.info td, table.info th {
+			--table-border-color: #c3c3c3;
+		}
+
+		table.info tr td:nth-of-type(3) {
+			--table-font-weight:bold;
+			--table-text-align:right;	
+		}
+		#ubercontainer {
+			position: relative;
+		}
+		
+	</style>
+</head>
+<body>
+<div id="ubercontainer">
+<table id="test" class="info" style="width:100%">
+	<thead>
+		<tr>
+			<th>Column 1</th>
+			<th>Column 2</th>
+			<th>Column 3</th>
+			<th>Column 4</th>
+			<th>Column 5</th>
+			<th>Column 6</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td>
+		<td>sdfsadg</td><td>t dolore magna</td><td>ulla pariatur</td>
+		</tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td>
+		<td>sdfsadg</td><td>t dolore magna</td><td>ulla pariatur</td>
+		</tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td>
+		<td>sdfsadg</td><td>t dolore magna</td><td>ulla pariatur</td>
+		</tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td>
+		<td>sdfsadg</td><td>t dolore magna</td><td>ulla pariatur</td>
+		</tr>
+
+	</tbody>
+
+</table>
+
+<script src="../js/jquery-3.4.1.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/jquery.adjustableTable.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#test").adjustableTable();
+	});
+</script>
+
+</div>
+
+</body>
+</html>

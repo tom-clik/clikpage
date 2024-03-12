@@ -27,7 +27,7 @@
 		}
 
 		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
-
+		var backdrop;
 		var plugin = this;
 		var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
@@ -39,22 +39,12 @@
 		plugin.init = function() {
 			plugin.settings = $.extend({}, defaults, options);
 			getCssSettings();
-			console.log(plugin.settings);
 			if (plugin.settings.draggable) {
 				$element.on("mousedown",plugin.settings.dragTarget,function() {
 					dragMouseDown();
 				});
 			}
 
-			if (plugin.settings.position != "") {
-				plugin.settings.position_of = plugin.settings.position_of.replace("element.id", $element.attr("id"));
-				$element.position({
-					my: plugin.settings.position,
-					at: plugin.settings.position_at,
-					of: "#pulldown_pulldown"
-				});
-			}
-			
 			$element.addClass("modal").wrapInner("<div class='inner'></div>");
 			var $wrapper = $element.find(".inner");
 			if (plugin.settings.close_icon != "") {
@@ -73,27 +63,48 @@
 
 		}
 
-		$element.on("open",function() {
+		$element.on("open",function(e) {
+			e.stopPropagation();
 			plugin.open();
 		});
 
-		$element.on("close",function() {
+		$element.on("close",function(e) {
+			e.stopPropagation();
 			plugin.close();
 		});
 
-		$element.on("ok",function() {
+		$element.on("ok",function(e) {
+			e.stopPropagation();
 			plugin.ok();
 		});
 
-		$element.on("cancel",function() {
+		$element.on("cancel",function(e) {
+			e.stopPropagation();
 			plugin.cancel();
 		});
 
 		// public methods
 		plugin.open = function() {
+			
 			var cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
-			console.log("Adding class open");
 			$element.css(cssSettings).addClass("open");
+
+			if (plugin.settings.position != "") {
+				// use {element.id}_pulldown for the button ID
+				plugin.settings.position_of = plugin.settings.position_of.replace("element.id", $element.attr("id"));
+				if ($(plugin.settings.position_of).length) {
+					$element.position({
+						my: plugin.settings.position,
+						at: plugin.settings.position_at,
+						of: plugin.settings.position_of
+					});
+				}
+				else {
+					console.warn(`invalid position of ${plugin.settings.position_of}`);
+				}
+			}
+			
+			
 			if (plugin.settings.modal) {
 				backdrop = $("<div class='backdrop'></div>").appendTo("body")
 				.css(backdropSettings)
@@ -123,7 +134,7 @@
 
 		plugin.close = function() {
 			$element.removeClass("open");
-			if (plugin.settings.modal) {
+			if (plugin.settings.modal && backdrop != undefined) {
 				backdrop.remove();
 			}
 			$(window).off("keydown.modal");

@@ -48,8 +48,7 @@ Will add open class on open and eventually animate width|height
 			plugin.settings = $.extend({}, defaults, options);
 			
 			getCssSettings();
-			console.log(plugin.settings);
-
+			
 			setOpenClass();
 
 			$(window).on(plugin.settings.resize,function() {
@@ -93,8 +92,7 @@ Will add open class on open and eventually animate width|height
 			
 			for (let setting in settingTypes) {
 				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
-				console.log(setting, val);
-				if (val != null)  {
+				if (val != undefined)  {
 					if (setting == "animate") {
 						if (val != "width" && val != "height" ) {
 							val = "none";
@@ -103,8 +101,6 @@ Will add open class on open and eventually animate width|height
 					plugin.settings[setting] = val;
 				}
 			}
-
-			console.log(plugin.settings);
 
 		}
 		
