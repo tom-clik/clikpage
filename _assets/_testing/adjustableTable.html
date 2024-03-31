@@ -42,6 +42,22 @@
 		#ubercontainer {
 			position: relative;
 		}
+		th {
+			position: relative;
+			padding: 0 24px 0 0;
+			cursor: move;
+		}
+		i.icon-sort {
+			position: absolute;
+			top:0px;
+			right:4px;
+			height:12px;
+			cursor: ns-resize;
+		}
+
+		i.icon-sort:before {
+			content: "<>";
+		}
 		
 	</style>
 </head>
@@ -50,12 +66,12 @@
 <table id="test" class="info" style="width:100%">
 	<thead>
 		<tr>
-			<th>Column 1</th>
-			<th>Column 2</th>
-			<th>Column 3</th>
-			<th>Column 4</th>
-			<th>Column 5</th>
-			<th>Column 6</th>
+			<th>Column 1 <i class='icon-sort'></i></th>
+			<th>Column 2 <i class='icon-sort'></i></th>
+			<th>Column 3 <i class='icon-sort'></i></th>
+			<th>Column 4 <i class='icon-sort'></i></th>
+			<th>Column 5 <i class='icon-sort'></i></th>
+			<th>Column 6 <i class='icon-sort'></i></th>
 		</tr>
 	</thead>
 	<tbody>

@@ -49,6 +49,7 @@ Note columns are assigned a set pixel width. Using percentages doesn't work well
 
 		var $element = $(element), // reference to the jQuery version of DOM element
 			element = element, // reference to the actual DOM element
+			$container,// wrap ement in this to add e.g. drad handles
 			$thead,
 			columnData = {},
 			columnNodes = {},
@@ -65,114 +66,77 @@ Note columns are assigned a set pixel width. Using percentages doesn't work well
 		plugin.init = function() {
 
 			plugin.settings = $.extend({}, defaults, options);
+			$element.wrap("<div class='container' style='position:relative'></div>");
+			$container = $element.parent();
 			$thead = $element.find("thead");
 			tablewidth = $element.width();
 			tableOffset = $element.offset();
 			
 			getData();
-			// Add resize handles to right of each column (not 0)
+			
 			addHandles();
+			_setSortable();
 
-			console.log(columnData);
-			console.log(columnOrder);
-			console.log(widths);
+			$container.on("mousemove",".dragHandle",function(e) {
+				if (mousedown) {
+					var mouseX = e.pageX - tableOffset.left;
+					var $handle = $(this);
+					var col = $handle.data("col");
+					var offset = 0;
+					var pos = columnOrder.indexOf(col);
 
-			render();
+					for (let i of columnOrder.slice(0,pos)) {
+						offset += widths[i];
+					}
 
-			// console.log(widths);
+					var d = offset + widths[col] - mouseX;
+					console.log(d);
+
+					widths[col] -= d;
+					widths[columnOrder[pos+1]] += d;
+
+					$handle.css("left",mouseX - 6 + "px");
+					setSizes();
+				}
+			});
 			
-			// $thead.on("mousemove",function(e) {
-			// 	e.stopPropagation();
-			// 	var mouseX = e.pageX - tableOffset.left;
-			// 	if (mousedown) {
-			// 		if (mode == "drag") {
-			// 			console.log("moving");
-			// 		}
-			// 		else {
-			// 			let w = oldwidths[column];
-			// 			let offset = oldwidths.slice(0,column + 1).reduce((a, b) => a + b, 0);
-			// 			let d = mouseX - offset;
-			// 			if (mode = "resize") {
-			// 				widths[column] += d;
-			// 				widths[column + 1] -= d;
-			// 			}
-			// 			console.log(widths);
-			// 			resize();
-			// 		}
-			// 	}
-			// 	else {
-			// 		let cursor = "move";
-			// 		mode="drag";
-			// 		column = 0;
-			// 		let offset = 0;
-			// 		for (let count=0; count < oldwidths.length; count++ ) {
-			// 			let w = oldwidths[count] + offset;
-			// 			offset += oldwidths[count];
+			$container.on("mousedown","thead,.dragHandle", function(e) {
+				e.stopPropagation();
+			    mousedown = true;
+			}).on("mouseup", function(e) {
+				e.stopPropagation();
+			});
 
-			// 			let d = Math.abs(mouseX - w);
-			// 			if ( d < 12 ) {
-			// 				column = count;
-			// 				cursor = "col-resize";
-			// 				mode="resize";
-			// 				break;
-			// 			}
-			// 			else if ( mouseX > w ) {
-			// 				column = count;
-			// 			}
-			// 		}
-			// 		console.log(cursor,"-",column);
-			// 		$thead.css("cursor", cursor);
-			// 	}
-			// });
+			$thead.on("mousedown","i", function(e) {
+				e.stopPropagation();
+			});
 
-			// $thead.on("mousedown", function(e) {
-			// 	e.stopPropagation();
-			//     mousedown = true;
-			// }).on("mouseup", function(e) {
-			// 	e.stopPropagation();
-			// 	console.log("Mouseup");
-			// 	oldwidths = widths;
-			//     mousedown = false;  
-			// }).on("mouseleave", function(e) {
-			// 	e.stopPropagation();
-			// 	if (mode = "resize") {
-			// 		console.log("Mouseout",$(this).prop("tagName"));
-			// 		mousedown = false; 
-			// 		mode = "move";
-			// 		widths = oldwidths;
-			// 		resize();
-			// 	}
-			// });
-
-			
 		}
 		
 		$(window).on(plugin.settings.resize,function() {
-				$element.trigger("resize");
-			});
+			$element.trigger("resize");
+		});
 		
 		$element.on("resize",function(e) {
 			e.stopPropagation();
-			getCssSettings();
-			let $tab = $element.find(".state_open").first();
-			setHeight($tab);
+			addHandles();
 		});
 
-		// Add the cell data to column arrays.
+		// Add the cell data to column arrays and get initial widths
 		getData = function() {
 			var count = 1;
 			$thead.find("th").each(function() {
-				let $cell = $(this);
-
-				let className = $cell.attr("class");
-				let flex = false;
+				var $cell = $(this);
+				var sclass;
+				const className = $cell.attr("class");
+				var flex = false;
 				if (className == undefined) {
-					var sclass = "column" + count;
+					sclass = "column" + count;
 					$cell.attr("class",sclass);
 				}
 				else {
 					let classes = className.split(/\s+/);
-					var sclass = classes[0];
+					sclass = classes[0];
 					if ( $cell.hasClass("flex") ) {
 						flex = true;
 					}
@@ -180,6 +144,7 @@ Note columns are assigned a set pixel width. Using percentages doesn't work well
 				count++;
 				columnNodes[sclass] = $cell;
 				columnOrder.push(sclass);
+				$cell.data("column", sclass);
 				widths[sclass] = (flex ? "auto" : $cell.outerWidth());
 			
 			});
@@ -187,6 +152,7 @@ Note columns are assigned a set pixel width. Using percentages doesn't work well
 			for (let column of columnOrder) {
 				columnData[column] = [];
 			}
+			
 			rowcount = 0;
 			var rows = $element.find("tr").each(function(index, element){
 				var $row = $(this);
@@ -197,28 +163,13 @@ Note columns are assigned a set pixel width. Using percentages doesn't work well
 				});
 				rowcount++;
 			});
+		}
+
+		// create table element with data in correct order
+		render = function(bodyOnly) {
+			bodyOnly = bodyOnly || false;
+			var html = "";
 			
-			oldwidths = widths;
-
-		}
-		resize = function() {
-			console.log(widths);
-			for (let count=0; count < widths.length; count++ ) {
-				let width = widths[count] ;
-				columns[count].css("width",width + "px");
-			}
-		}
-
-		update = function() {
-			plugin.settings.onUpdate();
-		}
-
-		render = function() {
-			var html = "<thead><tr>";
-			for (let column of columnOrder) {
-				html += `<th>${columnData[column][0]}</th>`;
-			}
-			html += "</tr></thead><tbody>";
 			for (let row = 1; row < rowcount; row++ ) {
 				html += "<tr>";
 				for (let column of columnOrder) {
@@ -226,8 +177,65 @@ Note columns are assigned a set pixel width. Using percentages doesn't work well
 				}
 				html += "</tr>";				
 			}
-			html += "</tbody>";
-			$element.html(html);
+
+			if (! bodyOnly) {
+				let header = "<thead><tr>";
+				for (let column of columnOrder) {
+					header += `<th><div class='moveHandle'>${columnData[column][0]}</div></th>`;
+				}
+				header += "</tr></thead>";
+
+				html = header + "<tbody>" + html + "</tbody>";
+
+				$element.html(html);
+				$thead = $element.find("$thead");
+				_setSortable();
+			}
+			else {
+				$element.find("tbody").html(html);
+			}
+		}
+		_setSortable = function() {
+			$thead.find("tr").sortable({
+				cursor: "move",
+				containment: "parent",
+				cancel: "i",
+				axis: "x",
+				update: function( event, ui ) {
+					columnOrder = [];
+					$thead.find("th").each( function( index ) {
+						let column = $(this).data("column");
+						// careful. ui clone will be in there.
+						if (column != undefined) {
+							columnOrder.push(column);
+						}
+					});
+					render(true);
+					addHandles();
+				}
+			});
+		}
+
+		// add coumn resize handles position absolutely in th
+		addHandles = function() {
+			let offset = 0;
+			$container.find(".dragHandle").remove();
+			let order = columnOrder.slice(0,-1);
+			for (let column of order) {
+				offset += widths[column];
+				$(`<div class='dragHandle' data-col='${column}'></div>`).appendTo($container).css({position:"absolute",top:0,left:`${offset - 12}px`,width:"24px",height:"20px",cursor:"col-resize","z-index":1000});
+			}
+		}
+		
+		setSizes = function() {
+			for (let col in widths) {
+				console.log(columnNodes[col].html());
+				columnNodes[col].css({"width":widths[col] + "px"});
+			}
+		}
+
+		update = function() {
+			plugin.settings.onUpdate();
 		}
 
 		plugin.init();
