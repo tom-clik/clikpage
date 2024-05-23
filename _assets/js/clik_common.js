@@ -1,3 +1,10 @@
+/**
+ * Common functions for Clik sites
+ *
+ * See also clik_onready
+ * 
+ */
+
 clik = {
 	resize: 'resize',
 	$body: false,
@@ -38,8 +45,8 @@ clik = {
 		}
 	},
 	clikWidgets: function () {
-		clik.buttons();
 		clik.heightFix();
+		clik.buttons();
 		clik.modals();
 		clik.tabs();
 		clik.autoopen();

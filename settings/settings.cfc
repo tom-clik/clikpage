@@ -20,6 +20,24 @@ component {
 		this.debug = arguments.debug;
 		this.cssParser = new cssParser();	
 
+		// Temporary solution for Grid styling. See notes/Grid styling.md
+		variables.gridSettings = [
+				"grid-gap":"0",
+				"grid-fit":"auto-fit",
+				"grid-width":"180px",
+				"grid-max-width":"1fr",
+				"grid-max-height":"auto",
+				"grid-columns":"2",
+				"flex-direction":"row",
+				"justify-content":"normal",
+				"align-items":"normal",
+				"align-content":"normal",/* alignment for multiple rows */
+				"flex-stretch":"0",/* treat as boolean */
+				"flex-wrap":"wrap",
+				"grid-template-rows":"none"
+		];
+
+
 		return this;
 	}
 
@@ -632,13 +650,14 @@ component {
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
 		
-		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width','grid-template-rows']) {
-			if (StructKeyExists(styles,local.setting)) {
-				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
-			}
-		}
-		
 		if (StructKeyExists(styles,"grid-mode")) {
+
+			if (styles["grid-mode"] != "none" ) {
+				for (local.setting in variables.gridSettings) {
+					arguments.out.main &= "\t--#local.setting#:#(styles[local.setting] ? : variables.gridSettings[local.setting])#;\n";
+				}
+			}
+
 			switch (styles["grid-mode"]) {
 				case "none":
 					arguments.out.item &= "\tgrid-area:unset;\n;";

@@ -170,22 +170,22 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 
 		// private methods
 		var setHeight = function($tab) {
-    		console.warn("Setting height for ", $tab.attr("id"));
+    		console.log("Setting height for ", $tab.attr("id"));
     		if (plugin.settings.accordian) return;
     		
     		let tabs_height = 0;
     		
     		if (! plugin.settings.vertical) {
     			$element.find(".title").each(function() {
-    				console.warn($(this).html(), $(this).outerHeight());
+    				console.log($(this).html(), $(this).outerHeight());
 	    			let height = $(this).outerHeight();
 	    			if (height > tabs_height) tabs_height = height;
 	    		});
     		}
-    		console.warn("tabs_height ", tabs_height);
+    		console.log("tabs_height ", tabs_height);
 
     		if (plugin.settings.fitheight) {
-    			console.warn("fitheight");
+    			console.log("fitheight");
     			let $parent = $element.parent();
     			let panel_height = $parent.height() - tabs_height;
     			element.find(".item").outerHeight(panel_height);
@@ -199,13 +199,13 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 		    			if (height > maxheight) maxheight = height;
 		    		});
 		    		$element.find(".item").outerHeight(maxheight);
-		    		console.warn("max heights: " + maxheight);
+		    		console.log("max heights: " + maxheight);
 	    		}
 	    		else {
 	    			// adjust height to selected item
 	    			let $item = $tab.find(".item").first();
 	    			maxheight = $item.outerHeight();
-	    			console.warn("height of item is ",maxheight);
+	    			console.log("height of item is ",maxheight);
 	    		}
 	    		
 	    		let total_height = maxheight + tabs_height;
@@ -214,7 +214,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 	    		if (plugin.settings.vertical && ( total_height < $element.outerHeight() ) ) { 
 	    			total_height = $element.outerHeight();
 	    		}
-	    		console.warn("Setting total_height for ", total_height);
+	    		console.log("Setting total_height for ", total_height);
 
 	    		$element.outerHeight(total_height);
 	    	}

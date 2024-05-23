@@ -3,6 +3,7 @@
     {
       "scripts": [
         "jquery",
+        "clik_common",
         "autoButton",
         "animateAuto",
         "popup",
@@ -19,7 +20,7 @@
         "autoopen"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.9.min.js",
+      "min": "/_assets/js/_min/clikmain.0.10.min.js",
     },
     {
       "scripts": [
@@ -54,6 +55,12 @@
       "name": "jquery",
       "packageExclude": 1,
       "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
+    },
+    {
+      "min": "/_assets/js/clik_common.js",
+      "name": "clik_common",
+      "description": "",
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/jquery-ui.min.js",
@@ -217,7 +224,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,clik_settings"
+      "requires": "jquery,modal,clik_settings,clik_common"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -280,8 +287,7 @@
       "description": "Settings Editing form",
       "name": "settingsForm",
       "requires": "jquery,clik_settings,messageHandler"
-    }
-    ,
+    },
     {
       "min":"/_assets/js/jquery.autoopen.js",
       "description": "Add open close methods to containers",

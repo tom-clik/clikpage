@@ -81,13 +81,19 @@ img {
 
 /* Use inner divs to stop a host of issues like margin expanding etc */
 div.container {
+  /* DONE: work out why this was needed. Adding causes the inners
+  to shrink down...*/
+  /* OK we have worked out why this was needed. The height needs to expand to the height of the container for the image
+  fixed height stuff to work. TODO: work out how to stop it wrecking the widths (see below, width:100% seems to be ok )*/
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 }
 
 div.inner {
   position: relative;
   flex-grow: 1;
+  width:100%;
 }
 
 .clear:after, .clearfix:after {

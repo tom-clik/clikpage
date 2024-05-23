@@ -33,7 +33,9 @@ The buttons are always inline-blocks, so always style the surrounding div with g
 
 # Usage
 
-Styling should be applied to `.button` with hover state `.button:hover`
+Aside from the link-color variable, there is no general CSS stlying applied via variables.
+
+General CSS styling should be applied to `.button` with hover state `.button:hover`
 
 The label itself can also be styles with a selector of `.button label`.
 

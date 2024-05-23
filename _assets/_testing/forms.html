@@ -16,9 +16,11 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 	<title>Form tests</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/select2.min.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
-	<link rel="stylesheet" href="../css/icons.css">
+
 	<link rel="stylesheet" href="../css/forms.css">
 	<link rel="stylesheet" href="../css/navbuttons.css">
 	<meta charset="UTF-8">
@@ -32,11 +34,16 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 		--field-border-color: #aaa;
 		--input-padding: 8px;
 	}
-	.button {
-		--button-border-color:var(--border-color);
-		--button-border-width:1px;
-		--button-border-style:solid;
-		--button-background-color: white;
+	.fieldButtons .button {
+		border-color:var(--border-color);
+		border-width:1px;
+		border-style:solid;
+		background-color: white;
+		padding: 4px 8px;
+	}
+
+	.fieldButtons .button:hover {
+		background-color:  #efefef;
 	}
 
 	#testform .fieldrow:nth-child(even) {
@@ -68,7 +75,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 					Auto grow text
 
 				</label>
-				<div class="button"><a class="icon icon-help"></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field">
 					<textarea name="field1" rows="1" class="elastic markitup"></textarea>
@@ -79,7 +86,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 				<label>
 					Email
 				</label>
-				<div class="button"><a><i class="icon icon-help"></i></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field">
 					<input type="text" name="email">
@@ -93,7 +100,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 
 					
 				</label>
-				<div class="button"><a><i class="icon icon-help"></i></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field">
 					<select name="field2" multiple>
@@ -113,7 +120,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 
 					
 				</label>
-				<div class="button"><a><i class="icon icon-help"></i></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field checkbox">
 					<input type="radio" name="field3" id="field3_1"  value="1"><label for="field3_1">field3_1</label>
@@ -130,7 +137,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 
 					
 				</label>
-				<div class="button"><a><i class="icon icon-help"></i></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field checkbox">
 					<input type="checkbox" name="field4" id="field4_1"  value="1"><label for="field4_1">field4_1</label>
@@ -146,7 +153,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 					Label 5
 
 				</label>
-				<div class="button"><a><i class="icon icon-help"></i></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field">
 					<select name="field5">
@@ -164,7 +171,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 				<label>
 					&nbsp;
 				</label>
-				<div class="button"><a><i class="icon icon-help"></i></a></div>
+				<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field checkbox">
 					<input type="checkbox" name="field6" id="field6_1" value="1"><label for="field6_1">field6_1</label>
@@ -177,7 +184,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 					<label>
 						Label 7
 					</label>
-					<div class="button"><a><i class="icon icon-help"></i></a></div>
+					<div class="button"><a><i class="icon-help"></i></a></div>
 				</div>
 				<div class="field">
 					<input type="text" name="field7" id="field7_1" value="">
