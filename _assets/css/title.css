@@ -74,6 +74,13 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: var(--heading-font-size);
 }
 
+/* TEMP fix for wrapped anchor tags coming from flexmark */
+h1 a,h1 a:hover, h2 a,h2 a:hover, h3 a,h3 a:hover, h4 a,h4 a:hover, h5 a,h5 a:hover, h6 a, h6 a:hover {
+	color:inherit;
+	text-decoration: inherit;
+	font-size: inehrit;
+}
+
 
 /* Standard Class styling */
 

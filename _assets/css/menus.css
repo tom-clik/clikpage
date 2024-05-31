@@ -1,5 +1,8 @@
 /* MENUS
 
+NB this is a mess. The content component has been written to have loads of options
+that aren't css vars. This all needs redoing to just use standard properties.
+
 
 Create a grid or flexbox menu from a ul
 
@@ -38,6 +41,9 @@ hi      li.hi a
 	--menu-openicon-adjust: -4px;
 	--menu-text-align: center;/* alignment of text in menu items */
 	--menu-anim-time: 0.3s;
+	--menu-stretch: 0;
+	--menu-mode: grid; /* display property. use grid or flex */
+	--menu-direction: row;
 }
 
 .cs-menu ul {
@@ -45,14 +51,16 @@ hi      li.hi a
 	margin:0;
 	padding-left: 0em;
     text-indent: 0px;
-	display:grid;
+	display:var(--menu-mode);
 	grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
 	grid-gap:var(--menu-gap);
+	flex-direction: var(--menu-direction);
 }
 
 
 .cs-menu li {
 	position:relative;
+	flex-grow: var(--menu-stretch);
 	/*min-height:100%;*/
 }
 

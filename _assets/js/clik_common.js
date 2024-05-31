@@ -32,7 +32,7 @@ clik = {
 					scrollbar:false
 				}
 				for (let option in optionTypes) {
-					let val = clik.parseCssVar($wrap, val,optionTypes[option]);
+					let val = clik.parseCssVar($wrap,optionTypes[option]);
 					if (val) {
 						options[option] = val;
 					}

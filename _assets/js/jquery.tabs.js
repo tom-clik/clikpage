@@ -170,19 +170,19 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 
 		// private methods
 		var setHeight = function($tab) {
-    		console.log("Setting height for ", $tab.attr("id"));
+    		console.log("Setting height for " + $tab.attr("id"));
     		if (plugin.settings.accordian) return;
     		
     		let tabs_height = 0;
     		
     		if (! plugin.settings.vertical) {
     			$element.find(".title").each(function() {
-    				console.log($(this).html(), $(this).outerHeight());
+    				console.log($(this).text() + ':' + $(this).outerHeight());
 	    			let height = $(this).outerHeight();
 	    			if (height > tabs_height) tabs_height = height;
 	    		});
     		}
-    		console.log("tabs_height ", tabs_height);
+    		console.log(`title height:  ${tabs_height}`);
 
     		if (plugin.settings.fitheight) {
     			console.log("fitheight");
@@ -205,7 +205,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 	    			// adjust height to selected item
 	    			let $item = $tab.find(".item").first();
 	    			maxheight = $item.outerHeight();
-	    			console.log("height of item is ",maxheight);
+	    			console.log("height of item is " + maxheight);
 	    		}
 	    		
 	    		let total_height = maxheight + tabs_height;
@@ -214,7 +214,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 	    		if (plugin.settings.vertical && ( total_height < $element.outerHeight() ) ) { 
 	    			total_height = $element.outerHeight();
 	    		}
-	    		console.log("Setting total_height for ", total_height);
+	    		console.log("Setting total_height for " + total_height);
 
 	    		$element.outerHeight(total_height);
 	    	}

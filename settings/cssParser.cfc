@@ -40,7 +40,7 @@ component {
 		// pattern to remove comments
 		variables.commentpattern = variables.patternObj.compile("\/\*[^*]*\*+([^/*][^*]*\*+)*\/", variables.patternObj.MULTILINE + variables.patternObj.UNIX_LINES);
 		// pattern for characters at start of "key"
-		variables.keypattern = variables.patternObj.compile("[##\.]");
+		variables.keypattern = variables.patternObj.compile("^[##\.]");
 		return this;
 	}
 
