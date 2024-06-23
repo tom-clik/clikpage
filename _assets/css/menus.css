@@ -22,11 +22,15 @@ hi      li.hi a
 
 :root {
 	--link-color: #000;
+}
+.cs-menu {
 	--menu-border-color:var(--link-color);
 	--menu-background: transparent;
-	--menu-gap: 4px;/* Gap between items (only grid modes: use itempadding for flex); */
+	--menu-gap: 4px;/* Gap between items */
 	--menu-item-padding: 0 8px;
-	--menu-item-border:0;/* single value for dividers or boxes or use normal border width (can use e.g. 0 1px 0 0) */
+	--menu-item-border:0;/* item border width */
+	--menu-item-border-width: var(--menu-item-border); /* reserved for system. Used with e.g. boxes and dividers schemes */
+	--menu-item-width: 140px; /* min width of menu items in grid layout (see menu-display)*/
 	--menu-icon-display: none;/* none or block */
 	--menu-label-display: block;/* text part of menu item:; none or block */
 	--icon-width:32px;/* normal menu icons */
@@ -38,6 +42,12 @@ hi      li.hi a
 	--menu-openicon-adjust: -4px;
 	--menu-text-align: center;/* alignment of text in menu items */
 	--menu-anim-time: 0.3s;
+	--menu-display: flex; /* grid | flex (or none for submenus )*/
+	--menu-direction: row;
+	--menu-stretch: 1;
+	--menu-item-justify: center; /* item aligment start|center|end. Also see menu-text-align which usually needs setting as well */
+	--menu-item-align: center; /* cross axis aligment, e.g. vertical when menu is horizontal */
+	--menu-wrap: wrap;
 }
 
 .cs-menu ul {
@@ -45,15 +55,18 @@ hi      li.hi a
 	margin:0;
 	padding-left: 0em;
     text-indent: 0px;
-	display:grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+	display:var(--menu-display);
+	flex-direction: var(--menu-direction);
+	grid-template-columns: repeat(auto-fit, minmax(var(--menu-item-width),1fr));
 	grid-gap:var(--menu-gap);
+	justify-content: var(--menu-item-justify); /* needs formalising. This is the align mechanism as the a tags themselves are now flexboxes */
+	align-items: var(--menu-item-align);
+	flex-wrap: var(--menu-wrap);
 }
-
 
 .cs-menu li {
 	position:relative;
-	/*min-height:100%;*/
+	flex-grow: var(--menu-stretch);
 }
 
 .cs-menu a, .cs-menu a:hover {
@@ -62,12 +75,12 @@ hi      li.hi a
 	display:flex;
 	flex-grow: 1;
 	align-items: center;
-	justify-content: center; /* needs formalising. This is the align mechanism as the a tags themselves are now flexboxes */
+	justify-content: var(--menu-item-justify); /* This is the icon, label etc  */
 	grid-gap: var(--menu-icon-gap);
 	text-decoration: none;
 	padding:var(--menu-item-padding);	
 	color:var(--link-color);
-	border-width:var(--menu-item-border);
+	border-width:var(--menu-item-border-width);
 	border-style:solid;
 	border-color:var(--menu-border-color);
 	background-color: var(--menu-background);
@@ -100,20 +113,20 @@ hi      li.hi a
 ul.submenu {
 	z-index: 100;
   	min-width:100%;
-  	height: 0;
   	overflow: hidden;
-  	grid-template-columns: 1fr;
-	--menu-gap:0px;
+  	height: auto;
+	--menu-direction: column;
+  	--menu-display: none;
+
 }
 
 ul.submenu.open, ul.submenu.show  {
-	height: auto;
-	overflow: visible;
+	--menu-display: none;
 }
 
 
 .cs-menu li.open > ul.submenu {
-	display:block;
+	--menu-display: flex;
 }
 
 .cs-menu ul.submenu li.open > ul.submenu {
@@ -121,7 +134,7 @@ ul.submenu.open, ul.submenu.show  {
 }
 
 /* sub menu indicator */
-.cs-menu a .icon {
+/*.cs-menu a .icon {
 	flex-grow: 0;
 	position: relative;
 	right:var(--menu-openicon-adjust);
@@ -134,18 +147,15 @@ ul.submenu.open, ul.submenu.show  {
 	transition-property: transform;
 	transition-duration: 0.3s;
 	transition-timing-function: ease-in-out;
-}
+}*/
 
 /* menu icons 
 
 Requires icons.css and navbuttons.css
 
-
-
 */
-.cs-menu a b  {
+.cs-menu a > i[class*=icon]  {
 	display: var(--menu-icon-display);
-	font:var(--icon-font);
 	width:var(--icon-width);
 	height:var(--icon-height);
 	line-height:var(--icon-height);
@@ -161,7 +171,7 @@ Requires icons.css and navbuttons.css
 	content:var(--menu-icon);
 }
 
-.cs-menu li.open > a .icon {
+.cs-menu li.open > a .openicon {
 	transform: rotate(90deg);
 }
 
@@ -169,27 +179,6 @@ Requires icons.css and navbuttons.css
 	flex-grow: 1;
 }
 
-/*.
-
-TODO: check deprecation;
-cs-menu li:hover > a svg {
-	fill:var(--link-color);
-	stroke:var(--link-color);
-}
-
-.cs-menu li:hover > a {
-	color:var(--link-color);
-}
-
-.cs-menu li.hi > a, .cs-menu li.hi:hover  > a {
-	color:var(--link-color);
-}
-
-.cs-menu li.hi > a svg, .cs-menu li.hi:hover > a svg {
-	fill:var(--link-color);
-	stroke:var(--link-color);
-}
-*/
 
 
 

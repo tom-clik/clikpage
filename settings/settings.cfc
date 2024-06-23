@@ -425,7 +425,9 @@ component {
 
 	}
 
-	/** get general CSS for content */
+	/** 
+	 * get general CSS for content
+	 */
 	public string function css(required struct settings) {
 		
 		local.css = "\t/* Font */\n";

@@ -201,7 +201,6 @@ component {
 	 * 
 	 * @selector    Base CSS selector string e.g. #csid 
 	 * @styles      styles for the specific content section and medium 
-	 * @return      
 	 */
 	private string function css_styles(required string selector, required struct styles) {
 		
@@ -293,9 +292,8 @@ component {
 							};
 							throw(
 								extendedinfo = SerializeJSON(local.extendedinfo),
-								message      = "Error:" & e.message, 
-								detail       = e.detail,
-								errorcode    = ""		
+								message      = "Unable to process style:" & e.message, 
+								detail       = e.detail
 							);
 						}
 					}
@@ -305,8 +303,6 @@ component {
 				}
 			}
 
-
-			
 		}
 		return ret;
 	}
@@ -321,9 +317,6 @@ component {
 	 * which require logic to adjust a number of parameters.
 	 *
 	 * Each cs component is expected to define its own css_settings() function.
-	 *
-	 * NOTE the "styles" are often saved in the content sections as a convenience. This is a bit unofficial
-	 * and contains all the different media. Here stles need to be for the medium required.
 	 * 
 	 * @styles  Content section settings struct
 	 */
@@ -368,8 +361,9 @@ component {
 		return css;
 	}
 
-	/* return a struct of blank strings with one key for each selector
-	*/
+	/**
+	 *  return a struct of blank strings with one key for each selector
+	 */
 	private struct function getSelectorStruct() {
 		var ret = {};
 		for (local.selector in this.selectors) {

@@ -9,152 +9,48 @@ a clik stylesheet
 Settings:
 
 
-
 */
 
-.cs-menu.sample {
-
+.scheme-borders {
+	--menu-item-border:2px;
+	--menu-gap:0px;
+	--menu-item-border-width: 0 var(--menu-item-border) 0 0;
 }
 
-
-.cs-menu.fill ul {
-	grid-template-columns: repeat(auto-fill, minmax(140px,1fr));	
+.scheme-borders li:last-of-type {
+	--menu-item-border-width: 0;
 }
 
-.scheme-vertical li.open > ul.submenu {
-	position: static;
+.scheme-boxes {
+	--menu-item-border:4px;
+	--menu-gap:0px;
+	--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
 }
 
-.scheme-vertical ul {
-	grid-template-columns: 1fr;
-	grid-row-gap:var(--menu-gap);
+.scheme-boxes li:last-of-type {
+	--menu-item-border-width: var(--menu-item-border);
 }
 
-.scheme-vertical ul > li > a, .scheme-vertical ul > li > a:hover {
-	justify-content: flex-start;
-}
-	
-
-
-.scheme-vertical ul.submenu  {
-	grid-row-gap:0px;
+.scheme-vertical {
+	width: 180px;
+	--menu-display: grid;
+	--menu-item-width: 180px;
+	--menu-text-align:left;
+	--menu-icon-display: block;
 }
 
-.scheme-vertical a {
-	transition-property: background-color;
-	transition-duration: 1s;
-	transition-timing-function: ease-in-out;
+.scheme-vertical.scheme-borders {
+	--menu-item-border-width: 0 0 var(--menu-item-border) 0;
 }
 
-.cs-menu.dividers:not(.scheme-vertical) li a {
-	border-width:0;
-	border-right-width:var(--menu-item-border);
+.scheme-vertical.scheme-boxes {
+	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0  var(--menu-item-border);
 }
 
-.cs-menu.dividers:not(.scheme-vertical) ul li:last-of-type a {
-	border-right-width:0;
+.scheme-grid {
+	--menu-display: grid;
+	--menu-item-width: 80px;
 }
-
-.cs-menu.boxes:not(.scheme-vertical) li a {
-	border-right-width:0;
-}
-
-.cs-menu.boxes:not(.scheme-vertical) ul li:last-of-type a {
-	border-right-width:var(--menu-item-border);
-}
-
-.cs-menu.scheme-vertical.dividers li a {
-	border-width:0;
-	border-bottom-width:var(--menu-item-border);
-}
-
-.cs-menu.scheme-vertical.dividers ul li:last-of-type a {
-	border-bottom-width:0;
-}
-
-.cs-menu.scheme-vertical.boxes li a {
-	border-bottom-width:0;
-}
-
-.cs-menu.scheme-vertical.boxes li:last-of-type a {
-	border-bottom-width:var(--menu-item-border);
-}
-
-.cs-menu.scheme-flex, .cs-menu.scheme-vertical {
-	--menu-text-align: left;
-}
-
-.cs-menu.right {
-	--menu-text-align: right;
-}
-
-.cs-menu.center {
-	--menu-text-align: center;
-}
-
-.cs-menu.scheme-flex.right ul {
-	justify-content: flex-end;
-}
-
-.cs-menu.scheme-flex.center ul {
-	justify-content: center;
-}
-
-.cs-menu.scheme-flex ul {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	grid-gap:0; /* Applying a grid gap seems to work in some browsers */
-}
-
-.cs-menu.scheme-flex.stretch li {
-	flex-grow: 1;
-}
-
-.cs-menu.scheme-flex.stretch ul {
-	width: 100%;
-	--menu-text-align: center;
-}
-
-.cs-menu.scheme-flex.adjust ul li:first-of-type a {
-	padding-left:0;
-}
-
-.cs-menu.scheme-flex.adjust ul li:last-of-type a {
-	padding-right:0;
-}
-
-
-@media screen and (max-width:630px) {
-
-
-	.cs-menu.scheme-flex:not(.menu-mobile) ul {
-		flex-direction: column;
-	}
-
-	.cs-menu.scheme-flex:not(.menu-mobile) ul > li > a {
-		justify-content: flex-start;
-	}
-	
-	/* reset the first and last hacks above but you'll probably
-	want to define different values for these */
-	
-	.cs-menu.scheme-flex:not(.menu-mobile) {
-		--menu-item-padding: 4px 0;
-		--menu-item-border: 0;
-	}
-
-	.cs-menu.scheme-flex:not(.menu-mobile) ul li:first-of-type {
-		padding:var(--menu-item-padding);	
-	}
-
-	.cs-menu.scheme-flex:not(.menu-mobile) ul li:last-of-type {
-		padding:var(--menu-item-padding);	
-		border-width:var(--menu-item-border);
-	}
-
-}
-
 
 
 

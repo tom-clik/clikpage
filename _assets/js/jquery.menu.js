@@ -18,8 +18,8 @@
 
 		var defaults = {
 			debug: false,
-			arrow: "<i class='icon icon-next openicon'></i>",
-			animate: "none", // animate "width", "height" or "both". Use when these CSS props are "auto" and you can use CSS animations
+			arrow: "<i class='icon-next openicon'></i>",
+			animate: "none", // animate "width", "height" or "both". Use when these CSS props are "auto" and you can't use CSS animations
 			menuAnimationTime: "0.3s",
 			onOpen: function() {},
 			onClose: function() {}
@@ -30,7 +30,11 @@
 		plugin.settings = {}
 
 		var $element = $(element), 
-			element = element; 
+			element = element,
+			props = {};
+
+		
+		
 
 		plugin.init = function() {
 
@@ -38,21 +42,37 @@
 			// user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
 
+			switch(plugin.settings.animate) {
+				case "height":
+					props.height = 0;
+					break;
+				case "width":
+					props.width = 0;
+					break;
+				case "both":
+					props.width = 0;
+					props.height = 0;
+					break;
+			}
 			// code goes here
 			$element.find(".submenu").each(function() {
 				let $submenu = $(this);
-				$submenu.prev("a").append("<i class='icon'>" + plugin.settings.arrow + "</i>").addClass("hasmenu");
+				$submenu.prev("a").append( plugin.settings.arrow ).addClass("hasmenu");
 				$submenu.on("open",function(e) {
 					e.stopPropagation();
-					$(this).addClass("open");
+					$submenu.addClass("open").animateAuto(plugin.settings.animate, plugin.settings.menuAnimationTime,function() {
+						$submenu.css({"height":"auto"});
+					});
 				}).on("close",function(e) {
 					e.stopPropagation();
-					$(this).removeClass("open");
+					console.log(props);
+					$submenu.removeClass("open").animate(props, plugin.settings.menuAnimationTime, function() {});
 				});
 			});
 
-			$element.on("click",".hasmenu .icon",function(e) {
-				
+			$element.on("click",".hasmenu .openicon",function(e) {
+				console.log("Clicked");
+
 				$item = $(this);
 				e.preventDefault();
 				e.stopPropagation(); 

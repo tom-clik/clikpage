@@ -1,3 +1,31 @@
+<!--
+
+With menus, we have to use schemes to demonstrate the different settings.
+
+## 1. Vertical menu
+
+A vertical menu can be set with 
+
+--menu-direction: column;
+--menu-item-justify:start;
+--menu-text-align:left;
+
+
+
+## 3. Grid menu
+
+If you want a menu with a grid layout (where all the columns are the same size), set 
+
+grid-mode: grid;
+
+You can also adjust 
+
+--menu-display: grid;
+--menu-item-width: 80px;
+
+
+--->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +34,9 @@
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/menus.css">
-	<link rel="stylesheet" href="../css/schemes/menus-schemes.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="../css/icons.css">
+
 	<meta charset="UTF-8">
 	<style>
 		body {
@@ -25,35 +55,26 @@
 
 		.cs-menu {
 			margin-bottom: 12px;
+			--menu-icon-display: none;
 		} 
+
+		.cs-menu li:hover {
+			--link-color:#ffff00;
+		}
 
 		.scheme-main {
 			--menu-item-padding:8px;
-			--menucolor:#ff00ff;
+			--menucolor: #ff00ff;
 			--menu-background: #c3c3c3;
-			--menu-item-border: 1px;
-			--menu-gap:0;
+			--menu-gap:0px;
+			--menu-stretch:0;
 		}
 
 		.scheme-main li:hover {
-			--menucolor:#ffff00;
+			--link-color:#ffff00;
 			--menu-background: #efefef;
 		}
-
-		.scheme-plain {
-			--menu-item-border: 1px;
-		}
-
-		.cs-menu.scheme-center {
-			--menu-text-align: center;
-		}
-
-		#test1 {
-			--menu-item-border: 0 12px 0 0;
-			--menu-gap:4px;
-
-		}
-
+		
 		
 	</style>
 </head>
@@ -63,27 +84,18 @@
 Menu Testing
 </div>
 
-<div class="scheme-grid">
-	<div id="test1" class="cs-menu  scheme-vertical scheme-main"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-
-	<div id="test2" class="cs-menu boxes scheme-vertical scheme-main"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
 	
-	<div id="test3" class="cs-menu dividers scheme-vertical scheme-main"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-</div>
+<div id="test1" class="cs-menu scheme-verticalXX scheme-borders"><ul>
+<li><a class="menu_adverts first" href="adverts_list.cfm"><i class="icon-close"></i><span>Adverts<span></a></li>
+<li><a class="menu_articles" href="articles_list.cfm"><i class="icon-menu"></i><span>Articles</span></a></li>
+<li><a class="menu_images" href="images_list.cfm"><i class="icon-previous"></i><span>Images</span></a></li>
+<li><a class="menu_manage_sections" href="manage_sections_list.cfm"><i class="icon-next"></i><span>Manage sections</span></a></li>
+<li><a class="menu_orders" href="orders_list.cfm"><i class="icon-squares"></i><span>Orders</span></a></li>
+<li><a class="menu_resources" href="resources_list.cfm"><i class="icon-fullscreen"></i><span>Resources</span></a></li>
+<li><a class="menu_site_sections" href="site_sections_list.cfm"><i class="icon-fullscreen_exit"></i><span>Site sections</span></a></li>
+<li><a class="menu_users" href="users_list.cfm"><i class="icon-first_page"></i><span>Users</span></a></li>
+<li><a href="login.cfm?action=logout"><i class="icon-last_page"></i><span>Log out</span></a></li></ul></div>
 
-<div id="test4" class="cs-menu  scheme-main scheme-center"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-
-<div id="test5" class="cs-menu boxes scheme-main  scheme-center"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-
-<div id="test6" class="cs-menu dividers scheme-main  center"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-
-<div id="test7" class="cs-menu dividers scheme-flex scheme-plain"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-
-
-<div id="test8" class="cs-menu dividers scheme-flex stretch scheme-main  center"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li><li><a class="menu_images" href="images_list.cfm">Images</a></li><li><a class="menu_manage_sections" href="manage_sections_list.cfm">Manage sections</a></li><li><a class="menu_orders" href="orders_list.cfm">Orders</a></li><li><a class="menu_resources" href="resources_list.cfm">Resources</a></li><li><a class="menu_site_sections" href="site_sections_list.cfm">Site sections</a></li><li><a class="menu_users" href="users_list.cfm">Users</a></li><li class="last"><a href="login.cfm?action=logout">Log out</a></li></ul></div>
-
-
-<div id="test9" class="cs-menu dividers scheme-flex menu-mobile scheme-plain"><ul><li class="first"><a class="menu_adverts first" href="adverts_list.cfm">Adverts</a></li><li class="hilite"><a class="menu_articles" href="articles_list.cfm">Articles</a></li></ul></div>
 
 </body>
 </html>

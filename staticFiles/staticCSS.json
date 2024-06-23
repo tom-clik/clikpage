@@ -55,8 +55,13 @@
             "name": "grids"
         },
         {
+            "min": "/_assets/css/icons.css",
+            "name": "icons"
+        },
+        {
             "min": "/_assets/css/navbuttons.css",
-            "name": "navbuttons"
+            "name": "navbuttons",
+            "requires": "icons"
         },
         {
             "min": "/_assets/css/images.css",

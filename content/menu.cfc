@@ -55,7 +55,6 @@ component extends="contentSection" {
 			"link-color":{"type":"color","name":"Link colour","description":"Colour of the menu items"},
 			"menu-gap":{"type":"dimension","name":"Gap","description":"Gap between menu items"},
 			"menu-text-align":{"type":"halign","name":"Text align","description":"Alignment of the menu items"},
-			"menu-anim-time":{"type":"time","name":"","description":""},
 			"menu-label-display": {
 				"type":"displayblock",
 				"name":"Display label",
@@ -85,20 +84,31 @@ component extends="contentSection" {
 				"name":"Flex mode",
 				"description":"Flexible grid that adjusts to the size of the items",
 				"inherit":true,
-				"default":false
+				"default":true
 			},
-			"stretch": {
+
+			"menu-stretch": {
 				"type":"boolean",
 				"name":"Stretch",
 				"description":"Stretch out the menu in flex mode. Equal padding will be added to the items",
+				"requires": {"flex": true},
 				"inherit":true,
 				"default":false
 			},
-			"flex-wrap":{"name":"Flex wrap","dependson":"flex","dependvalue":true,"description":"Wrap items onto multiple lines","type"="list","default"="wrap","options"=[
-				{"name"="Wrap","value"="wrap","description"=""},
-				{"name"="No Wrap","value"="nowrap","description"=""},
-				{"name"="Wrap reverse","value"="wrap-reverse","description"=""}
-			]},
+			"menu-reverse": {
+				"type":"boolean",
+				"name":"Reverse",
+				"description":"Reverse the order of the items (Flexible mode only)",
+				"requires": {"flex": true},
+				"inherit":true,
+				"default":false
+			},
+			"menu-wrap":{"name":"Flex wrap","description":"Wrap items onto multiple lines","type"="list","default"="wrap","options"=[
+					{"name"="Wrap","value"="wrap","description"=""},
+					{"name"="No Wrap","value"="nowrap","description"=""},
+					{"name"="Wrap reverse","value"="wrap-reverse","description"=""}
+				], "requires": {"flex": true}
+			},
 			"align":{
 				"type":"halign",
 				"name": "Menu alignment",
@@ -203,79 +213,70 @@ component extends="contentSection" {
 		
 		var data = getSelectorStruct();
 		
-		//  horizontal|vertical   | ul Grid columns
-		local.isVertical = false;
-		if (StructKeyExists(arguments.styles,"orientation")) {
-			data.ul &= "/* orientation: #arguments.styles.orientation#  */\n";
-			
-			if (arguments.styles.orientation eq "vertical") {
-				local.isVertical = true;
-				data.ul &= "grid-template-columns: 1fr;\n";
-			}
+		// flex | adjust menu-display to flex or block
+		data.main &= "--menu-display: " & arguments.styles.flex ? "flex" : "block" & ";\n";// 
+		
+		//  horizontal|vertical   | 
+		local.isVertical = arguments.styles.orientation eq "vertical";
+		
+		if (arguments.styles.flex) {
+			local.reverse = arguments.styles.reverse ? "-reverse" : "";
+			data.main &= "/* orientation: #arguments.styles.orientation#  */\n";
+			data.main &= "--menu-direction: " & (local.isVertical ? "row" : "column" ) & local.reverse & ";\n";// 
+		}	
+		else if (local.isVertical eq "vertical") {
+			// ul Grid columns
+			data.ul &= "grid-template-columns: 1fr;\n";
 		}
-		else {
-			data.ul &= "/* no orientation  */\n";
-		}
+		
 
 		// align          | left|center|right     | text align (menu text align) and also justify-content: for flex modes
-		local.align = "left";
-		if (StructKeyExists(arguments.styles,"align")) {
-			data.main &= "--menu-text-align: #arguments.styles.align#;\n";
-			
-			switch (arguments.styles.align) {
-				case "left":
-					local.justify = "flex-start";
-				break;
-				case "center":
-					local.justify = "center";
-					local.align = "center";
-				break;
-				case "right":
-					local.justify = "flex-end";
-					local.align = "right";
-				break;
-			}
-			if (!local.isVertical) {data.ul &= "justify-content: #local.justify#;\n";}
+		data.main &= "--menu-text-align: #arguments.styles.align#;\n";
+		
+		switch (arguments.styles.align) {
+			case "left":
+				local.justify = "flex-start";
+			break;
+			case "center":
+				local.justify = "center";
+			break;
+			case "right":
+				local.justify = "flex-end";
+			break;
 		}
+		if (!local.isVertical) {
+			data.main &= "--menu-item-justify: #local.justify#;\n";
+		}
+		
 		// border-type    | normal|dividers|boxes | adjust border widths for edges
 		if (StructKeyExists(arguments.styles,"border-type")) {
-			local.side = local.isVertical ? "bottom" : "right";
-			local.off = local.isVertical ? "right" : "bottom";
-					
+			// seems verbose but actually works better in terms of inheritance etc
+			// as close as we can get to using simple vars for this job		
 			switch (arguments.styles["border-type"]) {
-				case "normal":
-					// TODO:  check specificity actually works. May need to get value of right border
-					data.a &= "border-width:var(--menu-item-border);\n";
-					data.last &= "border-width:var(--menu-item-border);\n";
-					break;
 				case "dividers":
-					data.a &= "border-width:0;\n";
-					data.a &= "border-#local.side#-width:var(--menu-item-border);\n";
-					data.last &= "border-width:0;\n";					
+					if (local.isVertical) {
+						data.main &= "--menu-item-border-width: 0  0 var(--menu-item-border) 0;\n";
+					}
+					else {
+						data.main &= "--menu-item-border-width: 0 var(--menu-item-border) 0 0;\n";
+					}
+					data.last &= "--menu-item-border-width:0;\n";					
 					break;
 				case "boxes":
-					data.a &= "border-width:var(--menu-item-border);\n";
-					data.a &= "border-#local.side#-width:0;\n";
-					data.last &= "border-#local.side#-width:var(--menu-item-border);\n";
+					if (local.isVertical) {
+						data.main &= "--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);\n";
+					}
+					else {
+						data.main &= "--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);\n";
+					}
+					data.last &= "--menu-item-border-width: var(--menu-item-border);\n";
 					break;
 			}
 
 		}
 
-		//flex           | boolean               | ul display flex
-		if (StructKeyExists(arguments.styles,"flex")) {
-			data.ul &= "/* flex */\n";
-			data.ul  &= "display: " & (arguments.styles.flex AND NOT local.isVertical ? "flex" : "grid") & ";\n";
-			if (StructKeyExists(arguments.styles,"flex-wrap")) {
-				data.ul  &= "flex-wrap: " & arguments.styles["flex-wrap"] & ";\n";
-			}
-		}
-		//stretch        | boolean               | li flex-grow:1
-		if (StructKeyExists(arguments.styles,"stretch")) {
-			data.li &= "/* stretch #arguments.styles.stretch# */\n";
-			data.li &= "flex-grow: " & (arguments.styles.stretch ? "1" : "0") & ";\n";
-		}
 		//popup          | boolean               | height: 0   NB &.open  applies height:auto
+		// Don't think this is implemented.
 		// to check functionality here. Don't think this is used.
 		if (StructKeyExists(arguments.styles,"popup")) {
 			data.main &= "/* popup styling */\n";
@@ -285,7 +286,7 @@ component extends="contentSection" {
 				data.main &= "overflow: hidden;";
 			}
 		}
-
+		
 		// submenu position | inline|relative    | position:absolute or static no ul.submenu
 		local.submenu_position =  arguments.styles.submenu_position ?: "absolute";
 		data.submenu &= "/* submenu styling */\n";

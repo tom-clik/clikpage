@@ -57,7 +57,7 @@ Font awesome uses unicode
 	--icon-list: "list";
 }
 
-.icon {
+i[class*=icon] {
 	font:var(--icon-font);
 	display: inline-block;	
 }
