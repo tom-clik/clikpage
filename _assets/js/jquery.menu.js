@@ -18,6 +18,7 @@
 
 		var defaults = {
 			debug: false,
+			hilight: "",
 			arrow: "<i class='icon-next openicon'></i>",
 			animate: "none", // animate "width", "height" or "both". Use when these CSS props are "auto" and you can't use CSS animations
 			menuAnimationTime: "0.3s",
@@ -32,9 +33,6 @@
 		var $element = $(element), 
 			element = element,
 			props = {};
-
-		
-		
 
 		plugin.init = function() {
 
@@ -71,8 +69,7 @@
 			});
 
 			$element.on("click",".hasmenu .openicon",function(e) {
-				console.log("Clicked");
-
+				
 				$item = $(this);
 				e.preventDefault();
 				e.stopPropagation(); 
@@ -102,6 +99,22 @@
 				return false;
 
 			});
+
+			if (plugin.settings.hilight !== "") {
+				let $a = $("#menu_" + plugin.settings.hilight);
+				let $li = $a.closest("li");
+				let $menu = $a.closest("ul");
+				$li.addClass("hi");
+				if ($a.hasClass("hasmenu") ) {
+					let $submenu = $a.find("> ul").first();
+					$li.addClass("open");
+					$submenu.trigger("open");
+				}
+				if ($menu.hasClass("submenu")) {
+					let $parent = $menu.closest("li");
+					$parent.addClass("open");
+				}
+			}
 		}
 
 		plugin.init();

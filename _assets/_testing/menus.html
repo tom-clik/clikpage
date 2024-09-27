@@ -1,6 +1,8 @@
 <!--
 
-With menus, we have to use schemes to demonstrate the different settings.
+Menu settings don't translate well to single CSS settings. A combination is often required to achieve required behaviours.
+
+Some examples are shown in the schemes.
 
 ## 1. Vertical menu
 
@@ -10,18 +12,17 @@ A vertical menu can be set with
 --menu-item-justify:start;
 --menu-text-align:left;
 
+## 2. Border boxes/borders
+
+These simply don't work with CSS vars. There are schemes that show this, but essentially they have to be hand cranked.
+
+## 3. Flex 
+
+For a flex menu where the items shrink down, use 
+
+--menu-stretch: 1;
 
 
-## 3. Grid menu
-
-If you want a menu with a grid layout (where all the columns are the same size), set 
-
-grid-mode: grid;
-
-You can also adjust 
-
---menu-display: grid;
---menu-item-width: 80px;
 
 
 --->
@@ -34,6 +35,7 @@ You can also adjust
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/menus.css">
+	<link rel="stylesheet" href="../css/schemes\menus-schemes.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
 
@@ -53,28 +55,44 @@ You can also adjust
 			font-weight: bold;
 		}
 
-		.cs-menu {
+		/*	 */
+		
+		#main {
 			margin-bottom: 12px;
-			--menu-icon-display: none;
-		} 
-
-		.cs-menu li:hover {
-			--link-color:#ffff00;
-		}
-
-		.scheme-main {
 			--menu-item-padding:8px;
-			--menucolor: #ff00ff;
+			--link-color: #333;
 			--menu-background: #c3c3c3;
 			--menu-gap:0px;
-			--menu-stretch:0;
+			--menu-icon-gap:8px;
+			--menu-icon-stretch: 0;
+			--menu-icon-display: block;
+			--menu-border-color: #00ffff;
 		}
 
-		.scheme-main li:hover {
+		#main li a:hover {
+			--link-color: #c3c3c3;
+			--menu-background: #ff00ff;
+			--menu-border-color: red;
+		}
+		#main li.hi a {
+			--link-color: #ffff00;
+			--menu-background: #c3c3c3;
+		}
+
+		#main li:hover {
 			--link-color:#ffff00;
 			--menu-background: #efefef;
 		}
+
+		.scheme-vertical {
+			width: 180px;
+		}
+
+		#main.scheme-vertical {
+			--menu-icon-stretch: 1;
+		}
 		
+
 		
 	</style>
 </head>
@@ -85,8 +103,8 @@ Menu Testing
 </div>
 
 	
-<div id="test1" class="cs-menu scheme-verticalXX scheme-borders"><ul>
-<li><a class="menu_adverts first" href="adverts_list.cfm"><i class="icon-close"></i><span>Adverts<span></a></li>
+<div id="main" class=" cs-menu scheme-vertical scheme-dividers scheme-gridXXX scheme-flexXXX"><ul>
+<li class="hi"><a class="menu_adverts first" href="adverts_list.cfm"><i class="icon-close"></i><span>Adverts<span></a></li>
 <li><a class="menu_articles" href="articles_list.cfm"><i class="icon-menu"></i><span>Articles</span></a></li>
 <li><a class="menu_images" href="images_list.cfm"><i class="icon-previous"></i><span>Images</span></a></li>
 <li><a class="menu_manage_sections" href="manage_sections_list.cfm"><i class="icon-next"></i><span>Manage sections</span></a></li>

@@ -57,7 +57,6 @@ component {
 
 		StructAppend(arguments.site,{"cs" = {}},false);
 		arguments.site.cs[arguments.id] = cs;
-
 		
 	}
 
@@ -73,18 +72,11 @@ component {
 		css &= this.settingsObj.fontVariablesCSS(this.styles);
 		css &=  "\n}\n";
 		css &= this.settingsObj.CSSCommentHeader("Content styling");
-		for (local.id in this.site.cs) {
-			css &= contentCSS(this.site.cs[local.id]);
-		}
+		
+		css &= this.contentObj.contentCSS(styles=this.styles, content_sections=this.site.cs, media=this.styles.media, format=false);
+
 		css = this.settingsObj.outputFormat(css=css,media=this.styles.media,debug=this.contentObj.debug);
 		return css;
-	}
-
-	
-	string function contentCSS(required struct cs) {
-		local.site_data = { "#arguments.cs.id#" = arguments.cs};
-		local.css = this.contentObj.contentCSS(styles=this.styles, content_sections=local.site_data, media=this.styles.media, format=false);
-		return local.css;
 	}
 
 	struct function pageData(required struct cs, struct data={}) {

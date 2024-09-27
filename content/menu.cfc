@@ -117,7 +117,7 @@ component extends="contentSection" {
 				"description":"Which direction to align the menu. Only applies if you have set a width or are using Flex mode without stretch"
 			},
 			"menu-border-color": {
-				"name":"Border colour","type":"color","description":"", "default":"--link-color"
+				"name":"Border colour","type":"color","description":"", "default":"link-color"
 			},
 			"menu-background": {
 				"name":"Background","type":"color","description":"", "default":"transparent"
@@ -214,13 +214,13 @@ component extends="contentSection" {
 		var data = getSelectorStruct();
 		
 		// flex | adjust menu-display to flex or block
-		data.main &= "--menu-display: " & arguments.styles.flex ? "flex" : "block" & ";\n";// 
+		data.main &= "--menu-display: " & ( arguments.styles.flex ? "flex" : "block")  & ";\n";// 
 		
 		//  horizontal|vertical   | 
 		local.isVertical = arguments.styles.orientation eq "vertical";
 		
 		if (arguments.styles.flex) {
-			local.reverse = arguments.styles.reverse ? "-reverse" : "";
+			local.reverse = arguments.styles["menu-reverse"] ? "-reverse" : "";
 			data.main &= "/* orientation: #arguments.styles.orientation#  */\n";
 			data.main &= "--menu-direction: " & (local.isVertical ? "row" : "column" ) & local.reverse & ";\n";// 
 		}	

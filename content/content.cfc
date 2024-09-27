@@ -71,7 +71,6 @@ component extends="utils.baseutils" {
 	/* generate html for a content section */
 	public string function html(required struct content, struct data={}) {
 		
-
 		var ret = this.contentSections[arguments.content.type].html(content=arguments.content, data=arguments.data);
 		
 		ret = this.settingsObj.outputFormat(css=ret,media={},debug=this.debug);

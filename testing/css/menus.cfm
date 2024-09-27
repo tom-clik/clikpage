@@ -4,50 +4,76 @@
 
 -->
 <cfscript>
+settingsTest = new settingsTest();
+pageContent = settingsTest.pageObj.getContent();
 
-pageObj = new clikpage.page(debug=1);
-content = pageObj.getContent();
-pageObj.addJs(content,"menus");
-pageObj.addCss(content,"menus");
-pageObj.addCss(content,"navbuttons");
-content.title = "Menu test page";
+//writeDump(pageContent);
+//writeDump(settingsTest.styles);
+
+id = "mainmenu";
+menu = settingsTest.contentObj.new(id=id,title="menu",type="menu");
+menu.data =  deserializeJSON( FileRead( expandPath( "../site/_out/sampleMenu.json" ) ) );
+
+settingsTest.site.cs[id] = menu;
+
+settingsTest.styles.style[id] = {
+	"main": {
+		"padding": 0,
+		"border-type":"dividers",
+		"menu-item-border":1,
+		"menu-border-color":"accent",
+		"width": "auto",
+		"align": "left",
+		"orientation": "vertical",
+		"link-color": "panel-text",
+		"item" : {
+			"padding": "8px",
+			"background": {
+				"color" :"panel-bg"
+			},
+			"hover": {
+				"link-color": "textcolor",
+				"background": {
+					"color" :"light-panel-bg"
+				}
+			}
+		},
+		"subitem" : {
+			"link-color": "myfavcolor",
+			"padding": "8px 8px 8px 24px",
+			"hover": {
+				"link-color": "panel-text"
+			}
+		},
+		"menu-gap":0,
+		"submenu_position":"static"
+		
+	}
+};
+
+settingsTest.contentObj.settings(
+	content=menu,
+	styles=settingsTest.styles,
+	media=settingsTest.styles.media
+);
+
+
+menu.html = "<h2>Testing</2>"
+
+
 </cfscript>
 
-<cfsavecontent variable="content.css">
-	#mainmenu {
-		--menu-stretch:0
-	}
-
-</cfsavecontent>
 
 
-<cfsavecontent variable="content.body">
+
+<cfsavecontent variable="pageContent.body">
 
 	<div id="ubercontainer">
 		
 
 		<div id="menu_container">
 			<div class="inner">
-				
-				<div id='mainmenu' class='cs-menu'>
-<ul class='menu'><li><a href='?section=index'  class='menu_index'><span>Home page</span></a></li>
-<li><a href='?section=gallery'  class='menu_gallery'><span>Gallery</span></a></li>
-<li><a href='?section=gallery2'  class='menu_gallery2'><span>Gallery 2</span></a></li>
-<li><a href='?section=about'  class='menu_about'><span>About</span></a></li>
-<li><a href='?section=news'  class='menu_news'><span>News</span></a><ul class='submenu'><li><a href='{link.news.view.1}'  class='menu_submenu_news_1'><span>Article test 1</span></a></li>
-<li><a href='{link.news.view.2}'  class='menu_submenu_news_2'><span>Article test 2</span></a></li>
-<li><a href='{link.news.view.3}'  class='menu_submenu_news_3'><span>Article test 3</span></a></li>
-<li><a href='{link.news.view.4}'  class='menu_submenu_news_4'><span>Article test 4</span></a></li>
-</ul></li>
-<li><a href='?section=newscarousel'  class='menu_newscarousel'><span>News carousel</span></a><ul class='submenu'><li><a href='{link.newscarousel.view.1}'  class='menu_submenu_newscarousel_1'><span>Article test 1</span></a></li>
-<li><a href='{link.newscarousel.view.2}'  class='menu_submenu_newscarousel_2'><span>Article test 2</span></a></li>
-<li><a href='{link.newscarousel.view.3}'  class='menu_submenu_newscarousel_3'><span>Article test 3</span></a></li>
-<li><a href='{link.newscarousel.view.4}'  class='menu_submenu_newscarousel_4'><span>Article test 4</span></a></li>
-</ul></li>
-<li><a href='?section=images'  class='menu_images'><span>Images</span></a></li>
-<li><a href='?section=singlearticle'  class='menu_singlearticle'><span>Single article</span></a></li>
-</ul>
-				</div>
+				<cfoutput>#menu.html#</cfoutput>				
 			</div>
 		</div>	
 
@@ -56,13 +82,6 @@ content.title = "Menu test page";
 </cfsavecontent>
 
 
-<cfsavecontent variable="onready">
-
-	$("#mainmenu").menu({animate:"height"});
-
-</cfsavecontent>
-
 <cfscript>
-pageObj.addJs(content,onready);
-writeOutput( pageObj.buildPage(content) );
+writeOutput( settingsTest.pageObj.buildPage(pageContent) );
 </cfscript>

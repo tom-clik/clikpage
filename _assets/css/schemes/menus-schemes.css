@@ -1,28 +1,21 @@
-/* MENUS
+/* 
 
-WIP Schemes file.
-
-As with all of these the current work is applying styling via classes. The end game
-is to the use cs components to generate these scheme files automatically just be using
-a clik stylesheet
-
-Settings:
-
+MENUS
 
 */
 
-.scheme-borders {
-	--menu-item-border:2px;
+.scheme-dividers {
+	--menu-item-border:1px;
 	--menu-gap:0px;
 	--menu-item-border-width: 0 var(--menu-item-border) 0 0;
 }
 
-.scheme-borders li:last-of-type {
+.scheme-dividers li:last-of-type {
 	--menu-item-border-width: 0;
 }
 
 .scheme-boxes {
-	--menu-item-border:4px;
+	--menu-item-border:1px;
 	--menu-gap:0px;
 	--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
 }
@@ -32,19 +25,19 @@ Settings:
 }
 
 .scheme-vertical {
-	width: 180px;
-	--menu-display: grid;
+	--menu-items-justify: start;
+	--menu-direction: column;
 	--menu-item-width: 180px;
 	--menu-text-align:left;
-	--menu-icon-display: block;
+	--menu-item-align: stretch;
 }
 
-.scheme-vertical.scheme-borders {
+.scheme-vertical.scheme-dividers {
 	--menu-item-border-width: 0 0 var(--menu-item-border) 0;
 }
 
 .scheme-vertical.scheme-boxes {
-	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0  var(--menu-item-border);
+	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
 }
 
 .scheme-grid {
@@ -52,6 +45,9 @@ Settings:
 	--menu-item-width: 80px;
 }
 
+.scheme-flex {
+	--menu-stretch: 0;
+}
 
 
 

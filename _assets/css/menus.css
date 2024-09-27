@@ -5,16 +5,40 @@ Create a grid or flexbox menu from a ul
 
 ## Grid menus
 
-By default menus are horizontal grids. Change this to vertical with scheme-vertical
+By default menus are horizontal flex layouts. 
 
-scheme-flex will use a flexbox which only makes sense for horizontal menus.
+
+Menu settings don't translate well to single CSS settings. A combination is often required to achieve required behaviours.
+
+Some examples are shown in the schemes.
+
+## 1. Vertical menu
+
+A vertical menu can be set with 
+
+--menu-direction: column;
+--menu-item-justify:start;
+--menu-text-align:left;
+
+## 2. Border boxes/borders
+
+These simply don't work with CSS vars. There are schemes that show this, but essentially they have to be hand cranked.
+
+## 3. Flex 
+
+For a flex menu where the items shrink down, use 
+
+--menu-stretch: 1;
+
 
 ## Notes
 
 The a tags are actually set to display flex themselves in order to accomodate icons. To align the lext you have to set
 the justify-content property.
 
-# usage
+# Highlights etc
+
+Use the following selector 
 
 hover   li a:hover
 hi      li.hi a
@@ -37,6 +61,7 @@ hi      li.hi a
 	--icon-height:32px;	
 	--menu-icon-valign: middle;/* WIP */
 	--menu-icon-gap: 8px;/* gap between label and icon */
+	--menu-icon-stretch: 1;/* stretch labels to fill remaining space */
 	--menu-openicon-width:16px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
 	--menu-openicon-height:16px;	
 	--menu-openicon-adjust: -4px;
@@ -115,13 +140,13 @@ ul.submenu {
   	min-width:100%;
   	overflow: hidden;
   	height: auto;
-	--menu-direction: column;
+  	--menu-direction: column;
   	--menu-display: none;
 
 }
 
 ul.submenu.open, ul.submenu.show  {
-	--menu-display: none;
+	--menu-display: flex;
 }
 
 
@@ -134,20 +159,23 @@ ul.submenu.open, ul.submenu.show  {
 }
 
 /* sub menu indicator */
-/*.cs-menu a .icon {
+.cs-menu a > i[class*=icon].openicon {
+	--icon-height: 16px;
+	--icon-width: 16px;
+	display: block;
 	flex-grow: 0;
 	position: relative;
-	right:var(--menu-openicon-adjust);
+	right:var(--menu-openicon-adjust, 0);
 	max-height:100%;
 	top:0;
-	width: var(--menu-openicon-width);
-	width: var(--menu-openicon-height);
+	/*width: var(--menu-openicon-width);
+	height: var(--menu-openicon-height);*/
 	fill:var(--link-color);
 	stroke:var(--link-color);
 	transition-property: transform;
 	transition-duration: 0.3s;
 	transition-timing-function: ease-in-out;
-}*/
+}
 
 /* menu icons 
 
@@ -174,9 +202,9 @@ Requires icons.css and navbuttons.css
 .cs-menu li.open > a .openicon {
 	transform: rotate(90deg);
 }
-
+/* Expand label to fill space */
 .cs-menu a > span {
-	flex-grow: 1;
+	flex-grow: var(--menu-icon-stretch);
 }
 
 
