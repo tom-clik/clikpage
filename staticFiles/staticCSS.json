@@ -5,6 +5,7 @@
                 "reset",
                 "breadcrumb",
                 "definitions",
+                "admonitions",
                 "footnotes",
                 "forms",
                 "grids",
@@ -20,7 +21,7 @@
                 "title"
             ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.7.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.10.min.css"
         }
     ],
     "scripts": [
@@ -114,7 +115,7 @@
         {
             "min": "/_assets/css/styles.css",
             "name": "styles",
-            "requires": "reset,panels,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
+            "requires": "content"
         },
         {
         	"debug": "/_assets/css/fonts/font-awesome-local.css",

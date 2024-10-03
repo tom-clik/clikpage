@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Title and heading font test</title>
-	<link rel="stylesheet" href="../css/reset.css">
-	<link rel="stylesheet" href="../css/grids.css">
-	<link rel="stylesheet" href="../css/schemes/grid-schemes.css">
+	<title>CSS Grid Test</title>
+	<link rel="stylesheet" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="/_assets/css/grids.css">
+	
 	
 	<meta charset="UTF-8">
 	<style>
@@ -24,33 +24,69 @@
 		display: inline-block;
 		background-color: #cecece;
 		padding:2px;
-		
 	}
+	
 	.cs-grid {
 		--grid-gap:10px;
 	}
-	.scheme-grid-fixedcols {
-		--grid-columns:4;
+
+	#testfix {
+		--mode: fixed;
+		--grid-columns:3;
 	}
-	.scheme-grid-fixed {
-		--grid-width:240px;
+
+	@media screen and (max-width: 800px) {
+		#testfix {
+			--grid-columns:2;
+		}
 	}
-	#test2a_grid {
-		grid-template-columns: 120px auto 160px;
+
+	@media screen and (max-width: 600px) {
+		#testfix {
+			--mode:none;
+		}
 	}
-	#test4_grid {
+
+
+	#testfixedwidth {
+		--mode: fixedwidth;
+	}
+
+	#testcolumns {
+		--mode: columns;
+		--grid-template-columns: 220px auto 260px;
+	}
+
+	@media screen and (max-width: 800px) {
+		#testcolumns {
+			--grid-template-columns: 120px auto 160px;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		#testcolumns {
+			--grid-template-columns: 120px auto;
+		}
+	}
+
+
+	#testflex {
+		--mode: flex;
 		--justify-content: flex-end;
 	}
-	#test5_grid {
+	#testflexnowrap {
+		--mode: flex;
 		--flex-wrap: nowrap;
 		--align-items: center;
 	}
 
-	#test6_grid {
+	#testflexstretch {
+		--mode: flex;
 		--flex-direction: row-reverse;
 		--flex-stretch: 1;
 	}
-	#test7_grid {
+	#testflexcenter {
+		--mode: flex;
 		--justify-content: center;
 	}
 	</style>
@@ -59,52 +95,65 @@
 
 	<div class="test">
 		<div class="test-header">Auto grid with max-width</div>
-		<div id="test1_grid" class="cs-grid"></div>
+		<div id="testfit" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Grid with fixed width cols</div>
-		<div id="test2_grid" class="cs-grid scheme-grid-fixedcols"></div>
+		<div id="testfixedwidth" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
-		<div class="test-header">Grid with set cols</div>
-		<div id="test2a_grid" class="cs-grid"></div>
+		<div class="test-header">Grid with fixed number of columns</div>
+		<div id="testfix" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
-		<div class="test-header">Grid with fixed width</div>
-		<div id="test3_grid" class="cs-grid scheme-grid-fixed"></div>
+		<div class="test-header">Grid with set columns</div>
+		<div id="testcolumns" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex</div>
-		<div id="test4_grid" class="cs-grid flex"></div>
+		<div id="testflex" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex No Wrap</div>
-		<div id="test5_grid" class="cs-grid flex"></div>
+		<div id="testflexnowrap" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex Stretch</div>
-		<div id="test6_grid" class="cs-grid flex" data-cols="5"></div>
+		<div id="testflexstretch" class="cs-grid" data-cols="5"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex align center</div>
-		<div id="test7_grid" class="cs-grid flex" data-cols="5"></div>
+		<div id="testflexcenter" class="cs-grid" data-cols="5"></div>
 	</div>
 
-	<script src="../js/jquery-3.4.1.js"></script>
+	<script src="/_assets/js/jquery-3.4.1.js"></script>
+	<script src="/_assets/js/jquery.throttledresize.js"></script>
+	<script src="/_assets/js/modeClass.js"></script>
+	<script src="/_assets/js/removeClassByPrefix.js"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$(".cs-grid").each( function() {
 				const cols = $(this).data("cols") ? $(this).data("cols") : 12;
 				$(this).html(testGrid(cols));
 			});
+
+			$(".cs-grid").modeClass(
+				{
+					resize: 'throttledresize',
+				}
+			);
+
 		});
+
+
 		lorem = ["Lorem","ipsum","dolor","sit","amet,","consectetur","adipisicing","elit,","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua."];
 
 		function testGrid(cols) {

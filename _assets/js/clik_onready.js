@@ -93,6 +93,23 @@ clik = {
 			});
 			
 		}
+
+		/** 
+		 * Some components only need a class adding to achieve all behaviours with CSS
+		 * 
+		 * This is done with a var "mode" which is appended to the class name mode-{mode}
+		 * They are exclusive, so any others are removed
+		 */
+		if(jQuery().modeClass) {
+			$(".cs-grid").modeClass(
+				{
+					resize: resizeMethod,
+				}
+			);
+		}
+
+
+
 	},
 
 	trueFalse: function(value) {

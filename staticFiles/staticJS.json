@@ -16,27 +16,33 @@
         "photogrid",
         "justifiedGallery",
         "serializeData",
-        "throttledresize"
+        "throttledresize",
+        "heightFix",
+        "modeClass"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.4.min.js",
+      "min": "/_assets/js/_min/clikmain.0.6.min.js",
     },
     {
       "scripts": [
-        "fuzzy",
-        "search",
+        "fuzzySearch",
         "menuScroll",
-        "menus"
+        "menus",
+        "modeClass",
+        "throttledresize"
       ],
-      "min": "/_assets/js/_min/coldlightpackage.0.2.min.js",
+      "min": "/_assets/js/_min/coldlightpackage.0.6.min.js",
       "name": "coldlight"
     },
     {
+      "scripts_foobar": [
+        "clik_settings","messageHandler","settingsForm"
+      ],
       "scripts": [
         "clik_settings","messageHandler","settingsForm"
       ],
       "description": "Clik editing tools",
-      "min": "/_assets/js/_min/clikutils.0.2.min.js",
+      "min": "/_assets/js/_min/clikutils.0.3.min.js",
       "name": "clikutils"
     }
   ],
@@ -72,10 +78,15 @@
       "requires": "jquery"
     },
     {
-      "min": "/_assets/js/search.js",
-      "name": "search",
-      "description": "search symbol definitions with fuzzy logic",
+      "min": "/_assets/js/fuzzySearch.js",
+      "name": "fuzzySearch",
+      "description": "Search of symbol definitions with fuzzy logic",
       "requires": "fuzzy"
+    },
+    {
+      "min": "/_assets/js/fts_fuzzy_match.js",
+      "name": "fuzzy",
+      "description": "Fuzzy match library"
     },
     {
       "debug": "/_assets/js/select2.min.js",
@@ -225,6 +236,12 @@
       "requires": "jquery"
     },
     {
+      "min":"/_assets/js/modeClass.js",
+      "description": "Get value of css variable 'mode' and apply it as a class mode-{mode}",
+      "name": "modeClass",
+      "requires": "jquery,removeClassByPrefix"
+    },
+    {
       "debug":"/_assets/js/tooltipster.main.js",
       "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/js/tooltipster.main.js",
       "description": "Tooltip library",
@@ -273,7 +290,14 @@
       "description": "Settings Editing form",
       "name": "settingsForm",
       "requires": "jquery,clik_settings,messageHandler"
+    },
+    {
+      "min":"/_assets/js/removeClassByPrefix.js",
+      "description": "Utility for removing classes by prefix",
+      "name": "removeClassByPrefix",
+      "requires": "jquery"
     }
+    
     
   ]
 }
