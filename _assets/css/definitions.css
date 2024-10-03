@@ -1,16 +1,15 @@
+:root {
+  --dl-gap: 4px 8px ;
+}
 dl {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-column-gap: 8px;
-}
-
-dt, dd {
-	padding:2px 0;
+  grid-template-columns: max-content 1fr;
+  gap: var(--dl-gap);
+  margin-bottom:1rem;
 }
 
 dt {
   grid-column: 1;
-  white-space: nowrap;
 }
 
 dd {

@@ -1,0 +1,39 @@
+:root {
+	--list-num-width: 1.5em;
+	--marker-after: ". ";
+	--list-type: decimal;
+}
+
+/* NB weird styling in reset.css */
+ol, ol ol, ol ol ol {
+  list-style: none; /* Remove default numbering */
+  padding-left: 0; /* Align to the left */
+}
+
+ol li {
+  position: relative;
+  margin-left: var(--list-num-width); 
+}
+
+ol li::before {
+  content: counter(list-item, var(--list-type) ) var(--marker-after); /* Add bracket after the letter */
+  position: absolute;
+  left: calc(-1 * var(--list-num-width) ); /* Align the letters to the left */
+}
+
+.lower-roman {
+	--list-type: lower-roman;
+}
+.lower-alpha {
+	--list-type: lower-alpha;
+}
+.upper-roman {
+	--list-type: upper-roman;
+}
+.upper-alpha {
+	--list-type: upper-alpha;
+}
+
+.bracket {
+	--marker-after: ") ";
+}

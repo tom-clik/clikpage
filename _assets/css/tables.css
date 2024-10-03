@@ -2,18 +2,33 @@
 
 # Table styling
 
---table-cell-padding:0;
---table-font:inherit;
---table-text-align:inherit;
---table-stripe-bg: transparent;
+Most styling is done using standard CSS properties applied to tr, th, or td. Only the padding and border settings, which can be difficult, have parameters.
 
 ## Borders
 
+Adjust the following for the main table, th, and td and they **should** work.
+
+```
 --table-border-width:0px;
 --table-border-style:solid;
 --table-border-color:initial;
+```
 
-Notes: 
+## Padding
+
+Adjust the following for the main table and optionally th if different.
+
+```
+--table-cell-padding: 2px;
+```
+
+## Fonts etc
+
+Use standard CSS properties applied to tr, th, or td.
+
+The default for th is bold, centered.
+
+## Notes 
 
 We can't use border collapse to do any sort of sensible table styling
 
@@ -28,16 +43,32 @@ table.info td, table.info th {
 }
 ```
 
-## Adjusting columns
+## Adjusting columns or rows
 
+Use numeric column values to adjust styling if you can't set a class (e.g. coming from Markdown)
+
+```
 table.info tr td:nth-of-type(3) {
-	--table-font-weight:bold;
-	--table-text-align:left;	
+	font-weight:bold;
+	text-align:left;	
 }
+```
+
+### First and last rows
+
+Use
+
+`table.info tr td:first-of-type` and `table.info tr td:last-of-type`
+
+## Stripes
+
+There is one more var, --table-stripe-bg, for striped rows.
+
+You can also use `tr:nth-child(odd|even)`
 
 ## To do
 
-Better mechanism for first and last column paddings? (not pa priority).
+1. Better mechanism for first and last column paddings? (not a priority).
 
 */
 
@@ -45,35 +76,28 @@ Better mechanism for first and last column paddings? (not pa priority).
 	--table-border-width:0px;
 	--table-border-style:solid;
 	--table-border-color:initial;
-	--table-margin:0;
 	--table-cell-padding:0;
-	--table-font:inherit;
-	--table-text-align:inherit;
 	--table-stripe-bg: transparent;
 }
 
 th {
-	--table-font:bold 1em var(--text-font);
-	--table-text-align:center;
+	font-weight: bold;
+	text-align:center;
 }
 
 table {
 	border-width: var(--table-border-width);
 	border-style: var(--table-border-style);
 	border-color: var(--table-border-color);
-	margin: var(--table-margin);
 	border-collapse: separate;
 	width: auto;/* will override leagcy table width= settings */
+	margin: 1em 0;
 }
 
 th, td  {
 	border-width: var(--table-border-width);
 	border-style: var(--table-border-style);
 	border-color: var(--table-border-color);
-	text-align: var(--table-text-align);
-	font: var(--table-font);
-	background-color: var(--table-bg);
-	color: var(--table-text);
 	padding: var(--table-cell-padding);
 }
 
@@ -113,25 +137,27 @@ body tbody  tr:last-of-type td {
 
 
 
-
-table.info {
-	--table-border-width: 1px;
-	--table-cell-padding: 2px;
-	--table-margin:0 0 1em 0;
+table.info, table.reverse {
+	--table-border-width:1px;
+	--table-border-style:solid;
+	--table-border-color:var(--border-color, initial);
 }
 
-table.info td, table.info th {
-	--table-border-width: 1px;
+table.info th, table.reverse th {
+	background-color: var(--panelbg, black);
+	color: var(--paneltext, white);
 }
 
-table.recordlist {
+table.sticky {
   position:relative;
 }
 
-table.recordlist th {
+table.sticky th {
   position: sticky;
   top: 0;
 }
 
-
+table.nohead thead {
+    display: none;
+}
 
