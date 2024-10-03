@@ -1,20 +1,17 @@
 body {
-	--icon-close: "close";
-	--icon-menu: "menu";
 	--icon-previous: "chevron_left";
 	--icon-next: "chevron_right"; 
 	--icon-squares: "apps";
-	--icon-fullscreen: "fullscreen";
-	--icon-fullscreen_exit: "fullscreen_exit";
-	--icon-first_page: "first_page";
-	--icon-last_page: "last_page";
-	--icon-help: "help";
+	--icon-first_page: "keyboard_double_arrow_left";
+	--icon-last_page: "keyboard_double_arrow_right";
 	--icon-cart: "shopping_cart";
-	--icon-done: "done";
-	--icon-favorite: "favorite";
-	--icon-home: "home";
-	--icon-search: "search";
 	--icon-account: "account_circle";
-	--icon-list: "list";
-    --icon-font: normal 400 1em/1 "Material Icons"; 
+	--icon-sortasc: "keyboard_arrow_up";
+	--icon-sort: "unfold_more";
+	--icon-sortdesc: "keyboard_arrow_down";
+	--icon-grip: "drag_handle";
+	--icon-add: "add_circle";
+	--icon-run: "play_arrow";
+	--icon-font: normal 400 1em/1 "Material Icons"; 
 }
+

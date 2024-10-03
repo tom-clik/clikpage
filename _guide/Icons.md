@@ -29,7 +29,7 @@ body {
 or Font Awesome
 
 ```
-body { {
+body {
 	--icon-close:"\f410";
 	--icon-menu: "\f0c9";  
 }

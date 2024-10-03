@@ -6,15 +6,28 @@
 			modal: true,
 			draggable: false,
 			dragTarget: "h2",
-			closebutton: "<svg class=\"icon\"  viewBox=\"0 0 357 357\"><use xlink:href=\"/_assets/images/close47.svg#close\"></svg>",
+			close_icon: "<i class='icon-close'></i>",
+			position:"",
+			position_at:"",
+			position_of:"",
 			onOpen: function() {},
 			onClose: function() {},
 			onOk: function() {},
 			onCancel: function() {}
 		}
 
-		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
+		var settingTypes = {
+			modal: "boolean",
+			close_icon: "string",
+			draggable: "boolean",
+			dragTarget: "string",
+			position:"string",
+			position_at:"string",
+			position_of:"string"
+		}
 
+		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
+		var backdrop;
 		var plugin = this;
 		var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
@@ -25,34 +38,73 @@
 					   
 		plugin.init = function() {
 			plugin.settings = $.extend({}, defaults, options);
+			getCssSettings();
 			if (plugin.settings.draggable) {
 				$element.on("mousedown",plugin.settings.dragTarget,function() {
 					dragMouseDown();
 				});
 			}
+
+			$element.addClass("modal").wrapInner("<div class='inner'></div>");
+			var $wrapper = $element.find(".inner");
+			if (plugin.settings.close_icon != "") {
+				let id = $element.attr("id") || "";
+				var $closebutton = $(`<div id="${id}_closebutton" class="closebutton button">
+					<a href="#popup.cancel">
+					${plugin.settings.close_icon}
+					<label>Close</label>
+					</a>				
+				</div>`).appendTo($wrapper);
+				
+				$closebutton.on("click",`a`, function() {
+					$element.trigger("close");
+				});
+			}
+
 		}
 
-		$element.on("open",function() {
-			console.log("open handler");
+		$element.on("open",function(e) {
+			e.stopPropagation();
 			plugin.open();
 		});
 
-		$element.on("close",function() {
+		$element.on("close",function(e) {
+			e.stopPropagation();
 			plugin.close();
 		});
 
-		$element.on("ok",function() {
+		$element.on("ok",function(e) {
+			e.stopPropagation();
 			plugin.ok();
 		});
 
-		$element.on("cancel",function() {
+		$element.on("cancel",function(e) {
+			e.stopPropagation();
 			plugin.cancel();
 		});
 
 		// public methods
 		plugin.open = function() {
+			
 			var cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
 			$element.css(cssSettings).addClass("open");
+
+			if (plugin.settings.position != "") {
+				// use {element.id}_pulldown for the button ID
+				plugin.settings.position_of = plugin.settings.position_of.replace("element.id", $element.attr("id"));
+				if ($(plugin.settings.position_of).length) {
+					$element.position({
+						my: plugin.settings.position,
+						at: plugin.settings.position_at,
+						of: plugin.settings.position_of
+					});
+				}
+				else {
+					console.warn(`invalid position of ${plugin.settings.position_of}`);
+				}
+			}
+			
+			
 			if (plugin.settings.modal) {
 				backdrop = $("<div class='backdrop'></div>").appendTo("body")
 				.css(backdropSettings)
@@ -82,7 +134,7 @@
 
 		plugin.close = function() {
 			$element.removeClass("open");
-			if (plugin.settings.modal) {
+			if (plugin.settings.modal && backdrop != undefined) {
 				backdrop.remove();
 			}
 			$(window).off("keydown.modal");
@@ -119,14 +171,29 @@
 			plugin.pos3 = e.clientX;
 			plugin.pos4 = e.clientY;
 			// set the element's new position:
-			element.style.top = (element.offsetTop - plugin.pos2) + "px";
-			element.style.left = (element.offsetLeft - plugin.pos1) + "px";
+			let top = element.offsetTop - plugin.pos2;
+			let left = element.offsetLeft - plugin.pos1;
+			// TODO: restrict. Need to cope with translate styling 
+			// on modal popups. Don't use translate on draggable
+			// Then we can just restrict to window
+			element.style.top = top + "px";
+			element.style.left = left + "px";
 		}
 
 		var closeDragElement = function() {
 			/* stop moving when mouse button is released:*/
 			document.onmouseup = null;
 			document.onmousemove = null;
+		}
+
+		var getCssSettings = function() {
+			
+			for (let setting in settingTypes) {
+				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
+				
+				if (val != null) plugin.settings[setting] = val;
+			}
+
 		}
 
 		plugin.init();

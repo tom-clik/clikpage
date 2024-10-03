@@ -14,10 +14,11 @@
 	--flex-stretch:0;/* treat as boolean */
 	--flex-wrap: wrap;
 	--grid-template-rows:none;
+	--grid-display: block;
 }
 
 .cs-grid, .inner {
-	display:block;
+	display:var(--grid-display);
 	grid-gap:var(--grid-gap);
 	flex-direction: var(--flex-direction);
 	align-items: var(--align-items);

@@ -54,6 +54,13 @@ styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 				--title:my test mobile;
 			}
 		}
+
+		@media print {
+			#title {
+				--title:my test print;
+			}
+		}
+
 	</style>
 </head>
 <body>
@@ -69,6 +76,53 @@ styles = settingsObj.loadStyleSettings(ExpandPath("../styles/testStyles.xml"));
 <script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
+// doesn't seem to work
+window.addEventListener("beforeprint", (event) => {
+ console.log("beforeprint");
+ displayMedia()
+});
+
+function displayMedia() {
+	console.log(getMedia());
+	console.time("Getting properties");
+	var props = {};
+	var settingshtml = [];
+	for (let prop of ['title','test','other'] ) {
+		let test = $title.css("--" + prop);
+		props[prop] = test;
+		settingshtml.push(prop + ":" + props[prop]);
+	}
+	console.timeEnd("Getting properties");
+	$title.html("<h1>" + props.title + "</h1>");
+	$settings.html(settingshtml.join("<br>"));
+}
+
+function getMedia() {
+	var width = $window.width();
+	var minwidth = width;
+	var maxwidth = width;
+	var newmedium = "main";
+	for (var smedium in media) {
+		let m = media[smedium];
+		// TODO: improve this: check "screen"
+		if ( ("media" in m) ) {
+			continue;
+		}
+
+		if ("max" in m && ( m.max > width )) {
+			newmedium = smedium;
+			maxwidth = m.max;
+			
+		}
+		else if ("min" in m && ( m.min < width )) {
+			newmedium = smedium;
+			maxwidth = m.min;
+		}
+	}
+	
+	return newmedium;
+}
+
 
 $(document).ready(function() {
 	$title = $("#title");
@@ -79,53 +133,14 @@ $(document).ready(function() {
 	media = #serializeJSON(styles.media)# ;
 	</cfoutput>
 	
-	getMedia();
+	displayMedia();
 
 	$window.on("throttledresize",function() {
-		getMedia();
+		displayMedia();
 	});
 
-	function displayMedia(name) {
-		console.time("Getting properties");
-		var props = {};
-		var settingshtml = [];
-		for (let prop of ['title','test','other'] ) {
-			let test = $title.css("--" + prop);
-			props[prop] = test;
-			settingshtml.push(prop + ":" + props[prop]);
-		}
-		console.timeEnd("Getting properties");
-		$title.html("<h1>" + props.title + "</h1>");
-		$settings.html(settingshtml.join("<br>"));
-	}
-	function getMedia() {
-		var width = $window.width();
-		var minwidth = width;
-		var maxwidth = width;
-		var newmedium = "main";
-		for (var smedium in media) {
-			let m = media[smedium];
-			// TODO: improve this: check "screen"
-			if ( ("media" in m) ) {
-				continue;
-			}
-
-			if ("max" in m && ( m.max > width )) {
-				newmedium = smedium;
-				maxwidth = m.max;
-				
-			}
-			else if ("min" in m && ( m.min < width )) {
-				newmedium = smedium;
-				maxwidth = m.min;
-			}
-		}
-		if (newmedium != medium) {
-			medium = newmedium;
-			displayMedia(medium + " Width " + width);
-		}
-	}
-
+	
+	
 	
 });
 </script>

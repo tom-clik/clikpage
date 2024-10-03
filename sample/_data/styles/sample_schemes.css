@@ -77,3 +77,33 @@ scheme-carousel {
 		form-display:block;
 	}
 }
+
+
+scheme-bodycopy {
+/*	 Won't don anything yet, just testing it parses*/
+	h1 {
+		heading-font-size:24px;
+		heading-margin: 0 0 1em 0;
+		heading-font-align: center;
+	}
+
+	table {
+		table-cell-padding:4px;
+	}
+
+	table.info {
+		th {
+			font-weight: normal;
+		}
+	}
+
+	list.whatever {
+		font-weight: bold;
+	}
+
+	class.asyoulikeit {
+		font-weight: bold;
+	}
+}
+
+

@@ -20,6 +20,24 @@ component {
 		this.debug = arguments.debug;
 		this.cssParser = new cssParser();	
 
+		// Temporary solution for Grid styling. See notes/Grid styling.md
+		variables.gridSettings = [
+				"grid-gap":"0",
+				"grid-fit":"auto-fit",
+				"grid-width":"180px",
+				"grid-max-width":"1fr",
+				"grid-max-height":"auto",
+				"grid-columns":"2",
+				"flex-direction":"row",
+				"justify-content":"normal",
+				"align-items":"normal",
+				"align-content":"normal",/* alignment for multiple rows */
+				"flex-stretch":"0",/* treat as boolean */
+				"flex-wrap":"wrap",
+				"grid-template-rows":"none"
+		];
+
+
 		return this;
 	}
 
@@ -433,7 +451,7 @@ component {
 		local.css &= "\t/* Dimensions */\n";
 		local.css &= dimensions(arguments.settings);
 
-		return local.css;2
+		return local.css;
 
 	}
 
@@ -446,7 +464,19 @@ component {
 			}
 		}
 
-		for (local.property in ['font-size','font-weight','font-style','font-variant','line-height','letter-spacing','text-decoration','text-align','text-transform','text-align-last','white-space','text-indent','word-spacing','word-wrap']) {
+		for (local.property in ['heading-font','table-border-color','table-background','table-stripe-bg']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t--#local.property#:var(--#arguments.settings[local.property]#);\n";
+			}
+		}
+
+		for (local.property in ['table-border-width','table-border-style','table-cell-padding','table-text-align','table-vertical-align','table-sticky','table-sticky-top','heading-font-size','heading-margin','heading-font-align']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t--#local.property#:#arguments.settings[local.property]#;\n";
+			}
+		}
+
+			for (local.property in ['font-size','font-weight','font-style','font-variant','line-height','letter-spacing','text-decoration','text-align','text-transform','text-align-last','white-space','text-indent','word-spacing','word-wrap']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "\t#local.property#:#arguments.settings[local.property]#;\n";
 			}
@@ -495,7 +525,7 @@ component {
 		if (StructKeyExists(arguments.settings,"border")) {
 			local.settings = Duplicate(arguments.settings["border"]);
 			StructAppend(local.settings, {"style":"solid"}, false);
-			for (local.property in ['width','color','style']) {
+			for (local.property in ['width','color','style','radius']) {
 				if (StructKeyExists(local.settings,local.property)) {
 					local.css &= "\tborder-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";\n";
 				}
@@ -632,13 +662,14 @@ component {
 		arguments.out["main"] = "";
 		arguments.out["item"] = "";
 		
-		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width','grid-template-rows']) {
-			if (StructKeyExists(styles,local.setting)) {
-				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
-			}
-		}
-		
 		if (StructKeyExists(styles,"grid-mode")) {
+
+			if (styles["grid-mode"] != "none" ) {
+				for (local.setting in variables.gridSettings) {
+					arguments.out.main &= "\t--#local.setting#:#(styles[local.setting] ? : variables.gridSettings[local.setting])#;\n";
+				}
+			}
+
 			switch (styles["grid-mode"]) {
 				case "none":
 					arguments.out.item &= "\tgrid-area:unset;\n;";

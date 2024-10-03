@@ -10,16 +10,17 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 
 -->
 
-
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Form tests</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/select2.min.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
-	<link rel="stylesheet" href="../css/icons.css">
+
 	<link rel="stylesheet" href="../css/forms.css">
 	<link rel="stylesheet" href="../css/navbuttons.css">
 	<meta charset="UTF-8">
@@ -29,21 +30,34 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 		max-width: 800px;
 		margin:80px auto;
 		border:1px solid var(--border-color);
-		background-color: #efefef;
 		--field-background-color: white;
 		--field-border-color: #aaa;
 		--input-padding: 8px;
 	}
-	.button {
-		--button-border-color:var(--border-color);
-		--button-border-width:1px;
-		--button-border-style:solid;
-		--button-background-color: white;
+	.fieldButtons .button {
+		border-color:var(--border-color);
+		border-width:1px;
+		border-style:solid;
+		background-color: white;
+		padding: 4px 8px;
+	}
+
+	.fieldButtons .button:hover {
+		background-color:  #efefef;
 	}
 
 	#testform .fieldrow:nth-child(even) {
-		background-color: #e3e3e3;
+		background-color: #efefef;
 	}
+
+	#testform .fieldrow.error {
+		border:1px solid red;
+	}
+
+	#testform .errMessage {
+		color:red;
+	}
+
 	</style>
 </head>
 
@@ -52,36 +66,43 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 	<div class="cs-form form" id="testform">
 
 		<form action="form_resonse_valid.json" method="post">
+			<input type="hidden" name="hidden_test" value="hidden_test">
+			
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
 					
 					Auto grow text
 
-					<div class="button"><a class="icon icon-help"></a></div>
 				</label>
-				<field>
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field">
 					<textarea name="field1" rows="1" class="elastic markitup"></textarea>
-				</field>
+				</div>
 			</div>
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
-					
 					Email
-
-					<div class="button"><a class="icon icon-help"></a></div>
 				</label>
-				<field>
-					<input type="text" name="email"></textarea>
-				</field>
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field">
+					<input type="text" name="email">
+				</div>
 			</div>
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
 					
 					Label 2
 
-					<div class="button"><a class="icon icon-help"></a></div>
+					
 				</label>
-				<field>
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field">
 					<select name="field2" multiple>
 						<option></option>
 						<option>Test</option>
@@ -89,44 +110,52 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 						<option>Test4</option>
 						<option>Test5</option>
 					</select>
-				</field>
+				</div>
 			</div>
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
 					
 					Label 3
 
-					<div class="button"><a class="icon icon-help"></a></div>
+					
 				</label>
-				<field class="checkbox">
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field checkbox">
 					<input type="radio" name="field3" id="field3_1"  value="1"><label for="field3_1">field3_1</label>
 					<input type="radio" name="field3" id="field3_2"  value="2"><label for="field3_2">field3_2</label>
 					<input type="radio" name="field3" id="field3_3"  value="3"><label for="field3_3">field3_3</label>
 					<input type="radio" name="field3" id="field3_4"  value="4"><label for="field3_4">field3_4</label>
-				</field>
+				</div>
 			</div>
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
 					
 					Label 4
 
-					<div class="button"><a class="icon icon-help"></a></div>
+					
 				</label>
-				<field class="checkbox">
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field checkbox">
 					<input type="checkbox" name="field4" id="field4_1"  value="1"><label for="field4_1">field4_1</label>
 					<input type="checkbox" name="field4" id="field4_2"  value="2"><label for="field4_2">field4_2</label>
 					<input type="checkbox" name="field4" id="field4_3"  value="3"><label for="field4_3">field4_3</label>
-				</field>
+				</div>
 			</div>
 			
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
 					
 					Label 5
 
-					<div class="button"><a class="icon icon-help"></a></div>
 				</label>
-				<field>
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field">
 					<select name="field5">
 						<option></option>
 						<option>Test</option>
@@ -134,40 +163,43 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 						<option>Test4</option>
 						<option>Test5</option>
 					</select>
-				</field>
+				</div>
 			</div>
 
 			<div class="fieldrow">
+				<div class="fieldLabel">
 				<label>
-					
 					&nbsp;
-
-					<div class="button"><a class="icon icon-help"></a></div>
 				</label>
-				<field class="checkbox">
+				<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field checkbox">
 					<input type="checkbox" name="field6" id="field6_1" value="1"><label for="field6_1">field6_1</label>
-				</field>
+					<!-- <input type="checkbox" name="field6" id="field6_2" value="2"><label for="field6_2">field6_2</label> -->
+				</div>
 			</div>
 
 			<div class="fieldrow">
-				<label>
-					
-					Label 7
-
-					<div class="button"><a class="icon icon-help"></a></div>
-				</label>
-				<field>
+				<div class="fieldLabel">
+					<label>
+						Label 7
+					</label>
+					<div class="button"><a><i class="icon-help"></i></a></div>
+				</div>
+				<div class="field">
 					<input type="text" name="field7" id="field7_1" value="">
-				</field>
+				</div>
 			</div>
 
-			<div class="fieldrow">
+			<div class="fieldButtons">
+				<div class="fieldSpace">
 				<label>
 					
 					&nbsp;
 
 				</label>
-				<field>
+				</div>
+				<div>
 					<div class="button">
 						<input type="button" value="Submit"  onclick="getOk(this);">
 					</div>
@@ -177,7 +209,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 					<div class="button">
 						<input type="button" value="Network errors" onclick="failError(this);">
 					</div>
-				</field>
+				</div>
 			</div>
 		</form>
 
@@ -187,7 +219,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 <script src="../js/select2.min.js"></script>
 <script src="../js/jquery.elastic.1.6.11.js"></script>
 <script src="../js/jquery.validate.js"></script>
-<script src="../js/jquery.form.js"></script>
+<script src="../js/jquery.serializeData.js"></script>
 <script src="../js/jquery.clikForm.js"></script>
 
 <!---  	
@@ -214,8 +246,6 @@ Currently still uses lots of things like `field-background-color` and `button-bo
     },
     number
 
-
-
 --->
 
 <script type="text/javascript">
@@ -229,7 +259,8 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 			    },
 			    field2: {
 			    	required: true,
-			    	rangelength: [2, 3]
+			    	minlength: 2,
+			    	maxlength: 3
 			    },
 			    field3: {
 			    	required: true			    	

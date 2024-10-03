@@ -7,19 +7,20 @@ Both of these get styled through the browser defaults and reset.
 To get around this and preserve inheritance, all buttons need to be wrapped in
 another div with a class of .button which allows us to provide the consistency.
 
-Styling should be applied to the .button element.
+Most styling should be applied to the .button element, but padding needs to be on the inner `<a>`.
 
 To assign icons we can use icons or svgs. For icons, always use our standard icon vars, see icons.css.
 
 Either way the icon needs a class of "icon".
 
+Note that the button must always have an <a> tag or an <input> as the first child.
+
 ```
 <div class="button"><a href="#"><i class="icon icon-close"></i><label>Button text</label></a></div>
 
-<div class="button"><input type="submit" value="">Button text
-Button text</div>
+<div class="button"><input type="submit" value="Button text"></div>
 
-<div class="button"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></svg></div>
+<div class="button"><a href="#"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></a></div>
 ```
 
 # Notes
@@ -32,7 +33,9 @@ The buttons are always inline-blocks, so always style the surrounding div with g
 
 # Usage
 
-Styling should be applied to `.button` with hover state `.button:hover`
+Aside from the link-color variable, there is no general CSS stlying applied via variables.
+
+General CSS styling should be applied to `.button` with hover state `.button:hover`
 
 The label itself can also be styles with a selector of `.button label`.
 
@@ -53,11 +56,13 @@ E.g.
 	--label-gap: 10px;
 	--label-display:block;/* Turn button or label off with block|none */
 	--icon-display:block;/* ---- " ---- */
-	--button-align:center; /* icon valign flex-start|center|flex-end */
+	--button-align:center; /* icon halign flex-start|center|flex-end */
+	--button-vertical-align:center; /* icon valign flex-start|center|flex-end */
 	--button-direction: row;/* row or row reverse to align left or right */
 	--link-color:inherit;
 	--label-align:left;
 	--stretch:0;/* expand text label */
+	--button-padding:4px;
 }
 
 .button {
@@ -67,6 +72,10 @@ E.g.
 	color:var(--link-color);
 	stroke:var(--link-color);
 	fill:var(--link-color);
+}
+
+.button a {
+	padding: var(--button-padding);
 }
 
 .button input {
@@ -79,7 +88,7 @@ E.g.
 	stroke: inherit;
 	fill:inherit;
 	justify-content: var(--button-align);
-  	align-items: center;
+  	align-items: var(--button-vertical-align);
   	flex-direction: var(--button-direction);
   	grid-gap:var(--label-gap);
 }
@@ -90,15 +99,18 @@ E.g.
 	display:block;
 }
 
-.button .icon {
+.button *[class^="icon"] {
+	cursor: inherit;
 	display: var(--icon-display);
 	width:var(--icon-width);
 	height:var(--icon-height);
 	line-height:var(--icon-height);
 	font-size: var(--icon-height);
+	overflow: visible;/* very weird bug with "use" part of svgs */
 }
 
 .button label {
+	cursor: inherit;
 	display:  var(--label-display);
 	line-height: var(--icon-height);
 	text-align: var(--label-align);
@@ -124,7 +136,8 @@ E.g.
 	position: absolute;
 	width: 0;
 	overflow: hidden;
-	top: calc(-1 * var(--button-padding));
+	top:0;
+	/*	top: calc(-1 * var(--button-padding));*/
 	left:calc(var(--icon-width) + var(--button-padding));
 	transition: width 0.3s ease-in-out;
 	white-space: nowrap;
@@ -138,4 +151,9 @@ E.g.
 .button.setting-popout:hover label {
 	visibility: visible;
 	width:200px;
+}
+
+.button .accessKey {
+	display: inline-block;
+	margin:0;
 }

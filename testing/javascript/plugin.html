@@ -10,7 +10,12 @@ See the boiler plate js for creating plug ins.
 
 Has init method, options, public method, and private method.
 
+## Usage
 
+1. Preview the page and open the JavaScript console.
+2. The plug in has nhandlers for left and right arrow keys 
+	and the "change message" button
+3. Pressing escape will turn off the key handling for the plug in only.
 
 -->
 
@@ -65,7 +70,6 @@ Has init method, options, public method, and private method.
 </body>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_assets/js/mustache.js"></script>
 <script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/swipeDetector.js"></script>
 <script src="plugin-boiler-plate.js"></script>
@@ -74,9 +78,11 @@ Has init method, options, public method, and private method.
 <script>
 
 $(document).ready(function() {
+	// demonstrate different scope for keyDown events.
 	$(window).on("keydown.anotherScope", function( event ) {
 		console.log(event.key + "Logged by anotherScope");
 	});
+
 	$plug = $('#test');
 	$plug.pluginName(
 		{
@@ -91,11 +97,16 @@ $(document).ready(function() {
 		}
 	);
 
+	// call a public method
 	$plug.data('pluginName').public_method();
+
+	// or trigger a handler
 	$plug.trigger("Foo");
 
+	// interact with plug in
 	$("#change").on("click", function(e) {
 		e.preventDefault();
+		// can change settings...but not a good idea.
 		$plug.data('pluginName').settings.message = "Changed message";
 		$plug.data('pluginName').public_method();
 	});

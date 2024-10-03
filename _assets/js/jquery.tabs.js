@@ -13,11 +13,11 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 
 ```html
 <div class="cs-tabs">
-	<div class="tab state_open" id="test1" title="Test 1">
+	<div [class="state_open"] id="test1" title="Test 1">
 
-		<h3 class="title"><a href="#test1">tab 1</a></h3>
+		<h3><a href="#test1">tab 1</a></h3>
 
-		<div class="item>
+		<div>
 			
 				<p>Tab 1Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -39,110 +39,230 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 
 */
 
-$.fn.tabs = function(ops) {
- 	
- 	var defaults = {
-			vertical: false, // tab hedings in vertical list
+(function($) {
+
+	$.tabs = function(element, options) {
+
+		// plugin's default options
+		// this is private property and is accessible only from inside the plugin
+		var defaults = {
+
+			vertical: false, // tab headings in vertical list
 			accordian: false, // use accordion mode (vertical ignored)
 			resize: "resize", // window event to trigger resize. use e.g. throttledresize
 			fixedheight:true,// height is always maximum size
-			fitheight:true,
-			menuAnimationTime: 600,
+			fitheight:false,// fit to element height 
+			menuAnimationTime: 200,
 			allowClosed: true // all tabs can close in accordion
-		},
-		options = $.extend({},defaults,ops);
+			
+		}
 
-	return this.each(function() {
+		var settingTypes = {
+			vertical: "boolean",
+			accordian: "boolean",
+			fixedheight: "boolean",
+			fitheight: "boolean",
+			menuAnimationTime: "integer",
+			allowClosed: "boolean"
+		}
 
-    	var $tabs = $(this);
-    	var vertical = options.vertical || $tabs.hasClass("vertical");
-    	var accordian = options.accordian || $tabs.hasClass("accordian");
-    	
-    	$tabs.on("resize",function() {
-    		console.log("Resizing ", $tabs.attr("id"));
-    		$tab = $tabs.find(".state_open").first();
-    		setHeight($tab);
-    	});
+		var plugin = this;
 
-    	$(window).on(options.resize, function( event ) {
-    		$tabs.trigger("resize");
-    	});
+		plugin.settings = {}
 
-    	function setHeight($tab) {
-    		if (accordian) return;
-    		let t_height = vertical ? 0 : $tabs.outerHeight(); // add height of tab panel if horizontal
-    		console.log("tab panel height: " + t_height);
-    		if (options.fitheight) {
-    			$parent = $tabs.parent();
-    			console.log($parent.height());
-    			$tab.find(".item").outerHeight($parent.height() - t_height);
+		var $element = $(element), // reference to the jQuery version of DOM element
+			element = element; // reference to the actual DOM element
+
+		plugin.init = function() {
+
+			console.log("Tabs init");
+			
+			plugin.settings = $.extend({}, defaults, options);
+			
+			$element.children().addClass("tab");
+			$element.children().each(function() {
+				let $tabItems = $(this).children();
+				$($tabItems[0]).addClass("title");
+				$($tabItems[1]).addClass("item");
+			});
+
+			console.log(plugin.settings);
+			getCssSettings();
+			console.log(plugin.settings);
+
+			// can manually set a tab to open by applying class
+			$open = $element.find(".state_open");
+			
+			if (! $open.length) {
+				$open = $element.find(".tab").first().addClass("state_open");
+			}
+			
+			setHeight($open);
+
+			$element.on("click",".title",function() {	
+				
+				console.log( "clicked " + $(this).html() );
+
+				let $tab = $(this).parent();
+
+				if ($tab) {
+
+					console.log("opening " + $tab.attr("id"));
+					
+					if (plugin.settings.accordian){
+						console.log(plugin.settings.menuAnimationTime);
+						let open = $tab.hasClass("state_open");
+						if (open && ! plugin.settings.allowClosed) {
+							console.log("Can't close: not allowed");	
+							return;
+						}
+						
+						let $closeElements = $tab;
+
+						if (!open) {
+							$closeElements = $tab.siblings(".state_open");
+							$tab.addClass("state_open").animateAuto("height", plugin.settings.menuAnimationTime, function() {
+								console.log("Animation complete");	
+								$tab.css({"height":"auto"}).addClass("state_open");
+							});
+						}
+
+						$closeElements.animate({"height":0}, plugin.settings.menuAnimationTime, function() {
+							console.log("Close Animation complete:", $(this).attr("id"));	
+							$(this).removeClass("state_open").css({"height":""});
+						});
+		
+					}
+					else {
+						if ($tab.hasClass("state_open")) {
+							return;
+						}
+						$tab.addClass("state_open").siblings().removeClass("state_open");
+					}
+					setHeight($tab);
+				}
+				// debug
+				else {
+					console.log("No target found for tab link");
+				}
+				// /debug
+				
+			});
+
+			$(window).on(plugin.settings.resize,function() {
+				$element.trigger("resize");
+			});
+
+		}
+
+		$element.on("resize",function(e) {
+			e.stopPropagation();
+			getCssSettings();
+			let $tab = $element.find(".state_open").first();
+			setHeight($tab);
+		});
+		
+		// public methods
+		plugin.public_method = function() {
+			private_method(plugin.settings.message);
+			plugin.settings.onPublic_method();
+		}
+
+		// private methods
+		var setHeight = function($tab) {
+    		console.log("Setting height for " + $tab.attr("id"));
+    		if (plugin.settings.accordian) return;
+    		
+    		let tabs_height = 0;
+    		
+    		if (! plugin.settings.vertical) {
+    			$element.find(".title").each(function() {
+    				console.log($(this).text() + ':' + $(this).outerHeight());
+	    			let height = $(this).outerHeight();
+	    			if (height > tabs_height) tabs_height = height;
+	    		});
+    		}
+    		console.log(`title height:  ${tabs_height}`);
+
+    		if (plugin.settings.fitheight) {
+    			console.log("fitheight");
+    			let $parent = $element.parent();
+    			let panel_height = $parent.height() - tabs_height;
+    			element.find(".item").outerHeight(panel_height);
     		}
     		else {
-    			$tabs.css({"height":"auto"});
+    			$element.css({"height":"auto"});
     			var maxheight = 0;
-	    		if (options.fixedheight) {
-		    		$tabs.find(".item").each(function() {
+	    		if (plugin.settings.fixedheight) {
+		    		$element.find(".item").each(function() {
 		    			let height = $(this).outerHeight();
 		    			if (height > maxheight) maxheight = height;
 		    		});
+		    		$element.find(".item").outerHeight(maxheight);
+		    		console.log("max heights: " + maxheight);
 	    		}
 	    		else {
 	    			// adjust height to selected item
 	    			let $item = $tab.find(".item").first();
 	    			maxheight = $item.outerHeight();
+	    			console.log("height of item is " + maxheight);
 	    		}
-	    		t_height += maxheight;
-	    		    		
+	    		
+	    		let total_height = maxheight + tabs_height;
+
 	    		// make sure height is enough to accomadate vertical tab panel
-	    		if (vertical && ( t_height < $tabs.outerHeight() ) ) { 
-	    			t_height = $tabs.outerHeight();
+	    		if (plugin.settings.vertical && ( total_height < $element.outerHeight() ) ) { 
+	    			total_height = $element.outerHeight();
 	    		}
-	    		$tabs.outerHeight(t_height);
+	    		console.log("Setting total_height for " + total_height);
+
+	    		$element.outerHeight(total_height);
 	    	}
     	}
 
-    	$tabs.on("click",".title",function() {	
-			console.log( "clicked " + $(this).html() );
-			let $tab = $(this).parent();
-
-			if ($tab) {
-				console.log("opening " + $tab.attr("id"));
-				
-				if (accordian){
-					let open = $tab.hasClass("state_open");
-					if (open && ! options.allowClosed) {
-						console.log("Can't close: not allowed");	
-						return;
-					}
-					let $closeElements = $tab;
-					if (!open) {
-						$closeElements = $tab.siblings(".state_open");
-						$tab.addClass("state_open").animateAuto("height", options.menuAnimationTime, function() {
-							console.log("Animation complete");	
-							$tab.css({"height":""}).addClass("state_open");
-						});
-					}
-
-					$closeElements.animate({"height":0}, options.menuAnimationTime, function() {
-						console.log("Close Animation complete:", $(this).attr("id"));	
-						$(this).removeClass("state_open").css({"height":""});
-					});
-	
-				}
-				else {
-					if ($tab.hasClass("state_open")) {
-						return;
-					}
-					$tab.addClass("state_open").siblings().removeClass("state_open");
-				}
-				setHeight($tab);
-			}
-			// debug
-			else {
-				console.log("No target found for tab link");
-			}
-			// /debug
+    	var getCssSettings = function() {
 			
+			for (let setting in settingTypes) {
+				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
+				
+				if (val != null) plugin.settings[setting] = val;
+			}
+
+			if (plugin.settings.vertical) {
+				$element.addClass("vertical");
+			}
+			else {
+				$element.removeClass("vertical");
+			}
+
+			if (plugin.settings.accordian) {
+				$element.addClass("accordian");
+				$element.find(".item").css({height:""});
+			}
+			else {
+				$element.removeClass("accordian");
+			}
+
+		}
+		
+		plugin.init();
+
+	}
+
+	$.fn.tabs = function(options) {
+
+		return this.each(function() {
+
+			if (undefined == $(this).data('tabs')) {
+
+				var plugin = new $.tabs(this, options);
+
+				$(this).data('tabs', plugin);
+
+			}
+
 		});
-	})
-}
+
+	}
+
+})(jQuery);

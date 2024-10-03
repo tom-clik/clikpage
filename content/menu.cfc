@@ -13,7 +13,7 @@ component extends="contentSection" {
 		super.init(arguments.contentObj);
 		
 		// static css definitions
-		variables.static_css = {"menus"=1};
+		variables.static_css = {"menus"=1,"icons"=1};
 		variables.static_js ={"menus"=1};
 		
 		this.panels = [
@@ -219,9 +219,15 @@ component extends="contentSection" {
 
 		// align          | left|center|right     | text align (menu text align) and also justify-content: for flex modes
 		local.align = "left";
+
+		if (StructKeyExists(arguments.styles,"menu-text-align")) {
+			data.main &= "--menu-text-align: #arguments.styles["menu-text-align"]#;\n";
+		}
+
 		if (StructKeyExists(arguments.styles,"align")) {
-			data.main &= "--menu-text-align: #arguments.styles.align#;\n";
-			
+			if (!StructKeyExists(arguments.styles,"align")) {
+				data.main &= "--menu-text-align: #arguments.styles.align#;\n";
+			}
 			switch (arguments.styles.align) {
 				case "left":
 					local.justify = "flex-start";

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/_assets/css/reset.css">
+<title>Grid Cell Height</title>
+<style>
+  /* Grid container styles */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Create 3 equal columns */
+    grid-auto-rows: 1fr; /* Ensure rows are equal height */
+    height: 100vh; /* Set the height of the grid container */
+    gap: 10px; /* Add some gap between grid items */
+  }
+
+  /* Grid item styles */
+  .grid-item {
+    background-color: lightblue;
+    display: flex; /* Use flexbox to center content (optional) */
+    justify-content: center; /* Center horizontally (optional) */
+    align-items: center; /* Center vertically (optional) */
+    border: 1px solid #ccc; /* Optional: for better visibility of grid items */
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-container">
+  <div class="grid-item">Item 1</div>
+  <div class="grid-item">Item 2</div>
+  <div class="grid-item">Item 3</div>
+  <div class="grid-item">Item 4</div>
+  <div class="grid-item">Item 5</div>
+  <div class="grid-item">Item 6</div>
+</div>
+
+</body>
+</html>
