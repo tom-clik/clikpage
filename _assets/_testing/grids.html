@@ -28,11 +28,16 @@
 	
 	.cs-grid {
 		--grid-gap:10px;
+		--foo:testval;
 	}
 
+	#testfill {
+		--mode:fill;
+	}
 	#testfix {
 		--mode: fixed;
 		--grid-columns:3;
+		--foo:testtippy;
 	}
 
 	@media screen and (max-width: 800px) {
@@ -49,12 +54,49 @@
 
 
 	#testfixedwidth {
+		--bar: whatever;
 		--mode: fixedwidth;
 	}
 
 	#testcolumns {
 		--mode: columns;
 		--grid-template-columns: 220px auto 260px;
+	}
+
+	#testrows {
+		height: 400px;
+		--mode: rows;
+		--grid-template-rows: 40px auto 40px;
+	}
+
+	#testnamed {
+		height: 400px;
+		--mode: named;
+		--grid-template-areas: "header header" "left right" "footer footer";
+		--grid-template-columns: 200px auto;
+		--grid-template-rows: 40px auto 40px;
+	}
+
+	@media screen and (max-width: 800px) {
+		#testnamed {
+			height: 280px;
+			--grid-template-areas: "header header" "right right" "left footer";
+			--grid-template-columns: 200px auto;
+			--grid-template-rows: 20px auto 40px;
+		}
+	}
+
+	.header {
+		grid-area: header;
+	}
+	.left {
+		grid-area: left;
+	}
+	.right {
+		grid-area: right;
+	}
+	.footer {
+		grid-area: footer;
 	}
 
 	@media screen and (max-width: 800px) {
@@ -93,10 +135,17 @@
 </head>
 <body>
 
+	
 	<div class="test">
-		<div class="test-header">Auto grid with max-width</div>
-		<div id="testfit" class="cs-grid"></div>
+		<div class="test-header">Auto grid (fit)</div>
+		<div id="testfit" class="cs-grid" data-cols="8"></div>
 	</div>
+
+	<div class="test">
+		<div class="test-header">Auto grid (with fill - expand page to see difference) </div>
+		<div id="testfill" class="cs-grid" data-cols="5"></div>
+	</div>
+
 
 	<div class="test">
 		<div class="test-header">Grid with fixed width cols</div>
@@ -112,6 +161,22 @@
 		<div class="test-header">Grid with set columns</div>
 		<div id="testcolumns" class="cs-grid"></div>
 	</div>
+
+	<div class="test">
+		<div class="test-header">Grid with set rows</div>
+		<div id="testrows" class="cs-grid" data-cols="3"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Grid with named areas</div>
+		<div id="testnamed" class="cs-grid manual">
+			<g class="header">header</g>
+			<g class="left">left</g>
+			<g class="right">right</g>
+			<g class="footer">footer</g>
+		</div>
+	</div>
+
 
 	<div class="test">
 		<div class="test-header">Flex</div>
@@ -135,21 +200,19 @@
 
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/jquery.throttledresize.js"></script>
-	<script src="/_assets/js/modeClass.js"></script>
+	<script src="/_assets/js/varClass.js"></script>
 	<script src="/_assets/js/removeClassByPrefix.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$(".cs-grid").each( function() {
-				const cols = $(this).data("cols") ? $(this).data("cols") : 12;
-				$(this).html(testGrid(cols));
+				if (! $(this).hasClass("manual") ) {
+					const cols = $(this).data("cols") ? $(this).data("cols") : 12;
+					$(this).html(testGrid(cols));
+				}
 			});
 
-			$(".cs-grid").modeClass(
-				{
-					resize: 'throttledresize',
-				}
-			);
+			$(".cs-grid").varClass({name:"mode"});
 
 		});
 

@@ -5,30 +5,33 @@ Create a grid or flexbox menu from a ul
 
 ## Grid menus
 
-By default menus are horizontal flex layouts. 
+The following "var classes" need to be applied IN ORDER (orientation sets align defaults)
 
+orientation,mode,borders,align,stretch,submenupos,submenualign,submenushow
 
-Menu settings don't translate well to single CSS settings. A combination is often required to achieve required behaviours.
+orientation
+: horizontal* | vertical 
 
-Some examples are shown in the schemes.
+mode
+: grid|flex flex is default for horizontal
 
-## 1. Vertical menu
+borders
+: normal|boxes|dividers border mode. Using boxes or dividers, adjusts borders to allow for justa single width value to be supplied.
 
-A vertical menu can be set with 
+submenupos
+: absolute* | inline  Sub menu positioning
 
---menu-direction: column;
---menu-item-justify:start;
---menu-text-align:left;
+submenualign
+: (menu-)top|bottom-left|right (default top-right) alignment of absolute position submenu. Relative to item unless prefixed with menu
 
-## 2. Border boxes/borders
+submenushow
+: 1|0* show sub menus: obvs need to be inline
 
-These simply don't work with CSS vars. There are schemes that show this, but essentially they have to be hand cranked.
+stretch
+: 0|1*   Stretch flex menu
 
-## 3. Flex 
-
-For a flex menu where the items shrink down, use 
-
---menu-stretch: 1;
+align
+: center left|center|right  Align text. Also for flex menus that don't stretch, align the whole menu. 
 
 
 ## Notes
@@ -47,14 +50,23 @@ hi      li.hi a
 :root {
 	--link-color: #000;
 }
+
 .cs-menu {
+	--mode: flex;/* grid|flex */
+	--borders: normal; /* normal|boxes|dividers */
+	--orientation: horizontal;/* horizontal | vertical */
+	--submenupos: absolute; /* absolute | inline */
+	--submenualign: top-right; /* (top|bottom)-(left|right) */
+	--submenushow: 0; /* 1|0 */
+	--stretch: 1; /* 1|0 */
+	--align:center;
 	--menu-border-color:var(--link-color);
 	--menu-background: transparent;
 	--menu-gap: 4px;/* Gap between items */
 	--menu-item-padding: 0 8px;
 	--menu-item-border:0;/* item border width */
 	--menu-item-border-width: var(--menu-item-border); /* reserved for system. Used with e.g. boxes and dividers schemes */
-	--menu-item-width: 140px; /* min width of menu items in grid layout (see menu-display)*/
+	--menu-item-width: 140px; /* min width of menu items in grid layou */
 	--menu-icon-display: none;/* none or block */
 	--menu-label-display: block;/* text part of menu item:; none or block */
 	--icon-width:32px;/* normal menu icons */
@@ -62,17 +74,18 @@ hi      li.hi a
 	--menu-icon-valign: middle;/* WIP */
 	--menu-icon-gap: 8px;/* gap between label and icon */
 	--menu-icon-stretch: 1;/* stretch labels to fill remaining space */
+	--menu-icon-align: row; /* flex direction for icon alignment */
 	--menu-openicon-width:16px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
 	--menu-openicon-height:16px;	
 	--menu-openicon-adjust: -4px;
 	--menu-text-align: center;/* alignment of text in menu items */
 	--menu-anim-time: 0.3s;
-	--menu-display: flex; /* grid | flex (or none for submenus )*/
 	--menu-direction: row;
-	--menu-stretch: 1;
 	--menu-item-justify: center; /* item aligment start|center|end. Also see menu-text-align which usually needs setting as well */
 	--menu-item-align: center; /* cross axis aligment, e.g. vertical when menu is horizontal */
 	--menu-wrap: wrap;
+	--rollout: 0;
+
 }
 
 .cs-menu ul {
@@ -80,18 +93,84 @@ hi      li.hi a
 	margin:0;
 	padding-left: 0em;
     text-indent: 0px;
-	display:var(--menu-display);
-	flex-direction: var(--menu-direction);
+	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(var(--menu-item-width),1fr));
 	grid-gap:var(--menu-gap);
 	justify-content: var(--menu-item-justify); /* needs formalising. This is the align mechanism as the a tags themselves are now flexboxes */
 	align-items: var(--menu-item-align);
+	margin: 0 auto;
+}
+
+.cs-menu.align-left > ul {
+	margin-left:0;
+	--menu-item-justify: start;
+	--menu-text-align: left;
+}
+
+.cs-menu.align-right > ul {
+	margin-right:0;
+	--menu-item-justify: end;
+	--menu-text-align: right;
+}
+
+.cs-menu.mode-flex > ul {
+	display: flex;
+	flex-direction: var(--menu-direction);
 	flex-wrap: var(--menu-wrap);
+}
+
+.cs-menu.orientation-vertical {
+	--mode: grid;
+	--align: left;
+}
+
+.cs-menu.orientation-vertical > ul {
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+.cs-menu.orientation-vertical.align-right > ul {
+	--menu-text-align: right;
+	--menu-item-justify: end;
+}
+.cs-menu.orientation-vertical.align-center > ul {
+	--menu-text-align: center;
+	--menu-item-justify: center;
+}
+
+.cs-menu.borders-dividers {
+	--menu-gap:0px;
+	--menu-item-border-width: 0 var(--menu-item-border) 0 0;
+}
+
+.cs-menu.borders-dividers li:last-of-type {
+	--menu-item-border-width: 0;
+}
+
+.cs-menu.borders-boxes {
+	--menu-gap:0px;
+	--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
+}
+
+.cs-menu.borders-boxes li:last-of-type {
+	--menu-item-border-width: var(--menu-item-border);
+}
+
+.cs-menu.orientation-vertical.borders-dividers {
+	--menu-item-border-width: 0 0 var(--menu-item-border) 0;
+}
+
+.cs-menu.orientation-vertical.borders-boxes {
+	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
 }
 
 .cs-menu li {
 	position:relative;
-	flex-grow: var(--menu-stretch);
+	flex-grow: var(--stretch);
+}
+
+.cs-menu.stretch-1 > ul {
+	width:100%;
 }
 
 .cs-menu a, .cs-menu a:hover {
@@ -99,21 +178,19 @@ hi      li.hi a
 	color:var(--link-color);
 	display:flex;
 	flex-grow: 1;
+	flex-direction: var(--menu-icon-align);
 	align-items: center;
 	justify-content: var(--menu-item-justify); /* This is the icon, label etc  */
 	grid-gap: var(--menu-icon-gap);
 	text-decoration: none;
 	padding:var(--menu-item-padding);	
-	color:var(--link-color);
 	border-width:var(--menu-item-border-width);
 	border-style:solid;
 	border-color:var(--menu-border-color);
 	background-color: var(--menu-background);
 	/* watch browser agent default. Can't apply to ul */
 	text-align: var(--menu-text-align);	
-	transition-property: background-color;
-    transition-duration: var(--menu-anim-time);
-    transition-timing-function: ease-in-out;
+	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out ;
 }
 
 /* Per class behaviour applied via JS. leave for now. */
@@ -121,21 +198,9 @@ hi      li.hi a
 	height:auto;
 }
 
-@media screen and (max-width:630px) {
-
-	.cs-menu.mobilemenu {
-		height:0;
-		overflow: hidden;
-	}
-	 /*need this. Watch specificity*/
-	.cs-menu.mobilemenu.open {
-		height:auto;
-	}
-
-}
-
 /* Watch the specifity here. JS library creates clone to get heights */
 ul.submenu {
+	display:none;/* MUSTDO: fix. just WIP */
 	z-index: 100;
   	min-width:100%;
   	overflow: hidden;
@@ -195,9 +260,6 @@ Requires icons.css and navbuttons.css
 	display: var(--menu-label-display);	
 }
 
-.cs-menu a b:before {
-	content:var(--menu-icon);
-}
 
 .cs-menu li.open > a .openicon {
 	transform: rotate(90deg);
@@ -206,6 +268,49 @@ Requires icons.css and navbuttons.css
 .cs-menu a > span {
 	flex-grow: var(--menu-icon-stretch);
 }
+
+.cs-menu.rollout-1 a span {
+	visibility: hidden;
+	overflow: hidden;
+	position: absolute;
+	top:100%;
+	left:0;
+	width:0;
+	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out, width var(--menu-anim-time)  ease-in-out ;
+	align-items: center;
+	justify-content: start;
+}
+
+.cs-menu.align-right.rollout-1 a span {
+	left:auto;
+	right:0;
+	bottom:auto;
+	justify-content: end;
+}
+
+.cs-menu.orientation-vertical.rollout-1 a span {
+	top:0;
+	left:100%;
+	bottom:auto;
+}
+
+.cs-menu.orientation-vertical.align-right.rollout-1 a span {
+	top:0;
+	right:100%;
+	bottom:auto;
+	left:auto;
+}
+
+.cs-menu.rollout-1 a:hover span {
+	width: var(--menu-item-width);
+	box-sizing: content-box;
+	display: flex;
+	visibility: visible;
+	height: var(--icon-height);
+	padding: var(--menu-item-padding);
+	background-color: var(--menu-background);
+}
+
 
 
 

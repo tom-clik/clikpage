@@ -21,7 +21,7 @@
                 "title"
             ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.10.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.12.min.css"
         }
     ],
     "scripts": [
@@ -71,6 +71,14 @@
         {
             "min": "/_assets/css/definitions.css",
             "name": "definitions"
+        },
+        {
+            "min": "/_assets/css/admonitions.css",
+            "name": "admonitions"
+        },
+        {
+            "min": "/_assets/css/tables.css",
+            "name": "tables"
         },
         {
             "min": "/_assets/css/forms.css",

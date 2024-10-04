@@ -18,7 +18,7 @@
         "serializeData",
         "throttledresize",
         "heightFix",
-        "modeClass"
+        "varClass"
       ],
       "name": "main",
       "min": "/_assets/js/_min/clikmain.0.6.min.js",
@@ -28,7 +28,7 @@
         "fuzzySearch",
         "menuScroll",
         "menus",
-        "modeClass",
+        "varClass",
         "throttledresize"
       ],
       "min": "/_assets/js/_min/coldlightpackage.0.6.min.js",
@@ -236,9 +236,9 @@
       "requires": "jquery"
     },
     {
-      "min":"/_assets/js/modeClass.js",
-      "description": "Get value of css variable 'mode' and apply it as a class mode-{mode}",
-      "name": "modeClass",
+      "min":"/_assets/js/varClass.js",
+      "description": "Get value of css variables and apply them as a class {varname}-{varvalue}",
+      "name": "varClass",
       "requires": "jquery,removeClassByPrefix"
     },
     {

@@ -2,53 +2,7 @@
 
 MENUS
 
+No longer really needed. Add them using new var mechanism
+
 */
-
-.scheme-dividers {
-	--menu-item-border:1px;
-	--menu-gap:0px;
-	--menu-item-border-width: 0 var(--menu-item-border) 0 0;
-}
-
-.scheme-dividers li:last-of-type {
-	--menu-item-border-width: 0;
-}
-
-.scheme-boxes {
-	--menu-item-border:1px;
-	--menu-gap:0px;
-	--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
-}
-
-.scheme-boxes li:last-of-type {
-	--menu-item-border-width: var(--menu-item-border);
-}
-
-.scheme-vertical {
-	--menu-items-justify: start;
-	--menu-direction: column;
-	--menu-item-width: 180px;
-	--menu-text-align:left;
-	--menu-item-align: stretch;
-}
-
-.scheme-vertical.scheme-dividers {
-	--menu-item-border-width: 0 0 var(--menu-item-border) 0;
-}
-
-.scheme-vertical.scheme-boxes {
-	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
-}
-
-.scheme-grid {
-	--menu-display: grid;
-	--menu-item-width: 80px;
-}
-
-.scheme-flex {
-	--menu-stretch: 0;
-}
-
-
-
 

@@ -1,31 +1,33 @@
 <!--
 
-Menu settings don't translate well to single CSS settings. A combination is often required to achieve required behaviours.
+# test CSS menus
 
-Some examples are shown in the schemes.
+Only top level menus as most sub menu functionality require JS
 
-## 1. Vertical menu
-
-A vertical menu can be set with 
-
---menu-direction: column;
---menu-item-justify:start;
---menu-text-align:left;
-
-## 2. Border boxes/borders
-
-These simply don't work with CSS vars. There are schemes that show this, but essentially they have to be hand cranked.
-
-## 3. Flex 
-
-For a flex menu where the items shrink down, use 
-
---menu-stretch: 1;
-
+##
 
 
 
 --->
+
+<script>
+tests = [
+	{"id": "1", "description":"Horizontal"},
+	{"id": "2", "description":"Vertical"},
+	{"id": "3", "description":"Manual Border"},
+	{"id": "4", "description":"Flex Left"},
+	
+	{"id": "5", "description":"Flex"},
+	{"id": "6", "description":"Flex Reverse"},
+	{"id": "7", "description":"Flex No  Stretch"},
+	{"id": "8", "description":"Icons"},
+	{"id": "9", "description":"Icons right"},
+	{"id": "10", "description":"Only icons"},
+	{"id": "11", "description":"Only icons left"},
+	{"id": "12", "description":"Only icons vertical"},
+	{"id": "13", "description":"Only icons vertical left"}
+];
+</script>
 
 <!DOCTYPE html>
 <html>
@@ -35,7 +37,6 @@ For a flex menu where the items shrink down, use
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/menus.css">
-	<link rel="stylesheet" href="../css/schemes\menus-schemes.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
 
@@ -43,6 +44,11 @@ For a flex menu where the items shrink down, use
 	<style>
 		body {
 			--title-font:'Open Sans';
+			padding:20px;
+		}
+
+		#menu {
+			margin-top:2em;
 		}
 
 		.cs-title {
@@ -57,7 +63,7 @@ For a flex menu where the items shrink down, use
 
 		/*	 */
 		
-		#main {
+		.cs-menu {
 			margin-bottom: 12px;
 			--menu-item-padding:8px;
 			--link-color: #333;
@@ -65,33 +71,139 @@ For a flex menu where the items shrink down, use
 			--menu-gap:0px;
 			--menu-icon-gap:8px;
 			--menu-icon-stretch: 0;
-			--menu-icon-display: block;
 			--menu-border-color: #00ffff;
 		}
 
-		#main li a:hover {
+		.cs-menu li a:hover {
 			--link-color: #c3c3c3;
 			--menu-background: #ff00ff;
 			--menu-border-color: red;
 		}
-		#main li.hi a {
+
+		.cs-menu li.hi a {
 			--link-color: #ffff00;
 			--menu-background: #c3c3c3;
 		}
 
-		#main li:hover {
+		.cs-menu.mode-grid li:hover {
 			--link-color:#ffff00;
 			--menu-background: #efefef;
 		}
 
-		.scheme-vertical {
-			width: 180px;
+		.cs-menu.test-1 {
+			--borders:boxes;
+			--menu-item-border:1px;
 		}
 
-		#main.scheme-vertical {
-			--menu-icon-stretch: 1;
+		@media screen and (max-width: 800px) {
+			.cs-menu.test-1 {
+				--orientation:vertical;
+				--borders:dividers;
+			}
 		}
-		
+
+		.cs-menu.test-2 {
+			--orientation:vertical;
+			width: 180px;
+			--borders:dividers;
+			--menu-item-border:1px;
+			--align:right;
+		}
+
+		.cs-menu.test-3 {
+			width: 180px;
+			--orientation:vertical;
+			--borders:normal;
+			--menu-item-border:0 4px 0 0;
+			--menu-border-color: var(--menu-background);
+		}
+
+		.cs-menu.test-3 li a:hover {
+			--menu-background: white;
+			--menu-border-color: red;
+		}
+
+		.cs-menu.test-4 {
+			--mode:flex;
+			--align:left;
+			--stretch: 0;
+		}
+
+		.cs-menu.test-5 {
+			--mode:flex;
+			--borders:dividers;
+			--menu-item-border:1px;
+		}
+
+		.cs-menu.test-6 {
+			--mode:flex;
+			--stretch: 0;
+			--menu-direction: row-reverse;
+			--align:right;
+		}
+		.cs-menu.test-7 {
+			--mode:flex;
+			--stretch: 0;
+		}
+
+		.cs-menu.test-8 {
+			--menu-icon-display: block;
+		}
+
+		.cs-menu.test-9 {
+			--menu-icon-stretch: 1;
+			--menu-icon-display: block;
+			--orientation:vertical;
+			--menu-icon-align:row-reverse;
+			width: 180px;
+			--borders:dividers;
+			--menu-item-border:1px;
+			--align:right;
+		}
+
+		.cs-menu.test-10 {
+			--stretch:0;
+			--menu-icon-display: block;
+			--align:right;
+			--menu-icon-gap: 0px;
+			--menu-item-padding: 4px;
+			--rollout: 1;
+		}
+
+		.cs-menu.test-11 {
+			--stretch:0;
+			--menu-icon-display: block;
+			--align:left;
+			--menu-icon-gap: 0px;
+			--menu-item-padding: 4px;
+			--rollout: 1;
+		}
+
+		.cs-menu.test-12 {
+			width: var(--icon-width);
+			margin: 0 0 0 auto;
+
+			--stretch:0;
+			
+			--menu-icon-display: block;
+			--align:right;
+			--orientation:vertical;
+			--menu-icon-gap: 0px;
+			--menu-item-padding: 4px;
+			--rollout: 1;
+		}
+
+		.cs-menu.test-13 {
+			width: var(--icon-width);
+			--stretch:0;
+			margin: 0 auto 0 0 ;
+			--menu-icon-display: block;
+			--align:left;
+			--orientation:vertical;
+			--menu-icon-gap: 0px;
+			--menu-item-padding: 4px;
+			--rollout: 1;
+		}
 
 		
 	</style>
@@ -102,18 +214,65 @@ For a flex menu where the items shrink down, use
 Menu Testing
 </div>
 
-	
-<div id="main" class=" cs-menu scheme-vertical scheme-dividers scheme-gridXXX scheme-flexXXX"><ul>
-<li class="hi"><a class="menu_adverts first" href="adverts_list.cfm"><i class="icon-close"></i><span>Adverts<span></a></li>
-<li><a class="menu_articles" href="articles_list.cfm"><i class="icon-menu"></i><span>Articles</span></a></li>
-<li><a class="menu_images" href="images_list.cfm"><i class="icon-previous"></i><span>Images</span></a></li>
-<li><a class="menu_manage_sections" href="manage_sections_list.cfm"><i class="icon-next"></i><span>Manage sections</span></a></li>
-<li><a class="menu_orders" href="orders_list.cfm"><i class="icon-squares"></i><span>Orders</span></a></li>
-<li><a class="menu_resources" href="resources_list.cfm"><i class="icon-fullscreen"></i><span>Resources</span></a></li>
-<li><a class="menu_site_sections" href="site_sections_list.cfm"><i class="icon-fullscreen_exit"></i><span>Site sections</span></a></li>
-<li><a class="menu_users" href="users_list.cfm"><i class="icon-first_page"></i><span>Users</span></a></li>
-<li><a href="login.cfm?action=logout"><i class="icon-last_page"></i><span>Log out</span></a></li></ul></div>
+<div id="testmenu">
 
+</div>
+
+<div id="menu" class="cs-menu test-10">
+</div>
+<!---
+<div id="main" class=" cs-menu scheme-vertical scheme-dividers scheme-gridXXX scheme-flexXXX"><ul>
+
+--->
+
+
+
+	<script src="/_assets/js/jquery-3.4.1.js"></script>
+	<script src="/_assets/js/jquery.throttledresize.js"></script>
+	<script src="/_assets/js/varClass.js"></script>
+	<script src="/_assets/js/removeClassByPrefix.js"></script>
+	<script src="sampleMenu.js"></script>
+
+	<script type="text/javascript">
+
+		function createMenu(menuData,className) {
+			classAttr = className ? ` class="${className}"` : "";
+			var menuHTML = `<ul${classAttr}>`;
+			for (let item of menuData ) {
+				let icon = "icon" in item ? ` class="icon-${item.icon}"` : "" ;
+				let submenu = "submenu" in item ? createMenu(item.submenu,"menu submenu") : "";
+				menuHTML += `<li><a href="${item.link}" id="menu_${item.id}"><i${icon}></i><span>${item.title}</span></a>${submenu}</li>`;
+			}
+			menuHTML += "</ul>";
+			return menuHTML;
+		}
+
+		$(document).ready(function() {
+
+			menuHTML = createMenu(menuData,"menu");
+
+			$("#menu").html(menuHTML);
+
+			$(".cs-menu").varClass({name:"orientation,mode,borders,align,stretch,submenupos,submenualign,submenushow,rollout"});
+
+			var html = "<select>\n";
+			for (let test of tests) {
+				html += `<option value="${test.id}">${test.description}</option>\n`;
+			}
+			html += "</select>\n";
+
+			$(html).appendTo("#testmenu").on("change", function( ) {
+				var test = $(this).val()
+				$menu = $("#menu");
+				$menu.removeClassByPrefix("test-");
+				$menu.addClass("test-" + test);
+				$(window).trigger('resize');
+			});
+
+		});
+
+
+	</script>
 
 </body>
 </html>

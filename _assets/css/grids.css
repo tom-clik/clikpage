@@ -2,49 +2,53 @@
 
 # Grids
 
-Static CSS for grid styling 
+Static CSS for grid and flex styling 
 
 ## Grid Layouts
 
-We think of grids as having a "mode". To apply these, ensure "--mode" is set and the javascript is run to apply the mode class or else explicity set the class with e.g. `class="cs-grid cols"`. Explicitly setting classes can't work for different modes in different viewports. Either get the JS running or see the CSS below to do it manually, which beats the point of using this script.
+We think of grids as having a "mode". To apply these, ensure "--mode" is set and the javascript is run to apply the mode class or else explicity set the class with e.g. `class="cs-grid mode-cols"`. Explicitly setting classes can't work for different modes in different viewports. Either get the JS running or see the CSS below to do it manually, which beats the point of using this script.
 
-### Content fit (fit)
+### Content fit (mode-fit)
 
-With a minimum width and maximum width set for the content items, this will add as many items as possible per row and stretch any items to ensure no gap is left. This is usually the setting you want -- it's the default for .cs-grid.
+This is default and the mode you want if you don't already know. With a minimum width set for the content items, this will add as many items as possible per row and stretch any items to ensure no gap is left.
 
-The only setting you usually need is `--grid-width` which is the minimum width. If you *really* know what you are doing you can also set what's known as the `grid-fit` and the maximum width of the cells (`--grid-max-width`).
+The only setting you usually need is `--grid-width` which is the minimum width. Note that for fot and fill the `--grid-max-width` rarely does what you want it to do. It only really works when left to its default value of 1fr.
 
-### Fixed columns (fixed)
+NB The mode can be omitted as it's the default for `.cs-grid`.
+
+### Content fill (mode-fill)
+
+Sort of like fit but will create empty cells to fill up the space if they would fit. Rarely used.
+
+### Fixed columns (mode-fixed)
 
 The number of columns in the grid is fixed. The columns are all equal. Set the columns with `--grid-columns`.
 
-### Set column widths (columns)
+### Set column widths (mode-columns)
 
 Explicitly set the grid template columns in `--grid-template-columns`. Useful for having one column stretch.
 
-### Set column rows (rows)
+### Set column rows (mode-rows)
 
 Explicitly set the grid template rows in `--grid-template-rows`. Useful for having one row stretch.
 
-### Named positions (named)
+### Named positions (mode-named)
 
 Supply template positions in  `--grid-template-areas`.
 
-### Fixed width (fixedwidth)
+### Fixed width (mode-fixedwidth)
 
-Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fit` in preference.
+Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fill` in preference although honestly you're usually just better off with `fit`.
 
 ## Other grid layouts
 
 If you want to set your own you could set `mode` to none or basically you'd just be better off not using this.
 
-## Flex Layouts
+## Flex Layouts (mode-flex)
 
 Flex layouts are simpler. Most stretch properties translate with an equalivant var of the same name.
 
 NB flex-grow is a var --flex-stretch (??)
-
-
 
 */
 
@@ -62,10 +66,9 @@ NB flex-grow is a var --flex-stretch (??)
 	--align-content:normal;/* alignment for multiple rows */
 	--flex-stretch:0;/* treat as boolean */
 	--flex-wrap: wrap;
-	/* These given as examples only. Always set explicitly if using */
-	--grid-template-rows:180px auto 120px;
-	--grid-template-columns:20% auto;
-	--grid-template-areas:"header header" "menu main" "footer footer";
+	--grid-template-rows:auto;
+	--grid-template-columns:auto;
+	--grid-template-areas:none; /* e.g. "header header" "menu main" "footer footer" */;
 }
 
 .cs-grid {
@@ -81,7 +84,11 @@ NB flex-grow is a var --flex-stretch (??)
 	display: block;
 }
 
-.cs-grid.mode-fit {
+.cs-grid.mode-fill {
+	--grid-fit: auto-fill;
+}
+
+.cs-grid.mode-fit, .cs-grid.mode-fill  {
 	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
 }
 
@@ -104,12 +111,14 @@ NB flex-grow is a var --flex-stretch (??)
 
 .cs-grid.mode-columns {
 	grid-template-columns: var(--grid-template-columns);
+	grid-template-rows: var(--grid-template-rows);
 }
 
 .cs-grid.mode-rows {
+	grid-template-columns: 1fr;
 	grid-template-rows: var(--grid-template-rows);
 }
-.cs-grid.mode-name {
+.cs-grid.mode-named {
 	grid-template-areas: var(--grid-template-areas);
 	grid-template-columns: var(--grid-template-columns);
 	grid-template-rows: var(--grid-template-rows);
