@@ -4,7 +4,7 @@
 	<title>Modal popup</title>
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
-	<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.min.css">
+	<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<style>
@@ -314,7 +314,8 @@
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
 <script src="/_assets/js/jquery.modal.js"></script>
-<script src="/_assets/js/jquery.mCustomScrollbar.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="/_assets/js/jquery.mCustomScrollbar.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>
 
 <!--- this will animate the menus through standard functionality --->
@@ -336,7 +337,7 @@
 		});
 
 		// TODO: put this into the modal - just need to decide on assignment mechanism
-		$("#popup .textWrap,#menu .content").mCustomScrollbar();
+		$("#popup .textWrap, #menu .content").mCustomScrollbar();
 
 
 	});

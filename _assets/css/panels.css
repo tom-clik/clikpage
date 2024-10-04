@@ -1,19 +1,28 @@
-/* Static CSS for new var style grid styling of "items"
- */
-:root {
-	--item-grid-template-areas: "imageWrap" "title"  "textWrap";
-	--item-grid-template-rows: min-content min-content auto;
-	--item-gridgap: 10px;
-	--item-rowgap: 0px;
-	--item-grid-template-columns: 1fr;
-	--showtitle: block;
-	--showimage: block;
-	--showcaption: block;
+/* 
+
+Static CSS for new var style grid styling of "items"
+
+*/
+.item {
+	--htop:1;
+	--imagespace:0;
+	--align:center;
+	--wrap:0;
+	--title:1;
+	--image:1;
+	--caption-display:none;
+	--image-width: 40%;
+	--item-gridgap: 10px;	
 }
 
-.imageWrap img {
+figure img {
 	max-width: 100%;
 	height: auto;
+}
+
+/* Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping */
+.wraptitle {
+	display: none;
 }
 
 .textWrap > p {
@@ -22,29 +31,118 @@
 
 .item {
 	display: grid;
-	grid-template-areas: var(--item-grid-template-areas);
-	grid-column-gap: var(--item-gridgap);
-	grid-row-gap:  var(--item-rowgap);
-	grid-template-rows: var(--item-grid-template-rows);
-	grid-template-columns:   var(--item-grid-template-columns);
+	grid-template-areas: "title" "imageWrap"  "textWrap";
+	grid-gap: var(--item-gridgap);
+	grid-template-rows: auto;
+	grid-template-columns:   1fr;
+}
+
+.item.htop-0 {
+	grid-template-areas:  "imageWrap" "title" "textWrap";
+}
+
+.item.align-left {
+	grid-template-columns:  var(--image-width) auto;
+	grid-template-areas:  "title title" "imageWrap  textWrap";
+}
+
+.item.align-right {
+	grid-template-columns: auto var(--image-width);
+	grid-template-areas:  "title title" "textWrap imageWrap";
+}
+
+.item.htop-0 {
+	grid-template-areas:  "imageWrap" "title" "textWrap";
+}
+
+.item.htop-0.align-left {
+	grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+}
+
+.item.htop-0.align-right {
+	grid-template-areas:  "title imageWrap" "textWrap imageWrap";
+}
+
+.item.title-0.align-right {
+	grid-template-areas:  "textWrap imageWrap";
+}
+
+.item.title-0.align-left {
+	grid-template-areas:  "imageWrap textWrap";
+}
+
+/* noimage class needs to be applied to item if there is no image. This is for removing
+the space in a list of items with the same class */
+
+.item.image-0, .item.noimage.imagespace-0 {
+	grid-template-areas:  "title" "textWrap";
+	grid-template-columns:   1fr;
+}
 }
 
 .item .title {
-	display: var(--showtitle);
 	grid-area: title;
 }
 
-.item .imageWrap {
-	display: var(--showimage);
+.item.title-0 .title {
+	display: none;
+}
+
+.item figure {
 	grid-area: imageWrap;
 }
 
-.item .imageWrap .caption {
-	display: var(--showcaption);
+.item.image-0 figure {
+	display: none;
 }
 
 
-.item .textWrap{
+.item.wrap-1.align-left, .item.wrap-1.align-right {
+	display: block;
+}
+
+.item.wrap-1:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.item.wrap-1 figure {
+	width: var(--image-width);
+}
+
+.item.noimage.wrap-1 figure {
+	display: none;
+}
+
+.item.wrap-1.align-left figure {
+	float: left;
+	margin-right: var(--item-gridgap);
+	margin-bottom: var(--item-gridgap);
+}
+
+.item.wrap-1.align-right figure {
+	float: right;
+	margin-left: var(--item-gridgap);
+	margin-bottom: var(--item-gridgap);
+}
+
+.item.wrap-1.htop-0 > h3 {
+	display: none;
+}
+
+.item.wrap-1.htop-0 .wraptitle {
+	display: block;
+}
+
+.item figcaption {
+	display: var(--caption-display);
+}
+
+.item .textWrap {
 	grid-area: textWrap;
 }
 

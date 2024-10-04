@@ -114,6 +114,4 @@ function getTabs(required string id, string class="", numeric count=4) {
 	return Replace(ret,"\n",NewLine(1),"all");
 
 }
-
-
 </cfscript>
