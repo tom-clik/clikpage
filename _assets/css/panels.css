@@ -2,6 +2,28 @@
 
 Static CSS for new var style grid styling of "items"
 
+The following need applying as "varClasses" : htop,align,wrap,title,image,imagespace 
+
+htop
+: 1*|0 Place heading above image. When aligning left or right setting htop=0 puts the into the text column
+
+align
+: center*|left|right Use a separate column for the image or wrap the text to the side (center leaves 1 column)
+
+wrap
+: 1|0* float the image and wrap text around it (align must be left or right). Note to use htop=0 for this you need an additional duplicate tag for the title in the textWrap - see the sample HTML
+
+title
+: 1*|0 show title 
+
+image
+: 1*|0 show image 
+
+imagespace
+: Leave space for the image even when there is none. Useful when you have multiple items in a list and some may or may not have images.
+: Note for imagespace to work a class "noimage" has to be added to any items without images. Some tag must be left in even if there is no image. Easiest is jjust to leave the figure tag.
+
+
 */
 .item {
 	--htop:1;

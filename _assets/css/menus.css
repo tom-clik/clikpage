@@ -7,7 +7,7 @@ Create a grid or flexbox menu from a ul
 
 The following "var classes" need to be applied IN ORDER (orientation sets align defaults)
 
-orientation,mode,borders,align,stretch,submenupos,submenualign,submenushow
+orientation,mode,borders,align,stretch,submenualign
 
 orientation
 : horizontal* | vertical 
@@ -18,20 +18,25 @@ mode
 borders
 : normal|boxes|dividers border mode. Using boxes or dividers, adjusts borders to allow for justa single width value to be supplied.
 
-submenupos
-: absolute* | inline  Sub menu positioning
-
 submenualign
 : (menu-)top|bottom-left|right (default top-right) alignment of absolute position submenu. Relative to item unless prefixed with menu
 
-submenushow
-: 1|0* show sub menus: obvs need to be inline
 
 stretch
 : 0|1*   Stretch flex menu
 
 align
 : center left|center|right  Align text. Also for flex menus that don't stretch, align the whole menu. 
+
+
+### Other settings
+
+--menu-submenu-position
+: absolute* | relative  Sub menu rollover style or inline
+
+submenu-display
+: none*|block show sub menus: obvs need to be inline
+
 
 
 ## Notes
@@ -47,30 +52,27 @@ hover   li a:hover
 hi      li.hi a
 */
 
+/* TODO: rename all these with menu prefix. Applying them to cs-menu doesn't work */
 :root {
 	--link-color: #000;
-}
-
-.cs-menu {
-	--mode: flex;/* grid|flex */
-	--borders: normal; /* normal|boxes|dividers */
-	--orientation: horizontal;/* horizontal | vertical */
-	--submenupos: absolute; /* absolute | inline */
-	--submenualign: top-right; /* (top|bottom)-(left|right) */
-	--submenushow: 0; /* 1|0 */
-	--stretch: 1; /* 1|0 */
-	--align:center;
+	--menu-mode: flex;/* grid|flex */
+	--menu-borders: normal; /* normal|boxes|dividers */
+	--menu-orientation: horizontal;/* horizontal | vertical */
+	--menu-submenualign: bottom-left; /* (top|bottom)-(left|right) */
+	--menu-submenu-position: absolute; /* absolute | relative */
+	--menu-submenu-show: hide; /* show|hide|hover using hover works quite well without need for JS, no animations though */ 
+	--menu-stretch: 1; /* 1|0 */
+	--menu-align:center;
 	--menu-border-color:var(--link-color);
 	--menu-background: transparent;
 	--menu-gap: 4px;/* Gap between items */
 	--menu-item-padding: 0 8px;
 	--menu-item-border:0;/* item border width */
-	--menu-item-border-width: var(--menu-item-border); /* reserved for system. Used with e.g. boxes and dividers schemes */
 	--menu-item-width: 140px; /* min width of menu items in grid layou */
 	--menu-icon-display: none;/* none or block */
 	--menu-label-display: block;/* text part of menu item:; none or block */
-	--icon-width:32px;/* normal menu icons */
-	--icon-height:32px;	
+	--menu-icon-width:32px;/* normal menu icons */
+	--menu-icon-height:32px;	
 	--menu-icon-valign: middle;/* WIP */
 	--menu-icon-gap: 8px;/* gap between label and icon */
 	--menu-icon-stretch: 1;/* stretch labels to fill remaining space */
@@ -84,11 +86,18 @@ hi      li.hi a
 	--menu-item-justify: center; /* item aligment start|center|end. Also see menu-text-align which usually needs setting as well */
 	--menu-item-align: center; /* cross axis aligment, e.g. vertical when menu is horizontal */
 	--menu-wrap: wrap;
-	--rollout: 0;
-
+	--menu-rollout: 0;
+	--sub-menu-adjust:0;/* add to positioning of sub menus */
 }
 
-.cs-menu ul {
+.cs-menu {
+	--menu-item-border-width: var(--menu-item-border); /* reserved for system. Used with e.g. boxes and dividers schemes */
+	/* Individual v and h settings for sub menu adjust ments */
+	--sub-menu-adjust-v: var(--sub-menu-adjust);
+	--sub-menu-adjust-h: var(--sub-menu-adjust);
+}
+
+.cs-menu > ul {
 	list-style: none;
 	margin:0;
 	padding-left: 0em;
@@ -101,75 +110,80 @@ hi      li.hi a
 	margin: 0 auto;
 }
 
-.cs-menu.align-left > ul {
+.cs-menu.menu-align-left > ul {
 	margin-left:0;
 	--menu-item-justify: start;
 	--menu-text-align: left;
 }
 
-.cs-menu.align-right > ul {
+.cs-menu.menu-align-right > ul {
 	margin-right:0;
 	--menu-item-justify: end;
 	--menu-text-align: right;
 }
 
-.cs-menu.mode-flex > ul {
+.cs-menu.menu-mode-flex > ul {
 	display: flex;
 	flex-direction: var(--menu-direction);
 	flex-wrap: var(--menu-wrap);
 }
 
-.cs-menu.orientation-vertical {
-	--mode: grid;
-	--align: left;
+.cs-menu.menu-orientation-vertical:not(.submenu) {
+	--menu-submenualign:top-right;
+	--menu-submenu-position:relative;
 }
 
-.cs-menu.orientation-vertical > ul {
+.cs-menu.menu-orientation-vertical {
+	--menu-mode: grid;
+	--menu-align: left;
+}
+
+.cs-menu.menu-orientation-vertical > ul {
 	display: grid;
 	grid-template-columns: 1fr;
 }
 
-.cs-menu.orientation-vertical.align-right > ul {
+.cs-menu.menu-orientation-vertical.menu-align-right > ul {
 	--menu-text-align: right;
 	--menu-item-justify: end;
 }
-.cs-menu.orientation-vertical.align-center > ul {
+.cs-menu.menu-orientation-vertical.menu-align-center > ul {
 	--menu-text-align: center;
 	--menu-item-justify: center;
 }
 
-.cs-menu.borders-dividers {
+.cs-menu.menu-borders-dividers {
 	--menu-gap:0px;
 	--menu-item-border-width: 0 var(--menu-item-border) 0 0;
 }
 
-.cs-menu.borders-dividers li:last-of-type {
+.cs-menu.menu-borders-dividers li:last-of-type {
 	--menu-item-border-width: 0;
 }
 
-.cs-menu.borders-boxes {
+.cs-menu.menu-borders-boxes {
 	--menu-gap:0px;
 	--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
 }
 
-.cs-menu.borders-boxes li:last-of-type {
+.cs-menu.menu-borders-boxes li:last-of-type {
 	--menu-item-border-width: var(--menu-item-border);
 }
 
-.cs-menu.orientation-vertical.borders-dividers {
+.cs-menu.menu-orientation-vertical.menu-borders-dividers {
 	--menu-item-border-width: 0 0 var(--menu-item-border) 0;
 }
 
-.cs-menu.orientation-vertical.borders-boxes {
+.cs-menu.menu-orientation-vertical.menu-borders-boxes {
 	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
 }
 
-.cs-menu li {
+.cs-menu > ul > li {
 	position:relative;
-	flex-grow: var(--stretch);
+	flex-grow: var(--menu-stretch);
 }
 
-.cs-menu.stretch-1 > ul {
+.cs-menu.menu-stretch-1 > ul {
 	width:100%;
 }
 
@@ -198,25 +212,52 @@ hi      li.hi a
 	height:auto;
 }
 
-/* Watch the specifity here. JS library creates clone to get heights */
-ul.submenu {
-	display:none;/* MUSTDO: fix. just WIP */
+.submenu {
+	display:none;
+	position: var(--menu-submenu-position);
+	top:0;
+	left:0;
 	z-index: 100;
   	min-width:100%;
   	overflow: hidden;
   	height: auto;
-  	--menu-direction: column;
-  	--menu-display: none;
-
 }
 
-ul.submenu.open, ul.submenu.show  {
-	--menu-display: flex;
+.cs-menu.menu-submenu-show-show .submenu {
+	display:block;
 }
 
+.cs-menu.menu-orientation-horizontal .submenu {
+	--menu-orientation:vertical;
+}
 
-.cs-menu li.open > ul.submenu {
-	--menu-display: flex;
+.cs-menu[class*=submenualign-menu] {
+	position:relative;
+}
+
+.cs-menu[class*=submenualign-menu] li {
+	position:static;
+}
+
+.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-top-left .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-top-left .submenu {
+	right: var(--sub-menu-adjust-h);
+	top:0;
+}
+.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-left .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-bottom-left .submenu {
+	right: 0;
+	top: calc( 100% + var(--sub-menu-adjust-v));
+}
+.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-top-right .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-top-right .submenu {
+	left:  calc( 100% + var(--sub-menu-adjust-v));
+	top:0;
+}
+.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-right .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-bottom-right .submenu {
+	left:  calc( 100% + var(--sub-menu-adjust-h));
+	top: 100%;
+}
+
+li.open > .submenu, .submenu.show , .cs-menu.menu-submenu-show-hover > ul > li:hover > .submenu  {
+	display:block;
 }
 
 .cs-menu ul.submenu li.open > ul.submenu {
@@ -225,8 +266,8 @@ ul.submenu.open, ul.submenu.show  {
 
 /* sub menu indicator */
 .cs-menu a > i[class*=icon].openicon {
-	--icon-height: 16px;
-	--icon-width: 16px;
+	--menu-icon-height: 16px;
+	--menu-icon-width: 16px;
 	display: block;
 	flex-grow: 0;
 	position: relative;
@@ -249,10 +290,10 @@ Requires icons.css and navbuttons.css
 */
 .cs-menu a > i[class*=icon]  {
 	display: var(--menu-icon-display);
-	width:var(--icon-width);
-	height:var(--icon-height);
-	line-height:var(--icon-height);
-	font-size: var(--icon-height);
+	width:var(--menu-icon-width);
+	height:var(--menu-icon-height);
+	line-height:var(--menu-icon-height);
+	font-size: var(--menu-icon-height);
 	overflow: hidden;
 }
 
@@ -269,7 +310,7 @@ Requires icons.css and navbuttons.css
 	flex-grow: var(--menu-icon-stretch);
 }
 
-.cs-menu.rollout-1 a span {
+.cs-menu.menu-rollout-1 a span {
 	visibility: hidden;
 	overflow: hidden;
 	position: absolute;
@@ -281,32 +322,32 @@ Requires icons.css and navbuttons.css
 	justify-content: start;
 }
 
-.cs-menu.align-right.rollout-1 a span {
+.cs-menu.menu-align-right.menu-rollout-1 a span {
 	left:auto;
 	right:0;
 	bottom:auto;
 	justify-content: end;
 }
 
-.cs-menu.orientation-vertical.rollout-1 a span {
+.cs-menu.menu-orientation-vertical.menu-rollout-1 a span {
 	top:0;
 	left:100%;
 	bottom:auto;
 }
 
-.cs-menu.orientation-vertical.align-right.rollout-1 a span {
+.cs-menu.menu-orientation-vertical.menu-align-right.menu-rollout-1 a span {
 	top:0;
 	right:100%;
 	bottom:auto;
 	left:auto;
 }
 
-.cs-menu.rollout-1 a:hover span {
+.cs-menu.menu-rollout-1 a:hover span {
 	width: var(--menu-item-width);
 	box-sizing: content-box;
 	display: flex;
 	visibility: visible;
-	height: var(--icon-height);
+	height: var(--menu-icon-height);
 	padding: var(--menu-item-padding);
 	background-color: var(--menu-background);
 }

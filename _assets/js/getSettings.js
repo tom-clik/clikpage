@@ -30,6 +30,19 @@ function getSettings($elem, type) {
 	return settings;
 }
 
+/* just get named settings -- no control over the type */
+function getCssSettings($elem, names) {
+	settings = {};
+	for (let setting in names.split(",")) {
+		
+		let val = $elem.css("--" + setting);
+		if (val) {
+			settings[setting] = val;
+		}
+	
+	}
+}
+
 function parseCssVar(stringVal, type) {
 	let val = stringVal;
 	if (type == "boolean") {

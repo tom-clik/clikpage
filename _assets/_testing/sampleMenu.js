@@ -7,7 +7,7 @@ menuData = [
     },
     {
         "id": "gallery",
-        "link": "{{link.gallery}}",
+        "linkXXX": "{{link.gallery}}",
         "title": "Gallery",
         "icon": "menu",
         "submenu":
@@ -36,7 +36,7 @@ menuData = [
     },
     {
         "id": "gallery2",
-        "link": "{{link.gallery2}}",
+        "linkXXX": "{{link.gallery2}}",
         "title": "Gallery 2",
         "icon": "previous",
         "submenu":

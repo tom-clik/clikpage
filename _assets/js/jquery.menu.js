@@ -38,7 +38,12 @@
 
 			// the plugin's final properties are the merged default and
 			// user-provided options (if any)
-			plugin.settings = $.extend({}, defaults, options);
+			
+			let temp = $.extend({}, defaults, options);
+			let cssVars = getCssSettings($element,"hilight,arrow,animate,menuAnimationTime");
+			plugin.settings = $.extend({}, temp, cssVars);
+
+			console.log(plugin.settings);
 
 			switch(plugin.settings.animate) {
 				case "height":

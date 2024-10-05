@@ -14,6 +14,7 @@ Only top level menus as most sub menu functionality require JS
 tests = [
 	{"id": "1", "description":"Horizontal"},
 	{"id": "2", "description":"Vertical"},
+	{"id": "2a", "description":"Vertical Inline subs"},
 	{"id": "3", "description":"Manual Border"},
 	{"id": "4", "description":"Flex Left"},
 	
@@ -64,7 +65,6 @@ tests = [
 		/*	 */
 		
 		.cs-menu {
-			margin-bottom: 12px;
 			--menu-item-padding:8px;
 			--link-color: #333;
 			--menu-background: #c3c3c3;
@@ -72,9 +72,10 @@ tests = [
 			--menu-icon-gap:8px;
 			--menu-icon-stretch: 0;
 			--menu-border-color: #00ffff;
+
 		}
 
-		.cs-menu li a:hover {
+		.cs-menu li:hover > a {
 			--link-color: #c3c3c3;
 			--menu-background: #ff00ff;
 			--menu-border-color: red;
@@ -91,59 +92,96 @@ tests = [
 		}
 
 		.cs-menu.test-1 {
-			--borders:boxes;
+			--menu-borders:boxes;
 			--menu-item-border:1px;
+			--menu-submenualign: bottom-left;
 		}
+
+		.cs-menu.test-1 .cs-menu.submenu {
+			--menu-stretch:0;
+			--menu-borders:boxes;
+			--menu-item-border:1px;
+			--menu-align:left;
+		}
+
+		.cs-menu.test-2 .cs-menu.submenu {
+			--menu-borders:dividers;
+			--menu-item-border:1px;
+			--menu-align:left;
+			--menu-orientation:vertical;
+		}
+
 
 		@media screen and (max-width: 800px) {
 			.cs-menu.test-1 {
-				--orientation:vertical;
-				--borders:dividers;
+				--menu-orientation:vertical;
+				--menu-borders:dividers;
 			}
 		}
 
 		.cs-menu.test-2 {
-			--orientation:vertical;
+			--menu-orientation:vertical;
 			width: 180px;
-			--borders:dividers;
+			--menu-borders:dividers;
 			--menu-item-border:1px;
-			--align:right;
+			--menu-align:right;
+		}
+
+		.cs-menu.test-2a {
+			--menu-orientation:vertical;
+			width: 180px;
+			--menu-borders:dividers;
+			--menu-item-border:1px;
+			--menu-align:right;
+			--menu-submenu-position:relative;
+			--menu-submenu-show: show;
+		}
+
+		.cs-menu.test-2a .cs-menu.submenu {
+			--menu-background: white;
 		}
 
 		.cs-menu.test-3 {
 			width: 180px;
-			--orientation:vertical;
-			--borders:normal;
+			--menu-orientation:vertical;
+			--menu-borders:normal;
 			--menu-item-border:0 4px 0 0;
 			--menu-border-color: var(--menu-background);
 		}
 
-		.cs-menu.test-3 li a:hover {
+		.cs-menu.test-3 .cs-menu.submenu {
+			--menu-orientation:vertical;
+			--menu-borders:normal;
+			--menu-item-border:0 4px 0 0;
+			--menu-border-color: var(--menu-background);
+		}
+
+		.cs-menu.test-3 li:hover > a {
 			--menu-background: white;
 			--menu-border-color: red;
 		}
 
 		.cs-menu.test-4 {
-			--mode:flex;
-			--align:left;
-			--stretch: 0;
+			--menu-mode:flex;
+			--menu-align:left;
+			--menu-stretch: 0;
 		}
 
 		.cs-menu.test-5 {
-			--mode:flex;
-			--borders:dividers;
+			--menu-mode:flex;
+			--menu-borders:dividers;
 			--menu-item-border:1px;
 		}
 
 		.cs-menu.test-6 {
-			--mode:flex;
-			--stretch: 0;
+			--menu-mode:flex;
+			--menu-stretch: 0;
 			--menu-direction: row-reverse;
-			--align:right;
+			--menu-align:right;
 		}
 		.cs-menu.test-7 {
-			--mode:flex;
-			--stretch: 0;
+			--menu-mode:flex;
+			--menu-stretch: 0;
 		}
 
 		.cs-menu.test-8 {
@@ -155,57 +193,63 @@ tests = [
 			
 			--menu-icon-stretch: 1;
 			--menu-icon-display: block;
-			--orientation:vertical;
+			--menu-orientation:vertical;
 			--menu-icon-align:row-reverse;
-			--borders:dividers;
+			--menu-borders:dividers;
 			--menu-item-border:1px;
-			--align:right;
+			--menu-align:right;
 		}
 
 		.cs-menu.test-10 {
-			--stretch:0;
+			--menu-stretch:0;
+			--menu-label-display:none;
 			--menu-icon-display: block;
-			--align:right;
+			--menu-align:right;
 			--menu-icon-gap: 0px;
 			--menu-item-padding: 4px;
-			--rollout: 1;
+			--menu-rollout: 1;
+			--menu-submenu-show:hide;
 		}
 
 		.cs-menu.test-11 {
-			--stretch:0;
+			--menu-stretch:0;
+			--menu-label-display:none;
 			--menu-icon-display: block;
-			--align:left;
+			--menu-align:left;
 			--menu-icon-gap: 0px;
 			--menu-item-padding: 4px;
-			--rollout: 1;
+			--menu-rollout: 1;
+			--menu-submenu-show:hide;
 		}
 
 		.cs-menu.test-12 {
-			width: var(--icon-width);
+			width: var(--menu-icon-width);
 			margin: 0 0 0 auto;
 
-			--stretch:0;
-			
+			--menu-stretch:0;
+			--menu-label-display:none;
 			--menu-icon-display: block;
-			--align:right;
-			--orientation:vertical;
+			--menu-align:right;
+			--menu-orientation:vertical;
 			--menu-icon-gap: 0px;
 			--menu-item-padding: 4px;
-			--rollout: 1;
+			--menu-rollout: 1;
+			--menu-submenu-show:hide;
 		}
 
 		.cs-menu.test-13 {
-			width: var(--icon-width);
+			width: var(--menu-icon-width);
 			margin: 0 auto 0 0 ;
 
-
-			--stretch:0;
+			--menu-label-display:none;
+			--menu-stretch:0;
 			--menu-icon-display: block;
-			--align:left;
-			--orientation:vertical;
+			--menu-align:left;
+			--menu-orientation:vertical;
 			--menu-icon-gap: 0px;
 			--menu-item-padding: 4px;
-			--rollout: 1;
+			--menu-rollout: 1;
+			--menu-submenu-show:hide;
 		}
 
 		
@@ -221,30 +265,32 @@ Menu Testing
 
 </div>
 
-<div id="menu" class="cs-menu test-10">
+<div id="menu" class="cs-menu test-4">
 </div>
 <!---
 <div id="main" class=" cs-menu scheme-vertical scheme-dividers scheme-gridXXX scheme-flexXXX"><ul>
 
 --->
 
-
-
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/jquery.throttledresize.js"></script>
 	<script src="/_assets/js/varClass.js"></script>
+	<script src="/_assets/js/getSettings.js"></script>
 	<script src="/_assets/js/removeClassByPrefix.js"></script>
+	<script src="/_assets/js/jquery.animateAuto.js"></script>
+	<script src="/_assets/js/jquery.menu.js"></script>
+
 	<script src="sampleMenu.js"></script>
 
 	<script type="text/javascript">
 
-		function createMenu(menuData,className) {
-			classAttr = className ? ` class="${className}"` : "";
-			var menuHTML = `<ul${classAttr}>`;
+		function createMenu(menuData) {
+			var menuHTML = `<ul class='menu'>`;
 			for (let item of menuData ) {
 				let icon = "icon" in item ? ` class="icon-${item.icon}"` : "" ;
-				let submenu = "submenu" in item ? createMenu(item.submenu,"menu submenu") : "";
-				menuHTML += `<li><a href="${item.link}" id="menu_${item.id}"><i${icon}></i><span>${item.title}</span></a>${submenu}</li>`;
+				let submenu = "submenu" in item ? "<div class='cs-menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
+				let href = "link" in item ?  ` href="${item.link}"` : "";
+				menuHTML += `<li><a${href} id="menu_${item.id}"><i${icon}></i><span>${item.title}</span></a>${submenu}</li>`;
 			}
 			menuHTML += "</ul>";
 			return menuHTML;
@@ -256,7 +302,10 @@ Menu Testing
 
 			$("#menu").html(menuHTML);
 
-			$(".cs-menu").varClass({name:"orientation,mode,borders,align,stretch,submenupos,submenualign,submenushow,rollout"});
+			$(".cs-menu").varClass({name:"menu-orientation,menu-mode,menu-borders,menu-align,menu-stretch,menu-submenualign,menu-submenu-position,menu-submenu-show,menu-rollout"});
+
+			$("#menu").menu();
+
 
 			var html = "<select>\n";
 			for (let test of tests) {

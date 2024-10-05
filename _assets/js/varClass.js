@@ -35,14 +35,11 @@
 
 		plugin.settings = $.extend({}, defaults, options);
 		
-		console.log(`resize is ${plugin.settings.resize}`);
-
 		varList = plugin.settings.name.split(",");
 
 		plugin.reload();
 
 		$(window).on(plugin.settings.resize,function() {
-			console.log(plugin.settings.resize + "triggered");
 			plugin.reload();
 		});
 	}
@@ -51,7 +48,6 @@
 		
 		for (let name of varList) {
 			let val =  $element.css("--" + name) || "none";
-			console.log(`${name}:${val}`);
 			$element.removeClassByPrefix(name + "-").addClass(name + "-" + val);
 		}
 	}
