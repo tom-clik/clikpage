@@ -40,7 +40,41 @@ component extends="contentSection" {
 			{"name"="subsubmenu", "selector"=" ul.submenu ul.submenu"}
 		];
 
+--submenualign: bottom-left; /* (top|bottom)-(left|right) */
+	--submenu-position: absolute; /* absolute | relative */
+	--submenu-display: none; /* none|block */
+	--stretch: 1; /* 1|0 */
+	--menu-border-color:var(--link-color);
+	--menu-background: transparent;
+	--menu-item-padding: 0 8px;
+	--menu-item-border:0;/* item border width */
+	--menu-item-width: 140px; /* min width of menu items in grid layou */
+	--menu-icon-display: none;/* none or block */
+	--menu-label-display: block;/* text part of menu item:; none or block */
+	--icon-width:32px;/* normal menu icons */
+	--icon-height:32px;	
+	--menu-icon-valign: middle;/* WIP */
+	--menu-icon-gap: 8px;/* gap between label and icon */
+	--menu-icon-stretch: 1;/* stretch labels to fill remaining space */
+	--menu-icon-align: row; /* flex direction for icon alignment */
+	--menu-openicon-width:16px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
+	--menu-openicon-height:16px;	
+	--menu-openicon-adjust: -4px;
+	--menu-text-align: center;/* alignment of text in menu items */
+	--menu-anim-time: 0.3s;
+	--menu-direction: row;
+	--menu-item-justify: center; /* item aligment start|center|end. Also see menu-text-align which usually needs setting as well */
+	--menu-item-align: center; /* cross axis aligment, e.g. vertical when menu is horizontal */
+	--menu-wrap: wrap;
+	--rollout: 0;
+
+
 		this.styleDefs = [
+			"mode":{"name"="Grid mode","type"="list","default"="flex","options":[
+					{"name"="Grid","value"="grid","description"=""},
+					{"name"="Flex","value"="flex","description"=""}],
+				"description":"Select the way your menu is laid out"
+			},
 			"orientation":{
 				"type":"list",
 				"name": "Orientation",
@@ -49,8 +83,7 @@ component extends="contentSection" {
 				"options":[
 					{"name":"Horizontal","value":"horizontal"},
 					{"name":"Vertical","value":"vertical"}
-				],
-				"inherit":true
+				]
 			},
 			"link-color":{"type":"color","name":"Link colour","description":"Colour of the menu items"},
 			"menu-gap":{"type":"dimension","name":"Gap","description":"Gap between menu items"},
@@ -67,7 +100,7 @@ component extends="contentSection" {
 				"description":"Show or hide the icon in the menu item. You will need to define the icons  (how TBC)",
 				"default":"none"
 			},
-			"border-type": {
+			"borders": {
 				"type":"list",
 				"name":"Border type",
 				"description":"",
@@ -114,7 +147,7 @@ component extends="contentSection" {
 				"name": "Menu alignment",
 				"default":"left",
 				"inherit":true,
-				"description":"Which direction to align the menu. Only applies if you have set a width or are using Flex mode without stretch"
+				"description":"Which direction to align the menu."
 			},
 			"menu-border-color": {
 				"name":"Border colour","type":"color","description":"", "default":"link-color"

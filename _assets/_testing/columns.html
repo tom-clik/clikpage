@@ -1,69 +1,187 @@
+
+<script>
+tests = [
+	{"id": "1", "description":"Basic"},
+	{"id": "fixed-header", "description":"Fixed header"},
+	{"id": "framed", "description":"Framed"},
+	{"id": "framed-fixed-header", "description":"Framed Fixed header"},
+	{"id": "simpler", "description":"Simpler"},
+	{"id": "fixed-menu", "description":"Fixed menu"},
+	{"id": "fixed-menu-header", "description":"Fixed menu and header"},
+	{"id": "fixed-header-footer", "description":"Fixed header and footer"},
+	{"id": "fixed-menu-header-footer", "description":"Fixed header,footer, and menu"}
+];
+</script>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Table tests</title>
+	<title>Column tests</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/title.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="../css/icons.css">
 	<link rel="stylesheet" href="../css/schemes/columns_schemes.css">
 	<meta charset="UTF-8">
-	<style>
+	
+	<style>		
+	select {
+		border:1px solid;
+		padding:2px;
+	}
 
-		body {
-			--text-font:'Open Sans';
-		}
+	body {
+		--text-font:'Open Sans';
+		--site-width:1200px;
+		--header-height: 100px;
+		--menu-width: 140px;
+		--xcol-width: 240px;
+/*		--site-align:right;*/
+	}
 
-		/* Page syling */
-		div:not(.inner) {
-			border:1px solid teal;
-			padding:4px;
-			margin:2px;
-		}
+	/*#header, #footer, #topnav, #bottomnav, #content_top, #content_bottom, #columns > div {
+		padding:4px;
+	}*/
 
+	#title, #footer_main {
+		background-color: #c3c3c3;
+	}
+
+	#nav, #bottomnav {
+		background-color: #a0a0a0;
+	}
+
+	#content_top .inner, #content_bottom .inner {
+		background-color: #d4d4d4;
+	}
+
+	#menu, #xcol {
+		background-color: #b5b5b5;
+	}
+
+	#samplebuttons {
+		position: absolute;
+		top:4px;
+		right:4px;
+	}
+
+	
 		
+	#menu , #xcol, #maincol {
+		padding:4px;
+	}
+
+	/*  not part of columns */
+	#nav > .cs-grid {
+		--mode: flex;
+	}
+
 	</style>
+
+	<!-- <link rel="stylesheet" href="/_assets/css/icons.css"> -->
+
 </head>
-<body class="col-SXM topnav mob-MXS">
 
-	<div id="ubercontainer">
+<body class="test-1">
+
+
+	<div id="ubercontainer" class="cs-grid framed">
 		
-		<div id="header">
-			<div class="inner">
-				<h1>This is the site title</h1>
-			</div>
-		</div>
-
-		<div id="topnav">
-			<div class="inner">
-				Top navigation elements
-			</div>
-		</div>
-
-		<div id="content" class="clear">
-			<div class="inner">
-				<div id="contenttop">
-					<div class="inner">
-						Content top element
+		<!--- header is usually given a fixed height (see --header-height)
+			Much of the sticky/fixed functionality depends on this. ---> 
+		<div id="header" class="cs-grid">
+			<div id="title">
+				<div class="inner spanning">
+					
+					<div  id="site-title" class="cs-title">
+						<h1>Column Testing</h1>
 					</div>
+
 				</div>
+			</div>
 
-				<div id="columns">
-					<div id="subcol">
-						
-						<h1>Sub col</h1>
+			<!--- To remove this or place it above the title, adjust #header grid --->
+			<div id="nav">
+				<div class="inner spanning cs-grid">
+					
+					<div id="menubutton" class="button auto state_open" data-state="open">
+						<a href="#menu.openclose" data-key="ctrl+m">
+							<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+						</a>					
+					</div>
 
-							<!--<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+					<div class="button auto">
+						<a href="#menu.openclose" data-key="ctrl+q">
+							<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+						</a>					
+					</div>
+
+					<div class="button auto">
+						<a href="#fixedtop.openclose" data-key="ctrl+q">
+							<i class="icon-squares"></i>
+						</a>					
+					</div>
+
+					<div class="cs-text">
+						Top navigation elements
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+		<!--- this is an extra example container that can be used to fix content at the site width --->
+		<div id="fixedtop">
+			<div class="inner spanning framed">
+		 		Sample fixed content
+			</div>
+		</div>
+
+
+		<div id="content" class="cs-grid">
+			
+			<!--- To remove this (also for content_bottom) either use the show=hide functionality 
+				(this is done in the "simpler" example)	or delete it and adjust the #content grid
+			 ---> 
+
+			<div id="content_top">
+				<div class="inner spanning">
+					Content top element - can remove by adjusting #content grid
+				</div>
+			</div>
+
+			<div id="content_main">
+				<div class="inner cs-grid  spanning">
+					
+					<div id="menu">
+						<div class="inner">
+
+							<h1>Menu col</h1>
+
+							<!-- <p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>-->
+							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p> -->
+						</div>
 					</div>
 
 				
-					<div id="maincol">
+					<div id="maincol" class="cs-grid">
 						
 						<div id="maincol_top">
 							<h2>Main col top</h2>
 							<p>Any odd text. Any odd text. Any odd text.</p>
+							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+							
+
+
 						</div>
 						<div id="maincol_left">
 							<h2>Maincol left</h2>
@@ -76,47 +194,147 @@
 						</div>
 						<div id="maincol_bottom">
 							<h2>Maincol bottom</h2>
-							<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+							<div id="testmenu">
+
+							</div>
 						</div>
 						
 					</div>
 
 					<div id="xcol">
-
-						
-						<h1>X col</h1>
-						<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
-
+						<div class="inner">
+							<h1>X col</h1>
+							<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+						</div>
 					</div>
-				</div>
+					
 
-				<div id="contentbottom">
-					<div class="inner">
-						<h1>Content bottom element</h1>
-					</div>
-				</div>
-			</div>	
-		</div>
-
-		<div id="bottomnav">
-			Bottom navigation
-		</div>
-
-		<div id="footer">
-			<div class="inner">
-				<div id="footer_left">
-					<p>This is the footer_left</p>
-				</div>
-				<div id="footer_middle">
-					<p>This is the footer_middle</p>
-				</div>
-				<div id="footer_right">
-					<p>This is the footer_right</p>
+					
 				</div>
 			</div>
+
+			<div id="content_bottom">
+				<div class="inner  spanning">
+					<h1>Content bottom element</h1>
+				</div>
+			</div>
+			
+		</div>
+
+		<div id="footer" class="cs-grid">
+			
+			<!--- To remove this or place it below the footer, adjust #header grid --->
+
+			<div id="bottomnav">
+				<div class="inner  spanning">
+					Bottom navigation
+				</div>
+			</div>
+
+			<div id="footer_main">
+				<div class="inner cs-grid  spanning">
+					<div id="footer_left">
+						<p>This is the footer_left</p>
+					</div>
+					<div id="footer_middle">
+						<p>This is the footer_middle</p>
+					</div>
+					<div id="footer_right">
+						<p>This is the footer_right</p>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 
 	</div>
+
+	<script src="/_assets/js/jquery-3.4.1.js"></script>
+	<script src="/_assets/js/jquery.throttledresize.js"></script>
+	<script src="/_assets/js/varClass.js"></script>
+	<script src="/_assets/js/getSettings.js"></script>
+	<script src="/_assets/js/removeClassByPrefix.js"></script>
+	<script src="/_assets/js/jquery.animateAuto.js"></script>
+	<script src="/_assets/js/jquery.autoButton.js"></script>
+	
+	<script type="text/javascript">
+
+		
+		$(document).ready(function() {
+			
+			hash = window.location.hash || "#1";
+			hash = hash.replace("#","");
+			setTest(hash);
+
+			var $body = $("body");
+
+			$(".button").button();
+			$(".cs-grid").varClass({name:"mode"});
+			$("#content_top,#content_bottom,#nav,#bottomnav").varClass({name:"show"});
+			$("#menu,#xcol").varClass({name:"sticky"});
+			$body.varClass({name:"header-fixed,footer-fixed,menu-fixed,framed,site-align"});
+
+
+			let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+			let xcolPad = window.getComputedStyle(document.querySelector('#xcol')).paddingTop;
+
+			document.body.style.setProperty('--menu-top-padding', menuPad);
+			document.body.style.setProperty('--xcol-top-padding', xcolPad);
+
+			// problem here is that it transitions on load if we put this
+			// into the CSS??? Need to try and work out why.
+			$body.css({"transition" : "padding var(--menu-anim-time) ease-in-out"});
+
+			$("#menu").on("open",function() {
+				$this = $(this);
+				let settings = getCssSettings($this,"menu-anim-time,height");
+				if (settings.height == "auto") {
+					$this.animateAuto("height", settings["menu-anim-time"], function() {});
+				}
+				else {
+					$this.css({'height':''});
+				}
+				$body.removeClass("menu-close");
+			}).on("close",function() {
+				$this = $(this);
+				let settings = getCssSettings($this,"menu-anim-time,height");
+				console.log(settings);
+				if (settings.height == "auto") {
+					$this.animate({"height":0}, settings["menu-anim-time"], function() {});
+				}
+				else {
+					$this.css({'height':''});
+				}
+				$body.addClass("menu-close");
+			});
+
+			
+
+			var html = "<select>\n";
+			for (let test of tests) {
+				console.log(test.id, hash, test.id == hash);
+				selected = test.id == hash ? " selected" : ""; 
+				html += `<option${selected} value="${test.id}">${test.description}</option>\n`;
+			}
+			html += "</select>\n";
+
+			$(html).appendTo("#testmenu").on("change", function( ) {
+				var test = $(this).val()
+				setTest(test);
+				$(window).trigger('resize');
+			});
+
+		});
+
+		function setTest(test) {
+			$body = $("body");
+			$body.removeClassByPrefix("test-");
+			$body.addClass("test-" + test);
+			window.location.hash = test;
+		}
+
+
+	</script>
 
 
 </body>

@@ -47,8 +47,11 @@
 	plugin.reload = function() {
 		
 		for (let name of varList) {
-			let val =  $element.css("--" + name) || "none";
-			$element.removeClassByPrefix(name + "-").addClass(name + "-" + val);
+			$element.removeClassByPrefix(name + "-");
+			let val =  $element.css("--" + name);
+			if (val) {
+				$element.addClass(name + "-" + val);
+			}
 		}
 	}
 

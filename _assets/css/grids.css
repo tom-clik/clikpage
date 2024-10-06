@@ -124,6 +124,10 @@ NB flex-grow is a var --flex-stretch (??)
 	grid-template-rows: var(--grid-template-rows);
 }
 
+.cs-grid:not(.mode-named) > * {
+	grid-area: unset !important;
+}
+
 .cols-2 {
 	--grid-columns:2;
 }

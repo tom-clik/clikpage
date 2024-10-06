@@ -28,20 +28,17 @@ component extends="contentSection" {
 		this.styleDefs = [
 			"grid-mode":{"name"="Grid mode","type"="list","default"="none","inherit":1,"options":[
 					{"name"="None","value"="none","description"="Don't use a grid. Use this setting to turn off a grid in smaller screen sizes."},
-					{"name"="Auto fit","value"="auto","description"="Fit as many items as possible into the grid according to the minimum column size."},
+					{"name"="Auto fit","value"="fit","description"="Fit as many items as possible into the grid according to the minimum column size."},
+					{"name"="Auto fill","value"="fill","description"="Fit as many items as possible into the grid according to the minimum column size but don't stretch as much."},
 					{"name"="Fixed width","value"="fixedwidth","description"="A legacy mode in which all columns have the same width"},
-					{"name"="Fixed columns","value"="fixedcols","description"="A grid with a fixed number of columns. Set either a number in 'Columns' or a width definition e.g. 20% auto 30% in 'Template columns'"},
-					{"name"="Named positions","value"="templateareas","description"="An advanced mode in which you specify the specific order of the content items."},
+					{"name"="Fixed columns","value"="fixed","description"="A grid with a fixed number of columns. Set either a number in 'Columns' or a width definition e.g. 20% auto 30% in 'Template columns'"},
+					{"name"="Fixed width","value"="fixedwidth","description"="A legacy mode in which all columns have the same width"},
+					{"name"="Set columns","value"="columns","description"="A grid with a width definition for the columns e.g. '20% auto 30% '"},
+					{"name"="Set rows","value"="rows","description"="A grid with a height definition for the rows e.g. '20% auto 30% '"},
+					{"name"="Named positions","value"="named","description"="An advanced mode in which you specify the specific order of the content items."},
 					{"name"="Flex","value"="flex","description"="The items in the grid will be as wide/high as their content"}
 				],
 				"description":"Select the way your grid is laid out"
-			},
-			"grid-fit":{"name"="Auto fill mode","type"="list","default"="auto-fit","options"=[
-					{"name"="Fit","value"="auto-fit","description"=""},
-					{"name"="Fill","value"="auto-fill","description"=""}
-				],
-				"description":"How an auto grid is filled up. Use `Fit` unless you know you want fill.",
-				"dependson":"grid-mode","dependvalue":"auto"
 			},
 			"grid-width":{"name":"Item width","type"="dimension","default"="180px","description":"Minimum width of columns for an auto grid or specific width for a fixed width grid.",
 				"dependson":"grid-mode","dependvalue":["auto","fixedwidth"]},

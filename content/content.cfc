@@ -413,17 +413,17 @@ component extends="utils.baseutils" {
 		 var cshtml = "";
 
 		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & ">\n";
-		cshtml &= "\t<div class='imageWrap'>\n";
+		cshtml &= "\t<figure>\n";
 		if (StructKeyExists(arguments.item,"image")) {
 			cshtml &= "\t\t#linkStart#<img src='" & arguments.item.image & "'>#linkEnd#\n";
 			if (StructKeyExists(arguments.item,"caption")) {
-				cshtml &= "\t\t<div class='caption'>" & arguments.item.caption & "</div>\n";
+				cshtml &= "\t\t<figcaption>" & arguments.item.caption & "</figcaption>\n";
 			}
 		}
 		else {
 			arguments.classes["noimage"] = 1;
 		}
-		cshtml &= "\t</div>\n";
+		cshtml &= "\t</figure>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
 		cshtml &= arguments.item.description ? : "";

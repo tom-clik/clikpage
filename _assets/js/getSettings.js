@@ -33,14 +33,15 @@ function getSettings($elem, type) {
 /* just get named settings -- no control over the type */
 function getCssSettings($elem, names) {
 	settings = {};
-	for (let setting in names.split(",")) {
-		
+	for (let setting of names.split(",")) {
+		console.log(setting);
 		let val = $elem.css("--" + setting);
 		if (val) {
 			settings[setting] = val;
 		}
 	
 	}
+	return settings;
 }
 
 function parseCssVar(stringVal, type) {

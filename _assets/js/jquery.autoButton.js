@@ -53,11 +53,14 @@ Typical actions are open, close (or the special case openclose which can be appl
 @version 1.0
 
 */
+
 (function($) {
 
 	$.fn.button = function() {
 	 	
 	    return this.each(function() {
+
+	    	var keyBindings = {};
 
 	    	var $button = $(this);
 	    	 
@@ -68,11 +71,19 @@ Typical actions are open, close (or the special case openclose which can be appl
 	    	$button.find("a").each(function() {
 	    		let $link  = $(this);
 	    		let href = $link.attr("href");
+
 	    		if (href !== undefined) {
 	    			let attrs = $link.attr("href").split(".");
 		    		$link.data("action",attrs[1]);
 		    		$link.data("target",$(attrs[0]));
 		    		console.log("Adding ", attrs[0], attrs[1]);
+
+		    		let key = $link.data("key");
+		    		if (key) {
+		    			console.log(key);
+		    			keyBindings[ String(key).toLowerCase() ] = $link;
+		    		}
+
 	    		}
 	    		// DEBUG
 	    		else {
@@ -81,6 +92,8 @@ Typical actions are open, close (or the special case openclose which can be appl
 	    		// /debug
 	    	});
 
+	    	console.log(keyBindings);
+	    	
 	    	$(this).on("click","a",function(e) {
 
 				e.preventDefault();
@@ -129,6 +142,18 @@ Typical actions are open, close (or the special case openclose which can be appl
 				// /debug
 				
 			});
+
+			$(window).on("keyup.button", function( event ) {
+				
+				key = (event.ctrlKey || event.metaKey ? "ctrl+" : "") +  (event.altKey ? "alt+" : "") + event.key.toLowerCase();
+				console.log(key + " pressed");
+				if (key in keyBindings) {
+					keyBindings[key].trigger("click"); 
+					event.preventDefault();
+					event.stopPropagation();
+				}
+			});
+
 		})
 	}
 })(jQuery);

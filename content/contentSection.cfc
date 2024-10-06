@@ -215,7 +215,9 @@ component {
 				if (NOT StructKeyExists(arguments.styles,local.state.state)) {
 					continue;
 				}
+
 				local.state_styles = arguments.styles[local.state.state];
+			
 			}
 
 			ret &= "/* #serializeJSON(local.state_styles) # */\n";
@@ -237,6 +239,9 @@ component {
 							break;
 							case "color":
 								local.val = variables.contentObj.settingsObj.displayColor(local.state_styles[local.style]);
+							break;
+							case "boolean":
+								local.val = local.state_styles[local.style] ? "1" : "0" ;
 							break;
 							default:
 								local.val = local.state_styles[local.style];

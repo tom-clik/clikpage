@@ -6,7 +6,7 @@
 $.fn.removeClassByPrefix = function(prefix) {
     this.each(function(i, el) {
         var classes = el.className.split(" ").filter(function(c) {
-            return c.lastIndexOf(prefix, 0) !== 0; // Filter out classes that start with the prefix
+            return c.indexOf(prefix, 0) == -1; // Filter out classes that start with the prefix
         });
         el.className = $.trim(classes.join(" ")); // Set the remaining classes
     });
