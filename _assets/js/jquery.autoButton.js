@@ -76,7 +76,7 @@ Typical actions are open, close (or the special case openclose which can be appl
 	    			let attrs = $link.attr("href").split(".");
 		    		$link.data("action",attrs[1]);
 		    		$link.data("target",$(attrs[0]));
-		    		console.log("Adding ", attrs[0], attrs[1]);
+		    		console.log("Adding autobutton", attrs[0], attrs[1]);
 
 		    		let key = $link.data("key");
 		    		if (key) {
@@ -92,8 +92,6 @@ Typical actions are open, close (or the special case openclose which can be appl
 	    		// /debug
 	    	});
 
-	    	console.log(keyBindings);
-	    	
 	    	$(this).on("click","a",function(e) {
 
 				e.preventDefault();

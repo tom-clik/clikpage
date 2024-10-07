@@ -1,4 +1,11 @@
-/* Needs complete rethink (doing it WIP) */
+/* 
+
+
+
+
+
+
+*/
 
 :root {
 	/* VAR CLASSES (attach to BODY ) */
@@ -14,7 +21,21 @@
 	--site-width:960px;
 	--footer-height:60px;
 	--menu-anim-time:0.2s;
+
+	/* adjustment vars 
+	These either need setting explicitly or programatically with something like:
+
+	let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+	document.body.style.setProperty('--menu-top-padding', menuPad);
+	*/
+
+	--menu-top-padding: 0; /* Should be the same as the "top" padding of the menu container when set to sticky */
+	--xcol-top-padding:0 ;/* Should be the same as the "top" padding of the xcol container when set to sticky */
+
 }
+
+
+
 
 #fixedtop {
 	position: fixed;
@@ -151,6 +172,11 @@ body.framed-1.header-fixed-1 #header, body.framed-1.footer-fixed-1 #footer {
 	grid-area:maincol_bottom;
 }
 
+/** Have thought about some sort of generic setting here:
+ * 
+ *  Would need to get the top of the element + the top padding
+ *  
+ */
 #menu.sticky-1 .inner {
 	position:sticky;
 	top: calc( (var(--header-fixed) * var(--header-height) ) + var(--menu-padding-top,4px) );

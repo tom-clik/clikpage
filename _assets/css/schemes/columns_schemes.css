@@ -2,31 +2,33 @@
 
 Some sample column schemes
 
+layout-fixed-header
+
 */
 
-body.test-fixed-header {
+body.layout-fixed-header {
 	--header-fixed:1;
 }
-body.test-fixed-header #menu {
+body.layout-fixed-header #menu {
 	--sticky:1;
 }
-body.test-fixed-header #xcol {
+body.layout-fixed-header #xcol {
 	--sticky:1;
 }
-body.test-framed {
+body.layout-framed {
 	--framed:1;
 }
-body.test-framed-fixed-header {
+body.layout-framed-fixed-header {
 	--framed:1;
 	--header-fixed:1;
 }
 
 /* not sure about this mechanism maybe OTT */
-body.test-simpler #content_top, body.test-simpler #content_bottom, body.test-simpler #nav, body.test-simpler #bottomnav {
+body.layout-simpler #content_top, body.layout-simpler #content_bottom, body.layout-simpler #nav, body.layout-simpler #bottomnav {
 	--show:hide;
 }
 
-body.test-fixed-menu {
+body.layout-fixed-menu {
 	--site-align: left;
 	--menu-fixed: 1;
 	--menu-width: 240px;
@@ -34,13 +36,13 @@ body.test-fixed-menu {
 
 @media (max-width:800px) {
 
-	body.test-fixed-menu {
+	body.layout-fixed-menu {
 		--menu-fixed: 0;
 	}
 
 }
 
-body.test-fixed-menu-header {
+body.layout-fixed-menu-header {
 	--site-align: left;
 	--menu-fixed: 1;
 	--menu-width: 240px;
@@ -49,26 +51,26 @@ body.test-fixed-menu-header {
 
 @media (max-width:800px) {
 
-	body.test-fixed-menu-header {
+	body.layout-fixed-menu-header {
 		--menu-fixed: 0;
 	}
 
 }
 
 
-body.test-fixed-header-footer {
+body.layout-fixed-header-footer {
 	--footer-fixed: 1;
 	--header-fixed:1;
 }
 
-body.test-fixed-header-footer #menu {
+body.layout-fixed-header-footer #menu {
 	--sticky: 1;
 }
-body.test-fixed-header-footer #xcol {
+body.layout-fixed-header-footer #xcol {
 	--sticky: 1;
 }
 
-body.test-fixed-menu-header-footer {
+body.layout-fixed-menu-header-footer {
 	--footer-fixed: 1;
 	--header-fixed:1;
 	--site-align: left;
@@ -76,18 +78,18 @@ body.test-fixed-menu-header-footer {
 	--menu-width: 240px;
 }
 
-body.test-fixed-menu-header-footer #xcol {
+body.layout-fixed-menu-header-footer #xcol {
 	--sticky: 1;
 }
 
 @media (max-width:800px) {
 
-	body.test-fixed-menu-header-footer {
+	body.layout-fixed-menu-header-footer {
 		--menu-fixed: 0;
 	}
 
 
-	body.test-fixed-menu-header-footer #xcol {
+	body.layout-fixed-menu-header-footer #xcol {
 		--sticky: 0;
 	}
 }

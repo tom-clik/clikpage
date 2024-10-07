@@ -81,6 +81,13 @@ tests = [
 		--mode: flex;
 	}
 
+
+	#fixedtop {
+		display: none;
+	}
+	#fixedtop {
+		display: none;
+	}
 	</style>
 
 	<!-- <link rel="stylesheet" href="/_assets/css/icons.css"> -->
@@ -249,6 +256,22 @@ tests = [
 
 	</div>
 
+	<div id="popup" class="m_modal">
+		<div class="wrapper">
+			<div id="popup_closebutton" class="closebutton button auto">
+				<a href="#popup.cancel">
+					<i class="icon-close"></i>
+					<label>Close Popup</label>
+				</a>				
+			</div>
+
+			<div class='cs-title popup-title'>
+				<h2>General</h2>
+			</div> 
+
+		</div>
+	</div>
+
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/jquery.throttledresize.js"></script>
 	<script src="/_assets/js/varClass.js"></script>
@@ -328,8 +351,8 @@ tests = [
 
 		function setTest(test) {
 			$body = $("body");
-			$body.removeClassByPrefix("test-");
-			$body.addClass("test-" + test);
+			$body.removeClassByPrefix("layout-");
+			$body.addClass("layout-" + test);
 			window.location.hash = test;
 		}
 
