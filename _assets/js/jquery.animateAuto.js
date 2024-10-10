@@ -38,6 +38,8 @@ the correct width.
      */
     $.fn.animateAuto = function(prop, duration, callback){
         var elem, height, width;
+        // var argCallback = callback;
+
         return this.each(function(i, el){
 
             let $el = jQuery(el); 
@@ -64,15 +66,33 @@ the correct width.
             
             if(prop === "height") {
                 $el.css({"height":0});   
-                $el.animate({"height":height}, {"duration":duration,"complete":callback});
+                $el.animate({"height":height}, {"duration":duration,"complete": function () {
+                    $el.css({"height":"auto"});
+                    if (callback) {
+                        callback();
+                    }
+                    else {
+                        console.log("No callback");
+                    } 
+                }});
             }
             else if(prop === "width") {
                 $el.css({"width":0}); 
-                $el.animate({"width":width}, {"duration":duration,"complete":callback});  
+                $el.animate({"width":width}, {"duration":duration,"complete":function () {
+                    $el.css({"width":"auto"});
+                    if (callback) {
+                        callback;
+                    } 
+                }});  
             }
             else if(prop === "both") {
                 $el.css({"height":0,"width":0});   
-                $el.animate({"width":width,"height":height}, {"duration":duration,"complete":callback});
+                $el.animate({"width":width,"height":height}, {"duration":duration,"complete":function () {
+                    $el.css({"height":"auto","width":"auto"});
+                    if (callback) {
+                        callback;
+                    } 
+                }});
             }
         });  
     }

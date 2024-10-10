@@ -104,7 +104,7 @@ In both tests, the "target" is a an html container with methods that change the 
 		<div class="panel  middle">
 			<h2>Two state button</h2>
 			<div class="panelGrid">
-				<div class="button auto scheme-rotate">
+				<div id="secondbutton" class="button auto scheme-rotate">
 					<a href="#mainmenu2.openclose" data-key="ctrl+m">
 						<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
 					</a>					
@@ -113,6 +113,12 @@ In both tests, the "target" is a an html container with methods that change the 
 				<div id="mainmenu2" class="target" title="Second target">
 					
 				</div>
+			</div>
+
+			<div class="button auto scheme-rotate">
+				<a href="#secondbutton.close">
+					close manual
+				</a>					
 			</div>
 		</div>
 
@@ -152,7 +158,7 @@ In both tests, the "target" is a an html container with methods that change the 
 			console.log("Random method called");
 		});
 
-		$(".button").button();
+		$(".button").autoButton();
 	});
 
 </script>

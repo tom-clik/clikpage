@@ -1,15 +1,17 @@
 
 <script>
 tests = [
-	{"id": "1", "description":"Basic"},
-	{"id": "fixed-header", "description":"Fixed header"},
-	{"id": "framed", "description":"Framed"},
-	{"id": "framed-fixed-header", "description":"Framed Fixed header"},
+	{"id": "static-sticky", "description":"Basic"},
+	{"id": "static-fixheader-sticky", "description":"Fixed header"},
+	{"id": "static-fixheader-fixfooter-sticky", "description":"Fixed header and footer"},
+	{"id": "frame", "description":"Framed"},
+	{"id": "frame-fixheader-sticky", "description":"Framed Fixed header"},
+	{"id": "frame-fixheader-fixfooter-sticky", "description":"Framed, Fixed header and footer"},
 	{"id": "simpler", "description":"Simpler"},
-	{"id": "fixed-menu", "description":"Fixed menu"},
-	{"id": "fixed-menu-header", "description":"Fixed menu and header"},
-	{"id": "fixed-header-footer", "description":"Fixed header and footer"},
-	{"id": "fixed-menu-header-footer", "description":"Fixed header,footer, and menu"}
+	{"id": "slide-sticky", "description":"slide menu"},
+	{"id": "slide-fixheader-sticky", "description":"slide menu and fixed header"},
+	{"id": "slide-fixheader-fixfooter-sticky", "description":"slide header, fixed and footer"},
+	{"id": "fixed-fixheader-fixfooter-sticky", "description":"Fixed menu, header and footer, and menu"}
 ];
 </script>
 
@@ -21,11 +23,12 @@ tests = [
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/title.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
+	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
 	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
+	<link rel="stylesheet" href="../css/modal.css">
 	<link rel="stylesheet" href="../css/schemes/columns_schemes.css">
 	<meta charset="UTF-8">
 	
@@ -56,7 +59,11 @@ tests = [
 		background-color: #a0a0a0;
 	}
 
-	#content_top .inner, #content_bottom .inner {
+	#content_top, #content_bottom {
+		background-color: #efefef;
+	}
+
+	#content_top > .inner, #content_bottom > .inner {
 		background-color: #d4d4d4;
 	}
 
@@ -69,10 +76,8 @@ tests = [
 		top:4px;
 		right:4px;
 	}
-
 	
-		
-	#menu , #xcol, #maincol {
+	#menu > .inner , #xcol > .inner, #maincol > .inner, #content_top > .inner, #content_bottom >.inner {
 		padding:4px;
 	}
 
@@ -81,12 +86,10 @@ tests = [
 		--mode: flex;
 	}
 
-
-	#fixedtop {
-		display: none;
-	}
-	#fixedtop {
-		display: none;
+	.navbutton {
+		--icon-width:32px;
+		--icon-height:32px;
+		font-size: 32px;
 	}
 	</style>
 
@@ -94,94 +97,92 @@ tests = [
 
 </head>
 
-<body class="test-1">
+<body class="layout-fixed-fixheader-fixfooter-sticky"><div class="bodyWrapper">
 
 
-	<div id="ubercontainer" class="cs-grid framed">
-		
-		<!--- header is usually given a fixed height (see --header-height)
-			Much of the sticky/fixed functionality depends on this. ---> 
-		<div id="header" class="cs-grid">
-			<div id="title">
-				<div class="inner spanning">
-					
-					<div  id="site-title" class="cs-title">
-						<h1>Column Testing</h1>
-					</div>
-
-				</div>
-			</div>
-
-			<!--- To remove this or place it above the title, adjust #header grid --->
-			<div id="nav">
-				<div class="inner spanning cs-grid">
-					
-					<div id="menubutton" class="button auto state_open" data-state="open">
-						<a href="#menu.openclose" data-key="ctrl+m">
-							<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
-						</a>					
-					</div>
-
-					<div class="button auto">
-						<a href="#menu.openclose" data-key="ctrl+q">
-							<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
-						</a>					
-					</div>
-
-					<div class="button auto">
-						<a href="#fixedtop.openclose" data-key="ctrl+q">
-							<i class="icon-squares"></i>
-						</a>					
-					</div>
-
-					<div class="cs-text">
-						Top navigation elements
-					</div>
-
-				</div>
-			</div>
-
-		</div>
-
-		<!--- this is an extra example container that can be used to fix content at the site width --->
-		<div id="fixedtop">
-			<div class="inner spanning framed">
-		 		Sample fixed content
-			</div>
-		</div>
-
-
-		<div id="content" class="cs-grid">
-			
-			<!--- To remove this (also for content_bottom) either use the show=hide functionality 
-				(this is done in the "simpler" example)	or delete it and adjust the #content grid
-			 ---> 
-
-			<div id="content_top">
-				<div class="inner spanning">
-					Content top element - can remove by adjusting #content grid
-				</div>
-			</div>
-
-			<div id="content_main">
-				<div class="inner cs-grid  spanning">
-					
-					<div id="menu">
-						<div class="inner">
-
-							<h1>Menu col</h1>
-
-							<!-- <p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p> -->
-						</div>
-					</div>
-
+<div id="ubercontainer" class="cs-grid framed">
+	
+	<!--- header is usually given a fixed height (see --header-height)
+		Much of the sticky/fixed functionality depends on this. ---> 
+	<div id="header" class="cs-grid">
+		<div id="title">
+			<div class="inner spanning">
 				
-					<div id="maincol" class="cs-grid">
-						
+				<div  id="site-title" class="cs-title">
+					<h1>Column Testing</h1>
+				</div>
+
+			</div>
+		</div>
+
+		<!--- To remove this or place it above the title, adjust #header grid --->
+		<div id="nav">
+			<div class="inner spanning cs-grid">
+				
+				<div id="menubutton" class="button auto navbutton state_open" data-state="open">
+					<a href="#menu.openclose" data-key="ctrl+m">
+						<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+					</a>					
+				</div>
+
+				<div id="hamburger" class="button auto navbutton ">
+					<a href="#menu.openclose">
+						<i class="icon-menu"></i>
+					</a>					
+				</div>
+
+				<div class="button auto navbutton ">
+					<a href="#popup.openclose" data-key="ctrl+q">
+						<i class="icon-squares"></i>
+					</a>					
+				</div>
+
+				<div class="cs-text">
+					Top navigation elements
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<div id="content" class="cs-grid">
+		 
+		<!--- To remove this (also for content_bottom) either use the show=hide functionality 
+			(this is done in the "simpler" example)	or delete it and adjust the #content grid
+		 ---> 
+
+		<div id="content_top">
+			<div class="inner spanning">
+				Content top element - can remove by adjusting #content grid
+			</div>
+		</div>
+
+		<div id="content_main">
+			<div class="inner cs-grid  spanning">
+				
+				<div id="menu">
+					<div class="inner">
+
+						<div id="menuclose" class="button auto navbutton">
+							<a href="#menu.close">
+								<i class="icon-close"></i>
+							</a>					
+						</div>
+
+						<h1>Menu col</h1>
+
+						<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+						<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+						<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+					</div>
+				</div>
+
+			
+				<div id="maincol">
+					<div class="inner cs-grid">
 						<div id="maincol_top">
-							<h2>Main col top</h2>
+							<h2>Main col top XXX</h2>
 							<p>Any odd text. Any odd text. Any odd text.</p>
 							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
@@ -205,160 +206,197 @@ tests = [
 
 							</div>
 						</div>
-						
 					</div>
+				</div>
 
-					<div id="xcol">
-						<div class="inner">
-							<h1>X col</h1>
-							<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
-						</div>
+				<div id="xcol">
+					<div class="inner">
+						<h1>X col</h1>
+						<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 					</div>
-					
-
-					
 				</div>
-			</div>
+				
 
-			<div id="content_bottom">
-				<div class="inner  spanning">
-					<h1>Content bottom element</h1>
-				</div>
+				
 			</div>
-			
 		</div>
 
-		<div id="footer" class="cs-grid">
-			
-			<!--- To remove this or place it below the footer, adjust #header grid --->
-
-			<div id="bottomnav">
-				<div class="inner  spanning">
-					Bottom navigation
-				</div>
+		<div id="content_bottom">
+			<div class="inner  spanning">
+				<h1>Content bottom element</h1>
 			</div>
-
-			<div id="footer_main">
-				<div class="inner cs-grid  spanning">
-					<div id="footer_left">
-						<p>This is the footer_left</p>
-					</div>
-					<div id="footer_middle">
-						<p>This is the footer_middle</p>
-					</div>
-					<div id="footer_right">
-						<p>This is the footer_right</p>
-					</div>
-				</div>
-			</div>
-			
 		</div>
-
+		 
 	</div>
 
-	<div id="popup" class="m_modal">
-		<div class="wrapper">
-			<div id="popup_closebutton" class="closebutton button auto">
-				<a href="#popup.cancel">
-					<i class="icon-close"></i>
-					<label>Close Popup</label>
-				</a>				
-			</div>
-
-			<div class='cs-title popup-title'>
-				<h2>General</h2>
-			</div> 
-
-		</div>
-	</div>
-
-	<script src="/_assets/js/jquery-3.4.1.js"></script>
-	<script src="/_assets/js/jquery.throttledresize.js"></script>
-	<script src="/_assets/js/varClass.js"></script>
-	<script src="/_assets/js/getSettings.js"></script>
-	<script src="/_assets/js/removeClassByPrefix.js"></script>
-	<script src="/_assets/js/jquery.animateAuto.js"></script>
-	<script src="/_assets/js/jquery.autoButton.js"></script>
-	
-	<script type="text/javascript">
-
+	<div id="footer" class="cs-grid">
 		
-		$(document).ready(function() {
-			
-			hash = window.location.hash || "#1";
-			hash = hash.replace("#","");
-			setTest(hash);
+		<!--- To remove this or place it below the footer, adjust #header grid --->
 
-			var $body = $("body");
+		<div id="bottomnav">
+			<div class="inner  spanning">
+				Bottom navigation
+			</div>
+		</div>
 
-			$(".button").button();
-			$(".cs-grid").varClass({name:"mode"});
-			$("#content_top,#content_bottom,#nav,#bottomnav").varClass({name:"show"});
-			$("#menu,#xcol").varClass({name:"sticky"});
-			$body.varClass({name:"header-fixed,footer-fixed,menu-fixed,framed,site-align"});
+		<div id="footer_main">
+			<div class="inner cs-grid  spanning">
+				<div id="footer_left">
+					<p>This is the footer_left</p>
+				</div>
+				<div id="footer_middle">
+					<p>This is the footer_middle</p>
+				</div>
+				<div id="footer_right">
+					<p>This is the footer_right</p>
+				</div>
+			</div>
+		</div>
+		
+	</div>
 
+</div>
 
-			let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
-			let xcolPad = window.getComputedStyle(document.querySelector('#xcol')).paddingTop;
+<div id="popup" class="modal" title="Popup Examples">
+	poup content goes in here
+</div>
 
-			document.body.style.setProperty('--menu-top-padding', menuPad);
-			document.body.style.setProperty('--xcol-top-padding', xcolPad);
+<script src="/_assets/js/jquery-3.4.1.js"></script>
+<script src="/_assets/js/jquery.throttledresize.js"></script>
+<script src="/_assets/js/varClass.js"></script>
+<script src="/_assets/js/getSettings.js"></script>
+<script src="/_assets/js/removeClassByPrefix.js"></script>
+<script src="/_assets/js/jquery.animateAuto.js"></script>
+<script src="/_assets/js/jquery.autoButton.js"></script>
+<script src="/_assets/js/jquery.modal.js"></script>
 
-			// problem here is that it transitions on load if we put this
-			// into the CSS??? Need to try and work out why.
-			$body.css({"transition" : "padding var(--menu-anim-time) ease-in-out"});
+<script type="text/javascript">
 
-			$("#menu").on("open",function() {
-				$this = $(this);
-				let settings = getCssSettings($this,"menu-anim-time,height");
-				if (settings.height == "auto") {
-					$this.animateAuto("height", settings["menu-anim-time"], function() {});
-				}
-				else {
-					$this.css({'height':''});
-				}
-				$body.removeClass("menu-close");
-			}).on("close",function() {
-				$this = $(this);
-				let settings = getCssSettings($this,"menu-anim-time,height");
-				console.log(settings);
-				if (settings.height == "auto") {
-					$this.animate({"height":0}, settings["menu-anim-time"], function() {});
-				}
-				else {
-					$this.css({'height':''});
-				}
-				$body.addClass("menu-close");
-			});
+	
+	$(document).ready(function() {
+		
+		// Apply the layout class
+		hash = window.location.hash || "#1";
+		hash = hash.replace("#","");
+		setTest(hash);
+		// / end apply layout class
+		
+		// generic clik stuff 
+		$(".button").autoButton();
+		$(".modal").modal({	});
+		$(".cs-grid").varClass({resize:"throttledresize", name:"mode"});
+		
+		setBodyPadding();
+		$(window).on("throttledresize", function() { setBodyPadding() } );
 
-			
+		var $body = $("body");
 
-			var html = "<select>\n";
-			for (let test of tests) {
-				console.log(test.id, hash, test.id == hash);
-				selected = test.id == hash ? " selected" : ""; 
-				html += `<option${selected} value="${test.id}">${test.description}</option>\n`;
+		$("#content_top,#content_bottom,#nav,#bottomnav").varClass({resize:"throttledresize", name:"show"});
+		$("#menu,#xcol").varClass({resize:"throttledresize", name:"sticky"});
+		
+		$body.varClass({resize:"throttledresize", name:"header-fixed,footer-fixed,menupos,menu,framed,site-align"});
+
+		// problem here is that it transitions on load if we put this
+		// into the CSS??? Need to try and work out why.
+		$(".bodyWrapper").css({"transition" : "padding var(--menu-anim-time) ease-in-out"});
+		
+		$menubutton = $("#menubutton");
+		
+		$("#menu").on("open",function() {
+			$this = $(this);
+			let settings = getCssSettings($this,"menu-anim-time,height");
+			if (settings.height == "auto") {
+				$this.animateAuto("height", settings["menu-anim-time"], function() {console.log("callback test")
+				});
 			}
-			html += "</select>\n";
-
-			$(html).appendTo("#testmenu").on("change", function( ) {
-				var test = $(this).val()
-				setTest(test);
-				$(window).trigger('resize');
-			});
-
+			else {
+				$this.css({'height':''});
+			}
+			$body.removeClass("menu-close").addClass("menu-open");
+		}).on("close",function() {
+			$this = $(this);
+			let settings = getCssSettings($this,"menu-anim-time,height");
+			if (settings.height == "auto") {
+				$this.animate({"height":0}, settings["menu-anim-time"], function() { $this.css({"height":""}) });
+			}
+			else {
+				$this.css({'height':''});
+			}
+			$body.removeClass("menu-open").addClass("menu-close");
+			$menubutton.trigger("close");
 		});
 
-		function setTest(test) {
-			$body = $("body");
-			$body.removeClassByPrefix("layout-");
-			$body.addClass("layout-" + test);
-			window.location.hash = test;
+		demoMenu();
+		
+	});
+
+	function setTest(test) {
+		var $bodyhere = $("body");
+		console.log("Setting test ", test);
+		$bodyhere.removeClassByPrefix("layout-");
+		$bodyhere.addClass("layout-" + test);
+		window.location.hash = test;
+	}
+
+	// This is the menu of different sample layouts
+	function demoMenu() {
+		var html = "<select>\n";
+		for (let test of tests) {
+			selected = test.id == hash ? " selected" : ""; 
+			html += `<option${selected} value="${test.id}">${test.description}</option>\n`;
 		}
+		html += "</select>\n";
+
+		$(html).appendTo("#testmenu").on("change", function( ) {
+			var test = $(this).val()
+
+			setTest(test);
+			$(window).trigger('throttledresize');
+		});
+	}
 
 
-	</script>
+	/**
+	 * We need individual elements of padding to do exotic things with them.
+	 *
+	 * For body padding, your can apply it to body and this will take care of it.
+	 * 
+	 * For these properties you can either use this function or specify them directly
+	 */
+	function setBodyPadding() {
+		
+		console.log("running body padding");
+
+		// We need the "top" padding of the xcol and menu columns to make these sticky
+		// Not needed if these aren't sticky, or you can just set the vars as shown.
+
+		let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+		let xcolPad = window.getComputedStyle(document.querySelector('#xcol')).paddingTop;
+
+		document.body.style.setProperty('--menu-top-padding', menuPad);
+		document.body.style.setProperty('--xcol-top-padding', xcolPad);
+
+		document.body.style.setProperty('padding', "");
+
+		let $body =  document.querySelector('body');
+		let bodyTopPad = window.getComputedStyle($body).paddingTop || "0px";
+		let bodyRightPad = window.getComputedStyle($body).paddingRight || "0px";
+		let bodyBottomPad = window.getComputedStyle($body).paddingBottom || "0px";
+		let bodyLeftPad = window.getComputedStyle($body).paddingLeft || "0px";
+
+		console.log(bodyTopPad);
+
+		document.body.style.setProperty('--site-top-padding', bodyTopPad);
+		document.body.style.setProperty('--site-right-padding', bodyRightPad);
+		document.body.style.setProperty('--site-bottom-padding', bodyBottomPad);
+		document.body.style.setProperty('--site-left-padding', bodyLeftPad);
+		document.body.style.setProperty('padding', "0");
+		
+	}
 
 
-</body>
+</script>
+
+
+</div></body>
 </html>

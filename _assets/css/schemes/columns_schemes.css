@@ -2,25 +2,30 @@
 
 Some sample column schemes
 
-layout-fixed-header
+layout-slide-header
 
 */
 
-body.layout-fixed-header {
-	--header-fixed:1;
+body[class*=-fixheader] {
+	--header-fixed :1;
 }
-body.layout-fixed-header #menu {
-	--sticky:1;
+body[class*=-fixfooter] {
+	--footer-fixed :1;
 }
-body.layout-fixed-header #xcol {
-	--sticky:1;
-}
-body.layout-framed {
+
+body[class*=-frame] {
 	--framed:1;
 }
-body.layout-framed-fixed-header {
-	--framed:1;
-	--header-fixed:1;
+
+body[class*=-frame] {
+	padding:8px 12px;
+}
+
+@media (max-width:800px) {
+
+	body[class*=-frame] {
+		padding:0;
+	}
 }
 
 /* not sure about this mechanism maybe OTT */
@@ -28,68 +33,45 @@ body.layout-simpler #content_top, body.layout-simpler #content_bottom, body.layo
 	--show:hide;
 }
 
-body.layout-fixed-menu {
+body[class*="layout-slide"] {
 	--site-align: left;
-	--menu-fixed: 1;
+	--menupos: slide;
 	--menu-width: 240px;
+}
+
+/* can easily do same for menu */
+body[class*=-sticky] #xcol {
+	--sticky:1;
 }
 
 @media (max-width:800px) {
 
-	body.layout-fixed-menu {
-		--menu-fixed: 0;
+	body[class*=-sticky] #xcol {
+		--sticky:0;
 	}
 
-}
-
-body.layout-fixed-menu-header {
-	--site-align: left;
-	--menu-fixed: 1;
-	--menu-width: 240px;
-	--header-fixed:1;
 }
 
 @media (max-width:800px) {
 
-	body.layout-fixed-menu-header {
-		--menu-fixed: 0;
+	body[class*="layout-slide"] {
+		--menupos: slidedown; 
 	}
 
 }
 
-
-body.layout-fixed-header-footer {
-	--footer-fixed: 1;
-	--header-fixed:1;
+body[class*="layout-fixed"] {
+	--menu-width:400px;
+	--menu: close;
+	--menupos:fixed;
+	--site-align:left;
 }
 
-body.layout-fixed-header-footer #menu {
-	--sticky: 1;
-}
-body.layout-fixed-header-footer #xcol {
-	--sticky: 1;
-}
+@media (max-width:600px) {
 
-body.layout-fixed-menu-header-footer {
-	--footer-fixed: 1;
-	--header-fixed:1;
-	--site-align: left;
-	--menu-fixed: 1;
-	--menu-width: 240px;
-}
-
-body.layout-fixed-menu-header-footer #xcol {
-	--sticky: 1;
-}
-
-@media (max-width:800px) {
-
-	body.layout-fixed-menu-header-footer {
-		--menu-fixed: 0;
+	body[class*="layout-fixed"] {
+		--menu-width:100vw;
 	}
 
-
-	body.layout-fixed-menu-header-footer #xcol {
-		--sticky: 0;
-	}
 }
+

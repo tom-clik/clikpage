@@ -4,77 +4,111 @@
 
 Static CSS for grid and flex styling 
 
-## Grid Layouts
+## Notes
 
-We think of grids as having a "mode". To apply these, ensure "--mode" is set and the javascript is run to apply the mode class or else explicity set the class with e.g. `class="cs-grid mode-cols"`. Explicitly setting classes can't work for different modes in different viewports. Either get the JS running or see the CSS below to do it manually, which beats the point of using this script.
-
-### Content fit (mode-fit)
-
-This is default and the mode you want if you don't already know. With a minimum width set for the content items, this will add as many items as possible per row and stretch any items to ensure no gap is left.
-
-The only setting you usually need is `--grid-width` which is the minimum width. Note that for fot and fill the `--grid-max-width` rarely does what you want it to do. It only really works when left to its default value of 1fr.
-
-NB The mode can be omitted as it's the default for `.cs-grid`.
-
-### Content fill (mode-fill)
-
-Sort of like fit but will create empty cells to fill up the space if they would fit. Rarely used.
-
-### Fixed columns (mode-fixed)
-
-The number of columns in the grid is fixed. The columns are all equal. Set the columns with `--grid-columns`.
-
-### Set column widths (mode-columns)
-
-Explicitly set the grid template columns in `--grid-template-columns`. Useful for having one column stretch.
-
-### Set column rows (mode-rows)
-
-Explicitly set the grid template rows in `--grid-template-rows`. Useful for having one row stretch.
-
-### Named positions (mode-named)
-
-Supply template positions in  `--grid-template-areas`.
-
-### Fixed width (mode-fixedwidth)
-
-Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fill` in preference although honestly you're usually just better off with `fit`.
-
-## Other grid layouts
-
-If you want to set your own you could set `mode` to none or basically you'd just be better off not using this.
-
-## Flex Layouts (mode-flex)
-
-Flex layouts are simpler. Most stretch properties translate with an equalivant var of the same name.
-
-NB flex-grow is a var --flex-stretch (??)
+See /notes/grids.md
 
 */
 
-:root {
-	--mode:fit;/* none|fit|fixed|fixedwidth|columns|rows|named|flex*/
-	--grid-gap:0;
-	--grid-fit:auto-fit;
-	--grid-width:180px;
-	--grid-max-width:1fr;
-	--grid-max-height:auto;
-	--grid-columns:2;
-	--flex-direction:row;
-	--justify-content:normal;
-	--align-items:normal;
-	--align-content:normal;/* alignment for multiple rows */
-	--flex-stretch:0;/* treat as boolean */
-	--flex-wrap: wrap;
-	--grid-template-rows:auto;
-	--grid-template-columns:auto;
-	--grid-template-areas:none; /* e.g. "header header" "menu main" "footer footer" */;
+@property --mode {
+	syntax: "none | fit | fill | fixed | fixedwidth | columns | rows | named | flex";
+	inherits: false;
+	initial-value: fit;
+}
+
+@property --grid-gap {
+	syntax: "<length> | <percentage>";
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --grid-fit {
+	syntax: "auto-fit | auto-fill";
+	inherits: false;
+	initial-value: auto-fit;
+}
+
+@property --grid-width {
+	syntax: "*"; 
+	inherits: false;
+	initial-value: 180px;
+}
+
+@property --grid-max-width {
+	syntax: "*"; 
+	inherits: false;
+	initial-value: 1fr;
+}
+
+@property --grid-max-height {
+	syntax: "*"; 
+	inherits: false;
+	initial-value: 1fr;
+}
+
+@property --grid-columns {
+	syntax: "<integer>"; 
+	inherits: false;
+	initial-value: 2;
+}
+
+@property --flex-direction {
+	syntax: "row | row-reverse | column | column-reverse"; 
+	inherits: false;
+	initial-value: row;
+}
+
+@property --justify-content {
+	syntax: "normal | start | end | center | space-between | space-around |  space-evenly |  stretch"; 
+	inherits: false;
+	initial-value: row;
+}
+/* alignment for multiple rows */
+@property --align-content {
+	syntax: "normal | start | end | center | space-between | space-around |  space-evenly |  stretch"; 
+	inherits: false;
+	initial-value: normal;
+}
+
+/* athis the vertical alignment you want */
+@property --align-items {
+	syntax: "normal | stretch | start | end | center "; 
+	inherits: false;
+	initial-value: normal;
+}
+
+@property --flex-stretch {
+	syntax: "0 | 1 "; 
+	inherits: true;
+	initial-value: 0;
+}
+
+@property --flex-wrap {
+	syntax: "wrap | nowrap "; 
+	inherits: false;
+	initial-value: wrap;
+}
+
+@property --grid-template-rows {
+	inherits: false;
+	initial-value: auto;
+}
+@property --grid-template-columns {
+	inherits: false;
+	initial-value: auto;
+}
+
+/* e.g. "header header" "menu main" "footer footer" */
+@property --grid-template-areas {
+	inherits: false;
+	initial-value: none;
 }
 
 .cs-grid {
 	display:grid;
 	grid-gap:var(--grid-gap);
 	flex-direction: var(--flex-direction);
+	align-content: var(--align-content);
 	align-items: var(--align-items);
 	justify-content: var(--justify-content);
 	flex-wrap: var(--flex-wrap);
@@ -126,6 +160,10 @@ NB flex-grow is a var --flex-stretch (??)
 
 .cs-grid:not(.mode-named) > * {
 	grid-area: unset !important;
+}
+
+.cs-grid[class*=cols-] {
+	grid-template-columns: repeat(var(--grid-columns), 1fr);
 }
 
 .cols-2 {

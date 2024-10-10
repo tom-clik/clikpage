@@ -50,108 +50,183 @@ Typical actions are open, close (or the special case openclose which can be appl
 ```
 
 @author Tom Peer
-@version 1.0
+@version 2.0
 
 */
-
 (function($) {
 
-	$.fn.button = function() {
-	 	
-	    return this.each(function() {
+$.autoButton = function(element, options) {
 
-	    	var keyBindings = {};
+	var defaults = {
 
-	    	var $button = $(this);
-	    	 
-	    	var $links = $(this).find("a");
+		onOpen: function() {},
+		onClose: function() {}
 
-	    	let state = $button.data("state");
-	    	
-	    	$button.find("a").each(function() {
-	    		let $link  = $(this);
-	    		let href = $link.attr("href");
+	}
 
-	    		if (href !== undefined) {
-	    			let attrs = $link.attr("href").split(".");
-		    		$link.data("action",attrs[1]);
-		    		$link.data("target",$(attrs[0]));
-		    		console.log("Adding autobutton", attrs[0], attrs[1]);
+	var plugin = this;
 
-		    		let key = $link.data("key");
-		    		if (key) {
-		    			console.log(key);
-		    			keyBindings[ String(key).toLowerCase() ] = $link;
-		    		}
+	var $element = $(element), // reference to the jQuery version of DOM element
+		element = element, // reference to the actual DOM element
+	 	keyBindings = {}, // theoretically we can bind more than one key but this isn't working yet.
+	 	state, // for toggle buttons, store the current state
+	 	$links;
 
-	    		}
-	    		// DEBUG
-	    		else {
-	    			console.log("No href tag found for <a> tag in button");
-	    		}
-	    		// /debug
-	    	});
+	// the "constructor" method that gets called when the object is created
+	plugin.init = function() {
 
-	    	$(this).on("click","a",function(e) {
+		// the plugin's final properties are the merged default and
+		// user-provided options (if any)
+		plugin.settings = $.extend({}, defaults, options);
 
-				e.preventDefault();
-				e.stopPropagation();
+		// code goes here
+		state = $element.data("state") || "close";
+	    
+	    $links = $element.find("a")
 
-				var $self = $(this);
-				let action = $self.data("action");
-				let $target = $self.data("target");
+		$links.each(function() {
+			let $link  = $(this);
+			let href = $link.attr("href");
 
-				if ($target && action) {
-					let index = 0;
-			    	if (action == "openclose") {
-						let state = $button.data("state");
-						if (!state) {
-							state = "close";
-						}
-						action = state == "open" ? "close" : "open";
-						$button.removeClass("state_" + state);
-						$button.addClass("state_" + action);
-						$button.data("state",action);
+			if (href !== undefined) {
+				let attrs = $link.attr("href").split(".");
+				
+				if (attrs.length == 2) {
+					$link.data( "action", attrs[1] );
+					$link.data( "target", $(attrs[0]) );
+					console.log("Adding autobutton", attrs[0], attrs[1]);
+				}
+				
+				let key = $link.data("key");
+				if (key) {
+					keyBindings[ String(key).toLowerCase() ] = $link;
+				}
+
+			}
+			// DEBUG
+			else {
+				console.log("No href tag found for <a> tag in button");
+			}
+			// /DEBUG
+		});
+
+		$element.on("click","a",function(e) {
+	    		
+			e.preventDefault();
+			e.stopPropagation();
+
+			var $self = $(this);
+			let action = $self.data("action");
+			let $target = $self.data("target");
+
+			if ($target && action) {
+				let index = 0;
+		    	if (action == "openclose") {
+					
+					console.log(`state is ${state}`);
+
+					//changeState(state);
+					action = state == "open" ? "close" : "open";
+					console.log(action);
+					if (action == "open") {
+						plugin.open();
 					}
 					else {
-						index = $button.data("index");
-						if (!index) {
-							index = 0;
-						}
-						index++;
-						if (index == $links.length) index = 0; 
-						$button.data("index",index);
-
-					}
-					
-					console.log("triggering " + action + " on " + $target.attr("id"));
-					
-					$target.trigger(action);
-
-					if ($links.length > 1) {
-						$links.css({"display":"none"});
-						$($links[index]).css({"display":"flex"});
+						plugin.close();
 					}
 				}
-				// debug
 				else {
-					console.log("No auto actions for button");
-				}
-				// /debug
-				
-			});
+					index = $element.data("index");
+					if (!index) {
+						index = 0;
+					}
+					index++;
+					if (index == $links.length) index = 0; 
+					$element.data("index",index);
 
-			$(window).on("keyup.button", function( event ) {
-				
-				key = (event.ctrlKey || event.metaKey ? "ctrl+" : "") +  (event.altKey ? "alt+" : "") + event.key.toLowerCase();
-				console.log(key + " pressed");
-				if (key in keyBindings) {
-					keyBindings[key].trigger("click"); 
-					event.preventDefault();
-					event.stopPropagation();
 				}
-			});
+				
+				console.log("triggering " + action + " on " + $target.attr("id"));
+				
+				$target.trigger(action);
 
-		})
+				if ($links.length > 1) {
+					$links.css({"display":"none"});
+					$($links[index]).css({"display":"flex"});
+				}
+			}
+			// debug
+			else {
+				console.log("No auto actions for button");
+			}
+			// /debug
+			
+		});
+
+		$(window).on("keyup.button", function( event ) {
+			let key = (event.ctrlKey || event.metaKey ? "ctrl+" : "") +  (event.altKey ? "alt+" : "") + event.key.toLowerCase();
+			if (key in keyBindings) {
+				keyBindings[key].trigger("click"); 
+				event.preventDefault();
+				event.stopPropagation();
+			}
+		});
 	}
+
+	$element.on("open",function() {
+		plugin.open();
+	});
+
+	$element.on("close",function() {
+		plugin.close();
+	});
+
+	plugin.open = function() {
+		$element.removeClass("state_close");
+		$element.addClass("state_open");
+		state = "open";
+
+		plugin.settings.onOpen();
+
+	}
+	plugin.close = function() {
+		$element.removeClass("state_open");
+		$element.addClass("state_close");
+		state = "close";
+
+		plugin.settings.onClose();
+	
+	}
+
+	
+	plugin.init();
+
+}
+
+// add the plugin to the jQuery.fn object
+$.fn.autoButton = function(options) {
+
+	// iterate through the DOM elements we are attaching the plugin to
+	return this.each(function() {
+
+	  // if plugin has not already been attached to the element
+	  if (undefined == $(this).data('autoButton')) {
+
+		  // create a new instance of the plugin
+		  // pass the DOM element and the user-provided options as arguments
+		  var plugin = new $.autoButton(this, options);
+
+		  // in the jQuery version of the element
+		  // store a reference to the plugin object
+		  // you can later access the plugin and its methods and properties like
+		  // element.data('autoButton').publicMethod(arg1, arg2, ... argn) or
+		  // element.data('autoButton').settings.propertyName
+		  $(this).data('autoButton', plugin);
+
+	   }
+
+	});
+
+}
+
 })(jQuery);

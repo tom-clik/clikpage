@@ -52,7 +52,7 @@ hover   li a:hover
 hi      li.hi a
 */
 
-/* TODO: rename all these with menu prefix. Applying them to cs-menu doesn't work */
+
 :root {
 	--link-color: #000;
 	--menu-mode: flex;/* grid|flex */

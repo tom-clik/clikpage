@@ -31,10 +31,10 @@ component extends="grid" {
 			{"name"="subcaption","panel":"subcaption", "selector"=" .subcaption"}
 		];
 
-		StructDelete(this.styleDefs,"justify-content");
-		StructDelete(this.styleDefs,"align-items");
+		StructDelete(this.settings,"justify-content");
+		StructDelete(this.settings,"align-items");
 
-		StructAppend(this.styleDefs, [
+		StructAppend(this.settings, [
 			"layout": {
 				"name":"Layout type","description":"","type":"list","options":[
 					{"name":"Standard","description":"Standard grid","value":"standard"},

@@ -298,6 +298,12 @@ Menu Testing
 
 		$(document).ready(function() {
 
+			// Apply the layout class
+			hash = window.location.hash || "#1";
+			hash = hash.replace("#","");
+			setTest(hash);
+			// / end apply layout class
+			
 			menuHTML = createMenu(menuData,"menu");
 
 			$("#menu").html(menuHTML);
@@ -315,13 +321,19 @@ Menu Testing
 
 			$(html).appendTo("#testmenu").on("change", function( ) {
 				var test = $(this).val()
-				$menu = $("#menu");
-				$menu.removeClassByPrefix("test-");
-				$menu.addClass("test-" + test);
-				$(window).trigger('resize');
+				setTest(test);
+				window.location.hash = test;
 			});
 
 		});
+
+		function setTest(test) {
+			var $menu = $("#menu");
+			$menu.removeClassByPrefix("test-");
+			$menu.addClass("test-" + test);
+			$(window).trigger('resize');
+			
+		}
 
 
 	</script>

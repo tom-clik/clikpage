@@ -11,9 +11,11 @@
 	/* VAR CLASSES (attach to BODY ) */
 	--header-fixed: 0;
 	--footer-fixed: 0;
-	--menu-fixed: 0;
+	--menupos : static;/* static|fixed|slide   */
+	--menu: open; /* open | close */
 	--framed: 0;
 	--site-align:center;
+
 	/* style vars */
 	--menu-width:220px;
 	--xcol-width:160px;
@@ -29,30 +31,35 @@
 	document.body.style.setProperty('--menu-top-padding', menuPad);
 	*/
 
-	--menu-top-padding: 0; /* Should be the same as the "top" padding of the menu container when set to sticky */
-	--xcol-top-padding:0 ;/* Should be the same as the "top" padding of the xcol container when set to sticky */
+	--menu-top-padding: 0px; /* Should be the same as the "top" padding of the menu container when set to sticky */
+	--xcol-top-padding:0px ;/* Should be the same as the "top" padding of the xcol container when set to sticky */
 
-}
-
-
-
-
-#fixedtop {
-	position: fixed;
-	top:0px;
-	left:0px;
-	width:100%;
-	z-index: 101;
+	/* Individual components of "body" padding */
+	--site-top-padding: 0px;
+	--site-right-padding: 0px;
+	--site-bottom-padding: 0px;
+	--site-left-padding: 0px;
 }
 
 #header {
 	grid-area:header;
 	height: var(--header-height);
-	
 }
 
-body.menu-fixed-1 {
-	padding-left: var(--menu-width);
+.bodyWrapper {
+	min-height:100%;
+	padding: var(--site-top-padding) var(--site-right-padding)	var(--site-bottom-padding)	var(--site-left-padding);
+}
+
+body.header-fixed-1 .bodyWrapper {
+	padding-top:0;
+}
+body.footer-fixed-1 .bodyWrapper {
+	padding-bottom:0;
+}
+
+body.menupos-slide .bodyWrapper {
+	padding-left: calc( var(--menu-width) + var(--site-left-padding) );
 	/* This triggers on page load !!! See JS, we add it after load */
 	/* transition : padding var(--menu-anim-time) ease-in-out;*/
 }
@@ -60,25 +67,25 @@ body.menu-fixed-1 {
 body.header-fixed-1 #header {
 	position: fixed;
 	width:100%;
-	top: 0;
+	top: var(--site-top-padding);
 	left: 0;
 	z-index: 100;
 }
 
-body.header-fixed-1  {
-	padding-top: var(--header-height);
+body.header-fixed-1   #ubercontainer{
+	margin-top: calc(var(--site-top-padding) + var(--header-height));
 }
 
 body.footer-fixed-1 #footer {
 	position: fixed;
 	width:100%;
-	bottom: 0;
+	bottom:  var(--site-bottom-padding) ;
 	left: 0;
 	z-index: 100;
 }
 
-body.footer-fixed-1  {
-	padding-bottom: var(--footer-height);
+body.footer-fixed-1  .bodyWrapper {
+	padding-bottom: calc(var(--site-bottom-padding) + var(--footer-height));
 }
 
 .inner.spanning  {
@@ -98,9 +105,10 @@ body.framed-1 .inner.spanning {
 	width: auto;
 }
 
-body.framed-1 .framed {
+body.framed-1 #ubercontainer {
 	max-width: var(--site-width);
-	margin:0 auto;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 body.framed-1.site-align-left .framed {
@@ -112,10 +120,18 @@ body.framed-1.site-align-right .framed {
 }
 
 body.framed-1.header-fixed-1 #header, body.framed-1.footer-fixed-1 #footer {
-	width:var(--site-width);
+	width: 100%;
+	max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+	left:auto;
 }
 
+body.framed-1.header-fixed-1 #header {
+	top: var(--site-top-padding);
+}
 
+body.framed-1.footer-fixed-1 #footer {
+	bottom: var(--site-bottom-padding);
+}
 
 #content {
 	grid-area:content;
@@ -230,6 +246,10 @@ body.header-fixed-1 #ubercontainer {
 
 #maincol {
 	height:100%;
+}
+
+#maincol > .cs-grid {
+	height:100%;
 	--mode: named;
 	grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
 	grid-template-rows: min-content auto min-content;
@@ -242,23 +262,37 @@ body.header-fixed-1 #ubercontainer {
 	grid-template-rows: min-content auto;
 }
 
+#footer_left {
+	justify-self: start;
+}
+
+#footer_right {
+	justify-self: end;
+}
+
+#footer_middle {
+	justify-self: center;
+}
+
+
 #header {
 	--mode: rows;
 	grid-template-rows:auto  min-content ;
 }
 
 #footer_main > .cs-grid {
-	--mode: flex;
-	--flex-stretch: 0;
-	--justify-content:space-between;
+	--mode: fixed;
+	--grid-columns: 3;
 }
 
 @media (max-width:800px) {
-	#content_main .inner {
+	
+	#content_main > .cs-grid {
 		grid-template-areas: "menu maincol" "menu xcol";
 		grid-template-columns: var(--menu-width) auto;
 	}
-	body.menu-fixed-1 #content_main .inner {
+
+	body.menupos-slide #content_main  > .cs-grid, body.menupos-fixed #content_main  > .cs-grid {
 		--mode: none;
 	}
 
@@ -266,7 +300,11 @@ body.header-fixed-1 #ubercontainer {
 
 @media (max-width:600px) {
 
-	#content_main .inner {
+	body {
+		--menu: close;
+	}
+
+	#content_main > .inner {
 		--mode: none;
 		min-height: auto;
 	}
@@ -276,49 +314,80 @@ body.header-fixed-1 #ubercontainer {
 	}
 
 	#maincol {
+		height:auto;
+	}
+
+	#maincol > .cs-grid {
 		--mode: none;
 		height: auto;
 	}
 
+	#footer_main > .cs-grid {
+		--mode: flex;
+		--flex-direction: column;
+		--justify-content:start;
+	}
+
 }
 
-body.menu-fixed-1 #menu {
-	--height: fixed;
+body.menupos-slide #menu, body.menupos-fixed #menu {
+	--height: fixed;/* WIP trying to animate thesee */ 
 	position: fixed;
 	top: calc(var(--header-fixed) * var(--header-height) );
-	left:0;
+	left: 0;
 	height: calc( 100vh - (var(--header-fixed) * var(--header-height)) - (var(--footer-fixed) * var(--footer-height) ) );
 	width: var(--menu-width);
 	transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
 }
 
-body.menu-fixed-1 #content_main > .inner {
+body.menupos-fixed #menu {
+	left:  calc( ( -1 * var(--menu-width)) - 10px) ;
+}
+
+body.menupos-fixed #menu {
+	top: 0;
+	height: 100vh;
+	z-index: 110;
+}
+
+body.menupos-none #menu {
+	display: none;
+}
+
+body.menupos-none  #content_main > .inner, body.menupos-slide #content_main > .inner, body.menupos-fixed #content_main > .inner {
 	grid-template-areas: "maincol xcol";
 	grid-template-columns: auto var(--xcol-width) ;
 }
 
-body.menu-close {
+body.menupos-slide.menu-close .bodyWrapper {
 	padding-left: 0;
 }
 
-body.menu-close #menu {
+body.menupos-slide.menu-close #menu {
 	transform: translateX( calc( ( -1 * var(--menu-width)) - 10px) );
 }
+body.menupos-fixed.menu-open #menu {
+	transform: translateX( calc( ( var(--menu-width)) + 10px) );
+}
 
-body.menu-fixed-1 #content .spanning, body.menu-fixed-1:not(.footer-fixed-1) #footer .spanning, body.menu-fixed-1:not(.header-fixed-1) #header .spanning {
+body.menupos-slide #content .spanning, body.menupos-slide:not(.footer-fixed-1) #footer .spanning, body.menupos-slide:not(.header-fixed-1) #header .spanning {
 	max-width: calc( var(--site-width) - var(--menu-width) );
 	transition: max-width var(--menu-anim-time) ease-in-out;
 }
 
-body.menu-close.menu-fixed-1 #content .spanning, body.menu-close.menu-fixed-1:not(.footer-fixed-1) #footer .spanning, body.menu-close.menu-fixed-1:not(.header-fixed-1) #header .spanning {
+body.menu-close.menupos-slide #content .spanning, body.menu-close.menupos-slide:not(.footer-fixed-1) #footer .spanning, body.menu-close.menupos-slide:not(.header-fixed-1) #header .spanning {
 	max-width: calc( var(--site-width) );
 }
 
-#menubutton {
+#menubutton, #hamburger, #menuclose {
 	display: none;
 }
 
-body.menu-fixed-1 #menubutton {
+body[class*=menupos-slide] #menubutton {
+	display: block;
+}
+
+body.menupos-fixed #hamburger,  body.menupos-fixed #menuclose {
 	display: block;
 }
 
@@ -326,10 +395,33 @@ body.menu-fixed-1 #menubutton {
 	transform: rotate(180deg);
 }
 
-@media (max-width:800px) {
-	
-	#menubutton.state_open a .icon {
-		transform: rotate(90deg);
+@media (max-width:600px) {
+	body {
+		--menupos: slidedown;
 	}
 }
 
+body.menupos-slidedown	#menubutton.state_open a .icon {
+	transform: rotate(90deg);
+}
+
+body.menupos-slidedown {
+	--menu: close;
+}
+
+body.menupos-slidedown.menu-close #menu {
+	height:0;
+}
+
+body.menupos-slidedown #menu {
+	--height: auto;/* WIP trying to animate thesee */ 
+	position: static;
+	height: auto;
+	width: auto;
+	/*	transform: translateY( -100% );
+	transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
+}
+
+/*body.menupos-slidedown.menu-open #menu {
+	transform: translateY( 0% );
+}*/

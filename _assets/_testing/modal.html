@@ -3,30 +3,24 @@
 <head>
 	<title>Modal popup</title>
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" href="/_assets/css/modal.css">
+	<link rel="stylesheet" href="/_assets/css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="/_assets/css/icons.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<style>
-	.item  {
-		padding:20px;
-		background-color:white;
-		box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-	}
-
-	.textWrap {
-		max-height:240px;
-		overflow: hidden;
-	}
-
-	.button {
+	
+	.bigbuttons {
 		border:1px solid teal;
 		border-radius: 4px;
 		padding:4px 12px;
 		text-transform: uppercase;
 	}
 
-	.button:hover {
+	.bigbuttons:hover {
 		background-color: #dedede;
 	}
 
@@ -43,118 +37,90 @@
 	  	vertical-align: middle;
 	}
 	
-	.wrapper {
-		position: relative;
-	}
-	
-	.closebutton {
-		padding:2px;
-		--icon-height:12px;
-		--icon-width:12px;
-		--label-display:none;
-		position: absolute;
-		top:2px;
-		right:2px;
-	}
-
-	.m_modal {
-		display: none;
-		position: fixed;
-		top:50%;
-		left:50%;
-		transform:translate(-50%, -50%);
-		width:660px;
-		max-height: 94vh;
-	}
-
-	.m_modal.open {
-		display: block;
-	}
-	
-	.backdrop {
-		background-color: rgba(0,0,0,0.3);
-	}
-
 	#menu {
+		display: block;
+		--panel-text: white;
+		--panel-bg: teal;
 		position: fixed;
 		top:0;
 		left:0;
-		transform: translate(-100%, 0);
+		transform: translate(-110%, 0%);
 		width:460px;
 		height: 100vh;
-		background-color: teal;
+		color: var(--panel-bg);
 		overflow: hidden;
 		transition: transform 0.6s ease-in;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-	}
-
-	#menu .inner {
-		display: grid;
-		grid-template-rows: 80px minmax(0,1fr) 40px;
-		color:white;
-	}
-
-	#menu .inner > * {
-		padding:8px;
+		color: var(--panel-text);
+		background-color: var(--panel-bg);
 	}
 
 	#menu .content {
-		background-color: white;
-		color:teal;
+		display: grid;
+		grid-template-rows: 80px minmax(0,1fr) 40px;
+	}
+
+	#menu .content > * {
+		padding:8px;
+	}
+
+	#menu .main_content {
+		background-color: var(--panel-text);
+		color:var(--panel-bg);
 		overflow: hidden;
 	}
 	
 	#menu.open {
-		transform: translate(0);
+		
+		transform: translate(0%, 0%);
 	}
 
-	.inner {
-		width: 100%;
-		height: 100%;
-		position: relative;
-	}
-
-	#menu_close_button {
-		position: absolute;
-		top:4px;
-		right:4px;
-	}
-
-	.pulldown {
-		visibility: hidden;
-		position: absolute;
+	#pulldown {
+		display:block;
 		top:40px;
 		left:420px;
-		overflow: hidden;
-		height:0px;
+		height:0;
 		width:240px;
+		transition: height 0.6s ease-in;
+		border-width:0;
+		padding:0;
+		overflow: clip;
+		background-color: #c3c3c3;
 	}
 
-	
+	#pulldown .wrapper {
+		border:1px solid black;
+	}
+	#pulldown.open {
+		height: 140px;
+
+	}
+
 	</style>
 </head>
 <body>
 
+
 <div class="container">
- 	<div class="button auto">
+ 	<div class="button auto bigbuttons">
 		<a href="#popup.open">
 				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
 				<label>Open Modal</label>
 			</a>				
 	</div>
-	<div class="button auto">
+	<div class="button auto bigbuttons">
 		<a href="#popup2.open">
 				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
 				<label>Open Draggable</label>
 			</a>				
 	</div>
-	<div class="button auto">
+	<div class="button auto bigbuttons">
 		<a href="#menu.open">
 				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
 				<label>Open Menu</label>
 			</a>				
 	</div>
-	<div class="button auto scheme-rotate">
+	<div id="pulldown_menu" class="button auto scheme-rotate bigbuttons">
 
 		<a href="#pulldown.openclose">
 				<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
@@ -163,167 +129,55 @@
 	</div>
 </div>
 
-<div id="popup" class="m_modal">
-	<div class="wrapper">
-		<div id="closebutton2" class="closebutton button auto">
-			<a href="#popup.cancel">
-				<svg  class="icon"  viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
-				<label>Close Popup</label>
-			</a>				
-		</div>
-
-		<div class='item clear'>
-			<h2 class='title'>General</h2> 
-			<div class='imageWrap'> 
-				<img src='//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg'> 
-				<div class='caption'>lorem ipsum</div> 
-			</div> 
-			<div class='textWrap'>
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				<p>
-				<span class='button auto'><a href="#popup.ok" class='testLink'>ok</a></span>
-				<span class='button auto'><a href="#popup.cancel" class='testLink'>cancel</a></span>
-				</p>
-			</div>
-		</div>
-	</div>
+<div id="popup" class="modal">
+	<h2>Modal popup with no title</h2>
+	<div class="placeholderContent"></div>
+	<p>
+	<span class='button auto bigbuttons'><a href="#popup.ok" class='testLink'>ok</a></span>
+	<span class='button auto bigbuttons'><a href="#popup.cancel" class='testLink'>cancel</a></span>
+	</p>
 </div>
 
-<div id="popup2" class="m_modal">
-	<div class="wrapper">
-		<div id="popup2_closebutton" class="closebutton button auto">
-			<a href="#popup2.cancel">
-				<svg  class="icon"  viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
-				<label>Close Popup</label>
-			</a>				
-		</div>
-
-		<div class='item clear'>
-			<h2 class='title'>Draggable</h2> 
-			<div class='imageWrap'> 
-				<img src='//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg'> 
-				<div class='caption'>lorem ipsum</div> 
-			</div> 
-			<div class='textWrap'>
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				
-			</div>
-		</div>
-	</div>
+<div id="popup2" class="modal" title="draggable Popup">
+	<div class="placeholderContent"></div>
 </div>
 
 <div id="menu" class="modal side_menu">
-	<div class="inner">
-		<div class="button auto" id="menu_close_button">
-			<a href="#menu.close">
-				<svg class="icon" viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
-			</a>
-		</div>
+	
 		<div class="menu_header">
 			Cart (6)
 		</div>
-		<div class="content">
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p><p>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				
-		</div>
+		
+		<div class="main_content placeholderContent"></div>
+		
 		<div class="menu_footer">
 			$6.99
 		</div>
 	</div>
 </div>
 
-<div id="pulldown" class="animate pulldown">
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<div id="pulldown" class="pulldown modal">
+	Small amount of content
 </div>
 
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
 <script src="/_assets/js/jquery.modal.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="/_assets/js/jquery.mousewheel.js"></script>
 <script src="/_assets/js/jquery.mCustomScrollbar.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>
+<script src="/_assets/js/jquery-ui-position.js"></script>
 
-<!--- this will animate the menus through standard functionality --->
-<script src="/_assets/js/clik_onready.js"></script>
 <script>
 
 	$(document).ready(function() {
+
+		$('.button.auto').autoButton();
+
+		html = "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
+
+		$(".placeholderContent").html(html.repeat(6));
 
 		$("#popup").modal({
 			draggable:false,
@@ -337,8 +191,24 @@
 			modal:false
 		});
 
-		// TODO: put this into the modal - just need to decide on assignment mechanism
-		$("#popup .textWrap, #menu .content").mCustomScrollbar();
+		$("#menu").modal({
+			draggable:false,
+			modal:false,
+			scroll: false
+		});
+
+		$("#menu .main_content").mCustomScrollbar();
+	
+		$pulldown = $("#pulldown").modal({
+			draggable:false,
+			modal:false,
+			scroll: false,
+			closebutton: ""
+		}).position({
+			my: "right top+3",
+			at: "right bottom",
+			of: "#pulldown_menu"
+		});
 
 
 	});
