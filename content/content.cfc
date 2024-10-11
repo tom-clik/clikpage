@@ -35,9 +35,13 @@ component extends="utils.baseutils" {
 		}
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			local.temp = deserializeJSON( e.extendedinfo );
+			if (isStruct(local.temp)) {
+				structAppend(local.extendedinfo, local.temp);
+			}
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Unable to local cs type #arguments.type#:" & e.message, 
+				message      = "Unable to update type #arguments.type#:" & e.message, 
 				detail       = e.detail,
 				errorcode    = "clikpage.contentObj.load"
 			);
@@ -243,28 +247,34 @@ component extends="utils.baseutils" {
 	/**
 	 * @hint Get css for a content section
 	 *
-	 * @content      Content section
-	 * @format       Format result. Turn off if concatenating many cs
-	 * @return       css string
+	 * @styles       Whole site stylesheet with media etc
+	 * @return       struct keyed by medium
 	 */
-	public string function css(required struct content, medium="main",boolean format=true) {
+	public struct function css(required struct styles, required struct content, boolean debug=this.debug) localmode=true {
 		
-		var css = "";
+		css = {};
 
-		if (! StructKeyExists(arguments.content, "settings")) {
-			return "/* Settings not defined for cs */";
+		if (! StructKeyExists( arguments.styles, arguments.content.id ) ) {
+			if (arguments.debug) css["main"] = "/* No styles defined for cs #arguments.content.id# */" & newLine() & newLine();
+			return css;
 		}
-		if (! StructKeyExists(arguments.content.settings,arguments.medium)) {
-			return "/* #arguments.medium# Settings not defined for cs */";
+
+		if (! StructKeyExists(arguments.styles, "media") ) {
+			throw("No media defined in stylesheet");
 		}
-		
-		css &= this.contentSections[arguments.content.type].css(styles=arguments.content.settings[arguments.medium], selector="##" & arguments.content.id);
-		
-		if (arguments.format) {
-			css = this.settingsObj.outputFormat(css=css,media={},debug=this.debug);
+
+		fullSettings = this.settingsObj.inheritSettings(styles=arguments.styles[arguments.content.id], media=arguments.styles.media, settings=this.contentSections[arguments.content.type].settings);
+
+		for (medium in arguments.styles.media) {
+			if (! StructKeyExists( arguments.styles[arguments.content.id],  medium ) ) {
+				if (arguments.debug) css["#medium#"] = "/* #medium# Settings not defined for cs #arguments.content.id# */" & newLine() & newLine();
+				continue;
+			}
+			css["#medium#"] =  this.contentSections[arguments.content.type].css(styles=arguments.styles[arguments.content.id][medium], selector="##" & arguments.content.id, full_styles=fullSettings[medium], debug=arguments.debug);
 		}
 
 		return css;
+		
 	}
 
 	/**
@@ -273,6 +283,8 @@ component extends="utils.baseutils" {
 	 */
 	public void function settings(required struct content, required struct styles, required struct media) {
 		
+		throw("needs redoing...possibly deprecated");
+
 		var settings = {"main"={}};
 		// add default styling
 		variables.utils.utils.deepStructAppend(settings.main,this.contentSections[arguments.content.type].defaultStyles);

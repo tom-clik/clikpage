@@ -27,24 +27,32 @@ component extends="contentSection" {
 			{"name":"image","panel":"image","selector":" figure"},
 			{"name":"text","panel":"text","selector":" .textWrap"}
 		];
-
+		
 		this.styleDefs = [
-			"htop":{"type":"boolean","description":"Put headline before image","default"="false"},
-			"align":{"type":"halign"},
-			"wrap":{"type":"boolean","default":false},
-			"item-gridgap":{"type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances","default":"10px"},
-			"image-width":{"type":"dimension","default":"40%"},
-			"titletag":{"type":"list","options": [
+			"htop":{"title":"title position", "type":"list","options": [
+				{"value":"1","name"="Title before image"},
+				{"value":"0","name"="Title after image"}
+				],
+				"description":"Where to place the title in the item layout",
+				"default"="false",
+				"setting":1
+			},
+			"align":{"title":"Image alignment", "type":"halign","default":"center","setting":1},
+			"wrap":{"title":"Wrap text", "type":"boolean","default":"0","setting":1},
+			"item-gridgap":{"title":"Image margin", "type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances","default":"10px","setting":1},
+			"image-width":{"title":"Image width", "type":"dimension","default":"40%"},
+			"titletag":{"title":"", "type":"list","options": [
 				{"value":"h1"},
 				{"value":"h2"},
 				{"value":"h3"},
 				{"value":"h4"},
 				{"value":"h5"},
 				{"value":"h6"}
-			],"default":"h3"},
-			"title":{"type":"boolean","default"="true"},
-			"image":{"type":"boolean","default"="false"},
-			"caption-display":{"type":"displayblock","default"="none"}
+			],"default":"h3","hidden"=1},
+			"title":{"title":"Show title", "type":"boolean","default"="1","setting":1},
+			"image":{"title":"Show image", "type":"boolean","default"="0","setting":1},
+			"imagespace":{"title":"Always show image space", "type":"boolean","default"="0","setting":1},
+			"caption-display":{"title":"Show caption", "type":"displayblock","default"="none"}
 		];
 
 		updateDefaults();

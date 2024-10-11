@@ -2,6 +2,12 @@
 
 Scratch pad for testing individual cs styling
 
+
+test = settingsObj.inheritSettings(styles=styles.testfill, media=styles.media, settings);
+
+writeDump(test);
+
+
 --->
 
 <cfscript>
@@ -10,29 +16,23 @@ contentObj = CreateObject("component", "clikpage.content.content").init(settings
 
 contentObj.debug = true;
 
-styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+styles = {};
+settingsObj.loadStyleSheet(expandPath("./testStyles.css"), styles);
+settingsObj.loadStyleSheet(expandPath("../css/_styles/grid_test.css"), styles);
 
-menu = contentObj.new(id="topmenu",title="Menu",type="menu");
+writeDump(styles.testfix);
 
-contentObj.settings(content=menu,styles=styles.content,media=styles.media);
+// menu = contentObj.new(id="topmenu",title="Menu",type="menu");
 
-writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu),styles.media,contentObj.debug) & "</pre>");
+cs = contentObj.new(id="testfix",title="Grid",type="grid");
 
-styles.content.topmenu.main.flex = "true";
+css = contentObj.css(content=cs, styles=styles);
 
-contentObj.settings(content=menu,styles=styles.content,media=styles.media);
+for (medium in css) {
 
-writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu),styles.media,contentObj.debug) & "</pre>");
+	writeOutput("<h2>#medium#</h2>");
+	writeOutput("<pre>" & htmlCodeFormat(css[medium]) & "</pre>");
 
-styles.content.topmenu.mobile.orientation = "vertical";
-styles.content.topmenu.main["menugap"] = "12px";
-styles.content.topmenu.main["menucolor"] = "##ff00ff";
-styles.content.topmenu.main["menuhicolor"] = "##ffff00";
-
-styles.content.topmenu.mobile["menugap"] = "12px";
-
-contentObj.settings(content=menu,styles=styles.content,media=styles.media);
-
-writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(menu),media=styles.media,debug=contentObj.debug) & "</pre>");
+}
 
 </cfscript>

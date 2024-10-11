@@ -17,20 +17,22 @@ settingsEditObj = new clikpage.settings.settingsEdit(contentObj=settingsTest.con
 
 clik_settings = settingsTest.contentObj.getSettings();
 
-/* Save only data needed for live site */
-live_data = {};
-for (cs_type in clik_settings) {
-	live_data[cs_type] = {"styleDefs"={}};
-	for (setting in clik_settings[cs_type].styleDefs) {
-		live_data[cs_type]["styleDefs"][setting] = {"type":clik_settings[cs_type].styleDefs[setting].type};
-	}
-}
+/* Save only data needed for live site (is any of this needed???) */
+// live_data = {};
+// for (cs_type in clik_settings) {
+// 	live_data[cs_type] = {"styleDefs"={}};
+// 	for (setting in clik_settings[cs_type].styleDefs) {
+// 		live_data[cs_type]["styleDefs"][setting] = {"type":clik_settings[cs_type].styleDefs[setting].type};
+// 	}
+// }
 
-live_js = "clik_settings = #serializeJSON(live_data)#;";
-filePath = ExpandPath("/_assets/js/clik_settings_live.js");
-FileWrite(filePath,live_js);
+// live_js = "clik_settings = #serializeJSON(live_data)#;";
+// filePath = ExpandPath("/_assets/js/clik_settings_live.js");
+// FileWrite(filePath,live_js);
 
-clik_settings["panel"]["styleDefs"] = settingsEditObj.styleDefs;
+
+/* Add editing data and save */
+clik_settings["panel"]["settings"] = settingsEditObj.settings;
 settingsOptions = settingsEditObj.settingsOptions;
 settingsOptions["shapes"] = settingsTest.contentObj.shapeOptions();
 

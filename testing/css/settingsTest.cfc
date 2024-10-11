@@ -7,7 +7,7 @@ component {
 
 	public any function init() {
 		// Style definition -- see link to css file ibid.
-		variables.settingsDef = ExpandPath("../css/_styles/test_settings.xml");
+		variables.settingsDef = ExpandPath("../css/_styles/test_settings.scss");
 		this.settingsObj = new clikpage.settings.settings(debug=1);
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj);
 		this.contentObj.debug = 1;
@@ -30,7 +30,8 @@ component {
 	}
 
 	public void function loadSettings() {
-		this.styles = this.settingsObj.loadStyleSettings(variables.settingsDef);
+		this.styles = {};
+		this.settingsObj.loadStyleSheet(variables.settingsDef,this.styles);
 	}
 
 	/**
@@ -114,6 +115,19 @@ component {
 	}
 
 	/**
+	 * Add static content to page struct for a given cs type
+	 */
+	public void function addCSTypeContent(required struct pageContent, required string type) {
+
+		staticContent = {};
+		staticContent["static_css"] = this.contentObj.contentSections[arguments.type].getStaticCss();
+		staticContent["static_js"] = this.contentObj.contentSections[arguments.type].getStaticJs();
+
+		this.contentObj.addPageContent(arguments.pageContent, staticContent);
+	
+	}
+
+	/**
 	 * @hint Add mock data to a content section according to type
 	 *
 	 * Some cs use the data mechanism to display their content
@@ -140,15 +154,19 @@ component {
 	/**
 	 * Generate length of filler text
 	 */
-	string function lorem(len) {
-		return left(
-			"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-			, arguments.len);
+	string function lorem(len) localmode=true {
+		if (! IsDefined("this.text")) {
+			this.text = [
+			"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
+			"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,",
+			"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo",
+			"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse",
+			"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non",
+			"proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			].toList(" ");
+			this.textlen = Len(this.text);
+		}
+		return mid(this.text, RandRange(1, this.textlen - arguments.len), arguments.len);
 
 	}
 

@@ -2,6 +2,12 @@
 	grid-gap:10px;
 }
 
+
+#testfit {
+	inherit: .grid-defaults;
+	grid-mode:fit;
+}
+
 #testfill {
 	inherit: .grid-defaults;
 	grid-mode:fill;
@@ -9,7 +15,6 @@
 
 #testfix {
 	inherit: .grid-defaults;
-	grid-gap:10px;
 	grid-mode: fixed;
 	grid-columns:3;
 	@mid {

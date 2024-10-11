@@ -26,8 +26,7 @@ component {
 		variables.static_js = {};
 
 		this.classes = "cs-" & variables.type;
-		this.varClasses = []; // classes that get applied to element -- see notes/varclasses.md
-
+		
 		// See selectorQualifiedCSS. Shorthand to apply css to sub elements
 		this.selectors = [
 			{"name"="main", "selector"=""}
@@ -68,7 +67,7 @@ component {
 		/*
 		 Keys of this struct are treated as special cases requiring logic to produce CSS
 		 
-		 They are not added directly to the CSS. Not the values of the struct are the default.
+		 They are not added directly to the CSS. Note the values of the struct are the default.
 
 		 NB see note above. Possibly we should create this automatically.
 		 
@@ -95,22 +94,42 @@ component {
 	/**
 	 * @hint Update settings and defaults from styleDefs
 	 *
-	 * Some cs still do this manually. This is deprecated
 	 */
 	public void function updateDefaults() {
-		// settings inherit across media
-		this.settings = {};
-		// defaults only need applying to root
+		
+		// list of settings to apply as classes
+		this.varClasses = [];
+		// Value of defaults for easy lookup
 		this.defaultStyles = {};
-		for (local.setting_code in this.styleDefs){
-			local.setting  = this.styleDefs[local.setting_code];
-			if (StructKeyExists(local.setting,"default")) {
-				this.defaultStyles[local.setting_code] = local.setting.default;
-				if (StructKeyExists(local.setting,"inherit")) {
-					this.settings[local.setting_code] = local.setting.default;
+
+		// Value of "setting defaults" -- the styles that aren't simple css vars
+		this.settings = {};
+
+		try {
+			for (local.setting_code in this.styleDefs){
+				local.setting  = this.styleDefs[local.setting_code];
+				if (StructKeyExists(local.setting,"default")) {
+					this.defaultStyles["#local.setting_code#"] = local.setting.default;
+				}
+				if (StructKeyExists(local.setting,"setting")) {
+					this.varClasses.append(local.setting_code);
+					if (! StructKeyExists(local.setting,"default")) {
+						throw("Setting #local.setting_code# had no default");
+					}
+					this.settings["#local.setting_code#"]  = local.setting.default;
+					
 				}
 			}
-			
+		}
+		catch (any e) {
+			local.extendedinfo = {"tagcontext"=e.tagcontext, "setting_code"=local.setting_code};
+
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error updating defaults:" & e.message, 
+				detail       = e.detail,
+				errorcode    = ""		
+			);
 		}
 
 	}
@@ -160,18 +179,12 @@ component {
      * More complex components will override this function and provide a range of settings.
 	 */
 	private string function css_settings(required string selector, required struct styles) {
-		// To do this the styling often has to be applied to sub elements scuh as <ul> for menus
-		// We therefore maintain a structkeyed by the "name" of the selector as defined in 
-		// this.selectors.
-		var ret = getSelectorStruct();
+		
+		var ret = "/* Main CSS goes here */\n";
+		ret &= arguments.selector & " {}\n";
 
-		// As we build the CSS we append to the different struct keys
-		// here "main" is nothing to do with media. See this.selectors.
-		// a menu function might do ret.ul &= "display:flex;\n"
-		ret.main &= "/* Main CSS goes here */\n";
-
-		// Once we've built this struct we write it out as a string using this function
-		return selectorQualifiedCSS(selector=arguments.selector, css_data=ret);
+		return ret;
+	
 	}
 
 
@@ -203,11 +216,13 @@ component {
 	 * @selector    Base CSS selector string e.g. #csid 
 	 * @styles      styles for the specific content section and medium 
 	 */
-	private string function css_styles(required string selector, required struct styles) {
+	private string function css_styles(required string selector, required struct styles, boolean debug=true) {
 		
-		var ret = "";
+		var tab = arguments.debug ? "	": "";
+		var css = [];
 
 		for (local.state in this.states) {
+
 			// main has no sub key. Other states dumped into setting struct
 			if ( local.state.state eq "main") {
 				local.state_styles = arguments.styles;
@@ -221,14 +236,13 @@ component {
 			
 			}
 
-			ret &= "/* #serializeJSON(local.state_styles) # */\n";
+			if (arguments.debug ) css.append("/* writing styles for state #local.state.state# */");
 
-			ret &= "/* writing styles for state #local.state.state# */\n";
-
-			ret &= arguments.selector & local.state.selector & " {\n";
+			css.append(arguments.selector & local.state.selector & " {");
 			
 			for (local.style in this.styleDefs) {
 				local.def = this.styleDefs[local.style];
+				if (local.def.keyExists("setting")) continue;
 				if (StructKeyExists(local.state_styles,local.style)) {
 					if (isStruct(local.state_styles[local.style])) {
 						throw("incorrect value for #local.style#");
@@ -249,23 +263,23 @@ component {
 							break;
 						}
 						// css &= this.settingsObj.CSSCommentHeader("Content styling");
-						ret &= "\t--#local.style#: " & local.val & ";\n";
+						css.append("#tab#--#local.style#: " & local.val & ";");
 					}
 				}
-				else {
-					ret &= "\t/* no style for #local.style# */\n";	
+				else if (arguments.debug ) {
+					css.append("#tab#/* no style for #local.style# */")	;
 				}
 				
 			}
 
-			ret &= variables.contentObj.settingsObj.css(local.state_styles);
+			css.append(variables.contentObj.settingsObj.css(local.state_styles, arguments.debug));
 
-			ret &= "}\n";
+			css.append("}");
 
 			// additional panels for plain css styling
 			for (local.panel in this.panels) {
 				if (StructKeyExists(local.state_styles,local.panel.panel)) {
-					ret &= "/* panel #local.panel.panel# */\n";
+					if (arguments.debug ) css.append("/* panel #local.panel.panel# */");
 				
 					// also get state styles for the panels
 					// This is pretty crude. If any states are defined it also
@@ -279,14 +293,14 @@ component {
 						}
 						else {
 							if (NOT StructKeyExists(local.panel_styles,local.panel_state.state)) {
-								ret &= "/* No settings for state #local.panel_state.state# */\n";
+								if (arguments.debug ) css.append("/* No settings for state #local.panel_state.state# */");
 								continue;
 							}
 							local.panel_state_styles = local.panel_styles[local.panel_state.state];
 						}
-						ret &= "/* state #local.panel_state.state# */\n";
+						if (arguments.debug ) css.append("/* state #local.panel_state.state# */");
 						try {
-							ret &= arguments.selector & local.state.selector & " " & local.panel.selector & local.panel_state.selector & " {\n" & variables.contentObj.settingsObj.css(local.panel_state_styles) & "}\n";
+							css.append(arguments.selector & local.state.selector & " " & local.panel.selector & local.panel_state.selector & " {" & variables.contentObj.settingsObj.css(local.panel_state_styles, arguments.debug) & "}" );
 						}
 						catch (any e) {
 							local.extendedinfo = {
@@ -304,13 +318,16 @@ component {
 						}
 					}
 				}
-				else {
-					ret &= "/* No settings for panel #local.panel.panel# */\n\n";
+				else if (arguments.debug ) {
+					css.append("/* No settings for panel #local.panel.panel# */");
 				}
 			}
+			css.append("");
 
 		}
-		return ret;
+
+		return css.toList(arguments.debug ? newLine() : "");
+	
 	}
 	
 	
@@ -323,13 +340,16 @@ component {
 	 * which require logic to adjust a number of parameters.
 	 *
 	 * Each cs component is expected to define its own css_settings() function.
+	 *
+	 * NB: don't call this yourself. Always use the content.css() method which will calculate full_styles and call this for all the media 
 	 * 
 	 * @styles  Content section settings struct
+	 * @full_styles See settings.inheritSettings - supplies all values for given media
 	 */
-	public string function css(required string selector, required struct styles) {
+	public string function css(required string selector, required struct styles, struct full_styles={}, boolean debug=true) {
 		
-		var css_str = css_styles(selector = arguments.selector, styles=arguments.styles);
-		css_str &= css_settings(selector = arguments.selector, styles=arguments.styles);
+		var css_str = css_styles(argumentCollection = arguments);
+		css_str &= css_settings(argumentCollection = arguments);
 				
 		return css_str;
 
@@ -414,54 +434,7 @@ component {
 		return ret;
 	}
 
-	/**
-	 * @hint Ensure settings inherit through media hierarchy
-	 * 
-	 * This is one of the key functions to understand. Say for instance you have a required 
-	 * setting "orientation" for a menu. This will have a default value, but this might be 
-	 * overridden in "main". When we want to get the value for mobile, it should inherit 
-	 * from main or even mid.
-	 *
-	 * NB shouldn't really be public.
-	 * 
-	 */
-	public void function inheritSettings(required struct settings, required struct media) {
-		
-		var currentSettings = false;
-		// need to do ascending size and then descending.
-		for (local.order in ['asc','desc']) {
-			currentSettings = duplicate(this.settings);
-			for (local.medium in arguments.media) {
-				local.mediumSettings = arguments.media[local.medium];
-				
-				if (local.medium != "main") {
-					if (local.order eq "asc" AND ! StructKeyExists( local.mediumSettings, "min" )) {
-						continue;
-					}
-					else if (local.order eq "desc" AND ! StructKeyExists( local.mediumSettings, "max" )) {
-						continue;
-
-					}
-					
-				}
-				if (NOT StructKeyExists(arguments.settings,local.medium)) {
-					arguments.settings[local.medium] = Duplicate(currentSettings);
-				}
-				else {
-					for (local.setting in this.settings) {
-
-						if (NOT StructKeyExists(arguments.settings[local.medium],local.setting) ) {
-							arguments.settings[local.medium][local.setting] = currentSettings[local.setting];
-						}
-					}
-					currentSettings = duplicate(arguments.settings[local.medium]);
-				}
-
-			}
-		}
-		
-	}
-
+	
 	/**
 	 * Remove style def options e.g. for imagegrid which inherits from grid we don't want flex or named positions.
 	 */
