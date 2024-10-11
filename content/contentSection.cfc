@@ -25,7 +25,8 @@ component {
 		variables.static_css = {};
 		variables.static_js = {};
 
-		this.classes = "cs-" & variables.type;		
+		this.classes = "cs-" & variables.type;
+		this.varClasses = []; // classes that get applied to element -- see notes/varclasses.md
 
 		// See selectorQualifiedCSS. Shorthand to apply css to sub elements
 		this.selectors = [

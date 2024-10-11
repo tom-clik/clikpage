@@ -4,7 +4,7 @@
 	<title>CSS Grid Test</title>
 	<link rel="stylesheet" href="/_assets/css/reset.css">
 	<link rel="stylesheet" href="/_assets/css/grids.css">
-	
+	<link rel="stylesheet" href="/_assets/css/grids_classes.css">	
 	
 	<meta charset="UTF-8">
 	<style>
@@ -28,16 +28,14 @@
 	
 	.cs-grid {
 		--grid-gap:10px;
-		--foo:testval;
 	}
 
 	#testfill {
-		--mode:fill;
+		--grid-mode:fill;
 	}
 	#testfix {
-		--mode: fixed;
+		--grid-mode: fixed;
 		--grid-columns:3;
-		--foo:testtippy;
 	}
 
 	@media screen and (max-width: 800px) {
@@ -48,30 +46,30 @@
 
 	@media screen and (max-width: 600px) {
 		#testfix {
-			--mode:none;
+			--grid-mode:none;
 		}
 	}
 
 
 	#testfixedwidth {
 		--bar: whatever;
-		--mode: fixedwidth;
+		--grid-mode: fixedwidth;
 	}
 
 	#testcolumns {
-		--mode: columns;
+		--grid-mode: columns;
 		--grid-template-columns: 220px auto 260px;
 	}
 
 	#testrows {
 		height: 400px;
-		--mode: rows;
+		--grid-mode: rows;
 		--grid-template-rows: 40px auto 40px;
 	}
 
 	#testnamed {
 		height: 400px;
-		--mode: named;
+		--grid-mode: named;
 		--grid-template-areas: "header header" "left right" "footer footer";
 		--grid-template-columns: 200px auto;
 		--grid-template-rows: 40px auto 40px;
@@ -86,6 +84,7 @@
 		}
 	}
 
+	/* See named areas test */
 	.header {
 		grid-area: header;
 	}
@@ -113,22 +112,22 @@
 
 
 	#testflex {
-		--mode: flex;
+		--grid-mode: flex;
 		--justify-content: flex-end;
 	}
 	#testflexnowrap {
-		--mode: flex;
+		--grid-mode: flex;
 		--flex-wrap: nowrap;
 		--align-items: center;
 	}
 
 	#testflexstretch {
-		--mode: flex;
+		--grid-mode: flex;
 		--flex-direction: row-reverse;
 		--flex-stretch: 1;
 	}
 	#testflexcenter {
-		--mode: flex;
+		--grid-mode: flex;
 		--justify-content: center;
 	}
 	</style>
@@ -182,7 +181,6 @@
 		</div>
 	</div>
 
-
 	<div class="test">
 		<div class="test-header">Flex</div>
 		<div id="testflex" class="cs-grid"></div>
@@ -217,10 +215,9 @@
 				}
 			});
 
-			$(".cs-grid").varClass({name:"mode"});
+			$(".cs-grid").varClass({name:"grid-mode"});
 
 		});
-
 
 		lorem = ["Lorem","ipsum","dolor","sit","amet,","consectetur","adipisicing","elit,","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua."];
 

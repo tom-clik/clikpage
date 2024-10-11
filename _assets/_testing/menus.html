@@ -299,12 +299,12 @@ Menu Testing
 		$(document).ready(function() {
 
 			// Apply the layout class
-			hash = window.location.hash || "#1";
+			var hash = window.location.hash || "#1";
 			hash = hash.replace("#","");
 			setTest(hash);
 			// / end apply layout class
 			
-			menuHTML = createMenu(menuData,"menu");
+			var menuHTML = createMenu(menuData,"menu");
 
 			$("#menu").html(menuHTML);
 
@@ -315,7 +315,8 @@ Menu Testing
 
 			var html = "<select>\n";
 			for (let test of tests) {
-				html += `<option value="${test.id}">${test.description}</option>\n`;
+				selected = test.id == hash ? " selected" : ""; 
+				html += `<option ${selected} value="${test.id}">${test.description}</option>\n`;
 			}
 			html += "</select>\n";
 

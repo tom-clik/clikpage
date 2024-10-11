@@ -10,11 +10,6 @@ See /notes/grids.md
 
 */
 
-@property --mode {
-	syntax: "none | fit | fill | fixed | fixedwidth | columns | rows | named | flex";
-	inherits: false;
-	initial-value: fit;
-}
 
 @property --grid-gap {
 	syntax: "<length> | <percentage>";
@@ -50,6 +45,23 @@ See /notes/grids.md
 	syntax: "<integer>"; 
 	inherits: false;
 	initial-value: 2;
+}
+
+@property --grid-template-rows {
+	inherits: false;
+	initial-value: auto;
+}
+
+@property --grid-template-columns {
+	inherits: false;
+	initial-value: auto;
+}
+
+
+/* e.g. "header header" "menu main" "footer footer" */
+@property --grid-template-areas {
+	inherits: false;
+	initial-value: none;
 }
 
 @property --flex-direction {
@@ -89,21 +101,6 @@ See /notes/grids.md
 	initial-value: wrap;
 }
 
-@property --grid-template-rows {
-	inherits: false;
-	initial-value: auto;
-}
-@property --grid-template-columns {
-	inherits: false;
-	initial-value: auto;
-}
-
-/* e.g. "header header" "menu main" "footer footer" */
-@property --grid-template-areas {
-	inherits: false;
-	initial-value: none;
-}
-
 .cs-grid {
 	display:grid;
 	grid-gap:var(--grid-gap);
@@ -114,71 +111,14 @@ See /notes/grids.md
 	flex-wrap: var(--flex-wrap);
 }
 
-.cs-grid.mode-none {
-	display: block;
-}
-
-.cs-grid.mode-fill {
-	--grid-fit: auto-fill;
-}
-
-.cs-grid.mode-fit, .cs-grid.mode-fill  {
-	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
-}
 
 .cs-grid > * {
 	height: var(--grid-max-height);
 	flex-grow: var(--flex-stretch);
 }
 
-.flex, .mode-flex {
+.flex {
 	display: flex;
 }
 
-.cs-grid.mode-fixed {
-	grid-template-columns: repeat(var(--grid-columns), 1fr);
-}
-
-.cs-grid.mode-fixedwidth {
-	grid-template-columns:  repeat(auto-fit, var(--grid-width));
-}
-
-.cs-grid.mode-columns {
-	grid-template-columns: var(--grid-template-columns);
-	grid-template-rows: var(--grid-template-rows);
-}
-
-.cs-grid.mode-rows {
-	grid-template-columns: 1fr;
-	grid-template-rows: var(--grid-template-rows);
-}
-.cs-grid.mode-named {
-	grid-template-areas: var(--grid-template-areas);
-	grid-template-columns: var(--grid-template-columns);
-	grid-template-rows: var(--grid-template-rows);
-}
-
-.cs-grid:not(.mode-named) > * {
-	grid-area: unset !important;
-}
-
-.cs-grid[class*=cols-] {
-	grid-template-columns: repeat(var(--grid-columns), 1fr);
-}
-
-.cols-2 {
-	--grid-columns:2;
-}
-
-.cols-3 {
-	--grid-columns:3;
-}
-
-.cols-4 {
-	--grid-columns:4;
-}
-
-.cols-5 {
-	--grid-columns:5;
-}
 

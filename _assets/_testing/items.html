@@ -7,7 +7,9 @@ tests = [
 	{"id": "2a", "description":"Image Left image space"},
 	{"id": "3a", "description":"Image right image space"},
 	{"id": "4", "description":"Heading Under Image Left"},
+	{"id": "4a", "description":"Heading Under Image Left  image space"},
 	{"id": "5", "description":"Heading Under Image right"},
+	{"id": "5a", "description":"Heading Under Image right  image space"},
 	{"id": "6", "description":"No heading"},
 	{"id": "7", "description":"No heading left"},
 	{"id": "8", "description":"No heading right"},
@@ -29,6 +31,7 @@ tests = [
 	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/title.css">
 	<link rel="stylesheet" href="../css/panels.css">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 	<meta charset="UTF-8">
 	<style>
 		body {
@@ -39,11 +42,25 @@ tests = [
 			--accent-color:#DC00FE;
 		}
 
+		.list {
+			--grid-mode:none;
+			width:560px;
+		}
+
 		.item {
-			margin:20px;
 			border:1px solid #ccc;
 			padding:8px;
-			width:560px;
+			
+		}
+
+		.item figure  {
+			border: 2px solid teal;
+			padding: 2px;
+		}
+
+		.item:hover figure {
+			border: 2px solid #ff00ff;
+			padding: 2px;
 		}
 
 
@@ -87,6 +104,85 @@ tests = [
 		.test-5 {
 			--htop:0;
 			--align:right;
+		}
+
+		.bodytest-5 .list, .bodytest-5a .list {
+			padding:20px;
+			width: 100%;
+			--grid-mode:fit;
+			--grid-gap:10px;
+			--item-gridgap:10px;
+			--grid-width: 420px;
+			--image-width:60%;
+		}
+
+		@media screen and (max-width: 660px) {
+			.bodytest-5 .list, .bodytest-5a  .list  {
+				--align:center;
+			}
+		}
+
+		.test-4a {
+			--htop:0;
+			--align:left;
+			--imagespace:1;
+		}
+
+		.bodytest-4 .list, .bodytest-4a  .list {
+			font-family: inter;
+			--title-font: inter;
+		}
+
+		.bodytest-4 .list, .bodytest-4a  .list {
+			padding:20px;
+			width: 100%;
+			--grid-mode:fixed;
+			--grid-gap:30px;
+			--item-gridgap:30px;
+			--grid-columns: 2;
+			--image-width:60%;
+		}
+		.bodytest-4 .item, .bodytest-4a  .item {
+			padding:0;
+			border-width: 0;
+		}
+
+		.bodytest-4 .item .title, .bodytest-4a  .item .title {
+			border-top: 4px solid black;
+			padding-top:4px;
+			text-transform: uppercase;
+			font-weight: bold;
+			font-size: 32px;
+		}
+
+		.bodytest-4 .item figure, .bodytest-4a  .item figure {
+			padding:0;
+			border-width: 0;
+		}
+
+		@media screen and (max-width: 1050px) {
+			.bodytest-4 .list, .bodytest-4a  .list  {
+				--image-width:50%;
+			}
+		}
+
+
+		@media screen and (max-width: 950px) {
+			.bodytest-4 .list, .bodytest-4a  .list  {
+				--align:center;
+			}
+		}
+
+		@media screen and (max-width: 660px) {
+			.bodytest-4 .list, .bodytest-4a  .list  {
+				--grid-mode: none;
+			}
+		}
+
+		.test-5a {
+			--htop:0;
+			--align:right;
+			--imagespace:1;
 		}
 
 		.test-6 {
@@ -151,15 +247,17 @@ Item Testing Page
 
 </div>
 
-	<div id="item" class="item test-1">
+<div class="list cs-grid">
+	<div class="item">
 
 		<h3 class="title">Box title</h3>
 
-		<figure>
-			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-			<figcaption>An elephant at sunset</figcaption>
-		</figure>
-		
+		<div class="imageWrap">
+			<figure>
+				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+				<figcaption>An elephant at sunset</figcaption>
+			</figure>
+		</div>
 		
 		<div class="textWrap">
 			<!-- Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping. It can be omitted -->
@@ -167,31 +265,14 @@ Item Testing Page
 
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 		</div>
 	
 	</div>
 
-	<div id="item2" class="item test-1 noimage">
 
-		<h3 class="title">Box title</h3>
+</div>
 
-		<figure>
-			
-		</figure>
-		
-		
-		<div class="textWrap">
-			<!-- Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping. It can be omitted -->
-			<h3 class="title wraptitle">Box title</h3>
-
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
-	
-	</div>
-	
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/jquery.throttledresize.js"></script>
 	<script src="/_assets/js/varClass.js"></script>
@@ -201,26 +282,56 @@ Item Testing Page
 
 		$(document).ready(function() {
 
-			$(".item").varClass({name:"htop,imagespace,title,align,wrap"});
+			// make the items - nothing to do with the styling.
+			
+			var $item = $(".item");
+			var $list = $(".list");
+			for (i=1; i <= 6; i++) {
+				let $newItem = $item.clone();
+				if (i % 3 == 0) {
+					$newItem.find("figure").html("");
+					$newItem.addClass("noimage");
+				}
+				$list.append($newItem);
+			}
 
+			$list.varClass({name:"grid-mode"});
+			// this should run the same for .list or .item
+			// TODO: user control for editing this
+			var type = "list";
+			$selector = $("." + type);
+
+
+			// Apply the layout class
+			var hash = window.location.hash || "#1";
+			hash = hash.replace("#","");
+			setTest(hash);
+			// / end apply layout class
+			
 			var html = "<select>\n";
 			for (let test of tests) {
-				html += `<option value="${test.id}">${test.description}</option>\n`;
+				selected = test.id == hash ? "selected" : ""; 
+				html += `<option ${selected} value="${test.id}">${test.description}</option>\n`;
 			}
 			html += "</select>\n";
 
-			$(html).appendTo("#testmenu").on("change", function( ) {
-				var test = $(this).val()
-				$(".item").each(function() {
-					$item = $(this);
-					$item.removeClassByPrefix("test-");
-					$item.addClass("test-" + test);
-				})
-				
-				$(window).trigger('resize');
-			});
+			$selector.varClass({name:"htop,imagespace,image,title,align,wrap"});
 
+			$(html).appendTo("#testmenu").on("change", function( ) {
+				let test = $(this).val()
+				setTest(test);
+			});
+			
 		});
+
+		function setTest(test) {
+			$selector.removeClassByPrefix("test-");
+			$selector.addClass("test-" + test);
+			$("body").removeClassByPrefix("bodytest-");
+			$("body").addClass("bodytest-" + test);
+			window.location.hash = test;
+			$(window).trigger('resize');
+		}
 
 
 	</script>

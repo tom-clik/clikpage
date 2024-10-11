@@ -18,58 +18,73 @@
 
 	$.varClass = function(element, options) {
 
-	var defaults = {
-		name : "mode",// list of vars to apply e.g. "mode,orienatation"
-		resize: 'resize'
-	}
-	
-	var plugin = this;
-
-	plugin.settings = {}
-
-	var $element = $(element);
-
-	var varList = []; // contains array of variable names to apply  = defaults.name.split();
-
-	plugin.init = function() {
-
-		plugin.settings = $.extend({}, defaults, options);
+		var defaults = {
+			name : "grid-mode",//list | array of vars to apply e.g. ["mode","orienatation"]
+			resize: 'resize'
+		}
 		
-		varList = plugin.settings.name.split(",");
+		var plugin = this;
 
-		plugin.reload();
+		plugin.settings = {}
 
-		$(window).on(plugin.settings.resize,function() {
+		var $element = $(element);
+
+		var varList = []; // contains array of variable names to apply  = defaults.name.split();
+
+		plugin.init = function() {
+
+			plugin.settings = $.extend({}, defaults, options);
+			
+			varList = plugin.settings.name.split(",");
+
 			plugin.reload();
-		});
-	}
 
-	plugin.reload = function() {
-		
-		for (let name of varList) {
-			$element.removeClassByPrefix(name + "-");
-			let val =  $element.css("--" + name);
-			if (val) {
-				$element.addClass(name + "-" + val);
+			$(window).on(plugin.settings.resize,function() {
+				plugin.reload();
+			});
+		}
+
+		plugin.reload = function() {
+			console.log(varList);
+			for (let name of varList) {
+				$element.removeClassByPrefix(name + "-");
+				let val =  $element.css("--" + name);
+				if (val) {
+					$element.addClass(name + "-" + val);
+				}
 			}
 		}
-	}
 
-	plugin.init();
+		plugin.addToClasses = function(names) {
+			let nameList = names.split(",");
+			for (let name of nameList) {
+				if (! varList.includes(name)) {
+					varList.push(name);
+				}
+			}
+			plugin.reload();
+		}
+
+		plugin.init();
 
 	}
 
 	$.fn.varClass = function(options) {
 
 		return this.each(function() {
+			
+			var temp = $(this).data('varClass');
+			
+			if (undefined == temp) {
 
-		  if (undefined == $(this).data('varClass')) {
+				var plugin = new $.varClass(this, options);
 
-			  var plugin = new $.varClass(this, options);
+				$(this).data('varClass', plugin);
 
-			  $(this).data('varClass', plugin);
-
-		   }
+			}
+			else {
+				temp.addToClasses(options.name);
+			}
 
 		});
 

@@ -21,11 +21,11 @@ image
 
 imagespace
 : Leave space for the image even when there is none. Useful when you have multiple items in a list and some may or may not have images.
-: Note for imagespace to work a class "noimage" has to be added to any items without images. Some tag must be left in even if there is no image. Easiest is jjust to leave the figure tag.
-
+: Note for imagespace to work a class "noimage" has to be added to any items without images. Some tag must be left in even if there is no image. Easiest is jjust to leave the .imageWrap tag.
 
 */
-.item {
+
+:root {
 	--htop:1;
 	--imagespace:0;
 	--align:center;
@@ -37,7 +37,9 @@ imagespace
 	--item-gridgap: 10px;	
 }
 
-figure img {
+
+
+.imageWrap img {
 	max-width: 100%;
 	height: auto;
 }
@@ -45,6 +47,16 @@ figure img {
 /* Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping */
 .wraptitle {
 	display: none;
+}
+
+.item .title {
+	grid-area: title;
+}
+.item .textWrap {
+	grid-area: textWrap;
+}
+.item .imageWrap {
+	grid-area: imageWrap;
 }
 
 .textWrap > p {
@@ -59,71 +71,64 @@ figure img {
 	grid-template-columns:   1fr;
 }
 
-.item.htop-0 {
+.item.htop-0, .list.htop-0 .item {
 	grid-template-areas:  "imageWrap" "title" "textWrap";
 }
 
-.item.align-left {
+.item.align-left, .list.align-left .item {
 	grid-template-columns:  var(--image-width) auto;
 	grid-template-areas:  "title title" "imageWrap  textWrap";
 }
 
-.item.align-right {
+.item.align-right, .list.align-right .item {
 	grid-template-columns: auto var(--image-width);
 	grid-template-areas:  "title title" "textWrap imageWrap";
 }
 
-.item.htop-0 {
+.item.htop-0, .list.htop-0 .item {
 	grid-template-areas:  "imageWrap" "title" "textWrap";
 }
 
-.item.htop-0.align-left {
+.item.htop-0.align-left, .list.htop-0.align-left .item {
 	grid-template-areas:  "imageWrap title" "imageWrap textWrap";
 }
 
-.item.htop-0.align-right {
+.item.htop-0.align-right, .list.htop-0.align-right .item {
 	grid-template-areas:  "title imageWrap" "textWrap imageWrap";
 }
 
-.item.title-0.align-right {
+.item.title-0.align-right, .list.title-0.align-right .item {
 	grid-template-areas:  "textWrap imageWrap";
 }
 
-.item.title-0.align-left {
+.item.title-0.align-left, .list.title-0.align-left .item {
 	grid-template-areas:  "imageWrap textWrap";
 }
 
 /* noimage class needs to be applied to item if there is no image. This is for removing
 the space in a list of items with the same class */
 
-.item.image-0, .item.noimage.imagespace-0 {
+.item.image-0, .list.image-0 .item, .item.noimage.imagespace-0, .list.imagespace-0 .item.noimage {
 	grid-template-areas:  "title" "textWrap";
+	grid-template-rows: min-content auto;
 	grid-template-columns:   1fr;
 }
-}
 
-.item .title {
-	grid-area: title;
-}
 
-.item.title-0 .title {
+.item.title-0 .title, .list.title-0 .item .title {
 	display: none;
 }
 
-.item figure {
-	grid-area: imageWrap;
-}
-
-.item.image-0 figure {
+.item.image-0 .imageWrap, .list.image-0 .item .imageWrap {
 	display: none;
 }
 
-
-.item.wrap-1.align-left, .item.wrap-1.align-right {
+.item.wrap-1.align-left, .item.wrap-1.align-right,
+.list.wrap-1.align-left .item, .list.wrap-1.align-right .item  {
 	display: block;
 }
 
-.item.wrap-1:after {
+.item.wrap-1:after, .list.wrap-1 .item:after {
   content: " ";
   display: block;
   height: 0;
@@ -132,31 +137,35 @@ the space in a list of items with the same class */
   overflow: hidden;
 }
 
-.item.wrap-1 figure {
+.item.wrap-1 .imageWrap, .list.wrap-1 .item .imageWrap {
 	width: var(--image-width);
 }
 
-.item.noimage.wrap-1 figure {
+.item.noimage figure {
 	display: none;
 }
 
-.item.wrap-1.align-left figure {
+.item.noimage.wrap-1 .imageWrap, .list.wrap-1 .item.noimage .imageWrap {
+	display: none;
+}
+
+.item.wrap-1.align-left .imageWrap, .list.wrap-1.align-left .item .imageWrap {
 	float: left;
 	margin-right: var(--item-gridgap);
 	margin-bottom: var(--item-gridgap);
 }
 
-.item.wrap-1.align-right figure {
+.item.wrap-1.align-right .imageWrap, .list.wrap-1.align-right .item .imageWrap {
 	float: right;
 	margin-left: var(--item-gridgap);
 	margin-bottom: var(--item-gridgap);
 }
 
-.item.wrap-1.htop-0 > h3 {
+.item.wrap-1.htop-0 > h3, .list.wrap-1.htop-0 .item > h3  {
 	display: none;
 }
 
-.item.wrap-1.htop-0 .wraptitle {
+.item.wrap-1.htop-0 .wraptitle, .list.wrap-1.htop-0 .item .wraptitle {
 	display: block;
 }
 
@@ -164,7 +173,4 @@ the space in a list of items with the same class */
 	display: var(--caption-display);
 }
 
-.item .textWrap {
-	grid-area: textWrap;
-}
 
