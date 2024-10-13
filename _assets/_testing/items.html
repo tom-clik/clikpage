@@ -20,8 +20,6 @@ tests = [
 ];
 </script>
 
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,8 +27,10 @@ tests = [
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/grids_classes.css">
 	<link rel="stylesheet" href="../css/title.css">
 	<link rel="stylesheet" href="../css/panels.css">
+	<link rel="stylesheet" href="../css/panels_classes.css">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 	<meta charset="UTF-8">
 	<style>
@@ -69,41 +69,41 @@ tests = [
 		}
 
 		.test-2 {
-			--align:left;
+			--image-align:left;
 		}
 
 		.test-3 {
-			--align:right;
+			--image-align:right;
 		}
 
 		@media screen and (max-width: 800px) {
 			.test-2 {
-				--align:center;
+				--image-align:center;
 			}
 
 			.test-3 {
-				--align:center;
+				--image-align:center;
 			}
 		}
 
 		.test-2a {
-			--align:left;
+			--image-align:left;
 			--imagespace:1;
 		}
 
 		.test-3a {
-			--align:right;
+			--image-align:right;
 			--imagespace:1;
 		}
 
 		.test-4 {
 			--htop:0;
-			--align:left;
+			--image-align:left;
 		}
 
 		.test-5 {
 			--htop:0;
-			--align:right;
+			--image-align:right;
 		}
 
 		.bodytest-5 .list, .bodytest-5a .list {
@@ -118,13 +118,13 @@ tests = [
 
 		@media screen and (max-width: 660px) {
 			.bodytest-5 .list, .bodytest-5a  .list  {
-				--align:center;
+				--image-align:center;
 			}
 		}
 
 		.test-4a {
 			--htop:0;
-			--align:left;
+			--image-align:left;
 			--imagespace:1;
 		}
 
@@ -169,7 +169,7 @@ tests = [
 
 		@media screen and (max-width: 950px) {
 			.bodytest-4 .list, .bodytest-4a  .list  {
-				--align:center;
+				--image-align:center;
 			}
 		}
 
@@ -181,43 +181,43 @@ tests = [
 
 		.test-5a {
 			--htop:0;
-			--align:right;
+			--image-align:right;
 			--imagespace:1;
 		}
 
 		.test-6 {
-			--title:0;
+			--show-title:0;
 		}
 
 		.test-7 {
-			--title:0;
-			--align:left;
+			--show-title:0;
+			--image-align:left;
 		}
 
 		.test-8{
-			--title:0;
-			--align:right;
+			--show-title:0;
+			--image-align:right;
 		}
 
 		.test-9{
 			--wrap:1;
-			--align:left;
+			--image-align:left;
 		}
 
 		.test-10{
 			--wrap:1;
-			--align:right;
+			--image-align:right;
 		}
 		.test-11{
 			--htop:0;
 			--wrap:1;
-			--align:left;
+			--image-align:left;
 		}
 
 		.test-12{
 			--htop:0;
 			--wrap:1;
-			--align:right;
+			--image-align:right;
 		}
 
 		/*
@@ -315,7 +315,7 @@ Item Testing Page
 			}
 			html += "</select>\n";
 
-			$selector.varClass({name:"htop,imagespace,image,title,align,wrap"});
+			$selector.varClass({name:"htop,imagespace,show-image,show-title,image-align,wrap"});
 
 			$(html).appendTo("#testmenu").on("change", function( ) {
 				let test = $(this).val()

@@ -4,9 +4,14 @@
 
 ## Notes
 
-Trying to simplify this.  What we want is a page that just parses a stylesheet, outputs CSS for each scheme in that stylesheet and then displays the content section with the scheme applied.
+
+
 
 ## Status
+
+Working now with new pattern
+
+## History
 
 
 
@@ -15,46 +20,38 @@ Trying to simplify this.  What we want is a page that just parses a stylesheet, 
 <cfscript>
 
 
-if (1 OR request.rc.reload OR ! StructKeyExists(application, "settingsTest") ) {
-	application.settingsTest = new settingsTest();
+if ( request.rc.reload OR ! StructKeyExists(application, "cssTestingObject") ) {
+	application.cssTestingObject = new cssTestingObject();
 }
 
-pageContent = application.settingsTest.pageObj.getContent();
-
-application.settingsTest.addCSTypeContent(pageContent, "grid");
+pageContent = application.cssTestingObject.pageObj.getContent();
 
 pageContent.title = "Grid Testing Page";
+
 pageContent.css = demoPageCSS();
 
-cs = application.settingsTest.contentObj.new(id="test",title="Grid",type="grid");
+cs = application.cssTestingObject.contentObj.new(id="test",title="Grid",type="grid");
 
-styles = duplicate(application.settingsTest.styles);
-application.settingsTest.settingsObj.loadStyleSheet(expandPath("_styles/grid_test.css"), styles);
+styles = duplicate(application.cssTestingObject.styles);
+application.cssTestingObject.settingsObj.loadStyleSheet(expandPath("_styles/grid_test.scss"), styles);
 
 css = [];
 
 for (test in ["testfit","testfill","testfixedwidth","testfix","testcolumns","testrows","testnamed","testflex","testflexnowrap","testflexstretch","testflexcenter"]) {
 	cs.id = test;
 
-	styling = application.settingsTest.contentObj.css(content=cs, styles=styles, debug=true);
+	styling = application.cssTestingObject.contentObj.css(content=cs, styles=styles, debug=false);
 	css.append(styling);
 }
 
+pageContent.css &= application.cssTestingObject.settingsObj.contentCSS(css, styles.media);
 
+csdata = application.cssTestingObject.contentObj.display(content=cs);
 
-pageContent.css &= application.settingsTest.settingsObj.contentCSS(css, styles.media);
-
+application.cssTestingObject.contentObj.addPageContent(pageContent, csData.pageContent);
 
 pageContent.body = "<h2>#pageContent.title#</h2>";
 </cfscript>
-
-<cfoutput>
-<pre>
-	#htmlCodeFormat(pageContent.css)#
-
-</pre>
-
-</cfoutput>
 
 <cfsavecontent variable="temp">
 <div class="test">
@@ -121,8 +118,9 @@ pageContent.body = "<h2>#pageContent.title#</h2>";
 <cfscript>
 
 pageContent.body &= temp;
+pageContent.body &= htmlCodeFormat(pageContent.css);
 
-writeOutput(application.settingsTest.pageObj.buildPage(pageContent));
+writeOutput(application.cssTestingObject.pageObj.buildPage(pageContent));
 
 string function demoPageCSS() {
 	return "body {
@@ -133,6 +131,12 @@ string function demoPageCSS() {
 		display: inline-block;
 		background-color: ##cecece;
 		padding:2px;
+	}
+	.test-header {
+		font-weight: bold;
+	}
+	.test {
+		margin:10px 0;
 	}
 	/* See named areas test */
 	.header {
@@ -155,7 +159,7 @@ string function gridContent(cells=12, len=100, randLen=0) localmode=false {
 	
 	for (i = 1 ; i <= arguments.cells; i++) {
 		tlen =  (arguments.randLen neq 0) ?  RandRange(randLen, arguments.len) : arguments.len;
-		html &= "<g>" & application.settingsTest.lorem(tlen) & "</g>";
+		html &= "<g>" & application.cssTestingObject.lorem(tlen) & "</g>";
 	}
 	return html;
 }
