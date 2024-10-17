@@ -5,7 +5,8 @@ component accessors="true" extends="utils.baseutils" {
 	property name="previewurl" type="string" default="index.cfm";
 	
 	public site function init(
-		required string layoutsFolder
+		required string layoutsFolder,
+		required dataObj
 		) {
 
 		this.settingsObj = new clikpage.settings.settings(debug=getdebug());
@@ -13,6 +14,7 @@ component accessors="true" extends="utils.baseutils" {
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
 
 		this.pageObj = new clikpage.page(debug=getdebug());
+		this.dataObj = arguments.dataObj;
 		
 		super.utils();
 
@@ -57,123 +59,44 @@ component accessors="true" extends="utils.baseutils" {
 		if (NOT StructKeyExists(local.site,"layout")) {
 			throw("No layout defined for site");
 		}
-		if (NOT StructKeyExists(local.site,"stylesettings")) {
-			throw("No stylesettings defined for site");
+		
+		if (StructKeyExists(local.site, "styles") ) {
+			// TODO: New load styles function and call to it here.
 		}
-
-		if (StructKeyExists(local.site.stylesettings,"src")) {
-			local.site.stylesettings = this.settingsObj.loadStyleSettings( getCanonicalPath( local.root & local.site.stylesettings.src ) );
-		}
-		else {
-			throw("Only src supported for stylesettings at this time");
-		}
-
+		
 		// load sections
 		parseData(site=local.site,data=local.site.sections,type="sections",root=local.root);
 		checkParentSections(site=local.site);
 
+		SectionData( site=local.site );
+
 		// load other data from files
-		loadData( site=local.site,directory=local.root );
+		// DEPRECATED, see dataObj
+		// loadData( site=local.site,directory=local.root );
 		
+		// Load all separate (ie reusable) content sections
+		loadContent( site=local.site, directory=local.root );
+
 		// process styling from layouts
 		loadSiteLayouts(local.site);
 
-		// complete struct of all cs
-		loadContent( site=local.site, directory=local.root );
-
 		// list of all containers used in site
 		local.site["containers"] = [=];
-		// complete struct of all styles - may have globale settings like schemes
-		// or library components in there already (defined in stylesettings)
-		if ( StructKeyExists(local.site.stylesettings,"style") ) {
-			local.site["style"] = Duplicate(local.site.stylesettings.style);
-		}
-		else {
-			local.site["style"] = {};
-		}
-
+		
 		for (local.layout in local.site.layouts) {
 
 			local.layoutObj = this.layoutsObj.getLayout(local.layout);
-			// build complete list of cs
+			// build complete struct of cs
 			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
 			// add to list of all containers used in site
 			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
 		}
 
-		// Load the settings for every content section. Combination
-		// of styles and defaults. Applies inheritance according to media
-		this.contentObj.loadSettings(
-			styles = local.site.style, 
-			content_sections = local.site.content, 
-			media = local.site.stylesettings.media
-		);		
-
 		return local.site;
 
 	}
 
-	/** Load data files specified in site.data 
-	 * 
-	 *
-	 * // TODO: replace directory with explicit links from site def.
-	 * // TODO: dumps data keys into root (??) put back into data key
-	 */
-	private void function loadData(
-		required struct site, 
-		required string directory
-		) {
-		
-		// cope with one record not being array
-		if (NOT IsArray(arguments.site.data)) {
-			arguments.site.data = [arguments.site.data.data]
-		}
-
-		for (local.data in arguments.site.data) {
-			
-			if (!StructKeyExists(local.data,"src")) {
-				throw(message="No src defined for data entry", detail="Each data record in a site definition must have an src tag pointing to a valid xml data file");	
-			}
-			local.filepath = arguments.directory & local.data.src;
-			local.image_path = local.data.image_path ? : "";
-
-			try {
-				local.xmlData = variables.utils.utils.fnReadXML(local.filepath,"utf-8");
-				local.records = variables.utils.xml.xml2data(local.xmlData);
-				if (NOT IsArray(local.records)) {
-					// chekc single record
-					if (StructCount(local.records) eq 1) {
-						local.records = [local.records[structKeyList(local.records)]];
-					}
-					else {
-						throw("Data is not array. If you only have one record");
-					}
-				}
-				if (NOT StructKeyExists(local.data,"type")) {
-					local.data.type = "articles";
-				}
-				parseData(site=arguments.site,data=local.records,type=local.data.type,image_path=local.image_path,root=arguments.directory);
-			}
-			catch (any e) {
-				if (e.type eq "filenotfound") {
-					throw(message="Data file #local.filepath# not found");	
-				}
-				else if (e.type eq "custom") {
-					throw(object=e);	
-				}
-				local.extendedinfo = {"tagcontext"=e.tagcontext};
-				throw(
-					extendedinfo = SerializeJSON(local.extendedinfo),
-					message      = "Unable to parse data file #local.filepath#:" & e.message, 
-					detail       = e.detail,
-					errorcode    = "loadData.2"		
-				);
-			}
-		}
-
-		structDelete(arguments.site,"data");
-
-	}
+	
 
 	/**
 	 * Use parent tag in sub sections to generate list of children
@@ -219,7 +142,7 @@ component accessors="true" extends="utils.baseutils" {
 		if (! isArray(arguments.site.content) ) {
 			arguments.site.content = [arguments.site.content];
 		}
-
+		/*** Why in a loop? doesn't make any sense. TODO: fix this. Guess it's working for single entries */
 		for (local.link in arguments.site.content) {
 			local.match = ListLast(local.link.import, "\/");
 			local.dir = arguments.directory & "/" & Replace(local.link.import, local.match, "");
@@ -243,7 +166,7 @@ component accessors="true" extends="utils.baseutils" {
 	/** 
 	 * @hint Convert XML parsed array into struct keyed by code 
 	 *
-	 * Slightly unusual here. Swme function used for sections, articles, photos etc
+	 * Slightly unusual here. Same function used for sections, articles, photos etc
 	 * Possibly revisit
 	 * 
 	 * @site Site struct
@@ -259,10 +182,16 @@ component accessors="true" extends="utils.baseutils" {
 			switch(arguments.type) {
 				case "sections":
 					StructAppend(local.data,{"layout":arguments.site.layout},false);
+					if (! StructKeyExists(local.data,"tags") ) {
+						local.data.tags = {};
+					}
+					else if ( isSimpleValue( local.data.tags ) ) {
+						local.data.tags = variables.utils.utils.listToStruct(local.data.tags);
+					}
 					break;
 			}
 			try {
-				checkFields(data=local.data,type=arguments.type,image_path=arguments.image_path,root=arguments.root);
+				// checkFields(data=local.data,type=arguments.type,image_path=arguments.image_path,root=arguments.root);
 			}
 			catch (any e) {
 				local.extendedinfo = {"tagcontext"=e.tagcontext,"data"=local.data,"type"=arguments.type};
@@ -281,69 +210,103 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 	// TODO: formal definition of records with checking, defaults etc
-	private void function checkFields(required struct data, string type, string image_path="", string root="") {
+	// private void function checkFields(required struct data, string type, string image_path="", string root="") {
 		
-		local.metaData = {};
+	// 	local.metaData = {};
 
-		if ( StructKeyExists (arguments.data, "src") ) {
-			local.filename = GetCanonicalPath( arguments.root & arguments.data.src );
-			local.file = FileRead( local.filename ) ;
-			arguments.data["detail"] = variables.utils.flexmark.toHtml(local.file, local.metaData);
-			StructAppend( arguments.data,local.metaData );
-		}
+	// 	if ( StructKeyExists (arguments.data, "src") ) {
+	// 		local.filename = GetCanonicalPath( arguments.root & arguments.data.src );
+	// 		local.file = FileRead( local.filename ) ;
+	// 		arguments.data["detail"] = variables.utils.flexmark.toHtml(local.file, local.metaData);
+	// 		StructAppend( arguments.data,local.metaData );
+	// 	}
 
-		if (!StructKeyExists(arguments.data,"id")) {
-			throw(message="No id defined for data record");
-		}
+	// 	if (!StructKeyExists(arguments.data,"id")) {
+	// 		throw(message="No id defined for data record");
+	// 	}
 
-		if (!StructKeyExists(arguments.data,"title")) {
-			throw(message="No title defined for record");	
-		}
+	// 	if (!StructKeyExists(arguments.data,"title")) {
+	// 		throw(message="No title defined for record");	
+	// 	}
 
-		if (!StructKeyExists(arguments.data,"short_title")) {
-			arguments.data["short_title"] = arguments.data.title;	
-		}	
+	// 	if (!StructKeyExists(arguments.data,"short_title")) {
+	// 		arguments.data["short_title"] = arguments.data.title;	
+	// 	}	
 
-		for (local.field in ['detail','description']) {
-			if ( StructKeyExists(arguments.data, local.field) AND 
-				NOT StructKeyExists(local.metaData, local.field) 
-				) {
-				arguments.data[local.field] = Trim( variables.utils.flexmark.toHtml(arguments.data[local.field]) );
+	// 	for (local.field in ['detail','description']) {
+	// 		if ( StructKeyExists(arguments.data, local.field) AND 
+	// 			NOT StructKeyExists(local.metaData, local.field) 
+	// 			) {
+	// 			arguments.data[local.field] = Trim( variables.utils.flexmark.toHtml(arguments.data[local.field]) );
+	// 		}
+	// 	}
+
+	// 	if (arguments.image_path NEQ "" ) {
+	// 		for (local.field in ['image','image_thumb']) {
+	// 			if (structKeyExists(arguments.data, local.field) AND arguments.data[local.field]  NEQ "" ) {
+	// 				arguments.data[local.field] = arguments.image_path & arguments.data[local.field];					
+	// 			}
+	// 		}
+	// 	}
+
+	// 	StructAppend(arguments.data,{"tags":"","detail":"","description":"","live":true,"pubdate":nullValue(),"sort_order":0,"image":""},false);
+
+	// 	if (!isBoolean(arguments.data.live)) {
+	// 		throw(message="Live value is not boolean");		
+	// 	}
+	// 	if (!isNull(arguments.data.pubdate) AND !isDate(arguments.data.pubdate)) {
+	// 		throw(message="Invalid value for pubdate");			
+	// 	}
+
+	// 	switch(arguments.type) {
+	// 		case "sections":
+	// 			if (!StructKeyExists(arguments.data,"layout")) {
+	// 				throw("No layout defined for section #arguments.data.id#");
+	// 			}
+	// 			break;
+	// 	}
+
+	// 	// convert tags list to set
+	// 	local.tagsStr = [=];
+	// 	for (local.tag in ListToArray(arguments.data.tags)) {
+	// 		local.tagsStr[local.tag] = 1;
+	// 	}
+	// 	arguments.data.tags = local.tagsStr;
+		
+	// }
+
+
+	/**
+	 * Add sections defined in the data to section records
+	 */
+	private void function sectionData( required struct site ) localmode=false {
+
+		sectionList = StructKeyArray( arguments.site.sections );
+		sectionData = this.dataObj.getRecords( sectionList );
+
+		for (section in sectionList) {
+			if ( sectionData.keyExists(section) ) {
+				variables.utils.utils.deepStructAppend( arguments.site.sections[section], sectionData[section], false );
 			}
 		}
 
-		if (arguments.image_path NEQ "" ) {
-			for (local.field in ['image','image_thumb']) {
-				if (structKeyExists(arguments.data, local.field) AND arguments.data[local.field]  NEQ "" ) {
-					arguments.data[local.field] = arguments.image_path & arguments.data[local.field];					
-				}
+	}
+
+	/**
+	 * Get list of sections by tag
+	 */
+	public array function sectionList(required struct site, required string tag) {
+
+		sections = [];
+		
+		for (section in arguments.site.sections) {
+			if ( arguments.site.sections[section].tags.keyExists(tag) ) {
+				sections.append(section)
 			}
 		}
 
-		StructAppend(arguments.data,{"tags":"","detail":"","description":"","live":true,"pubdate":nullValue(),"sort_order":0,"image":""},false);
+		return sections;
 
-		if (!isBoolean(arguments.data.live)) {
-			throw(message="Live value is not boolean");		
-		}
-		if (!isNull(arguments.data.pubdate) AND !isDate(arguments.data.pubdate)) {
-			throw(message="Invalid value for pubdate");			
-		}
-
-		switch(arguments.type) {
-			case "sections":
-				if (!StructKeyExists(arguments.data,"layout")) {
-					throw("No layout defined for section #arguments.data.id#");
-				}
-				break;
-		}
-
-		// convert tags list to set
-		local.tagsStr = [=];
-		for (local.tag in ListToArray(arguments.data.tags)) {
-			local.tagsStr[local.tag] = 1;
-		}
-		arguments.data.tags = local.tagsStr;
-		
 	}
 
 	/**
@@ -362,38 +325,44 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.menuData = [];
+
 		for (local.sectioncode in arguments.sections) {
+			
 			local.section = arguments.site.sections[local.sectioncode];
 			local.menuitem = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
+			
 			if (StructKeyExists(local.section,"dataset")) {
-				local.useSubmenu = ListFindNoCase("articles,sections",getDataSetType(local.section.dataset));
-				if ( local.useSubmenu ) {
-					local.data = getDataSet(site=arguments.site,dataset=local.section.dataset);
+				
+				local.data = this.dataObj.getDataSet(local.section.dataset);
+				
+				if ( ArrayLen(local.data) GT 1) {
+					local.menuitem["submenu"] = [];
+					local.records = getRecords(
+						ID=local.data
+					);
 
-					if ( ArrayLen(local.data) GT 1) {
-						local.menuitem["submenu"] = [];
-						local.records = getRecords(
-							site=arguments.site,
-							dataset=local.data,
-							type=local.section.dataset.type
-						);
-						for (local.record in local.records) {
-							switch (local.section.dataset.type)	{
-								case "articles":
-									local.link = "{{link.#local.sectioncode#.view.#local.record.id#}}";
-									break;
-								case "sections":
-									local.link = "{{link.#local.record.id#}}";
-									break;
-
-							}
-							local.submenuitem = {"link"="#local.link#","id"="submenu_#local.sectioncode#_#local.record.id#","title"=local.record.title};
-							ArrayAppend(local.menuitem.submenu, local.submenuitem);
+					for (local.code in local.data) {
+						local.record = local.records[local.code];
+						if (local.record.tags.keyExists("articles") ) {
+							local.link = "{{link.#local.sectioncode#.view.#local.record.id#}}";
 						}
+						else if (local.record.tags.keyExists("sections") ) {
+							local.link = "{{link.#local.record.id#}}";
+						}
+						else {
+							local.link = "";
+						}
+
+						local.submenuitem = {"link"="#local.link#","id"="submenu_#local.sectioncode#_#local.record.id#","title"=local.record.title};
+						
+						ArrayAppend(local.menuitem.submenu, local.submenuitem);
 					}
 				}
+				
 			}
+
 			ArrayAppend(local.menuData,local.menuitem);
+		
 		}
 
 		return local.menuData;
@@ -401,103 +370,11 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 
+
 	public string function getDataSetType(
 		required struct dataset
 		) {
 		return dataset.type ? : "articles";
-	}
-
-	/**
-	 * Get array of data IDs that match data set filter criteria
-	 * 
-	 * @site         Site struct
-	 * @dataset      see notes. 
-	 * @data         Replace {field} in the dataset with these values
-	 */
-	public array function getDataSet(
-		required struct site, 
-		required struct dataset,
-				 struct fields = {}
-		) {
-
-		StructAppend(arguments.dataset,{"tag":"","type":"articles"},false);
-
-		local.data = [];
-
-		// return all data for a type if no filter
-		if (arguments.dataset.tag eq "") {
-			return structKeyArray(arguments.site[arguments.dataset.type]);
-		}
-
-		// alias the data we are looking at
-		local.ref = arguments.site[arguments.dataset.type];
-		local.tag =  arguments.dataset.tag;
-
-		for (local.field in arguments.fields) {
-			local.tag = Replace(local.tag, "{{" & local.field & "}}", arguments.fields[local.field])
-		}
-
-		for (local.id in local.ref) {
-			
-			local.record = local.ref[local.id];
-
-			if (  local.record.tags.keyExists( local.tag ) ) {
-				ArrayAppend(local.data,local.id);
-			}
-			
-		}
-		
-		return local.data;
-	}
-
-	/**
-	 * Get array of data to supply to content objects
-	 * 
-	 * @site   Site struct
-	 * @dataSet     array of IDs (see getDataSet())
-	 * @type data type
-	 */
-	public array function getRecords(
-		required struct site, 
-		required array  dataset, 
-		required string type="articles"
-		) {
-
-		local.data = [];
-
-		for (local.id in arguments.dataset) {
-			
-			ArrayAppend(local.data,arguments.site[arguments.type][local.id]);
-
-		}
-
-		return local.data;
-
-	}
-
-	/**
-	 * Get full record of data
-	 * 
-	 * @site   Site struct
-	 * @dataSet     array of IDs (see getDataSet())
-	 * @type data type
-	 */
-	public struct function getRecord(required struct site, required any ID, required string type="articles") {
-
-		try {
-			return arguments.site[arguments.type][arguments.id];
-		}
-		catch (any e) {
-			local.extendedinfo = {tagcontext=e.tagcontext,data=arguments.site[arguments.type],type=arguments.type,id=arguments.id};
-			throw(
-				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Error getting data record:" & e.message, 
-				detail       = e.detail,
-				errorcode    = "site.getRecord"		
-			);
-		}
-
-		
 	}
 
 	/**
@@ -1072,7 +949,17 @@ component accessors="true" extends="utils.baseutils" {
 	}
 
 	/**
-	 * Get a list of all layouts used in the site
+	 * @hint Get a list of all layouts used in the site
+	 *
+	 * XML might be defined like this. 
+	 * 
+	 * <layout>articlelist</layout>
+	 * <layout action="view">articledetail</layout>
+	 *
+	 * It will create a array
+	 *
+	 * ['articlelist',{"action":"view","value":"articledetail"}]
+	 * 
 	 */
 	private void function loadSiteLayouts(required struct site) {
 		
@@ -1083,6 +970,7 @@ component accessors="true" extends="utils.baseutils" {
 			local.layouts[arguments.site.layout] = 1;
 		}
 		// See notes on getLayoutName for structure of layouts
+		// 	
 		for ( local.section in arguments.site.sections ) {
 			if ( StructKeyExists( arguments.site.sections[local.section], "layout" ) ) {
 				local.layout = arguments.site.sections[local.section].layout;
@@ -1095,6 +983,7 @@ component accessors="true" extends="utils.baseutils" {
 							local.layouts[local.layoutAction] = 1;
 						}
 						else {
+							// e.g from <layout action="view">articledetail</layout>
 							local.layouts[local.layoutAction.value] = 1;
 						}
 					}
@@ -1110,12 +999,13 @@ component accessors="true" extends="utils.baseutils" {
 	string function siteCSS(required struct site, boolean debug=variables.debug) {
 	
 		var css = "";
+		var cr = arguments.debug ? newLine() : "";
 		
-		css &= ":root {\n";
-		css &= this.settingsObj.colorVariablesCSS(arguments.site.styleSettings);
-		css &= this.settingsObj.fontVariablesCSS(arguments.site.styleSettings);
-		css &= this.settingsObj.variablesCSS(arguments.site.styleSettings);
-		css &=  "\n}\n";
+		css &= ":root {#cr#";
+		css &= this.settingsObj.colorVariablesCSS(arguments.site.styleSettings,arguments.debug);
+		css &= this.settingsObj.fontVariablesCSS(arguments.site.styleSettings,arguments.debug);
+		css &= this.settingsObj.variablesCSS(arguments.site.styleSettings,arguments.debug);
+		css &=  "#cr#}#cr#";
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
 		
 		local.written = {};
@@ -1133,7 +1023,7 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		for (var id in arguments.site.containers) {
-			css &= "###id# {grid-area:#id#;}\n";
+			css &= "###id# {grid-area:#id#;}#cr#";
 		}
 
 		// Main content section styling

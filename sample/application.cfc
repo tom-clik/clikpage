@@ -18,13 +18,22 @@ component extends="clikpage.clikpageApplication" { //
 		"/_assets" = this.rootDir & "clikpage\_assets",
 	];
 	
+	this.mappings["/logs/"]=[outside your web root!];
+		
+
 	this.debug = 1;
 	
 	public boolean function startApp(){
+		
 		application.config = {
 			layoutsFolder=ExpandPath("_data/layouts"),
-			siteDef=ExpandPath("_data/sampleSite.xml")
+			siteDef=ExpandPath("_data/sampleSite.xml"),
+			dataFolder=ExpandPath("_data/data")
 		};
+
+		application.dataObj = new clikpage.data.data_markdown(config);
+
+		// TODO: application.errorTemplate=staticHTMLFile
 
 		return true;
 

@@ -10,9 +10,9 @@ Settings are loaded from XML defnition file.
 
 */
 
-component {
+component output=false {
 
-	public settings function init(debug=false)  output=false {
+	public settings function init(debug=false) {
 
 		this.cr = chr(13) & chr(10);
 		this.utils = CreateObject("component", "utils.utils");
@@ -26,86 +26,6 @@ component {
 		return this;
 	}
 
-	// /**
-	//  * @hint Load XML style definition file
-	//  *
-	//  * XML style definitions define colors, fonts, media queries
-	//  * and vars. In the CSS files we only ever refer to variable
-	//  * names defined here.
-	//  *  
-	//  */
-	// public struct function loadStyleSettings(required string filename) output=false  {
-
-	// 	if (!FileExists(arguments.filename)) {
-	// 		throw("Stylesheet #arguments.filename# not found");
-	// 	}
-			
-	// 	try {
-			
-	// 		local.styles = {};// leave this -- see catch below
-	// 		local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-	// 		local.styles = this.utilsXML.xml2data(local.xmlData);
-			
-	// 		local.defaults = {
-	// 			"colors" :[=],
-	// 			"fonts" :[=],
-	// 			"media" :[=],
-	// 			"vars" :[=],
-	// 			"style": [=]
-	// 		};
-			
-	// 		StructAppend(local.styles,local.defaults,false);
-			
-	// 		// TODO: surely this can't be right
-	// 		for (local.default in local.defaults) {
-	// 			if ( NOT IsStruct(local.styles[local.default]) ) {
-	// 				local.styles[local.default] = [=];
-	// 			}
-	// 		}
-
-	// 		// Load external files
-	// 		if ( StructKeyExists(local.styles,"link") ) {
-	// 			local.root = GetDirectoryFromPath(arguments.filename);
-	// 			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-	// 			if ( NOT isArray(local.styles.link) ) {
-	// 				local.styles.link = [local.styles.link];
-	// 			}
-	// 			for (local.link in local.styles.link) {
-	// 				if ( StructKeyExists(local.link,"href") && 
-	// 					StructKeyExists(local.link,"rel") ) {
-	// 					local.filepath = getCanonicalPath( local.root & local.link.href);
-	// 					local.filedata = this.utils.fnReadFile(local.filepath,"utf-8");
-	// 					switch (local.link.rel) {
-	// 						case "stylesheet":
-	// 							local.css = this.cssParser.parse(local.filedata);
-	// 							for (local.key in local.css) {
-	// 								this.cssParser.addMainMedium(local.css[local.key]);			
-	// 							}
-	// 							this.utils.deepStructAppend(local.styles.style,local.css);
-	// 						break;
-	// 					}
-	// 				}
-	// 			}
-	// 			StructDelete( local.styles,"link" );
-	// 		}
-
-	// 		checkMedia( local.styles );
-			
-	// 	}
-	// 	catch (any e) {
-	// 		local.extendedinfo = {"tagcontext"=e.tagcontext,styles=local.styles};
-	// 		throw(
-	// 			extendedinfo = SerializeJSON(local.extendedinfo),
-	// 			message      = "Unable to parse stylesheet #arguments.filename#:" & e.message, 
-	// 			detail       = e.detail,
-	// 			errorcode    = "settings.loadStyleSheet"		
-	// 		);
-	// 	}
-
-	// 	return local.styles;
-
-	// }
-	
 	public void function loadStylesheet(required string filename, required struct styles)   {
 		
 		if ( !FileExists(arguments.filename) ) {
@@ -136,7 +56,7 @@ component {
 
 	private void function checkInheritance(required string key,required struct styles, required struct recursionCheck) localmode=true {
 		section = arguments.styles[arguments.key];
-		
+
 		if ( section.KeyExists("main") && section.main.KeyExists("inherit") ) {
 			for (ikey in ListToArray(section.main.inherit, " ") ) {
 				tmpKey = ListFirst(ikey, ".##");
@@ -205,7 +125,7 @@ component {
 	 * not going to work becuase we need the contentObject
 	 * 
 	 */
-	// public string function siteCSS(required struct styles, boolean debug=this.debug)  output=false {
+	// public string function siteCSS(required struct styles, boolean debug=this.debug)  {
 		
 	// 	throw("WIP see test_styles.cfm");
 	// 	local.css &= fontVariablesCSS(arguments.styles);
@@ -290,24 +210,26 @@ component {
 	/**
 	 * CSS for variable definitions
 	 */
-	public string function variablesCSS(required struct settings, boolean debug=this.debug)  output=false {
+	public string function variablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = CSSCommentHeader("Vars");
+		local.css = arguments.debug ? CSSCommentHeader("Vars") : "";
 
 		if (StructKeyExists(arguments.settings,"vars")) {
 			for (local.varname in arguments.settings.vars) {
 				local.var = arguments.settings.vars[local.varname];
-				if (! StructKeyExists(local.var,"value")) {
-					local.css &= "/* No value specified for var #local.varname# */\n";
+				if ( arguments.debug  && ! StructKeyExists(local.var,"value") ) {
+					local.css &= "/* No value specified for var #local.varname# */" & newLine();
 				}
 				else {
 					// A var can have a value of another var
 					local.varvalue = Left(local.var.value,2) eq "--" ? "var(#local.var.value#)" : local.var.value; 
 					local.css &= "--#local.varname#: #local.varvalue#;";
-					if (structKeyExists(local.var,"title")) {
-						local.css &= " /* #local.var.title# */";
+					if ( arguments.debug ) {
+						if ( StructKeyExists(local.var,"title") ) {
+							local.css &= " /* #local.var.title# */";
+						}
+						local.css &= newLine();
 					}
-					local.css &= "\n";
 				}	
 			}
 		}
@@ -335,23 +257,24 @@ component {
      *
      * The font faces should be defined in the static CSS.
 	 */
-	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug)  output=false {
+	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = CSSCommentHeader("Fonts");
+		local.css = arguments.debug ? CSSCommentHeader("Fonts") : "";
+		var cr = arguments.debug ? newLine() : "";
 
 		if (StructKeyExists(arguments.settings,"fonts")) {
 			for (local.fontname in arguments.settings.fonts) {
 				local.font = arguments.settings.fonts[local.fontname];
-				if (! StructKeyExists(local.font,"family")) {
-					local.css &= "/* No family specified for font #local.fontname# */\n";
+				if (arguments.debug && ! StructKeyExists(local.font,"family")) {
+					local.css &= "/* No family specified for font #local.fontname# */#cr#";
 				}
 				else {
 					local.fontfamily = Left(local.font.family,2) eq "--" ? "var(#local.font.family#)" : local.font.family; 
 					local.css &= "--#local.fontname#: #local.fontfamily#;";
-					if (structKeyExists(local.font,"title")) {
-						local.css &= " /* #local.font.title# */";
+					if (arguments.debug && StructKeyExists(local.font,"title")) {
+						local.css &= " /* #local.font.title# */#cr#";
 					}
-					local.css &= "\n";
+					local.css &= cr;
 
 				}	
 				
@@ -380,24 +303,28 @@ component {
      * 	}
 	 * 
 	 */
-	public string function colorVariablesCSS(required struct settings) {
+	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = CSSCommentHeader("Colors");
-
+		local.css = arguments.debug ? CSSCommentHeader("Colors") : "";
+		
 		if (StructKeyExists(arguments.settings,"colors")) {
 			for (local.colorname in arguments.settings.colors) {
 				local.color = arguments.settings.colors[local.colorname];
-				if (! StructKeyExists(local.color,"value")) {
-					local.css &= "/* No value specified for color #local.colorname# */\n";
+				if (arguments.debug && ! StructKeyExists(local.color,"value")) {
+					local.css &= "/* No value specified for color #local.colorname# */" & newLine() ;
 				}
 				else {
 					
 					local.colorvalue = Left(local.color.value,2) eq "--" ? "var(#local.color.value#)" : local.color.value; 
 					local.css &= "--#local.colorname#: #local.colorvalue#;";
-					if (structKeyExists(local.color,"title")) {
-						local.css &= " /* #local.color.title# */";
+					
+					if (arguments.debug ) {
+						if ( StructKeyExists(local.color,"title") ) {
+							local.css &= " /* #local.color.title# */";
+						}
+						local.css &= newLine() ;;
 					}
-					local.css &= "\n";
+					
 
 				}	
 				
@@ -427,7 +354,8 @@ component {
 
 		css_ret = "";
 
-		for ( medium in ['main'] ) {
+
+		for ( medium in getMediaOrder( arguments.media ) ) {
 			if ( cssData.keyExists(medium) ) {
 				if (medium != "main") css_ret &= mediaQuery( arguments.media[medium] ) & "{" & cr;
 					css_ret &= cssData[medium];
@@ -438,6 +366,15 @@ component {
 		return css_ret;
 
 	} 
+
+	/** TODO: this */
+	private array function getMediaOrder( required struct media ) {
+
+		return ["main","max","mid","mobile","print"];
+
+	}
+
+	
 
 	/** 
 	 * get CSS for a container
@@ -779,6 +716,8 @@ component {
 	}
 
 	/**
+	 * DEPRECATED - each function should have a debug switch
+	 * 
 	 * Remove \n,\ts etc from css string 
 	 * 
 	 * @css           CSS to process
@@ -819,7 +758,7 @@ component {
 	 *
 	 * @mediaQuery    struct of information 
 	 */
-	private string function mediaQuery(required struct mediaQuery)  output=false {
+	private string function mediaQuery(required struct mediaQuery) {
 
 		local.css = "";
 		
@@ -839,7 +778,7 @@ component {
 	 * Create a struct of styles to start playing with
 	 * probably not needed in final cut 
 	 */
-	public function newStyles()  output=false {
+	public function newStyles() {
 		var styles = {
 			"main": {},
 			"mobile": {},
@@ -852,18 +791,18 @@ component {
 	 * Indent string using tabs
 	 */
 	public string function indent(required string input, numeric num=1){
-		local.indent = repeatString("\t", arguments.num);
-		local.ret = ListToArray(arguments.input,"\n",false,true);
-		return local.indent & local.ret.toList("\n" & local.indent) & "\n";
+		local.indent = repeatString("	", arguments.num);
+		local.ret = ListToArray(arguments.input,newLine(),false,false);
+		return local.indent & local.ret.toList(newLine() & local.indent) & newLine();
 	}
 
 	/**
 	 * Create a comment box for a CSS page
 	 */
 	public string function CSSCommentHeader(required string title, numeric width=66) {
-		ret = "/*" & repeatString("*", arguments.width-2) & "\n";
-		ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*\n";
-		ret &= "" & repeatString("*", arguments.width) & "/\n";
+		ret = "/*" & repeatString("*", arguments.width-2) & newLine();
+		ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*" & newLine();
+		ret &= "" & repeatString("*", arguments.width) & "/" & newLine();
 		return ret;
 	}
 
@@ -910,7 +849,7 @@ component {
 			if ( arguments.styles.keyExists(medium) ) {
 				for (setting in  arguments.settings) {
 					if ( arguments.styles[medium].keyExists(setting) ) {
-						fullStyles[medium]["#setting#"] = arguments.settings[setting];
+						fullStyles[medium]["#setting#"] = arguments.styles[medium][setting];
 					}
 				}
 			}
@@ -920,12 +859,15 @@ component {
 		this.utils.deepStructAppend(fullStyles["main"], arguments.settings, false);
 
 		for (medium in arguments.media) {
-
+			if (medium eq "main") continue;
+			
 			mediumSettings = arguments.media[medium];
 
-			if (! mediumSettings.keyExists( "inherit" ) ) continue;
+			allMedia = ["main"];
 
-			allMedia = ["main"].append(mediumSettings.inherit, true);
+			if ( mediumSettings.keyExists( "inherit" ) ){
+				allMedia.append(mediumSettings.inherit, true);
+			}
 
 			for ( imedium in  allMedia ) {
 				this.utils.deepStructAppend(fullStyles[medium], fullStyles[imedium], false);

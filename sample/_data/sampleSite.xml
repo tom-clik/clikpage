@@ -4,8 +4,6 @@
 
 	<title>My site test</title>
 
-	<stylesettings src="styles/sample_stylesettings.xml" />
-	
 	<meta>
 		<description>A fine site indeed</description>
 		<copyright><![CDATA[&copy; 2022 Tom Peer]]></copyright>
@@ -57,17 +55,17 @@
 			<tags>mainmenu,footermenu</tags>
 		</section>
 
-		<section id="about1" src="data/sections/about1.md">
+		<section id="about1">
 			<parent>about</parent>
 			<layout>subsection</layout>
 		</section>
 
-		<section id="about2" src="data/sections/about2.md">
+		<section id="about2">
 			<parent>about</parent>
 			<layout>subsection</layout>
 		</section>
 
-		<section id="about3" src="data/sections/about3.md">
+		<section id="about3">
 			<parent>about</parent>
 			<layout>subsection</layout>
 		</section>
@@ -81,7 +79,7 @@
 			<tags>footermenu</tags>
 		</section>
 
-		<section id="privacy"  src="data/sections/privacy.md">
+		<section id="privacy">
 			<tags>footermenu</tags>
 		</section>
 		

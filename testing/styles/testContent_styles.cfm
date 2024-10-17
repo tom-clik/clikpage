@@ -14,19 +14,24 @@ writeDump(test);
 settingsObj = CreateObject("component", "clikpage.settings.settings").init(debug=1);
 contentObj = CreateObject("component", "clikpage.content.content").init(settingsObj=settingsObj);
 
-contentObj.debug = true;
-
 styles = {};
 settingsObj.loadStyleSheet(expandPath("./testStyles.css"), styles);
-settingsObj.loadStyleSheet(expandPath("../css/_styles/grid_test.css"), styles);
-
-writeDump(styles.testfix);
+//settingsObj.loadStyleSheet(expandPath("../css/_styles/grid_test.css"), styles);
+settingsObj.loadStyleSheet(expandPath("../css/_styles/articleList_test.scss"), styles);
+id = "articlelist";
 
 // menu = contentObj.new(id="topmenu",title="Menu",type="menu");
+// cs = contentObj.new(id="testcolumns",title="Grid",type="grid");
+cs = contentObj.new(id=id,title="List",type="articleList",class="scheme-articlelist_title");
 
-cs = contentObj.new(id="testfix",title="Grid",type="grid");
+fullSettings = settingsObj.inheritSettings(styles=styles[id], media=styles.media, settings=contentObj.contentSections[cs.type].settings);
 
-css = contentObj.css(content=cs, styles=styles);
+debugcontent = {};
+
+css = contentObj.css(content=cs, styles=styles,debug = true, debugcontent=debugcontent);
+writeDump(styles[id]);
+writeDump(debugcontent.fullSettings);
+writeDump(debugcontent.styles_all);
 
 for (medium in css) {
 

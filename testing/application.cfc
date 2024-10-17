@@ -30,6 +30,7 @@ component {
 	}
 
 	function onError(e,method) {
+		
 		param name="request.isAjaxRequest" type="boolean" default="0";
 		try {
 			new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);

@@ -59,7 +59,7 @@ component extends="utils.baseutils" {
 				 string image, 
 				 string caption, 
 				 string link,
-				 struct data,
+				 array  data,
 				 struct style = {}
 				 ) {
 
@@ -250,7 +250,7 @@ component extends="utils.baseutils" {
 	 * @styles       Whole site stylesheet with media etc
 	 * @return       struct keyed by medium
 	 */
-	public struct function css(required struct styles, required struct content, boolean debug=this.debug) localmode=true {
+	public struct function css(required struct styles, required struct content, boolean debug=this.debug, debugcontent={} ) localmode=true {
 		
 		css = {};
 
@@ -263,14 +263,30 @@ component extends="utils.baseutils" {
 			throw("No media defined in stylesheet");
 		}
 
-		fullSettings = this.settingsObj.inheritSettings(styles=arguments.styles[arguments.content.id], media=arguments.styles.media, settings=this.contentSections[arguments.content.type].settings);
+		// Allow settings to be applied via "schemes" (aka classes)
+		styles_all = {}; 
+		for ( class in ListToArray(arguments.content.class, " ") ) {
+			if ( arguments.styles.keyExists(class) ) {
+				variables.utils.utils.deepStructAppend(styles_all,arguments.styles[class],true);
+			}
+		}
+		if ( arguments.styles.keyExists( arguments.content.id ) ) {
+			variables.utils.utils.deepStructAppend(styles_all,arguments.styles[arguments.content.id],true);
+		}
+
+		fullSettings = this.settingsObj.inheritSettings(styles=styles_all, media=arguments.styles.media, settings=this.contentSections[arguments.content.type].settings);
+
+		if (arguments.debug) {
+			debugcontent["styles_all"] = styles_all;
+			debugcontent["fullSettings"] = fullSettings;				
+		}
 
 		for (medium in arguments.styles.media) {
-			if (! StructKeyExists( arguments.styles[arguments.content.id],  medium ) ) {
+			if (! StructKeyExists( styles_all,  medium ) ) {
 				if (arguments.debug) css["#medium#"] = "/* #medium# Settings not defined for cs #arguments.content.id# */" & newLine() & newLine();
 				continue;
 			}
-			css["#medium#"] =  this.contentSections[arguments.content.type].css(styles=arguments.styles[arguments.content.id][medium], selector="##" & arguments.content.id, full_styles=fullSettings[medium], debug=arguments.debug);
+			css["#medium#"] =  this.contentSections[arguments.content.type].css(styles=styles_all[medium], selector="##" & arguments.content.id, full_styles=fullSettings[medium], debug=arguments.debug);
 		}
 
 		return css;
@@ -424,18 +440,20 @@ component extends="utils.baseutils" {
 		
 		 var cshtml = "";
 
-		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & ">\n";
-		cshtml &= "\t<figure>\n";
+		cshtml &= "\t<div class='title'><" & local.titletag & ">" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & "></div>\n";
+		cshtml &= "\t<div class='imageWrap'>\n";
 		if (StructKeyExists(arguments.item,"image")) {
+			cshtml &= "\t<figure>\n";
 			cshtml &= "\t\t#linkStart#<img src='" & arguments.item.image & "'>#linkEnd#\n";
 			if (StructKeyExists(arguments.item,"caption")) {
 				cshtml &= "\t\t<figcaption>" & arguments.item.caption & "</figcaption>\n";
 			}
+			cshtml &= "\t</figure>\n";
 		}
 		else {
 			arguments.classes["noimage"] = 1;
 		}
-		cshtml &= "\t</figure>\n";
+		cshtml &= "\t</div>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
 		cshtml &= arguments.item.description ? : "";

@@ -143,7 +143,7 @@ component {
 	public struct function new(
 		required string id, 
 				 string class="", 
-				 struct data,
+				 array  data,
 				 string title, 
 				 string content,
 				 string image, 
@@ -178,11 +178,12 @@ component {
      *
      * More complex components will override this function and provide a range of settings.
 	 */
-	private string function css_settings(required string selector, required struct styles) {
+	private string function css_settings(required string selector, required struct styles, struct full_styles={}, boolean debug=true) {
 		
-		var ret = "/* Main CSS goes here */\n";
-		ret &= arguments.selector & " {}\n";
+		var ret = "";
 
+		if ( arguments.debug ) ret &= "/* Main CSS goes here */" & newLine();
+		
 		return ret;
 	
 	}
@@ -280,12 +281,13 @@ component {
 			for (local.panel in this.panels) {
 				if (StructKeyExists(local.state_styles,local.panel.panel)) {
 					if (arguments.debug ) css.append("/* panel #local.panel.panel# */");
-				
+					
 					// also get state styles for the panels
 					// This is pretty crude. If any states are defined it also
 					// looks inside every panel for those states. This is necessary
 					// where you only want the panel affected and not the whole item
 					local.panel_styles = local.state_styles[local.panel.panel];
+
 					for (local.panel_state in this.states) {
 						
 						if ( local.panel_state.state eq "main") {
@@ -300,7 +302,7 @@ component {
 						}
 						if (arguments.debug ) css.append("/* state #local.panel_state.state# */");
 						try {
-							css.append(arguments.selector & local.state.selector & " " & local.panel.selector & local.panel_state.selector & " {" & variables.contentObj.settingsObj.css(local.panel_state_styles, arguments.debug) & "}" );
+							css.append(arguments.selector & local.state.selector & " " & local.panel.selector & local.panel_state.selector & " {" & variables.contentObj.settingsObj.css(settings=local.panel_state_styles, debug=arguments.debug) & "}" );
 						}
 						catch (any e) {
 							local.extendedinfo = {
