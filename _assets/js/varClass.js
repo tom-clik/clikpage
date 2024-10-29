@@ -39,13 +39,15 @@
 
 			plugin.reload();
 
-			$(window).on(plugin.settings.resize,function() {
-				plugin.reload();
-			});
+			if ( plugin.settings.resize !== 'none' ) {
+				$(window).on(plugin.settings.resize,function() {
+					plugin.reload();
+				});
+			}
 		}
 
 		plugin.reload = function() {
-			console.log(varList);
+			console.log("Reloading " + varList + " for " + $element.attr("id"));
 			for (let name of varList) {
 				$element.removeClassByPrefix(name + "-");
 				let val =  $element.css("--" + name);

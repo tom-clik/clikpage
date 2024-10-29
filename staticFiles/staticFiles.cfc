@@ -96,7 +96,7 @@ component {
 	}
 
 	public string function getLinks(required struct scripts, boolean debug=false) {
-
+		
 		local.packagesIncluded = {};
 		local.scriptsInPackage = {};
 		local.ret = "";

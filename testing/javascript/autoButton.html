@@ -19,6 +19,7 @@ In both tests, the "target" is a an html container with methods that change the 
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/grids.css">
+	<link rel="stylesheet" type="text/css" href="/_assets/css/grids_classes.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/menus-schemes.css">
 	
@@ -62,10 +63,6 @@ In both tests, the "target" is a an html container with methods that change the 
 		align-self: center;
 	}
 	
-	.button.scheme-rotate.state_open a .icon {
-		transform: rotate(90deg);
-	}
-
 	</style>
 </head>
 
@@ -125,7 +122,7 @@ In both tests, the "target" is a an html container with methods that change the 
 		<div class="panel  middle">
 			<h2>Two state button open by default</h2>
 			<div class="panelGrid">
-				<div class="button auto scheme-rotate state_open" data-state="open">
+				<div class="button auto scheme-flip state-open">
 					<a href="#mainmenu3.openclose" data-key="ctrl+alt+c">
 						<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
 					</a>					
@@ -146,20 +143,21 @@ In both tests, the "target" is a an html container with methods that change the 
 
 <script>
 
-	$(document).ready(function() {
-		$(".target").on("open",function() {
-			console.log("Opening");
-			$(this).html($(this).attr("title") + " open method called");
-		}).on("close",function() {
-			$(this).html($(this).attr("title") + " close method called");
-			console.log("Closing");
-		}).on("random",function() {
-			$(this).html($(this).attr("title") + " random method called");
-			console.log("Random method called");
-		});
-
-		$(".button").autoButton();
+$(document).ready(function() {
+	// Add actions to all our buttons. Obviously each one would normally have different actions!
+	$(".target").on("open",function() {
+		console.log("Opening");
+		$(this).html($(this).attr("title") + " open method called");
+	}).on("close",function() {
+		$(this).html($(this).attr("title") + " close method called");
+		console.log("Closing");
+	}).on("random",function() {
+		$(this).html($(this).attr("title") + " random method called");
+		console.log("Random method called");
 	});
+
+	$(".button").autoButton();
+});
 
 </script>
 

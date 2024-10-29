@@ -1,9 +1,12 @@
 /* 
 
+# Columns CSS
 
+Columns styling using body classes
 
+By attaching the var classes to the body, you can use this to style the columns.
 
-
+See notes about var classes for issues/usage.
 
 */
 
@@ -41,110 +44,164 @@
 	--site-left-padding: 0px;
 }
 
+body {
+	container-name:body;
+}
+
+.container {
+	display: flex;
+}
+
+.container > * {
+	flex: 1;
+}
+
 #header {
 	grid-area:header;
 	height: var(--header-height);
 }
 
-.bodyWrapper {
+/* Body wrapper is required to allow padding between content and the edge of page */
+#bodyWrapper {
 	min-height:100%;
 	padding: var(--site-top-padding) var(--site-right-padding)	var(--site-bottom-padding)	var(--site-left-padding);
 }
 
-body.header-fixed-1 .bodyWrapper {
-	padding-top:0;
-}
-body.footer-fixed-1 .bodyWrapper {
-	padding-bottom:0;
+
+#ubercontainer {
+	min-height:100%;
+	--grid-mode: rows;
+	grid-template-rows: min-content auto min-content;
 }
 
-body.menupos-slide .bodyWrapper {
-	padding-left: calc( var(--menu-width) + var(--site-left-padding) );
-	/* This triggers on page load !!! See JS, we add it after load */
-	/* transition : padding var(--menu-anim-time) ease-in-out;*/
+@container body ( style(--header-fixed:1) ) {
+	#bodyWrapper  {
+		padding-top:0;
+	}
+	#header {
+		position: fixed;
+		width:100%;
+		top: var(--site-top-padding);
+		left: 0;
+		z-index: 100;
+	}
+	#ubercontainer {
+		padding-top: var(--header-height);
+		--grid-mode: rows;
+		grid-template-rows: auto min-content;
+		min-height:100%;
+	}
 }
 
-body.header-fixed-1 #header {
-	position: fixed;
-	width:100%;
-	top: var(--site-top-padding);
-	left: 0;
-	z-index: 100;
+@container body ( style(--footer-fixed:1) ) {
+	#bodyWrapper  {
+		padding-bottom:0;
+	}
+
+	#footer {
+		position: fixed;
+		width:100%;
+		bottom:  var(--site-bottom-padding) ;
+		left: 0;
+		z-index: 100;
+	}
+
+	#ubercontainer {
+		padding-bottom: var(--footer-height);
+	}
+
+	@container body ( style(--header-fixed:0) ) {
+		#ubercontainer {
+			--grid-mode: rows;
+			grid-template-rows: min-content auto ;
+		}
+	}
+	@container body ( style(--header-fixed:1) ) {
+		#ubercontainer {
+			--grid-mode: none;
+		}
+	}
+
 }
 
-body.header-fixed-1   #ubercontainer{
-	margin-top: calc(var(--site-top-padding) + var(--header-height));
+@container body ( style( --menupos:slide) ) {
+	#bodyWrapper {
+		padding-left: calc( var(--menu-width) + var(--site-left-padding) );
+		/* This triggers on page load !!! See JS, we add it after load */
+		/* transition : padding var(--menu-anim-time) ease-in-out;*/
+	}
 }
 
-body.footer-fixed-1 #footer {
-	position: fixed;
-	width:100%;
-	bottom:  var(--site-bottom-padding) ;
-	left: 0;
-	z-index: 100;
-}
-
-body.footer-fixed-1  .bodyWrapper {
-	padding-bottom: calc(var(--site-bottom-padding) + var(--footer-height));
-}
 
 .inner.spanning  {
 	margin: 0 auto;
 	max-width: var(--site-width);
 }
 
-body.site-align-left .inner.spanning {
-	margin: 0 auto 0 0;
+@container body ( style( --site-align:left) ) {
+	.inner.spanning {
+		margin: 0 auto 0 0;
+	}
 }
 
-body.site-align-right .inner.spanning {
-	margin: 0 0 0  auto;
+@container body ( style( --site-align:right) ) {
+	.inner.spanning {
+		margin: 0 0 0  auto;
+	}
 }
 
-body.framed-1 .inner.spanning {
-	width: auto;
+@container body ( style( --framed:1) ) {
+	.inner.spanning {
+		width: auto;
+	}
+	#ubercontainer {
+		max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+		margin-left:auto;
+		margin-right:auto;
+	}
+	@container body ( style( --site-align:left) ) {
+		.framed {
+			margin: 0 auto 0 0;
+		}
+	}
+	@container body ( style( --site-align:right) ) {
+		.framed {
+			margin: 0 0 0 auto ;
+		}
+	}
+
+	@container body ( style( --header-fixed:1 ) ) {
+		#header {
+			width: 100%;
+			max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+			left:auto;
+			top: var(--site-top-padding);
+		}
+	}
+	
+
+	@container body ( style( --footer-fixed:1 ) ) {
+		#footer {
+			width: 100%;
+			max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+			left:auto;
+			bottom: var(--site-bottom-padding);
+		}
+	}
+
 }
 
-body.framed-1 #ubercontainer {
-	max-width: var(--site-width);
-	margin-left:auto;
-	margin-right:auto;
-}
 
-body.framed-1.site-align-left .framed {
-	margin: 0 auto 0 0;
-}
-
-body.framed-1.site-align-right .framed {
-	margin: 0 0 0 auto ;
-}
-
-body.framed-1.header-fixed-1 #header, body.framed-1.footer-fixed-1 #footer {
-	width: 100%;
-	max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
-	left:auto;
-}
-
-body.framed-1.header-fixed-1 #header {
-	top: var(--site-top-padding);
-}
-
-body.framed-1.footer-fixed-1 #footer {
-	bottom: var(--site-bottom-padding);
-}
 
 #content {
 	grid-area:content;
 }
-
 #bottomnav {
 	grid-area:bottomnav;
 }
-
 #footer {
 	grid-area:footer;
 }
-
 #footer_left {
 	grid-area:footer_left;
 }
@@ -157,8 +214,8 @@ body.framed-1.footer-fixed-1 #footer {
 #content_top {
 	grid-area:content_top;
 }
-#columns {
-	grid-area:columns;
+#content_wrap {
+	grid-area:content_wrap;
 }
 #content_bottom {
 	grid-area:content_bottom;
@@ -193,6 +250,7 @@ body.framed-1.footer-fixed-1 #footer {
  *  Would need to get the top of the element + the top padding
  *  
  */
+
 #menu.sticky-1 .inner {
 	position:sticky;
 	top: calc( (var(--header-fixed) * var(--header-height) ) + var(--menu-padding-top,4px) );
@@ -206,7 +264,7 @@ body.framed-1.footer-fixed-1 #footer {
 }
 
 .inner {
-	--mode: none;
+	--grid-mode: none;
 	position: relative;
 }
 
@@ -219,29 +277,24 @@ body.framed-1.footer-fixed-1 #footer {
 	overflow: hidden !important;
 }
 
-#ubercontainer {
-	min-height:100%;
-	--mode: rows;
-	grid-template-rows: min-content auto min-content;
-}
-
-body.header-fixed-1 #ubercontainer {
-	min-height:100%;
-	--mode: rows;
-	grid-template-rows: auto min-content;
-}
 
 #content_main > .cs-grid {
-	--mode: named;
+	--grid-mode: named;
 	min-height:100%;
-	grid-template-areas: "menu maincol xcol";
-	grid-template-columns: var(--menu-width) auto var(--xcol-width);
+	grid-template-areas: "menu content_wrap";
+	grid-template-columns: var(--menu-width) auto;
 }
 
 #content {
 	min-height:100%;
-	--mode: rows;
+	--grid-mode: rows;
 	grid-template-rows: min-content auto min-content;
+}
+
+#content_wrap {
+	grid-template-areas: "maincol xcol";
+	grid-template-columns: auto var(--xcol-width) ;
+	height:100%;
 }
 
 #maincol {
@@ -250,15 +303,15 @@ body.header-fixed-1 #ubercontainer {
 
 #maincol > .cs-grid {
 	height:100%;
-	--mode: named;
-	grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
-	grid-template-rows: min-content auto min-content;
-	grid-template-columns:  1fr 1fr ;
+	--grid-mode: named;
+	--grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
+	--grid-template-rows: min-content auto min-content;
+	--grid-template-columns:  1fr 1fr ;
 }
 
 #footer {
 	height: var(--footer-height);
-	--mode: rows;
+	--grid-mode: rows;
 	grid-template-rows: min-content auto;
 }
 
@@ -276,24 +329,28 @@ body.header-fixed-1 #ubercontainer {
 
 
 #header {
-	--mode: rows;
+	--grid-mode: rows;
 	grid-template-rows:auto  min-content ;
 }
 
 #footer_main > .cs-grid {
-	--mode: fixed;
+	--grid-mode: fixed;
 	--grid-columns: 3;
 }
 
 @media (max-width:800px) {
 	
-	#content_main > .cs-grid {
-		grid-template-areas: "menu maincol" "menu xcol";
-		grid-template-columns: var(--menu-width) auto;
+	#content_wrap {
+		--grid-mode: none;
+		height: auto;
 	}
 
-	body.menupos-slide #content_main  > .cs-grid, body.menupos-fixed #content_main  > .cs-grid {
-		--mode: none;
+	#maincol {
+		height:auto;
+	}
+
+	#maincol > .cs-grid {
+		height: auto;
 	}
 
 }
@@ -305,12 +362,12 @@ body.header-fixed-1 #ubercontainer {
 	}
 
 	#content_main > .inner {
-		--mode: none;
+		--grid-mode: none;
 		min-height: auto;
 	}
 
 	#content {
-		--mode: none;
+		--grid-mode: none;
 	}
 
 	#maincol {
@@ -318,77 +375,22 @@ body.header-fixed-1 #ubercontainer {
 	}
 
 	#maincol > .cs-grid {
-		--mode: none;
-		height: auto;
+		--grid-mode: none;
 	}
 
 	#footer_main > .cs-grid {
-		--mode: flex;
+		--grid-mode: flex;
 		--flex-direction: column;
 		--justify-content:start;
 	}
 
-}
-
-body.menupos-slide #menu, body.menupos-fixed #menu {
-	--height: fixed;/* WIP trying to animate thesee */ 
-	position: fixed;
-	top: calc(var(--header-fixed) * var(--header-height) );
-	left: 0;
-	height: calc( 100vh - (var(--header-fixed) * var(--header-height)) - (var(--footer-fixed) * var(--footer-height) ) );
-	width: var(--menu-width);
-	transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
-}
-
-body.menupos-fixed #menu {
-	left:  calc( ( -1 * var(--menu-width)) - 10px) ;
-}
-
-body.menupos-fixed #menu {
-	top: 0;
-	height: 100vh;
-	z-index: 110;
-}
-
-body.menupos-none #menu {
-	display: none;
-}
-
-body.menupos-none  #content_main > .inner, body.menupos-slide #content_main > .inner, body.menupos-fixed #content_main > .inner {
-	grid-template-areas: "maincol xcol";
-	grid-template-columns: auto var(--xcol-width) ;
-}
-
-body.menupos-slide.menu-close .bodyWrapper {
-	padding-left: 0;
-}
-
-body.menupos-slide.menu-close #menu {
-	transform: translateX( calc( ( -1 * var(--menu-width)) - 10px) );
-}
-body.menupos-fixed.menu-open #menu {
-	transform: translateX( calc( ( var(--menu-width)) + 10px) );
-}
-
-body.menupos-slide #content .spanning, body.menupos-slide:not(.footer-fixed-1) #footer .spanning, body.menupos-slide:not(.header-fixed-1) #header .spanning {
-	max-width: calc( var(--site-width) - var(--menu-width) );
-	transition: max-width var(--menu-anim-time) ease-in-out;
-}
-
-body.menu-close.menupos-slide #content .spanning, body.menu-close.menupos-slide:not(.footer-fixed-1) #footer .spanning, body.menu-close.menupos-slide:not(.header-fixed-1) #header .spanning {
-	max-width: calc( var(--site-width) );
-}
-
-#menubutton, #hamburger, #menuclose {
-	display: none;
-}
-
-body[class*=menupos-slide] #menubutton {
-	display: block;
-}
-
-body.menupos-fixed #hamburger,  body.menupos-fixed #menuclose {
-	display: block;
+	@container body ( style( --footer-fixed:0 ) ) {
+		#footer {
+			height: auto;
+			--grid-mode: none;
+		}
+	}
+	
 }
 
 #menubutton.state_open a .icon {
@@ -401,12 +403,108 @@ body.menupos-fixed #hamburger,  body.menupos-fixed #menuclose {
 	}
 }
 
-body.menupos-slidedown	#menubutton.state_open a .icon {
-	transform: rotate(90deg);
+
+#menubutton, #hamburger, #menuclose {
+	display: none;
 }
 
-body.menupos-slidedown {
-	--menu: close;
+@container body ( style( --menupos:fixed ) or style( --menupos:slide )  ) {
+	#content_main > .cs-grid {
+		--grid-mode: none;
+	}
+	#menu {
+		--height: fixed;/* WIP trying to animate thesee */ 
+		position: fixed;
+		top: calc(var(--header-fixed) * var(--header-height) );
+		left: 0;
+		height: calc( 100vh - (var(--header-fixed) * var(--header-height)) - (var(--footer-fixed) * var(--footer-height) ) );
+		width: var(--menu-width);
+		transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
+	}
+}	
+
+@container body ( style( --menupos:fixed ) ) {
+	
+	#menu {
+		left:  calc( ( -1 * var(--menu-width)) - 10px) ;
+		top: 0;
+		height: 100vh;
+		z-index: 110;
+	}
+
+	#hamburger,  #menuclose {
+		display: block;
+	}
+
+	body.menu-open #menu {
+		transform: translateX( calc( ( var(--menu-width)) + 10px) );
+	}
+
+}
+
+@container body ( style( --menupos:none ) ) { 
+	#menu {
+		display: none;
+	}
+}
+
+
+@container body ( style( --menupos:slide ) ) {
+	body.menu-close #bodyWrapper {
+		padding-left: 0;
+	}
+
+	body.menu-close #menu {
+		transform: translateX( calc( ( -1 * var(--menu-width)) - 10px) );
+	}
+
+	#content .spanning {
+		max-width: calc( var(--site-width) - var(--menu-width) );
+		transition: max-width var(--menu-anim-time) ease-in-out;
+	}
+
+	body.menu-close #content .spanning {
+		max-width: calc( var(--site-width) - var(--menu-width) );
+		transition: max-width var(--menu-anim-time) ease-in-out;
+	}
+
+	@container body ( style( --footer-fixed:0 ) ) {
+		#footer .spanning {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+		body.menu-close #footer .spanning {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+	}
+
+	@container body ( style( --header-fixed:0 ) ) {
+		#header .spanning {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+		body.menu-close #header .spanning {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+	}
+	
+	#menubutton {
+		display: block;
+	}
+
+}
+
+@container body ( style( --menupos:slidedown ) ) {
+	body {
+		--menu: close;
+	}
+}
+
+
+body.menupos-slidedown	#menubutton.state_open a .icon {
+	transform: rotate(90deg);
 }
 
 body.menupos-slidedown.menu-close #menu {

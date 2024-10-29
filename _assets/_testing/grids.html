@@ -4,7 +4,6 @@
 	<title>CSS Grid Test</title>
 	<link rel="stylesheet" href="/_assets/css/reset.css">
 	<link rel="stylesheet" href="/_assets/css/grids.css">
-	<link rel="stylesheet" href="/_assets/css/grids_classes.css">	
 	
 	<meta charset="UTF-8">
 	<style>
@@ -162,11 +161,6 @@
 	</div>
 
 	<div class="test">
-		<div class="test-header">Grid with set columns (manual class)</div>
-		<div  class="cs-grid cols-4"></div>
-	</div>
-
-	<div class="test">
 		<div class="test-header">Grid with set rows</div>
 		<div id="testrows" class="cs-grid" data-cols="3"></div>
 	</div>
@@ -174,10 +168,12 @@
 	<div class="test">
 		<div class="test-header">Grid with named areas</div>
 		<div id="testnamed" class="cs-grid manual">
-			<g class="header">header</g>
-			<g class="left">left</g>
-			<g class="right">right</g>
-			<g class="footer">footer</g>
+			<div class='grid'>
+				<g class="header">header</g>
+				<g class="left">left</g>
+				<g class="right">right</g>
+				<g class="footer">footer</g>
+			</div>
 		</div>
 	</div>
 
@@ -202,32 +198,27 @@
 	</div>
 
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
-	<script src="/_assets/js/jquery.throttledresize.js"></script>
-	<script src="/_assets/js/varClass.js"></script>
-	<script src="/_assets/js/removeClassByPrefix.js"></script>
-
+	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$(".cs-grid").each( function() {
 				if (! $(this).hasClass("manual") ) {
 					const cols = $(this).data("cols") ? $(this).data("cols") : 12;
-					$(this).html(testGrid(cols));
+					$(this).html(testgrid(cols));
 				}
 			});
-
-			$(".cs-grid").varClass({name:"grid-mode"});
-
 		});
 
 		lorem = ["Lorem","ipsum","dolor","sit","amet,","consectetur","adipisicing","elit,","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua."];
 
-		function testGrid(cols) {
-			var html = "";
+		function testgrid(cols) {
+			var html = "<div class='grid'>";
 			text = "";
 			for (let i = 1 ; i <= cols; i++) {
 				text += lorem[i] + " ";
 				html += "<g>" + text + "</g>";
 			}
+			html += "</div>";
 			return html;
 		}
 	</script>

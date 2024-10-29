@@ -139,3 +139,11 @@ E.g.
 	visibility: visible;
 	width:200px;
 }
+
+.button.scheme-rotate.state-open a .icon {
+	transform: rotate(90deg);
+}
+
+.button.scheme-flip.state-open a .icon {
+	transform: rotate(180deg);
+}

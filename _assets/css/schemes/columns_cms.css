@@ -1,0 +1,77 @@
+/*
+
+Fixed header, fixed footer, slide menu
+
+Blue grey sort of thing
+
+*/
+
+:root {
+	--background-color:white;
+	--darkcolor:#006b8a;
+	--mediumcolor:#007FA3;
+	--lightcolor:#f7f7f7;
+	--border-color:#ccc;
+	--border-colorplus:#ddd;
+	--rowbg: #E7E9EB;
+	--mediumpluscolor: #007799;
+	--accent:#cc3057;
+	--headerheight: 60px;
+	--link-color:var(--darkcolor); 
+	--reversecolor:white;
+	--panel-bg:#4b384c;
+	--textcolor:#000000;
+	--sitepadding:10px;
+	--sitewidth: 100%;
+	--font-size:80%;
+	--text-font:'Open sans';
+	--title-font:Lato;
+	--subcolwidth:180px;
+	--shadow:inset 0 1px 0 #00637f, inset 0 -1px 0 #00637f;
+	--title-color:#333333;
+	--menu-width:180px;
+	--xcolwidth: 260px;
+	--site-align:left;
+	--header-height:60px;
+	--footer-height:38px;
+}
+
+#header {
+	background-color: var(--lightcolor);
+	--grid-mode: columns;
+	--grid-template-columns: var(--menu-width) auto;
+}
+
+#title {
+	background-color: var(--darkcolor);
+}
+
+#title, #nav {
+	padding:10px;
+}
+
+#nav {
+ 	border-bottom: 1px solid var(--border-color);
+}
+
+#nav > .inner {
+	--grid-mode:flex; 
+}
+
+#menu {
+	background-color: var(--mediumcolor);
+}
+
+#content {
+	grid-template-rows: 1fr;
+}
+
+#footer {
+	background-color: var(--panel-bg);
+	padding:8px 10px;
+	--text-color: white;
+}
+
+.scheme-title {
+	--title-font-size: 240%;
+}

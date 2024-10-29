@@ -223,6 +223,7 @@ component {
 				arguments.content.static_css[arguments.css] = 1;
 			}
 		}
+
 	}
 	
 	/**

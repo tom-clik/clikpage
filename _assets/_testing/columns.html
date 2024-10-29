@@ -1,4 +1,12 @@
+<!---
 
+# Columns demo
+
+
+
+
+
+--->
 <script>
 tests = [
 	{"id": "static-sticky", "description":"Basic"},
@@ -20,87 +28,31 @@ tests = [
 <html>
 <head>
 	<title>Column tests</title>
+	<meta charset="UTF-8">
+	
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/title.css">
 	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
+	<link rel="stylesheet" href="../css/columns_classes.css">
 	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/grids_classes.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
 	<link rel="stylesheet" href="../css/modal.css">
-	<link rel="stylesheet" href="../css/schemes/columns_schemes.css">
-	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../css/schemes/columns_samples.css">
+	<link rel="stylesheet" href="../css/schemes/columns_demo.css">
+	<!-- <link rel="stylesheet" href="../css/schemes/columns_cms.css"> -->
 	
-	<style>		
-	select {
-		border:1px solid;
-		padding:2px;
-	}
-
-	body {
-		--text-font:'Open Sans';
-		--site-width:1200px;
-		--header-height: 100px;
-		--menu-width: 140px;
-		--xcol-width: 240px;
-/*		--site-align:right;*/
-	}
-
-	/*#header, #footer, #topnav, #bottomnav, #content_top, #content_bottom, #columns > div {
-		padding:4px;
-	}*/
-
-	#title, #footer_main {
-		background-color: #c3c3c3;
-	}
-
-	#nav, #bottomnav {
-		background-color: #a0a0a0;
-	}
-
-	#content_top, #content_bottom {
-		background-color: #efefef;
-	}
-
-	#content_top > .inner, #content_bottom > .inner {
-		background-color: #d4d4d4;
-	}
-
-	#menu, #xcol {
-		background-color: #b5b5b5;
-	}
-
-	#samplebuttons {
-		position: absolute;
-		top:4px;
-		right:4px;
-	}
-	
-	#menu > .inner , #xcol > .inner, #maincol > .inner, #content_top > .inner, #content_bottom >.inner {
-		padding:4px;
-	}
-
-	/*  not part of columns */
-	#nav > .cs-grid {
-		--mode: flex;
-	}
-
-	.navbutton {
-		--icon-width:32px;
-		--icon-height:32px;
-		font-size: 32px;
-	}
-	</style>
-
 	<!-- <link rel="stylesheet" href="/_assets/css/icons.css"> -->
 
 </head>
 
-<body class="layout-fixed-fixheader-fixfooter-sticky"><div class="bodyWrapper">
+<!-- <body class="layout-fixed-fixheader-fixfooter-sticky"> -->
+<body><div id="bodyWrapper" class="container">
 
-
-<div id="ubercontainer" class="cs-grid framed">
+<div id="ubercontainer" class="cs-grid">
 	
 	<!--- header is usually given a fixed height (see --header-height)
 		Much of the sticky/fixed functionality depends on this. ---> 
@@ -147,7 +99,7 @@ tests = [
 	</div>
 
 	<div id="content" class="cs-grid">
-		 
+		
 		<!--- To remove this (also for content_bottom) either use the show=hide functionality 
 			(this is done in the "simpler" example)	or delete it and adjust the #content grid
 		 ---> 
@@ -158,8 +110,8 @@ tests = [
 			</div>
 		</div>
 
-		<div id="content_main">
-			<div class="inner cs-grid  spanning">
+		<div id="content_main" class="container">
+			<div class="inner cs-grid spanning">
 				
 				<div id="menu">
 					<div class="inner">
@@ -178,44 +130,45 @@ tests = [
 					</div>
 				</div>
 
-			
-				<div id="maincol">
-					<div class="inner cs-grid">
-						<div id="maincol_top">
-							<h2>Main col top XXX</h2>
-							<p>Any odd text. Any odd text. Any odd text.</p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							
+				<div id="content_wrap" class="cs-grid">
+					
+					<div id="maincol">
+						<div class="inner cs-grid">
+							<div id="maincol_top">
+								<h2>Main col top XXX</h2>
+								<p>Any odd text. Any odd text. Any odd text.</p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								
 
 
-						</div>
-						<div id="maincol_left">
-							<h2>Maincol left</h2>
-							<p>Any odd text. Any odd text. Any odd text.</p>
-							<p>Any odd text. Any odd text. Any odd text.</p>
-						</div>
-						<div id="maincol_right">
-							<h2>Maincol right</h2>
-							<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
-						</div>
-						<div id="maincol_bottom">
-							<h2>Maincol bottom</h2>
-							<div id="testmenu">
+							</div>
+							<div id="maincol_left">
+								<h2>Maincol left</h2>
+								<p>Any odd text. Any odd text. Any odd text.</p>
+								<p>Any odd text. Any odd text. Any odd text.</p>
+							</div>
+							<div id="maincol_right">
+								<h2>Maincol right</h2>
+								<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
+							</div>
+							<div id="maincol_bottom">
+								<h2>Maincol bottom</h2>
+								<div id="testmenu">
 
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<div id="xcol">
-					<div class="inner">
-						<h1>X col</h1>
-						<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+					<div id="xcol">
+						<div class="inner">
+							<h1>X col</h1>
+							<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+						</div>
 					</div>
 				</div>
-				
 
 				
 			</div>
@@ -235,20 +188,20 @@ tests = [
 
 		<div id="bottomnav">
 			<div class="inner  spanning">
-				Bottom navigation
+				<p  class="cs-text">Bottom navigation</p>
 			</div>
 		</div>
 
 		<div id="footer_main">
-			<div class="inner cs-grid  spanning">
+			<div class="inner cs-grid  spanning ">
 				<div id="footer_left">
-					<p>This is the footer_left</p>
+					<p class="cs-text">This is the footer_left</p>
 				</div>
 				<div id="footer_middle">
-					<p>This is the footer_middle</p>
+					<p class="cs-text">This is the footer_middle</p>
 				</div>
 				<div id="footer_right">
-					<p>This is the footer_right</p>
+					<p class="cs-text">This is the footer_right</p>
 				</div>
 			</div>
 		</div>
@@ -276,7 +229,7 @@ tests = [
 	$(document).ready(function() {
 		
 		// Apply the layout class
-		hash = window.location.hash || "#1";
+		hash = window.location.hash || "#" + tests[0].id;
 		hash = hash.replace("#","");
 		setTest(hash);
 		// / end apply layout class
@@ -284,17 +237,17 @@ tests = [
 		// generic clik stuff 
 		$(".button").autoButton();
 		$(".modal").modal({	});
-		$(".cs-grid").varClass({resize:"throttledresize", name:"mode"});
 		
-		setBodyPadding();
-		$(window).on("throttledresize", function() { setBodyPadding() } );
-
 		var $body = $("body");
 
-		$("#content_top,#content_bottom,#nav,#bottomnav").varClass({resize:"throttledresize", name:"show"});
-		$("#menu,#xcol").varClass({resize:"throttledresize", name:"sticky"});
+		$(".cs-grid").varClass({resize:"throttledresize", name:"grid-mode"});
 		
-		$body.varClass({resize:"throttledresize", name:"header-fixed,footer-fixed,menupos,menu,framed,site-align"});
+
+		setBodyPadding();
+
+		$(window).on("throttledresize", function() { 
+			setBodyPadding();
+		} );
 
 		// problem here is that it transitions on load if we put this
 		// into the CSS??? Need to try and work out why.
@@ -330,6 +283,7 @@ tests = [
 		
 	});
 
+	/** Apply testing classes as selected by user */
 	function setTest(test) {
 		var $bodyhere = $("body");
 		console.log("Setting test ", test);
@@ -359,7 +313,7 @@ tests = [
 	/**
 	 * We need individual elements of padding to do exotic things with them.
 	 *
-	 * For body padding, your can apply it to body and this will take care of it.
+	 * For body padding, you can apply it to body and this will take care of it.
 	 * 
 	 * For these properties you can either use this function or specify them directly
 	 */
@@ -376,6 +330,7 @@ tests = [
 		document.body.style.setProperty('--menu-top-padding', menuPad);
 		document.body.style.setProperty('--xcol-top-padding', xcolPad);
 
+		// make sure we're getting property from stylesheet
 		document.body.style.setProperty('padding', "");
 
 		let $body =  document.querySelector('body');

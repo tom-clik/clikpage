@@ -1,10 +1,38 @@
 /*
 
-Some sample column schemes
+Wild card based theming system wehre you can combine a layout selection with other options.
 
-layout-slide-header
+The layouts are:
+
+layout-static
+: The defaulty. static can be ommitted
+layout-slide
+: slide out menu
+layout-fixed
+: fixed in place menu
+
+The options are:
+
+-fixheader
+: Fix header in place
+-fixfooter
+: Fix the footer in place
+-frame
+:Fit the site into a frame with the site width
+-sticky
+: Sticky xcol. The logic can be copied for the menu col
+-simpler
+:Hide #content_top, #content_bottom, #nav, #bottomnav. This can easily be replicated by hand.
+
+Always start with layout-*, (NB "static" can be omitted, e.g. layout-fixheader is the same as layout-static-fixheader)
+
+E.g.
+
+layout-fixheader-fixfooter-sticky
+layout-fixed-fixheader
 
 */
+
 
 body[class*=-fixheader] {
 	--header-fixed :1;
@@ -29,7 +57,7 @@ body[class*=-frame] {
 }
 
 /* not sure about this mechanism maybe OTT */
-body.layout-simpler #content_top, body.layout-simpler #content_bottom, body.layout-simpler #nav, body.layout-simpler #bottomnav {
+body[class*=-simpler]:is( #content_top, #content_bottom, #nav, #bottomnav) {
 	--show:hide;
 }
 
@@ -74,4 +102,3 @@ body[class*="layout-fixed"] {
 	}
 
 }
-

@@ -6,7 +6,7 @@ Convert #id.action urls for button links into an onclick method that triggers th
 
 Shows/hides buttons in the order they appear in the HTML for multiple states.
 
-An open openclose action can be applied to a single button which will toggle the action. In this case the button can have different styling according to the class (.button.state_open)
+An open openclose action can be applied to a single button which will toggle the action. In this case the button can have different styling according to the class (.button.state-open). The button is closed by default. Add class="state-open" to change this.
 
 ## Details
 
@@ -16,7 +16,7 @@ In the actual buttons themselves there should be `<a>` tags with a url of the fo
 
 The target elements should have methods for the actions specified, e.g. on("open",{}).on("close",{});
 
-The action openclose will "toggle" the open and close actions. By default the state is assumed to be "close" to start. Override this with data-state="open" and  class="state_open" on the button.
+The action openclose will "toggle" the open and close actions. By default the state is assumed to be "close" to start. Override this with data-state="open" and  class="state-open" on the button.
 
 ### Styling
 
@@ -28,7 +28,8 @@ Ensure your styling hides the buttons as required. E.g.
 }
 ```
 
-For openclose buttons a class state_<state> is applied.
+For openclose buttons a class state-<state> is applied. Style your button with
+ith e.g. a rotate function for state-open
 
 ## Usage
 
@@ -69,7 +70,7 @@ $.autoButton = function(element, options) {
 	var $element = $(element), // reference to the jQuery version of DOM element
 		element = element, // reference to the actual DOM element
 	 	keyBindings = {}, // theoretically we can bind more than one key but this isn't working yet.
-	 	state, // for toggle buttons, store the current state
+	 	state = "close", // for toggle buttons, store the current state
 	 	$links;
 
 	// the "constructor" method that gets called when the object is created
@@ -80,8 +81,10 @@ $.autoButton = function(element, options) {
 		plugin.settings = $.extend({}, defaults, options);
 
 		// code goes here
-		state = $element.data("state") || "close";
-	    
+		if ($element.hasClass("state-open") ) {
+			state = "open"
+		}
+
 	    $links = $element.find("a")
 
 		$links.each(function() {
@@ -182,16 +185,16 @@ $.autoButton = function(element, options) {
 	});
 
 	plugin.open = function() {
-		$element.removeClass("state_close");
-		$element.addClass("state_open");
+		$element.removeClass("state-close");
+		$element.addClass("state-open");
 		state = "open";
 
 		plugin.settings.onOpen();
 
 	}
 	plugin.close = function() {
-		$element.removeClass("state_open");
-		$element.addClass("state_close");
+		$element.removeClass("state-open");
+		$element.addClass("state-close");
 		state = "close";
 
 		plugin.settings.onClose();

@@ -1,0 +1,64 @@
+/* Styling for the columns testing page */
+
+select {
+	border:1px solid;
+	padding:2px;
+}
+
+body {
+	--text-font:'Open Sans';
+	--site-width:1200px;
+	--header-height: 100px;
+	--menu-width: 140px;
+	--xcol-width: 240px;
+/*		--site-align:right;*/
+}
+
+/*#header, #footer, #topnav, #bottomnav, #content_top, #content_bottom, #columns > div {
+	padding:4px;
+}*/
+
+#title, #footer_main {
+	background-color: #c3c3c3;
+}
+
+#nav, #bottomnav {
+	background-color: #a0a0a0;
+}
+
+#content_top, #content_bottom {
+	background-color: #efefef;
+}
+
+#content_top > .inner, #content_bottom > .inner {
+	background-color: #d4d4d4;
+}
+
+#menu, #xcol {
+	background-color: #b5b5b5;
+}
+
+#samplebuttons {
+	position: absolute;
+	top:4px;
+	right:4px;
+}
+
+#menu > .inner , #xcol > .inner, #maincol > .inner, #content_top > .inner, #content_bottom >.inner {
+	padding:4px;
+}
+
+/*  not part of columns */
+#nav > .cs-grid {
+	--grid-mode: flex;
+}
+
+.navbutton {
+	--icon-width:32px;
+	--icon-height:32px;
+	font-size: 32px;
+}
+
+body[class*=-fixfooter] {
+	--menu-width :260px;
+}

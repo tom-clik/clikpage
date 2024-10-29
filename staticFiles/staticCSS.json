@@ -18,10 +18,35 @@
                 "tables",
                 "tabs",
                 "text",
-                "title"
-            ],
+                "title",
+                "modal"            ],
             "name":"content",
             "min":"/_assets/css/_min/mainpackage.0.12.min.css"
+        },
+        {
+            "scripts": [
+                "reset",
+                "breadcrumb",
+                "definitions",
+                "admonitions",
+                "footnotes",
+                "columns",
+                "grids_classes",
+                "icons",
+                "images",
+                "menus",
+                "panels_classes",
+                "navbuttons",
+                "tables",
+                "tabs",
+                "text",
+                "title",
+                "modal",
+                "jqueryui",
+                "select2"
+            ],
+            "name":"cms",
+            "min":"/_assets/css/_min/cms.0.12.min.css"
         }
     ],
     "scripts": [
@@ -40,6 +65,11 @@
             "requires": "reset"
         },
         {
+            "min": "/_assets/css/panels_classes.css",
+            "name": "panels_classes",
+            "requires": "panels"
+        },
+        {
             "min": "/_assets/css/breadcrumb.css",
             "name": "breadcrumb"
         },
@@ -54,6 +84,11 @@
         {
             "min": "/_assets/css/grids.css",
             "name": "grids"
+        },
+        {
+            "min": "/_assets/css/grids_classes.css",
+            "name": "grids_classes",
+            "requires": "grids"
         },
         {
             "min": "/_assets/css/icons.css",
@@ -165,6 +200,11 @@
           "description": "Tooltip library",
           "name": "tooltipster",
           "packageExclude": 1
+        },
+        {
+          "min":"/_assets/css/modal.css",
+          "description": "Modal",
+          "name": "modal"
         }
     ]
 }

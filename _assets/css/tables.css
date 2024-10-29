@@ -134,16 +134,15 @@ tr td:last-of-type, tr th:last-of-type {
 body tbody  tr:last-of-type td {
 	border-bottom-width: 0;
 }
-
-
-
-table.info, table.reverse {
+/* NB recordlist, am_table deprecated */
+table:where(.info,.reverse,.recordlist,.am_table) {
 	--table-border-width:1px;
 	--table-border-style:solid;
-	--table-border-color:var(--border-color, initial);
+	--table-border-color:var(--border-color, black);
+	--table-cell-padding:2px;
 }
 
-table.info th, table.reverse th {
+table:where(.info,.reverse,.recordlist,.am_table) th {
 	background-color: var(--panelbg, black);
 	color: var(--paneltext, white);
 }
