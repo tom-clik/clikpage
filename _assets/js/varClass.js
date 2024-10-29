@@ -3,7 +3,7 @@
  * 
  * ## Synopsis
  *
- * The value of a give variable will be obtained from the CSS and applied as class {varname}-{varvalue}
+ * The value of a given variable will be obtained from the CSS and applied as class {varname}-{varvalue}
  *
  * E.g.
  *
