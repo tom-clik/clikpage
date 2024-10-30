@@ -1,4 +1,4 @@
-
+/** DEPRECATED now incorporated into items comtainer classes */
 .item.htop-0, .list.htop-0 .item {
 	grid-template-areas:  "imageWrap" "title" "textWrap";
 }

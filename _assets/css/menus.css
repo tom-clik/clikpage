@@ -90,14 +90,15 @@ hi      li.hi a
 	--sub-menu-adjust:0;/* add to positioning of sub menus */
 }
 
-.cs-menu {
+.menu {
+	container-name: menu;
 	--menu-item-border-width: var(--menu-item-border); /* reserved for system. Used with e.g. boxes and dividers schemes */
 	/* Individual v and h settings for sub menu adjust ments */
 	--sub-menu-adjust-v: var(--sub-menu-adjust);
 	--sub-menu-adjust-h: var(--sub-menu-adjust);
 }
 
-.cs-menu > ul {
+.menu > ul {
 	list-style: none;
 	margin:0;
 	padding-left: 0em;
@@ -110,84 +111,107 @@ hi      li.hi a
 	margin: 0 auto;
 }
 
-.cs-menu.menu-align-left > ul {
-	margin-left:0;
-	--menu-item-justify: start;
-	--menu-text-align: left;
+@container menu ( style(--menu-align:left) ) {
+	.menu > ul {
+		margin-left:0;
+		--menu-item-justify: start;
+		--menu-text-align: left;
+	}
 }
 
-.cs-menu.menu-align-right > ul {
-	margin-right:0;
-	--menu-item-justify: end;
-	--menu-text-align: right;
+@container menu ( style(--menu-align:right) ) {
+	.menu > ul {
+		margin-right:0;
+		--menu-item-justify: end;
+		--menu-text-align: right;
+	}
 }
 
-.cs-menu.menu-mode-flex > ul {
-	display: flex;
-	flex-direction: var(--menu-direction);
-	flex-wrap: var(--menu-wrap);
+@container menu ( style(--menu-mode:flex ) ) {
+	.menu > ul {
+		display: flex;
+		flex-direction: var(--menu-direction);
+		flex-wrap: var(--menu-wrap);
+	}
 }
 
-.cs-menu.menu-orientation-vertical:not(.submenu) {
-	--menu-submenualign:top-right;
-	--menu-submenu-position:relative;
+@container menu ( style(--menu-orientation:vertical ) ) {
+	
+	div.menu:not(.submenu) {
+		--menu-submenualign:top-right;
+		--menu-submenu-position:relative;
+	}
+
+	.menu > ul {
+		display: grid;
+		grid-template-columns: 1fr;
+		--menu-text-align: left;
+		--menu-item-justify: start;
+	}
+
+	@container menu ( style(--menu-align:right ) ) {
+		.menu > ul {
+			--menu-text-align: right;
+			--menu-item-justify: end;
+		}
+	}
+
+	@container menu ( style(--menu-align: center ) ) {
+		.menu > ul {
+			--menu-text-align: center;
+			--menu-item-justify: center;
+		}
+	}
+
 }
 
-.cs-menu.menu-orientation-vertical {
-	--menu-mode: grid;
-	--menu-align: left;
+@container menu ( style(--menu-borders: dividers ) ) {
+	.menu ul {
+		--menu-gap:0px;
+		--menu-item-border-width: 0 var(--menu-item-border) 0 0;
+	}
+
+	li:last-of-type {
+		--menu-item-border-width: 0;
+	}
+
+	@container menu ( style(--menu-orientation: vertical ) ) {
+		.menu  ul {
+			--menu-item-border-width: 0 0 var(--menu-item-border) 0;
+		}
+	}
 }
 
-.cs-menu.menu-orientation-vertical > ul {
-	display: grid;
-	grid-template-columns: 1fr;
+@container menu ( style(--menu-borders: boxes ) ) {
+	.menu ul {
+		--menu-gap:0px;
+		--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
+	}
+
+	li:last-of-type {
+		--menu-item-border-width: var(--menu-item-border);
+	}
+
+	@container menu ( style(--menu-orientation: vertical ) ) {
+		.menu ul {
+			--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
+		}
+	}
 }
 
-.cs-menu.menu-orientation-vertical.menu-align-right > ul {
-	--menu-text-align: right;
-	--menu-item-justify: end;
-}
-.cs-menu.menu-orientation-vertical.menu-align-center > ul {
-	--menu-text-align: center;
-	--menu-item-justify: center;
-}
 
-.cs-menu.menu-borders-dividers {
-	--menu-gap:0px;
-	--menu-item-border-width: 0 var(--menu-item-border) 0 0;
-}
-
-.cs-menu.menu-borders-dividers li:last-of-type {
-	--menu-item-border-width: 0;
-}
-
-.cs-menu.menu-borders-boxes {
-	--menu-gap:0px;
-	--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
-}
-
-.cs-menu.menu-borders-boxes li:last-of-type {
-	--menu-item-border-width: var(--menu-item-border);
-}
-
-.cs-menu.menu-orientation-vertical.menu-borders-dividers {
-	--menu-item-border-width: 0 0 var(--menu-item-border) 0;
-}
-
-.cs-menu.menu-orientation-vertical.menu-borders-boxes {
-	--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
-}
-
-.cs-menu > ul > li {
+.menu li {
 	position:relative;
 	flex-grow: var(--menu-stretch);
 }
 
-.cs-menu.menu-stretch-1 > ul {
-	width:100%;
+@container menu ( style(--menu-stretch: 1 ) ) {
+	.menu > ul {
+		width:100%;
+	}
 }
 
-.cs-menu a, .cs-menu a:hover {
+.menu a, .menu a:hover {
 	white-space: nowrap;
 	color:var(--link-color);
 	display:flex;
@@ -208,7 +232,7 @@ hi      li.hi a
 }
 
 /* Per class behaviour applied via JS. leave for now. */
-.cs-menu.open {
+.menu.open {
 	height:auto;
 }
 
@@ -223,49 +247,51 @@ hi      li.hi a
   	height: auto;
 }
 
-.cs-menu.menu-submenu-show-show .submenu {
+.menu.menu-submenu-show-show .submenu {
 	display:block;
 }
 
-.cs-menu.menu-orientation-horizontal .submenu {
-	--menu-orientation:vertical;
+@container menu ( style(--menu-orientation: horizontal ) ) {
+	.submenu {
+		--menu-orientation:vertical;
+	}
 }
 
-.cs-menu[class*=submenualign-menu] {
+.menu[class*=submenualign-menu] {
 	position:relative;
 }
 
-.cs-menu[class*=submenualign-menu] li {
+.menu[class*=submenualign-menu] li {
 	position:static;
 }
 
-.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-top-left .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-top-left .submenu {
+.menu.menu-submenu-position-absolute.menu-submenualign-menu-top-left .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-top-left .submenu {
 	right: var(--sub-menu-adjust-h);
 	top:0;
 }
-.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-left .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-bottom-left .submenu {
+.menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-left .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-bottom-left .submenu {
 	right: 0;
 	top: calc( 100% + var(--sub-menu-adjust-v));
 }
-.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-top-right .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-top-right .submenu {
+.menu.menu-submenu-position-absolute.menu-submenualign-menu-top-right .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-top-right .submenu {
 	left:  calc( 100% + var(--sub-menu-adjust-v));
 	top:0;
 }
-.cs-menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-right .submenu, .cs-menu.menu-submenu-position-absolute.menu-submenualign-bottom-right .submenu {
+.menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-right .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-bottom-right .submenu {
 	left:  calc( 100% + var(--sub-menu-adjust-h));
 	top: 100%;
 }
 
-li.open > .submenu, .submenu.show , .cs-menu.menu-submenu-show-hover > ul > li:hover > .submenu  {
+li.open > .submenu, .submenu.show , .menu.menu-submenu-show-hover > ul > li:hover > .submenu  {
 	display:block;
 }
 
-.cs-menu ul.submenu li.open > ul.submenu {
+.menu ul.submenu li.open > ul.submenu {
 	margin-top:0px;
 }
 
 /* sub menu indicator */
-.cs-menu a > i[class*=icon].openicon {
+.menu a > i[class*=icon].openicon {
 	--menu-icon-height: 16px;
 	--menu-icon-width: 16px;
 	display: block;
@@ -288,7 +314,7 @@ li.open > .submenu, .submenu.show , .cs-menu.menu-submenu-show-hover > ul > li:h
 Requires icons.css and navbuttons.css
 
 */
-.cs-menu a > i[class*=icon]  {
+.menu a > i[class*=icon]  {
 	display: var(--menu-icon-display);
 	width:var(--menu-icon-width);
 	height:var(--menu-icon-height);
@@ -297,20 +323,20 @@ Requires icons.css and navbuttons.css
 	overflow: hidden;
 }
 
-.cs-menu a span {
+.menu a span {
 	display: var(--menu-label-display);	
 }
 
 
-.cs-menu li.open > a .openicon {
+.menu li.open > a .openicon {
 	transform: rotate(90deg);
 }
 /* Expand label to fill space */
-.cs-menu a > span {
+.menu a > span {
 	flex-grow: var(--menu-icon-stretch);
 }
 
-.cs-menu.menu-rollout-1 a span {
+.menu.menu-rollout-1 a span {
 	visibility: hidden;
 	overflow: hidden;
 	position: absolute;
@@ -322,27 +348,27 @@ Requires icons.css and navbuttons.css
 	justify-content: start;
 }
 
-.cs-menu.menu-align-right.menu-rollout-1 a span {
+.menu.menu-align-right.menu-rollout-1 a span {
 	left:auto;
 	right:0;
 	bottom:auto;
 	justify-content: end;
 }
 
-.cs-menu.menu-orientation-vertical.menu-rollout-1 a span {
+.menu.menu-orientation-vertical.menu-rollout-1 a span {
 	top:0;
 	left:100%;
 	bottom:auto;
 }
 
-.cs-menu.menu-orientation-vertical.menu-align-right.menu-rollout-1 a span {
+.menu.menu-orientation-vertical.menu-align-right.menu-rollout-1 a span {
 	top:0;
 	right:100%;
 	bottom:auto;
 	left:auto;
 }
 
-.cs-menu.menu-rollout-1 a:hover span {
+.menu.menu-rollout-1 a:hover span {
 	width: var(--menu-item-width);
 	box-sizing: content-box;
 	display: flex;

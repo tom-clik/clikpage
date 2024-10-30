@@ -27,10 +27,8 @@ tests = [
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
-	<link rel="stylesheet" href="../css/grids_classes.css">
 	<link rel="stylesheet" href="../css/title.css">
-	<link rel="stylesheet" href="../css/panels.css">
-	<link rel="stylesheet" href="../css/panels_classes.css">
+	<link rel="stylesheet" href="../css/items.css">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 	<meta charset="UTF-8">
 	<style>
@@ -248,29 +246,29 @@ Item Testing Page
 </div>
 
 <div class="list cs-grid">
-	<div class="item">
+	<div class="grid">
+		<div class="item">
+			<div class="itemInner">
+				<h3 class="title">Box title</h3>
 
-		<h3 class="title">Box title</h3>
+				<div class="imageWrap">
+					<figure>
+						<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+						<figcaption>An elephant at sunset</figcaption>
+					</figure>
+				</div>
+				
+				<div class="textWrap">
+					<!-- Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping. It can be omitted -->
+					<h3 class="title wraptitle">Box title</h3>
 
-		<div class="imageWrap">
-			<figure>
-				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-				<figcaption>An elephant at sunset</figcaption>
-			</figure>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+				</div>
+			</div>	
 		</div>
-		
-		<div class="textWrap">
-			<!-- Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping. It can be omitted -->
-			<h3 class="title wraptitle">Box title</h3>
-
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-			<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
-		</div>
-	
 	</div>
-
-
 </div>
 
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
@@ -283,24 +281,16 @@ Item Testing Page
 		$(document).ready(function() {
 
 			// make the items - nothing to do with the styling.
-			
 			var $item = $(".item");
-			var $list = $(".list");
+			var $list = $(".list > .grid");
 			for (i=1; i <= 6; i++) {
 				let $newItem = $item.clone();
 				if (i % 3 == 0) {
 					$newItem.find("figure").html("");
-					$newItem.addClass("noimage");
+					$newItem.find(".itemInner").addClass("noimage");
 				}
 				$list.append($newItem);
 			}
-
-			$list.varClass({name:"grid-mode"});
-			// this should run the same for .list or .item
-			// TODO: user control for editing this
-			var type = "list";
-			$selector = $("." + type);
-
 
 			// Apply the layout class
 			var hash = window.location.hash || "#1";
@@ -308,29 +298,31 @@ Item Testing Page
 			setTest(hash);
 			// / end apply layout class
 			
-			var html = "<select>\n";
+			var menuHtml = "<select>\n";
 			for (let test of tests) {
 				selected = test.id == hash ? "selected" : ""; 
-				html += `<option ${selected} value="${test.id}">${test.description}</option>\n`;
+				menuHtml += `<option ${selected} value="${test.id}">${test.description}</option>\n`;
 			}
-			html += "</select>\n";
+			menuHtml += "</select>\n";
 
-			$selector.varClass({name:"htop,imagespace,show-image,show-title,image-align,wrap"});
-
-			$(html).appendTo("#testmenu").on("change", function( ) {
+			$(menuHtml).appendTo("#testmenu").on("change", function( ) {
 				let test = $(this).val()
 				setTest(test);
 			});
+
+			
+
 			
 		});
 
+		// Apply classes for the selected test
 		function setTest(test) {
+			$selector = $(".list");
 			$selector.removeClassByPrefix("test-");
 			$selector.addClass("test-" + test);
 			$("body").removeClassByPrefix("bodytest-");
 			$("body").addClass("bodytest-" + test);
 			window.location.hash = test;
-			$(window).trigger('resize');
 		}
 
 

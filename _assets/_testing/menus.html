@@ -116,6 +116,7 @@ tests = [
 			.cs-menu.test-1 {
 				--menu-orientation:vertical;
 				--menu-borders:dividers;
+				--menu-align:left;
 			}
 		}
 
@@ -147,6 +148,7 @@ tests = [
 			--menu-borders:normal;
 			--menu-item-border:0 4px 0 0;
 			--menu-border-color: var(--menu-background);
+			--menu-align:left;
 		}
 
 		.cs-menu.test-3 .cs-menu.submenu {
@@ -285,14 +287,14 @@ Menu Testing
 	<script type="text/javascript">
 
 		function createMenu(menuData) {
-			var menuHTML = `<ul class='menu'>`;
+			var menuHTML = `<div class='menu'><ul>`;
 			for (let item of menuData ) {
 				let icon = "icon" in item ? ` class="icon-${item.icon}"` : "" ;
-				let submenu = "submenu" in item ? "<div class='cs-menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
+				let submenu = "submenuXXX" in item ? "<div class='cs-menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
 				let href = "link" in item ?  ` href="${item.link}"` : "";
 				menuHTML += `<li><a${href} id="menu_${item.id}"><i${icon}></i><span>${item.title}</span></a>${submenu}</li>`;
 			}
-			menuHTML += "</ul>";
+			menuHTML += "</ul></div>";
 			return menuHTML;
 		}
 
@@ -308,10 +310,9 @@ Menu Testing
 
 			$("#menu").html(menuHTML);
 
-			$(".cs-menu").varClass({name:"menu-orientation,menu-mode,menu-borders,menu-align,menu-stretch,menu-submenualign,menu-submenu-position,menu-submenu-show,menu-rollout"});
+			// $(".cs-menu").varClass({name:"menu-orientation,menu-mode,menu-borders,menu-align,menu-stretch,menu-submenualign,menu-submenu-position,menu-submenu-show,menu-rollout"});
 
 			$("#menu").menu();
-
 
 			var html = "<select>\n";
 			for (let test of tests) {
