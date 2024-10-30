@@ -23,6 +23,9 @@ The options are:
 : Sticky xcol. The logic can be copied for the menu col
 -simpler
 :Hide #content_top, #content_bottom, #nav, #bottomnav. This can easily be replicated by hand.
+-mobilefixed
+:Working on this
+
 
 Always start with layout-*, (NB "static" can be omitted, e.g. layout-fixheader is the same as layout-static-fixheader)
 
@@ -37,6 +40,7 @@ layout-fixed-fixheader
 body[class*=-fixheader] {
 	--header-fixed :1;
 }
+
 body[class*=-fixfooter] {
 	--footer-fixed :1;
 }
@@ -50,15 +54,18 @@ body[class*=-frame] {
 }
 
 @media (max-width:800px) {
-
 	body[class*=-frame] {
 		padding:0;
 	}
 }
 
-/* not sure about this mechanism maybe OTT */
-body[class*=-simpler]:is( #content_top, #content_bottom, #nav, #bottomnav) {
-	--show:hide;
+
+body[class*=-simpler] :is( #content_top, #content_bottom, #nav, #bottomnav) {
+	display:none;
+}
+
+body[class*=-simpler] :is( #header, #footer, #content) {
+	--grid-template-rows: auto;
 }
 
 body[class*="layout-slide"] {
@@ -67,14 +74,13 @@ body[class*="layout-slide"] {
 	--menu-width: 240px;
 }
 
-/* can easily do same for menu */
-body[class*=-sticky] #xcol {
+body[class*=-sticky] :is( #xcol, #menu ) {
 	--sticky:1;
 }
 
 @media (max-width:800px) {
 
-	body[class*=-sticky] #xcol {
+	body[class*=-sticky] :is( #xcol, #menu ) {
 		--sticky:0;
 	}
 
@@ -88,6 +94,10 @@ body[class*=-sticky] #xcol {
 
 }
 
+body[class*="layout-fixed"] #menu {
+	--sticky:0;
+}
+
 body[class*="layout-fixed"] {
 	--menu-width:400px;
 	--menu: close;
@@ -99,6 +109,12 @@ body[class*="layout-fixed"] {
 
 	body[class*="layout-fixed"] {
 		--menu-width:100vw;
+	}
+
+	body[class*="mobilefixed"] {
+		--menupos:fixed;
+		--menu-width:100%;
+		--menu: close;
 	}
 
 }

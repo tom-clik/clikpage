@@ -126,11 +126,8 @@ $.autoButton = function(element, options) {
 				let index = 0;
 		    	if (action == "openclose") {
 					
-					console.log(`state is ${state}`);
-
-					//changeState(state);
-					action = state == "open" ? "close" : "open";
-					console.log(action);
+					action = ( getState() == "open" ? "close" : "open" );
+					
 					if (action == "open") {
 						plugin.open();
 					}
@@ -149,7 +146,7 @@ $.autoButton = function(element, options) {
 
 				}
 				
-				console.log("triggering " + action + " on " + $target.attr("id"));
+				//console.log("triggering " + action + " on " + $target.attr("id"));
 				
 				$target.trigger(action);
 
@@ -187,7 +184,7 @@ $.autoButton = function(element, options) {
 	plugin.open = function() {
 		$element.removeClass("state-close");
 		$element.addClass("state-open");
-		state = "open";
+		setState("open");
 
 		plugin.settings.onOpen();
 
@@ -195,10 +192,17 @@ $.autoButton = function(element, options) {
 	plugin.close = function() {
 		$element.removeClass("state-open");
 		$element.addClass("state-close");
-		state = "close";
-
+		setState("close");
 		plugin.settings.onClose();
 	
+	}
+
+	setState = function(newstate) {
+		state = newstate;
+	}
+
+	getState = function() {
+		return state;
 	}
 
 	

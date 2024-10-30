@@ -9,7 +9,7 @@ body {
 	--text-font:'Open Sans';
 	--site-width:1200px;
 	--header-height: 100px;
-	--menu-width: 140px;
+	--menu-width: 240px;
 	--xcol-width: 240px;
 /*		--site-align:right;*/
 }
@@ -30,10 +30,10 @@ body {
 	background-color: #efefef;
 }
 
-#content_top > .inner, #content_bottom > .inner {
+/*#content_top > .inner, #content_bottom > .inner {
 	background-color: #d4d4d4;
 }
-
+*/
 #menu, #xcol {
 	background-color: #b5b5b5;
 }

@@ -9,9 +9,9 @@
 --->
 <script>
 tests = [
-	{"id": "static-sticky", "description":"Basic"},
-	{"id": "static-fixheader-sticky", "description":"Fixed header"},
-	{"id": "static-fixheader-fixfooter-sticky", "description":"Fixed header and footer"},
+	{"id": "static-sticky-mobilefixed", "description":"Basic"},
+	{"id": "static-fixheader-sticky-mobilefixed", "description":"Fixed header"},
+	{"id": "static-fixheader-fixfooter-sticky-mobilefixed", "description":"Fixed header and footer"},
 	{"id": "frame", "description":"Framed"},
 	{"id": "frame-fixheader-sticky", "description":"Framed Fixed header"},
 	{"id": "frame-fixheader-fixfooter-sticky", "description":"Framed, Fixed header and footer"},
@@ -35,9 +35,7 @@ tests = [
 	<link rel="stylesheet" href="../css/title.css">
 	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
-	<link rel="stylesheet" href="../css/columns_classes.css">
 	<link rel="stylesheet" href="../css/grids.css">
-	<link rel="stylesheet" href="../css/grids_classes.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
 	<link rel="stylesheet" href="../css/modal.css">
@@ -54,158 +52,187 @@ tests = [
 
 <div id="ubercontainer" class="cs-grid">
 	
-	<!--- header is usually given a fixed height (see --header-height)
-		Much of the sticky/fixed functionality depends on this. ---> 
-	<div id="header" class="cs-grid">
-		<div id="title">
-			<div class="inner spanning">
-				
-				<div  id="site-title" class="cs-title">
-					<h1>Column Testing</h1>
+	<div class="grid">
+		<!--- header is usually given a fixed height (see --header-height)
+			Much of the sticky/fixed functionality depends on this. ---> 
+		<div id="header" class="cs-grid">
+			<div class="grid">
+				<div id="title">
+					<div class="inner spanning">
+						
+						<div  id="site-title" class="cs-title">
+							<h1>Column Testing</h1>
+						</div>
+
+					</div>
 				</div>
 
-			</div>
-		</div>
-
-		<!--- To remove this or place it above the title, adjust #header grid --->
-		<div id="nav">
-			<div class="inner spanning cs-grid">
-				
-				<div id="menubutton" class="button auto navbutton state_open" data-state="open">
-					<a href="#menu.openclose" data-key="ctrl+m">
-						<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
-					</a>					
-				</div>
-
-				<div id="hamburger" class="button auto navbutton ">
-					<a href="#menu.openclose">
-						<i class="icon-menu"></i>
-					</a>					
-				</div>
-
-				<div class="button auto navbutton ">
-					<a href="#popup.openclose" data-key="ctrl+q">
-						<i class="icon-squares"></i>
-					</a>					
-				</div>
-
-				<div class="cs-text">
-					Top navigation elements
-				</div>
-
-			</div>
-		</div>
-
-	</div>
-
-	<div id="content" class="cs-grid">
-		
-		<!--- To remove this (also for content_bottom) either use the show=hide functionality 
-			(this is done in the "simpler" example)	or delete it and adjust the #content grid
-		 ---> 
-
-		<div id="content_top">
-			<div class="inner spanning">
-				Content top element - can remove by adjusting #content grid
-			</div>
-		</div>
-
-		<div id="content_main" class="container">
-			<div class="inner cs-grid spanning">
-				
-				<div id="menu">
-					<div class="inner">
-
-						<div id="menuclose" class="button auto navbutton">
-							<a href="#menu.close">
-								<i class="icon-close"></i>
+				<!--- To remove this or place it above the title, adjust #header grid --->
+				<div id="nav" class="cs-grid">
+					<div class="inner spanning grid">
+						
+						<div id="menubutton" class="button auto navbutton state-open">
+							<a href="#menu.openclose" data-key="ctrl+m">
+								<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
 							</a>					
 						</div>
 
-						<h1>Menu col</h1>
+						<div id="hamburger" class="button auto navbutton ">
+							<a href="#menu.openclose">
+								<i class="icon-menu"></i>
+							</a>					
+						</div>
 
-						<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-						<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-						<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+						<div class="button auto navbutton ">
+							<a href="#popup.openclose" data-key="ctrl+q">
+								<i class="icon-squares"></i>
+							</a>					
+						</div>
+
+						<div class="cs-text">
+							Top navigation elements
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content" class="cs-grid">
+			<div class="grid">
+			
+				<!--- To remove this (also for content_bottom) either use the show=hide functionality 
+					(this is done in the "simpler" example)	or delete it and adjust the #content grid
+				 ---> 
+
+				<div id="content_top">
+					<div class="inner spanning">
+						Content top element - can remove by adjusting #content grid
 					</div>
 				</div>
 
-				<div id="content_wrap" class="cs-grid">
+				<div id="content_main" class="container cs-grid">
 					
-					<div id="maincol">
-						<div class="inner cs-grid">
-							<div id="maincol_top">
-								<h2>Main col top XXX</h2>
-								<p>Any odd text. Any odd text. Any odd text.</p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								
+					<div class="inner grid spanning">
+						
+						<div id="menu">
+							<div class="inner">
 
-
-							</div>
-							<div id="maincol_left">
-								<h2>Maincol left</h2>
-								<p>Any odd text. Any odd text. Any odd text.</p>
-								<p>Any odd text. Any odd text. Any odd text.</p>
-							</div>
-							<div id="maincol_right">
-								<h2>Maincol right</h2>
-								<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
-							</div>
-							<div id="maincol_bottom">
-								<h2>Maincol bottom</h2>
-								<div id="testmenu">
-
+								<div id="menuclose" class="button auto navbutton">
+									<a href="#menu.close">
+										<i class="icon-close"></i>
+									</a>					
 								</div>
+
+								<h1>Menu col</h1>
+
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 							</div>
 						</div>
-					</div>
 
-					<div id="xcol">
-						<div class="inner">
-							<h1>X col</h1>
-							<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+						<div id="content_wrap" class="cs-grid">
+							
+							<div class="grid">
+
+								<div id="maincol" class="cs-grid">
+
+									<div class="inner grid">
+
+										<div id="maincol_top">
+											<h2>Main col top XXX</h2>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+
+
+										</div>
+										<div id="maincol_left">
+											<h2>Maincol left</h2>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+										</div>
+										<div id="maincol_right">
+											<h2>Maincol right</h2>
+											<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
+										</div>
+										<div id="maincol_bottom">
+											<h2>Maincol bottom</h2>
+											<div id="testmenu">
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div id="xcol">
+									<div class="inner">
+										<h1>X col</h1>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										
+
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						
+					</div>
+				</div>
+
+				<div id="content_bottom">
+					<div class="inner  spanning">
+						<h1>Content bottom element</h1>
+					</div>
+				</div>
+			 
+			</div>
+
+		</div>
+
+		<div id="footer" class="cs-grid">
+			
+			<div class="grid">
+
+				<!--- To remove this or place it below the footer, adjust #footer grid --->
+
+				<div id="bottomnav">
+					<div class="inner spanning">
+						<p  class="cs-text">Bottom navigation</p>
+					</div>
+				</div>
+
+				<div id="footer_main" class="cs-grid">
+					<div class="inner grid spanning">
+						<div id="footer_left">
+							<div class="cs-text">This is the footer_left</div>
+						</div>
+						<div id="footer_middle">
+							<div class="cs-text">This is the footer_middle</div>
+						</div>
+						<div id="footer_right">
+							<div class="cs-text">This is the footer_right</div>
 						</div>
 					</div>
 				</div>
-
-				
+			
 			</div>
+
 		</div>
 
-		<div id="content_bottom">
-			<div class="inner  spanning">
-				<h1>Content bottom element</h1>
-			</div>
-		</div>
-		 
-	</div>
-
-	<div id="footer" class="cs-grid">
-		
-		<!--- To remove this or place it below the footer, adjust #header grid --->
-
-		<div id="bottomnav">
-			<div class="inner  spanning">
-				<p  class="cs-text">Bottom navigation</p>
-			</div>
-		</div>
-
-		<div id="footer_main">
-			<div class="inner cs-grid  spanning ">
-				<div id="footer_left">
-					<p class="cs-text">This is the footer_left</p>
-				</div>
-				<div id="footer_middle">
-					<p class="cs-text">This is the footer_middle</p>
-				</div>
-				<div id="footer_right">
-					<p class="cs-text">This is the footer_right</p>
-				</div>
-			</div>
-		</div>
-		
 	</div>
 
 </div>
@@ -240,9 +267,6 @@ tests = [
 		
 		var $body = $("body");
 
-		$(".cs-grid").varClass({resize:"throttledresize", name:"grid-mode"});
-		
-
 		setBodyPadding();
 
 		$(window).on("throttledresize", function() { 
@@ -265,7 +289,7 @@ tests = [
 			else {
 				$this.css({'height':''});
 			}
-			$body.removeClass("menu-close").addClass("menu-open");
+			$body.removeClass("menu-close").addClass("menu-open").css({"--menu": "open"});
 		}).on("close",function() {
 			$this = $(this);
 			let settings = getCssSettings($this,"menu-anim-time,height");
@@ -275,7 +299,7 @@ tests = [
 			else {
 				$this.css({'height':''});
 			}
-			$body.removeClass("menu-open").addClass("menu-close");
+			$body.removeClass("menu-open").addClass("menu-close").css({"--menu":"close"});
 			$menubutton.trigger("close");
 		});
 
@@ -316,6 +340,9 @@ tests = [
 	 * For body padding, you can apply it to body and this will take care of it.
 	 * 
 	 * For these properties you can either use this function or specify them directly
+	 *
+	 * 
+	 * 
 	 */
 	function setBodyPadding() {
 		
@@ -338,8 +365,6 @@ tests = [
 		let bodyRightPad = window.getComputedStyle($body).paddingRight || "0px";
 		let bodyBottomPad = window.getComputedStyle($body).paddingBottom || "0px";
 		let bodyLeftPad = window.getComputedStyle($body).paddingLeft || "0px";
-
-		console.log(bodyTopPad);
 
 		document.body.style.setProperty('--site-top-padding', bodyTopPad);
 		document.body.style.setProperty('--site-right-padding', bodyRightPad);

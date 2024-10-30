@@ -34,7 +34,6 @@ function getSettings($elem, type) {
 function getCssSettings($elem, names) {
 	settings = {};
 	for (let setting of names.split(",")) {
-		console.log(setting);
 		let val = $elem.css("--" + setting);
 		if (val) {
 			settings[setting] = val;

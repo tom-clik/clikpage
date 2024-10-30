@@ -48,6 +48,11 @@ body {
 	container-name:body;
 }
 
+div:not(.cs-grid):has( > .inner) {
+	container-name:hasInner;
+	--sticky: 0;
+}
+
 .container {
 	display: flex;
 }
@@ -71,7 +76,7 @@ body {
 #ubercontainer {
 	min-height:100%;
 	--grid-mode: rows;
-	grid-template-rows: min-content auto min-content;
+	--grid-template-rows: min-content auto min-content;
 }
 
 @container body ( style(--header-fixed:1) ) {
@@ -86,9 +91,9 @@ body {
 		z-index: 100;
 	}
 	#ubercontainer {
-		padding-top: var(--header-height);
+		padding-top: calc( var(--header-height) + var(--site-top-padding) );
 		--grid-mode: rows;
-		grid-template-rows: auto min-content;
+		--grid-template-rows: auto min-content;
 		min-height:100%;
 	}
 }
@@ -107,18 +112,19 @@ body {
 	}
 
 	#ubercontainer {
-		padding-bottom: var(--footer-height);
+		padding-bottom: calc( var(--footer-height) + var(--site-bottom-padding) );
 	}
 
 	@container body ( style(--header-fixed:0) ) {
 		#ubercontainer {
 			--grid-mode: rows;
-			grid-template-rows: min-content auto ;
+			--grid-template-rows: min-content auto ;
 		}
 	}
 	@container body ( style(--header-fixed:1) ) {
 		#ubercontainer {
-			--grid-mode: none;
+			--grid-mode: rows;
+			--grid-template-rows:  auto ;
 		}
 	}
 
@@ -251,16 +257,22 @@ body {
  *  
  */
 
-#menu.sticky-1 .inner {
-	position:sticky;
-	top: calc( (var(--header-fixed) * var(--header-height) ) + var(--menu-padding-top,4px) );
-	z-index: 90;
-}
+@container hasInner ( style( --sticky:1 ) ) {
 
-#xcol.sticky-1 .inner {
-	position:sticky;
-	top: calc( (var(--header-fixed) * var(--header-height) ) + var(--xcol-padding-top,4px) );
-	z-index: 90;
+	
+	#xcol .inner {
+		position:sticky;
+		top: calc( (var(--header-fixed) * var(--header-height) ) + var(--xcol-top-padding, 4px) );
+		z-index: 90;
+	}
+
+	#menu .inner {
+		position:sticky;
+		top: calc( (var(--header-fixed) * var(--header-height) ) + var(--menu-top-padding,4px) );
+		z-index: 90;
+	}
+
+
 }
 
 .inner {
@@ -278,22 +290,23 @@ body {
 }
 
 
-#content_main > .cs-grid {
+#content_main {
 	--grid-mode: named;
-	min-height:100%;
-	grid-template-areas: "menu content_wrap";
-	grid-template-columns: var(--menu-width) auto;
+	--grid-template-areas: "menu content_wrap";
+	--grid-template-columns: var(--menu-width) auto;
+	--grid-template-rows: auto;
 }
 
 #content {
-	min-height:100%;
 	--grid-mode: rows;
-	grid-template-rows: min-content auto min-content;
+	--grid-template-rows: min-content auto min-content;
 }
 
 #content_wrap {
-	grid-template-areas: "maincol xcol";
-	grid-template-columns: auto var(--xcol-width) ;
+	--grid-mode: named;
+	--grid-template-areas: "maincol xcol";
+	--grid-template-columns: auto var(--xcol-width) ;
+	--grid-template-rows: auto;
 	height:100%;
 }
 
@@ -301,8 +314,7 @@ body {
 	height:100%;
 }
 
-#maincol > .cs-grid {
-	height:100%;
+#maincol {
 	--grid-mode: named;
 	--grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
 	--grid-template-rows: min-content auto min-content;
@@ -312,7 +324,7 @@ body {
 #footer {
 	height: var(--footer-height);
 	--grid-mode: rows;
-	grid-template-rows: min-content auto;
+	--grid-template-rows: min-content auto;
 }
 
 #footer_left {
@@ -330,10 +342,16 @@ body {
 
 #header {
 	--grid-mode: rows;
-	grid-template-rows:auto  min-content ;
+	--grid-template-rows:auto  min-content ;
 }
 
-#footer_main > .cs-grid {
+#nav {
+	--grid-mode: flex;
+	--align-items: center;
+	--grid-gap: 8px;
+}
+
+#footer_main {
 	--grid-mode: fixed;
 	--grid-columns: 3;
 }
@@ -341,16 +359,13 @@ body {
 @media (max-width:800px) {
 	
 	#content_wrap {
-		--grid-mode: none;
+		--grid-mode: flex;
+		--flex-direction: column;
 		height: auto;
 	}
 
 	#maincol {
 		height:auto;
-	}
-
-	#maincol > .cs-grid {
-		height: auto;
 	}
 
 }
@@ -361,7 +376,7 @@ body {
 		--menu: close;
 	}
 
-	#content_main > .inner {
+	#content_main {
 		--grid-mode: none;
 		min-height: auto;
 	}
@@ -374,32 +389,35 @@ body {
 		height:auto;
 	}
 
-	#maincol > .cs-grid {
+	#maincol {
 		--grid-mode: none;
 	}
 
-	#footer_main > .cs-grid {
+	#footer_main {
 		--grid-mode: flex;
-		--flex-direction: column;
+		--flex-direction: column-reverse;
 		--justify-content:start;
 	}
 
 	@container body ( style( --footer-fixed:0 ) ) {
 		#footer {
 			height: auto;
-			--grid-mode: none;
+			--grid-mode: flex;
+			--flex-direction: column;
+			--justify-content:start;
 		}
 	}
 	
 }
 
-#menubutton.state_open a .icon {
+#menubutton.state-open a .icon {
 	transform: rotate(180deg);
 }
 
 @media (max-width:600px) {
 	body {
 		--menupos: slidedown;
+		--menu:close;
 	}
 }
 
@@ -409,7 +427,7 @@ body {
 }
 
 @container body ( style( --menupos:fixed ) or style( --menupos:slide )  ) {
-	#content_main > .cs-grid {
+	#content_main {
 		--grid-mode: none;
 	}
 	#menu {
@@ -464,8 +482,7 @@ body {
 	}
 
 	body.menu-close #content .spanning {
-		max-width: calc( var(--site-width) - var(--menu-width) );
-		transition: max-width var(--menu-anim-time) ease-in-out;
+		max-width:  var(--site-width) ;
 	}
 
 	@container body ( style( --footer-fixed:0 ) ) {
@@ -497,29 +514,43 @@ body {
 }
 
 @container body ( style( --menupos:slidedown ) ) {
-	body {
-		--menu: close;
+	
+	#menu {
+		--height: auto;/* WIP trying to animate these */ 
 	}
+
+	#menubutton {
+		display: block;
+	}
+
+	#menubutton.state-open a .icon {
+		transform: rotate(90deg);
+	}
+
+	@container body ( style( --menu:close ) ) {
+		#menu {
+			height:0;
+		}
+	}
+	body.menu-close	#menu {
+		height:0;
+	}
+
+	@container body ( style( --menu:open ) ) {
+		#menu {
+			position: static;
+			height: auto;
+			width: auto;
+		}
+	}
+	
+	body.menu-open #menu {
+		position: static;
+		height: auto;
+		width: auto;
+		/*	transform: translateY( -100% );
+		transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
+	}
+
 }
 
-
-body.menupos-slidedown	#menubutton.state_open a .icon {
-	transform: rotate(90deg);
-}
-
-body.menupos-slidedown.menu-close #menu {
-	height:0;
-}
-
-body.menupos-slidedown #menu {
-	--height: auto;/* WIP trying to animate thesee */ 
-	position: static;
-	height: auto;
-	width: auto;
-	/*	transform: translateY( -100% );
-	transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
-}
-
-/*body.menupos-slidedown.menu-open #menu {
-	transform: translateY( 0% );
-}*/
