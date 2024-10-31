@@ -16,6 +16,7 @@ See notes about var classes for issues/usage.
 	--footer-fixed: 0;
 	--menupos : static;/* static|fixed|slide   */
 	--menu: open; /* open | close */
+	--xcol: open; /* open | close */
 	--framed: 0;
 	--site-align:center;
 
@@ -310,6 +311,20 @@ div:not(.cs-grid):has( > .inner) {
 	height:100%;
 }
 
+
+@container body ( style( --xcol:close ) ) {
+	#xcol {
+		display:none;
+	}
+	
+	#content_wrap {
+		--grid-mode: flex;
+		--flex-direction: column;
+		height: auto;
+	}
+}
+
+
 #maincol {
 	height:100%;
 }
@@ -410,7 +425,7 @@ div:not(.cs-grid):has( > .inner) {
 	
 }
 
-#menubutton.state-open a .icon {
+:is(#menubutton,#xcolbutton).state-open a .icon {
 	transform: rotate(180deg);
 }
 
@@ -529,7 +544,10 @@ div:not(.cs-grid):has( > .inner) {
 
 	@container body ( style( --menu:close ) ) {
 		#menu {
-			height:0;
+			height:0 !important;
+			padding:0 !important;
+			margin:0 !important;
+			overflow: hidden;
 		}
 	}
 	body.menu-close	#menu {

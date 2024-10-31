@@ -290,7 +290,7 @@ Menu Testing
 			var menuHTML = `<div class='menu'><ul>`;
 			for (let item of menuData ) {
 				let icon = "icon" in item ? ` class="icon-${item.icon}"` : "" ;
-				let submenu = "submenuXXX" in item ? "<div class='cs-menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
+				let submenu = "submenu" in item ? "<div class='cs-menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
 				let href = "link" in item ?  ` href="${item.link}"` : "";
 				menuHTML += `<li><a${href} id="menu_${item.id}"><i${icon}></i><span>${item.title}</span></a>${submenu}</li>`;
 			}
@@ -310,8 +310,7 @@ Menu Testing
 
 			$("#menu").html(menuHTML);
 
-			// $(".cs-menu").varClass({name:"menu-orientation,menu-mode,menu-borders,menu-align,menu-stretch,menu-submenualign,menu-submenu-position,menu-submenu-show,menu-rollout"});
-
+			
 			$("#menu").menu();
 
 			var html = "<select>\n";

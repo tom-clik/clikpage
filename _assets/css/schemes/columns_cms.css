@@ -22,7 +22,7 @@ Blue grey sort of thing
 	--panel-bg:#4b384c;
 	--textcolor:#000000;
 	--sitepadding:10px;
-	--sitewidth: 100%;
+	--site-width: 100%;
 	--font-size:80%;
 	--text-font:'Open sans';
 	--title-font:Lato;
@@ -30,17 +30,34 @@ Blue grey sort of thing
 	--shadow:inset 0 1px 0 #00637f, inset 0 -1px 0 #00637f;
 	--title-color:#333333;
 	--menu-width:180px;
-	--xcolwidth: 260px;
+	--xcol-width: 260px;
 	--site-align:left;
 	--header-height:60px;
 	--footer-height:38px;
 }
+
 
 #header {
 	background-color: var(--lightcolor);
 	--grid-mode: columns;
 	--grid-template-columns: var(--menu-width) auto;
 }
+
+@media (max-width:600px) {
+	body {
+		--menu: close;
+		--menupos:slidedown;
+	}
+	#header {
+		--grid-mode: flex;
+		--flex-direction: column;
+		height: auto;
+	}
+	#hamburger {
+		display: block;
+	}
+}
+
 
 #title {
 	background-color: var(--darkcolor);
@@ -52,14 +69,57 @@ Blue grey sort of thing
 
 #nav {
  	border-bottom: 1px solid var(--border-color);
+	--grid-mode:flex; 
+	--flex-direction: row;
 }
 
-#nav > .inner {
-	--grid-mode:flex; 
+#section-title {
+	flex-grow: 1;
+	--title-font-size: 180%;
+	font-weight: normal;
+}
+
+#content {
+	--grid-template-rows: auto min-content;
 }
 
 #menu {
 	background-color: var(--mediumcolor);
+	--sticky: 1;
+	padding:8px 0px;
+}
+
+#xcol {
+	--sticky: 1;
+	background-color: var(--lightcolor);
+	padding:8px;
+}
+
+#maincol {
+	padding:8px;
+}
+
+#mainmenu {
+	margin-top:16px;
+	--menu-orientation: vertical;
+	--menu-align:left;
+	--menu-gap:0;
+	--link-color: var(--reversecolor);
+	--menu-item-padding: 8px 18px;
+	--menu-item-border:0 0 0 4px;/* item border width */
+	--menu-border-color: transparent;
+}
+
+#mainmenu li.hi a {
+	--menu-border-color: var(--accent);
+	background-color:  var(--darkcolor);
+}
+
+
+#mainmenu li a:hover {
+	background-color:  var(--mediumpluscolor);
+	box-shadow: var(--shadow);
+    --menu-border-color: var(--darkcolor);
 }
 
 #content {
@@ -72,6 +132,35 @@ Blue grey sort of thing
 	--text-color: white;
 }
 
-.scheme-title {
+.cs-title {
+	
+}
+
+#site-title {
+	color: var(--reversecolor);
 	--title-font-size: 240%;
+	font-weight: 400;
+}
+
+@media (max-width:800px) {
+	body {
+		--xcol: close;
+	}
+
+	#content_wrap {
+		--grid-mode: named;
+		--grid-template-areas: "xcol" "maincol";
+		--grid-template-columns: 1fr;
+		--grid-template-rows: min-content auto;
+	}
+}
+
+#xcolbutton.state-open a i {
+	transform: rotate(90deg);
+}
+
+.navbutton {
+	line-height: 0;
+	font-size: 32px;
+	--icon-width:32px;
 }

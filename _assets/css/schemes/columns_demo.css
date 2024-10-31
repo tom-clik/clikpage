@@ -7,7 +7,8 @@ select {
 
 body {
 	--text-font:'Open Sans';
-	--site-width:1200px;
+/*	--site-width:1200px;*/
+	--site-width:100%;
 	--header-height: 100px;
 	--menu-width: 240px;
 	--xcol-width: 240px;
@@ -24,6 +25,15 @@ body {
 
 #nav, #bottomnav {
 	background-color: #a0a0a0;
+}
+
+#menubuttons {
+	--grid-mode: flex;
+	--grid-gap:4px;
+}
+
+#navtext {
+	flex-grow: 1;
 }
 
 #content_top, #content_bottom {

@@ -12,7 +12,7 @@
                 "icons",
                 "images",
                 "menus",
-                "panels",
+                "items",
                 "navbuttons",
                 "justifiedGallery",
                 "tables",
@@ -21,7 +21,7 @@
                 "title",
                 "modal"            ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.12.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.13.min.css"
         },
         {
             "scripts": [
@@ -31,11 +31,11 @@
                 "admonitions",
                 "footnotes",
                 "columns",
-                "grids_classes",
+                "grids",
                 "icons",
                 "images",
                 "menus",
-                "panels_classes",
+                "items",
                 "navbuttons",
                 "tables",
                 "tabs",
@@ -46,7 +46,7 @@
                 "select2"
             ],
             "name":"cms",
-            "min":"/_assets/css/_min/cms.0.12.min.css"
+            "min":"/_assets/css/_min/cms.0.13.min.css"
         }
     ],
     "scripts": [
@@ -60,14 +60,9 @@
             "requires": "reset"
         },
         {
-            "min": "/_assets/css/panels.css",
-            "name": "panels",
+            "min": "/_assets/css/items.css",
+            "name": "items",
             "requires": "reset"
-        },
-        {
-            "min": "/_assets/css/panels_classes.css",
-            "name": "panels_classes",
-            "requires": "panels"
         },
         {
             "min": "/_assets/css/breadcrumb.css",
@@ -84,11 +79,6 @@
         {
             "min": "/_assets/css/grids.css",
             "name": "grids"
-        },
-        {
-            "min": "/_assets/css/grids_classes.css",
-            "name": "grids_classes",
-            "requires": "grids"
         },
         {
             "min": "/_assets/css/icons.css",
