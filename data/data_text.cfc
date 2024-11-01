@@ -130,28 +130,6 @@ component implements="clikpage.data.i_data" {
 	}
 
 
-			<cfcatch>
-				<cfthrow message="Unable to parse XML file" detail="fnReadXML():Unable to parse file #arguments.filepath#<br><br>#cfcatch.message#<br><br>#cfcatch.detail#">
-			</cfcatch>
-	     </cftry>
-
-			local.xmlData = variables.utils.utils.fnReadXML(local.filepath,"utf-8");
-			local.records = variables.utils.xml.xml2data(local.xmlData);
-			if (NOT IsArray(local.records)) {
-				// chekc single record
-				if (StructCount(local.records) eq 1) {
-					local.records = [local.records[structKeyList(local.records)]];
-				}
-				else {
-					throw("Data is not array. If you only have one record");
-				}
-			}
-			if (NOT StructKeyExists(local.data,"type")) {
-				local.data.type = "articles";
-			}
-			parseData(site=arguments.site,data=local.records,type=local.data.type,image_path=local.image_path,root=arguments.directory);
-		}
-	}
 
 	/**
 	 * Get array of data IDs that match data set filter criteria
