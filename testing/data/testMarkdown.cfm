@@ -1,7 +1,7 @@
 <cfscript>
 config = {"dataFolder": expandPath("../../sample/_data/data")};
 
-dataObj = new clikpage.data.data_markdown(config);
+dataObj = new clikpage.data.data_text(config);
 
 dataset = {
 	"name" = "test",
