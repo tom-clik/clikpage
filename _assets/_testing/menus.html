@@ -12,21 +12,19 @@ Only top level menus as most sub menu functionality require JS
 
 <script>
 tests = [
-	{"id": "1", "description":"Horizontal"},
-	{"id": "2", "description":"Vertical"},
-	{"id": "2a", "description":"Vertical Inline subs"},
-	{"id": "3", "description":"Manual Border"},
-	{"id": "4", "description":"Flex Left"},
-	
-	{"id": "5", "description":"Flex"},
-	{"id": "6", "description":"Flex Reverse"},
-	{"id": "7", "description":"Flex No  Stretch"},
-	{"id": "8", "description":"Icons"},
-	{"id": "9", "description":"Icons right"},
-	{"id": "10", "description":"Only icons"},
-	{"id": "11", "description":"Only icons left"},
-	{"id": "12", "description":"Only icons vertical"},
-	{"id": "13", "description":"Only icons vertical left"}
+	{"id":"horiz", "description":"Horizontal"},
+	{"id":"vert", "description":"Vertical"},//2
+	{"id":"vert-inline", "description":"Vertical Inline subs", "inherit":"2"},//2a
+	{"id":"vert-inline-open", "description":"Vertical Inline subs open", "inherit":"2,2a"},//2b
+	{"id":"border", "description":"Manual Border", "inherit":"vert"}, //3
+	{"id":"flex", "description":"Flex"},//5
+	{"id":"flex_reverse", "description":"Flex Reverse", "inherit":"flex"},//6
+	{"id":"icons", "description":"Icons"},//8
+	{"id":"icons_right", "description":"Icons right", "inherit":"icons"},//9
+	{"id":"onlyicons", "description":"Only icons"}, 
+	{"id":"onlyicons_left", "description":"Only icons left", "inherit":"onlyicons"}, 
+	{"id":"onlyicons_vert", "description":"Only icons vertical", "inherit":"onlyicons"},
+	{"id":"onlyicons_vert_left", "description":"Only icons vertical left", "inherit":"onlyicons,onlyicons_vert"}
 ];
 </script>
 
@@ -52,7 +50,7 @@ tests = [
 			margin-top:2em;
 		}
 
-		.cs-title {
+		.title {
 			font-size: 200%;
 			font-weight: bold;
 		}
@@ -64,7 +62,7 @@ tests = [
 
 		/*	 */
 		
-		.cs-menu {
+		.menu {
 			--menu-item-padding:8px;
 			--link-color: #333;
 			--menu-background: #c3c3c3;
@@ -72,137 +70,119 @@ tests = [
 			--menu-icon-gap:8px;
 			--menu-icon-stretch: 0;
 			--menu-border-color: #00ffff;
-
+			--menu-openicon-height: 18px;
+			--menu-openicon-width: 18px;
 		}
 
-		.cs-menu li:hover > a {
+		.menu a:hover {
 			--link-color: #c3c3c3;
 			--menu-background: #ff00ff;
 			--menu-border-color: red;
 		}
 
-		.cs-menu li.hi a {
+		.menu li.hi a {
 			--link-color: #ffff00;
 			--menu-background: #c3c3c3;
 		}
 
-		.cs-menu.mode-grid li:hover {
-			--link-color:#ffff00;
-			--menu-background: #efefef;
-		}
-
-		.cs-menu.test-1 {
+		.menu.test-horiz {
 			--menu-borders:boxes;
 			--menu-item-border:1px;
-			--menu-submenualign: bottom-left;
+			--menu-submenualign: menu-bottom-left;
 		}
 
-		.cs-menu.test-1 .cs-menu.submenu {
-			--menu-stretch:0;
+		.menu.test-horiz .menu.submenu {
+			--menu-orientation: horizontal;
+			--menu-stretch:1;
 			--menu-borders:boxes;
 			--menu-item-border:1px;
-			--menu-align:left;
 		}
-
-		.cs-menu.test-2 .cs-menu.submenu {
-			--menu-borders:dividers;
-			--menu-item-border:1px;
-			--menu-align:left;
-			--menu-orientation:vertical;
-		}
-
 
 		@media screen and (max-width: 800px) {
-			.cs-menu.test-1 {
+			.menu.test-horiz {
 				--menu-orientation:vertical;
 				--menu-borders:dividers;
 				--menu-align:left;
 			}
 		}
 
-		.cs-menu.test-2 {
+		.menu.test-vert {
 			--menu-orientation:vertical;
 			width: 180px;
 			--menu-borders:dividers;
 			--menu-item-border:1px;
-			--menu-align:right;
+			--menu-align:left;
+			--menu-icon-stretch: 1;
+			--menu-submenualign: top-right;
 		}
 
-		.cs-menu.test-2a {
-			--menu-orientation:vertical;
-			width: 180px;
+		.menu.test-vert .menu.submenu {
 			--menu-borders:dividers;
 			--menu-item-border:1px;
+			--menu-align:left;
+			--menu-orientation:vertical;
+		}
+
+
+		.menu.test-vert-inline {
 			--menu-align:right;
+			--menu-submenu-show: hide;
 			--menu-submenu-position:relative;
-			--menu-submenu-show: show;
 		}
 
-		.cs-menu.test-2a .cs-menu.submenu {
+		.menu.test-vert-inline .menu.submenu {
 			--menu-background: white;
 		}
 
-		.cs-menu.test-3 {
-			width: 180px;
+		.menu.test-vert-inline-open {
+			--menu-submenu-show: show;
+		}
+
+		.menu.test-border {
+			--menu-borders:normal;
+			--menu-item-border:0 4px 0 0;
+			--menu-border-color: var(--menu-background);
+			--menu-submenu-position:relative;
+		}
+
+		.menu.test-border .menu.submenu {
 			--menu-orientation:vertical;
 			--menu-borders:normal;
 			--menu-item-border:0 4px 0 0;
 			--menu-border-color: var(--menu-background);
-			--menu-align:left;
 		}
 
-		.cs-menu.test-3 .cs-menu.submenu {
-			--menu-orientation:vertical;
-			--menu-borders:normal;
-			--menu-item-border:0 4px 0 0;
-			--menu-border-color: var(--menu-background);
-		}
-
-		.cs-menu.test-3 li:hover > a {
+		.menu.test-border a:hover {
 			--menu-background: white;
 			--menu-border-color: red;
 		}
 
-		.cs-menu.test-4 {
+		.menu.test-flex {
 			--menu-mode:flex;
 			--menu-align:left;
 			--menu-stretch: 0;
-		}
-
-		.cs-menu.test-5 {
-			--menu-mode:flex;
 			--menu-borders:dividers;
 			--menu-item-border:1px;
 		}
 
-		.cs-menu.test-6 {
-			--menu-mode:flex;
-			--menu-stretch: 0;
+		.menu.test-flex_reverse {
 			--menu-direction: row-reverse;
 			--menu-align:right;
 		}
-		.cs-menu.test-7 {
-			--menu-mode:flex;
-			--menu-stretch: 0;
-		}
 
-		.cs-menu.test-8 {
+		.menu.test-icons {
 			--menu-icon-display: block;
 		}
 
-		.cs-menu.test-9 {
+		.menu.test-icons_right {
 			width: 180px;
-			
 			--menu-icon-stretch: 1;
-			--menu-icon-display: block;
 			--menu-orientation:vertical;
 			--menu-icon-align:row-reverse;
-			--menu-borders:dividers;
-			--menu-item-border:1px;
 			--menu-align:right;
 		}
 
-		.cs-menu.test-10 {
+		.menu.test-onlyicons {
 			--menu-stretch:0;
 			--menu-label-display:none;
 			--menu-icon-display: block;
@@ -213,45 +193,20 @@ tests = [
 			--menu-submenu-show:hide;
 		}
 
-		.cs-menu.test-11 {
-			--menu-stretch:0;
-			--menu-label-display:none;
-			--menu-icon-display: block;
+		.menu.test-onlyicons_left {
 			--menu-align:left;
-			--menu-icon-gap: 0px;
-			--menu-item-padding: 4px;
-			--menu-rollout: 1;
-			--menu-submenu-show:hide;
 		}
 
-		.cs-menu.test-12 {
+		.menu.test-onlyicons_vert {
+			--menu-orientation:vertical;
 			width: var(--menu-icon-width);
 			margin: 0 0 0 auto;
-
-			--menu-stretch:0;
-			--menu-label-display:none;
-			--menu-icon-display: block;
-			--menu-align:right;
-			--menu-orientation:vertical;
-			--menu-icon-gap: 0px;
-			--menu-item-padding: 4px;
-			--menu-rollout: 1;
-			--menu-submenu-show:hide;
 		}
 
-		.cs-menu.test-13 {
+		.menu.test-onlyicons_vert_left {
 			width: var(--menu-icon-width);
 			margin: 0 auto 0 0 ;
-
-			--menu-label-display:none;
-			--menu-stretch:0;
-			--menu-icon-display: block;
 			--menu-align:left;
-			--menu-orientation:vertical;
-			--menu-icon-gap: 0px;
-			--menu-item-padding: 4px;
-			--menu-rollout: 1;
-			--menu-submenu-show:hide;
 		}
 
 		
@@ -267,10 +222,10 @@ Menu Testing
 
 </div>
 
-<div id="menu" class="cs-menu test-4">
+<div id="menu" class="menu test-4">
 </div>
 <!---
-<div id="main" class=" cs-menu scheme-vertical scheme-dividers scheme-gridXXX scheme-flexXXX"><ul>
+<div id="main" class=" menu scheme-vertical scheme-dividers scheme-gridXXX scheme-flexXXX"><ul>
 
 --->
 
@@ -287,16 +242,18 @@ Menu Testing
 	<script type="text/javascript">
 
 		function createMenu(menuData) {
-			var menuHTML = `<div class='menu'><ul>`;
+			var menuHTML = `<ul>`;
 			for (let item of menuData ) {
 				let icon = "icon" in item ? ` class="icon-${item.icon}"` : "" ;
-				let submenu = "submenu" in item ? "<div class='cs-menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
+				let submenu = "submenu" in item ? "<div class='menu submenu'>" + createMenu(item.submenu)  + "</div>" : "";
 				let href = "link" in item ?  ` href="${item.link}"` : "";
 				menuHTML += `<li><a${href} id="menu_${item.id}"><i${icon}></i><span>${item.title}</span></a>${submenu}</li>`;
 			}
-			menuHTML += "</ul></div>";
+			menuHTML += "</ul>";
 			return menuHTML;
 		}
+
+		testStr = getArrayData(tests);
 
 		$(document).ready(function() {
 
@@ -307,6 +264,8 @@ Menu Testing
 			// / end apply layout class
 			
 			var menuHTML = createMenu(menuData,"menu");
+
+			testStr = getArrayData(tests);
 
 			$("#menu").html(menuHTML);
 
@@ -331,9 +290,31 @@ Menu Testing
 		function setTest(test) {
 			var $menu = $("#menu");
 			$menu.removeClassByPrefix("test-");
-			$menu.addClass("test-" + test);
+			console.log(tests);
+			if (test in testStr) {
+				testObj = testStr[test];
+				testArr = [test];
+				if ( "inherit" in testObj ) {
+					testArr.push(...testObj.inherit.split(','));
+				}
+				for (let i of testArr) {
+					$menu.addClass("test-" + i);
+				}
+			}
+			else {
+				console.log("test " + test + " not found")
+			}
+			
 			$(window).trigger('resize');
 			
+		}
+
+		function getArrayData(arr) {
+			var ret = {};
+			for (let row of arr) {
+				ret[row.id] = row;
+			}
+			return ret;
 		}
 
 

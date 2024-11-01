@@ -82,12 +82,12 @@ hi      li.hi a
 	--menu-openicon-adjust: -4px;
 	--menu-text-align: center;/* alignment of text in menu items */
 	--menu-anim-time: 0.3s;
-	--menu-direction: row;
+	--menu-reverse: 0; /* reverse irection of flex menus */
 	--menu-item-justify: center; /* item aligment start|center|end. Also see menu-text-align which usually needs setting as well */
 	--menu-item-align: center; /* cross axis aligment, e.g. vertical when menu is horizontal */
 	--menu-wrap: wrap;
 	--menu-rollout: 0;
-	--sub-menu-adjust:0;/* add to positioning of sub menus */
+	--sub-menu-adjust:0px;/* add to positioning of sub menus */
 }
 
 .menu {
@@ -98,21 +98,24 @@ hi      li.hi a
 	--sub-menu-adjust-h: var(--sub-menu-adjust);
 }
 
-.menu > ul {
-	list-style: none;
-	margin:0;
-	padding-left: 0em;
-    text-indent: 0px;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(var(--menu-item-width),1fr));
-	grid-gap:var(--menu-gap);
-	justify-content: var(--menu-item-justify); /* needs formalising. This is the align mechanism as the a tags themselves are now flexboxes */
-	align-items: var(--menu-item-align);
-	margin: 0 auto;
+/* apply to all...having no criteria doesn't seem to work */
+@container menu ( style(--menu-mode:flex) or style(--menu-mode:grid) ) {
+	ul, ul ul {
+		list-style: none;
+		margin:0;
+		padding-left: 0em;
+	    text-indent: 0px;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(var(--menu-item-width),1fr));
+		grid-gap:var(--menu-gap);
+		justify-content: var(--menu-item-justify);
+		align-items: var(--menu-item-align);
+		margin: 0 auto;
+	}
 }
 
 @container menu ( style(--menu-align:left) ) {
-	.menu > ul {
+	ul {
 		margin-left:0;
 		--menu-item-justify: start;
 		--menu-text-align: left;
@@ -120,7 +123,7 @@ hi      li.hi a
 }
 
 @container menu ( style(--menu-align:right) ) {
-	.menu > ul {
+	ul {
 		margin-right:0;
 		--menu-item-justify: end;
 		--menu-text-align: right;
@@ -128,21 +131,22 @@ hi      li.hi a
 }
 
 @container menu ( style(--menu-mode:flex ) ) {
-	.menu > ul {
+	ul {
 		display: flex;
-		flex-direction: var(--menu-direction);
+		flex-direction: row;
 		flex-wrap: var(--menu-wrap);
+	}
+
+	@container menu ( style(--menu-reverse:1 ) ) {
+		ul {
+			flex-direction: row-reverse;
+		}
 	}
 }
 
 @container menu ( style(--menu-orientation:vertical ) ) {
 	
-	div.menu:not(.submenu) {
-		--menu-submenualign:top-right;
-		--menu-submenu-position:relative;
-	}
-
-	.menu > ul {
+	ul {
 		display: grid;
 		grid-template-columns: 1fr;
 		--menu-text-align: left;
@@ -150,14 +154,14 @@ hi      li.hi a
 	}
 
 	@container menu ( style(--menu-align:right ) ) {
-		.menu > ul {
+		ul {
 			--menu-text-align: right;
 			--menu-item-justify: end;
 		}
 	}
 
 	@container menu ( style(--menu-align: center ) ) {
-		.menu > ul {
+		ul {
 			--menu-text-align: center;
 			--menu-item-justify: center;
 		}
@@ -166,7 +170,7 @@ hi      li.hi a
 }
 
 @container menu ( style(--menu-borders: dividers ) ) {
-	.menu ul {
+	ul {
 		--menu-gap:0px;
 		--menu-item-border-width: 0 var(--menu-item-border) 0 0;
 	}
@@ -176,14 +180,14 @@ hi      li.hi a
 	}
 
 	@container menu ( style(--menu-orientation: vertical ) ) {
-		.menu  ul {
+		ul {
 			--menu-item-border-width: 0 0 var(--menu-item-border) 0;
 		}
 	}
 }
 
 @container menu ( style(--menu-borders: boxes ) ) {
-	.menu ul {
+	ul {
 		--menu-gap:0px;
 		--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
 	}
@@ -193,12 +197,11 @@ hi      li.hi a
 	}
 
 	@container menu ( style(--menu-orientation: vertical ) ) {
-		.menu ul {
+		ul {
 			--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
 		}
 	}
 }
-
 
 .menu li {
 	position:relative;
@@ -206,7 +209,7 @@ hi      li.hi a
 }
 
 @container menu ( style(--menu-stretch: 1 ) ) {
-	.menu > ul {
+	ul {
 		width:100%;
 	}
 }
@@ -247,9 +250,12 @@ hi      li.hi a
   	height: auto;
 }
 
-.menu.menu-submenu-show-show .submenu {
-	display:block;
+@container menu ( style(--menu-submenu-show: show ) ) {
+	.submenu {
+		display:block;
+	}
 }
+
 
 @container menu ( style(--menu-orientation: horizontal ) ) {
 	.submenu {
@@ -257,51 +263,80 @@ hi      li.hi a
 	}
 }
 
-.menu[class*=submenualign-menu] {
-	position:relative;
+/* position submenus relative to whole menu */
+@container menu ( style(--menu-submenualign: menu-bottom-left ) or style(--menu-submenualign: menu-top-left ) or style(--menu-submenualign: menu-top-right ) or style(--menu-submenualign: menu-bottom-right ) ) {
+
+	ul {
+		position:relative;
+	}
+
+	.menu li {
+		position:static;
+	}
+
 }
 
-.menu[class*=submenualign-menu] li {
-	position:static;
+
+@container menu ( style(--menu-submenu-position: absolute ) ) {
+
+	.submenu {
+		position: absolute;
+	}
+
+	@container menu ( style(--menu-submenualign: menu-top-left ) or style(--menu-submenualign: top-left ) ) {
+		.submenu {
+			right: var(--sub-menu-adjust-h);
+			top:0;
+		}
+	}
+
+	@container menu ( style(--menu-submenualign: menu-bottom-left ) or style(--menu-submenualign: bottom-left ) ) {
+		.submenu {
+			right: 0;
+			top: calc( 100% + var(--sub-menu-adjust-v));
+		}
+	}
+
+	@container menu ( style(--menu-submenualign: menu-top-right ) or style(--menu-submenualign: top-right ) ) {
+		.submenu {
+			left:  calc( 100% + var(--sub-menu-adjust-v));
+			top:0;
+		}	
+	}
+
+	@container menu ( style(--menu-submenualign: menu-bottom-right ) or style(--menu-submenualign: bottom-right ) ) {
+		.submenu {
+			left:  calc( 100% + var(--sub-menu-adjust-h));
+			top: 100%;
+		}
+	}
 }
 
-.menu.menu-submenu-position-absolute.menu-submenualign-menu-top-left .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-top-left .submenu {
-	right: var(--sub-menu-adjust-h);
-	top:0;
-}
-.menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-left .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-bottom-left .submenu {
-	right: 0;
-	top: calc( 100% + var(--sub-menu-adjust-v));
-}
-.menu.menu-submenu-position-absolute.menu-submenualign-menu-top-right .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-top-right .submenu {
-	left:  calc( 100% + var(--sub-menu-adjust-v));
-	top:0;
-}
-.menu.menu-submenu-position-absolute.menu-submenualign-menu-bottom-right .submenu, .menu.menu-submenu-position-absolute.menu-submenualign-bottom-right .submenu {
-	left:  calc( 100% + var(--sub-menu-adjust-h));
-	top: 100%;
-}
-
-li.open > .submenu, .submenu.show , .menu.menu-submenu-show-hover > ul > li:hover > .submenu  {
+li.open > .submenu, .submenu.show  {
 	display:block;
 }
 
-.menu ul.submenu li.open > ul.submenu {
+@container menu ( style(--menu-submenu-show: hover ) ) {
+	li:hover > .submenu {
+		display:block;
+	}
+}
+
+
+.submenu > ul > li.open > .submenu {
 	margin-top:0px;
 }
 
 /* sub menu indicator */
 .menu a > i[class*=icon].openicon {
-	--menu-icon-height: 16px;
-	--menu-icon-width: 16px;
+	--menu-icon-height: var(--menu-openicon-height);
+	--menu-icon-width: var(--menu-openicon-width);
 	display: block;
 	flex-grow: 0;
 	position: relative;
 	right:var(--menu-openicon-adjust, 0);
 	max-height:100%;
 	top:0;
-	/*width: var(--menu-openicon-width);
-	height: var(--menu-openicon-height);*/
 	fill:var(--link-color);
 	stroke:var(--link-color);
 	transition-property: transform;
@@ -336,46 +371,54 @@ Requires icons.css and navbuttons.css
 	flex-grow: var(--menu-icon-stretch);
 }
 
-.menu.menu-rollout-1 a span {
-	visibility: hidden;
-	overflow: hidden;
-	position: absolute;
-	top:100%;
-	left:0;
-	width:0;
-	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out, width var(--menu-anim-time)  ease-in-out ;
-	align-items: center;
-	justify-content: start;
-}
+@container menu ( style(--menu-rollout: 1 ) ) {
+	a span {
+		visibility: hidden;
+		overflow: hidden;
+		position: absolute;
+		top:100%;
+		left:0;
+		width:0;
+		transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out, width var(--menu-anim-time)  ease-in-out ;
+		align-items: center;
+		justify-content: start;
+	}
 
-.menu.menu-align-right.menu-rollout-1 a span {
-	left:auto;
-	right:0;
-	bottom:auto;
-	justify-content: end;
-}
+	a:hover span {
+		width: var(--menu-item-width);
+		box-sizing: content-box;
+		display: flex;
+		visibility: visible;
+		height: var(--menu-icon-height);
+		padding: var(--menu-item-padding);
+		background-color: var(--menu-background);
+	}
 
-.menu.menu-orientation-vertical.menu-rollout-1 a span {
-	top:0;
-	left:100%;
-	bottom:auto;
-}
-
-.menu.menu-orientation-vertical.menu-align-right.menu-rollout-1 a span {
-	top:0;
-	right:100%;
-	bottom:auto;
-	left:auto;
-}
-
-.menu.menu-rollout-1 a:hover span {
-	width: var(--menu-item-width);
-	box-sizing: content-box;
-	display: flex;
-	visibility: visible;
-	height: var(--menu-icon-height);
-	padding: var(--menu-item-padding);
-	background-color: var(--menu-background);
+	@container menu ( style(--menu-align: right ) ) {
+		a span {
+			left:auto;
+			right:0;
+			bottom:auto;
+			justify-content: end;
+		}
+	}
+	@container menu ( style(--menu-orientation: vertical ) ) {
+		@container menu ( style(--menu-align: left ) ) {
+			a span {
+				top:0;
+				left:100%;
+				bottom:auto;
+			}
+		}
+		@container menu ( style(--menu-align: right ) ) {
+			a span {
+				top:0;
+				right:100%;
+				bottom:auto;
+				left:auto;
+			}
+		}
+	}
 }
 
 

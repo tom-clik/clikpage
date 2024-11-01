@@ -51,16 +51,18 @@ E.g.
 	--icon-width: 32px; /* size of icon */
 	--icon-height: var(--icon-width); /* size of icon */
 	--label-gap: 10px;
-	--label-display:block;/* Turn button or label off with block|none */
-	--icon-display:block;/* ---- " ---- */
-	--button-align:center; /* icon valign flex-start|center|flex-end */
-	--button-direction: row;/* row or row reverse to align left or right */
+	--label-display:1;
+	--icon-display:1;
+	--button-align:left; /* align icon left,center or right */
+	--button-valign:center; /* icon valign csnter, start, or end */
 	--link-color:inherit;
 	--label-align:left;
 	--stretch:0;/* expand text label */
+	--popout: 0;
 }
 
 .button {
+	container-name: button;
 	display: inline-block;
 	cursor: pointer;
 	position: relative;
@@ -73,15 +75,17 @@ E.g.
 	width: 100%;
 }
 
-.button a, .button a:hover, .button input {
+.button a, .button input {
 	display:flex;
+	align-items: var(--button-valign);
+  	flex-direction: row;
+  	grid-gap:var(--label-gap);
+}
+
+.button a, .button a:hover, .button input {
 	color:inherit;
 	stroke: inherit;
 	fill:inherit;
-	justify-content: var(--button-align);
-  	align-items: center;
-  	flex-direction: var(--button-direction);
-  	grid-gap:var(--label-gap);
 }
 
 .button svg {
@@ -91,18 +95,31 @@ E.g.
 }
 
 .button .icon {
-	display: var(--icon-display);
+	display: block;
 	width:var(--icon-width);
 	height:var(--icon-height);
 	line-height:var(--icon-height);
 	font-size: var(--icon-height);
 }
 
+@container button ( style(--icon-display:0) ) {
+	icon {
+		display: none;
+	}
+
+}
+
 .button label {
-	display:  var(--label-display);
+	display: block;
 	line-height: var(--icon-height);
 	text-align: var(--label-align);
 	flex-grow: var(--stretch);
+}
+
+@container button ( style(--label-display:0) ) {
+	label {
+		display:  var(--label-display);
+	}
 }
 
 /** See auto button functionality */
@@ -110,35 +127,60 @@ E.g.
     display: none;
 }
 
-.button.setting-popout{
-	--label-gap:0;
+@container button ( style(--button-align:right) ) {
+
+	.button a {
+		flex-direction: row-reverse;
+	}
+
 }
 
-.button.setting-popout a {
-	display: block;
-	position: relative;
+@container button ( style(--button-align: center) ) {
+
+	.button a {
+		flex-direction: column;
+	}
+
 }
 
-.button.setting-popout label {
-	visibility: hidden;
-	position: absolute;
-	width: 0;
-	overflow: hidden;
-	top: calc(-1 * var(--button-padding));
-	left:calc(var(--icon-width) + var(--button-padding));
-	transition: width 0.3s ease-in-out;
-	white-space: nowrap;
+@container button ( style(--popout:1) ) {
+
+	a {
+		display: block;
+		position: relative;
+		width: var(--icon-width);
+	}
+
+	label {
+		line-height: var(--icon-height);
+		visibility: hidden;
+		position: absolute;
+		width: 0;
+		overflow: hidden;
+		top: calc(-1 * var(--button-padding));
+		left:calc(var(--icon-width) + var(--button-padding));
+		transition: width 0.3s ease-in-out;
+		white-space: nowrap;
+	}
+
+	a:hover label {
+		visibility: visible;
+		width:200px;
+	}
+
+	@container button ( style(--button-align:right) ) {
+		
+		label {
+			left:unset;
+			right:0;
+		}
+
+		
+
+	}
+
 }
 
-.button.right.setting-popout label {
-	left:unset;
-	right:0;
-}
-
-.button.setting-popout:hover label {
-	visibility: visible;
-	width:200px;
-}
 
 .button.scheme-rotate.state-open a .icon {
 	transform: rotate(90deg);
