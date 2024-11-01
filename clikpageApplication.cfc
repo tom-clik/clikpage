@@ -196,7 +196,7 @@ component {
 		};
 
 		try {
-			new cferrorHandler.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);
+			new cferrorHandler.ErrorHandler(argumentcollection=local.args);
 		}
 		catch (any n) {
 			throw(object=e);
