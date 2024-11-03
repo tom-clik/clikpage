@@ -11,6 +11,9 @@
 		<contacttel>+44 12345 545454</contacttel>
 	</meta>
 
+	<style href="styles/sample_styles.scss" />
+	<style href="styles/sample_schemes.scss" />
+
 	<links>
 		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="true" />

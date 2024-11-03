@@ -1,18 +1,15 @@
 <cfscript>
 cfinclude(template="testContent_include.cfm");
-id = "list";
-cs = contentObj.new(id=id,title="Articles",type="articlelist");
+id = "articlelist";
+cs = contentObj.new(id=id,title="Articles",type="articlelist",class="scheme-articlelist_panels");
 
 data =  deserializeJSON( FileRead( expandPath( "../site/_out/sampleArticles.json" ) ) );
 
 cs.data = data.test;
 request.data = data.articles;
 
-styles.style["#id#"] = {
-	"main": {
-		"image-align":"left"
-	}
-}
+settingsObj.loadStyleSheet(expandPath("../css/_styles/articlelist_test.scss"), styles);
+
 testCS(cs);
 
 </cfscript>

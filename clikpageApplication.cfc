@@ -38,7 +38,7 @@ component {
 		 
 		try {
 			
-			application.siteObj = new clikpage.site.site(argumentcollection=application.config,dataObj=aplication.dataObj, debug = this.debug);
+			application.siteObj = new clikpage.site.site(argumentcollection=application.config,dataObj=application.dataObj, debug = this.debug);
 			
 			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;
@@ -153,7 +153,7 @@ component {
 
 	public void function onRequestEnd(){
 		
-		try { 
+		try {
 			
 			// pending formal mechanism for partial content
 			if (Left(request.prc.pageContent.layoutname,5) eq "popup") {
@@ -189,7 +189,7 @@ component {
 		// remember to add path for logs !!! this.mappings["/logs/"]=[outside your web root!];
 		local.args = {
 			e=e,
-			debug=request.prc.debug ? : 0,
+			debug=this.debug ? : 0,
 			isAjaxRequest=request.prc.isAjaxRequest ? : 0,
 			pageTemplate=application.errorTemplate ? : "",
 			logger= application.errorLogger ? : new cferrorHandler.textLogger( ExpandPath( "/logs/errors" ) )

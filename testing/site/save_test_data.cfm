@@ -17,12 +17,11 @@ savecontent variable="nully" {
 	cfinclude( template="test_site.cfm" );
 }
 
-
 menu = siteObj.sectionList(site=site,tag="mainmenu");
 menudata = siteObj.menuData(site, menu);
 FileWrite(ExpandPath("_out/sampleMenu.json"), serializeJSON(menudata));
 
-menu = siteObj.sectionList(site=site,tag="footer");
+menu = siteObj.sectionList(site=site,tag="footermenu");
 menudata = siteObj.menuData(site,menu);
 FileWrite(ExpandPath("_out/sampleSmallMenu.json"), serializeJSON(menudata));
 
@@ -32,8 +31,8 @@ dataset = {
 	"tag"="test","type"="articles","name"="testdata"
 };
 
-articles["test"] = siteObj.getDataSet(site=site,dataset=dataset);
-articles["articles"] =site.articles;
+articles["test"] = dataObj.getDataSet(site=site,dataset=dataset);
+articles["articles"] =dataObj.getRecords(["all"]);
 
 FileWrite(ExpandPath("_out/sampleArticles.json"), serializeJSON(articles));
 
@@ -48,7 +47,5 @@ WriteOutput("Articles saved");
 // FileWrite(ExpandPath("_out/sampleImages.json"), serializeJSON(images));
 
 // WriteOutput("Images saved");
-
-
 
 </cfscript>

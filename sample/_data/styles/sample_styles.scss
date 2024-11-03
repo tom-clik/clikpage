@@ -36,10 +36,11 @@ colors {
 		title:Overlay background;
 		value:rgba(0,0,0,0.2);
 	}
-	Bisque {value: Bisque;}
-	brown {value: brown;}
-	DarkCyan {value: DarkCyan;}
-	Cornsilk {value: Cornsilk;}
+	popupbg {
+		title:Popup background;
+		value:#ffffff;
+	}
+	
 }
 
 media {
@@ -100,5 +101,4 @@ vars {
 		description:Site padding in mobile value:4px;
 	}
 }
-
 

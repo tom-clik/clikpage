@@ -31,10 +31,10 @@ component extends="grid" {
 			{"name"="subcaption","panel":"subcaption", "selector"=" .subcaption"}
 		];
 
-		StructDelete(this.settings,"justify-content");
-		StructDelete(this.settings,"align-items");
+		StructDelete(this.styleDefs,"justify-content");
+		StructDelete(this.styleDefs,"align-items");
 
-		StructAppend(this.settings, [
+		StructAppend(this.styleDefs, [
 			"layout": {
 				"name":"Layout type","description":"","type":"list","options":[
 					{"name":"Standard","description":"Standard grid","value":"standard"},
@@ -78,7 +78,6 @@ component extends="grid" {
 				]
 			},
 			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
-			
 			"contain" : {"name":"Contain","type":"boolean","default":false,"dependson":"layout","dependvalue":"carousel"},
 			"freeScroll" : {"name":"Free Scroll","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
 			"wrapAround" : {"name":"Wrap Around","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
@@ -178,7 +177,7 @@ component extends="grid" {
 			);
 		}
 
-		local.html = "";
+		local.html = "<div class='grid'>";
 
 		for (local.id in arguments.content.data) {
 			local.image = arguments.data[local.id];
@@ -187,19 +186,16 @@ component extends="grid" {
 			// 1. specify image type e.g. thumbnail
 			// 2. Popups proper target for open
 			// 3. Link types: none, gallery etc
-			local.link = "";
-			if (arguments.content.settings.main.popup) {
-				local.link = " href='" & ( arguments.content.link ? : local.image.image ) & "'";
+			if ( StructKeyExists( arguments.content, "link" )) {
+				// TODO: link for section detail page 
+				// local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
+				local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
 			}
 			else {
-				if ( StructKeyExists( arguments.content, "link" )) {
-					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
-				}
-				else {
-					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
-				}
+				local.link = local.image.image;
+				
 			}
-
+			
 			local.html &= "<a class='frame'#local.link#>";
 			
 			local.image_src = local.image.image_thumb ? : local.image.image;
@@ -208,19 +204,21 @@ component extends="grid" {
 
 			if (local.image.title NEQ "") {
 				local.html &= "<div class='caption'>#local.image.title#";
-				if (arguments.content.settings.main.subcaptions AND local.image.description NEQ "") {
+				if (local.image.description NEQ "") {
 					local.html &= "<div class='subcaption'>#local.image.description#</div>";
 				}
 				local.html &= "</div>";
 			}
 
-			
 			local.html &= "</a>";
 
-		}		
-		if (arguments.content.settings.main.popup) {
-			local.html &= variables.contentObj.popupHTML("#arguments.content.id#_popUp");
 		}
+
+		local.html &= "</div>";
+
+		// if (arguments.content.settings.main.popup) {
+		// 	local.html &= variables.contentObj.popupHTML("#arguments.content.id#_popUp");
+		// }
 
 		return local.html;
 		

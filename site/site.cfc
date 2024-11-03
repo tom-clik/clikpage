@@ -8,7 +8,7 @@ component accessors="true" extends="utils.baseutils" {
 		required string layoutsFolder,
 		required dataObj
 		) {
-
+		
 		this.settingsObj = new clikpage.settings.settings(debug=getdebug());
 		this.contentObj = new clikpage.content.content(settingsObj=this.settingsObj,debug=getdebug());
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
@@ -60,15 +60,38 @@ component accessors="true" extends="utils.baseutils" {
 			throw("No layout defined for site");
 		}
 		
-		if (StructKeyExists(local.site, "styles") ) {
-			// TODO: New load styles function and call to it here.
+		if (StructKeyExists(local.site, "style") ) {
+			if (! isArray(local.site.style)) {
+				local.site.style = [local.site.style];
+			}
+			local.site["styles"] = {};
+			for (local.style in local.site.style) {
+				try{
+					this.settingsObj.loadStyleSheet( getCanonicalPath(local.root & local.style.href) , local.site.styles);
+				} 
+				catch (any e) {
+					local.extendedinfo = {"tagcontext"=e.tagcontext};
+					throw(
+						extendedinfo = SerializeJSON(local.extendedinfo),
+						message      = "Error:" & e.message, 
+						detail       = e.detail,
+						errorcode    = ""		
+					);
+				}
+			}
+			
+			StructDelete(local.site,"style");
+
+		}
+		else {
+			throw("No styles defined");
 		}
 		
 		// load sections
 		parseData(site=local.site,data=local.site.sections,type="sections",root=local.root);
 		checkParentSections(site=local.site);
 
-		SectionData( site=local.site );
+		addSectionData( site=local.site );
 
 		// load other data from files
 		// DEPRECATED, see dataObj
@@ -279,9 +302,9 @@ component accessors="true" extends="utils.baseutils" {
 	/**
 	 * Add sections defined in the data to section records
 	 */
-	private void function sectionData( required struct site ) localmode=false {
+	private void function addSectionData( required struct site ) localmode=true {
 
-		sectionList = StructKeyArray( arguments.site.sections );
+		var sectionList = StructKeyArray( arguments.site.sections );
 		sectionData = this.dataObj.getRecords( sectionList );
 
 		for (section in sectionList) {
@@ -312,64 +335,37 @@ component accessors="true" extends="utils.baseutils" {
 	/**
 	 * @hint Get array of data for using in menu components
 	 *
-	 * Use normal dataset functionality to get array of section 
-	 * codes. Then call this to get menu data.
+	 * TODO: will eventually need to recreate sub menu functionality for articles and galleries
 	 * 
 	 * @site         Site struct
 	 * @sections     Array or list of section codes
 	 */
-	public array function menuData(required struct site, required sections) {
+	public array function menuData(required struct site, required any sections) {
 
-		if (! isArray(arguments.sections)) {
-			arguments.sections = listToArray(arguments.sections);
+		if (! isArray(arguments.sections) ) {
+			arguments.section = listToArray(arguments.sections);
 		}
+		local.menuDataArr = [];
 
-		local.menuData = [];
+		// datares = structKeyArray(variables.data).filter(function(item) { return hasTag(item, tags) ; });
 
 		for (local.sectioncode in arguments.sections) {
 			
 			local.section = arguments.site.sections[local.sectioncode];
-			local.menuitem = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
 			
-			if (StructKeyExists(local.section,"dataset")) {
-				
-				local.data = this.dataObj.getDataSet(local.section.dataset);
-				
-				if ( ArrayLen(local.data) GT 1) {
-					local.menuitem["submenu"] = [];
-					local.records = getRecords(
-						ID=local.data
-					);
-
-					for (local.code in local.data) {
-						local.record = local.records[local.code];
-						if (local.record.tags.keyExists("articles") ) {
-							local.link = "{{link.#local.sectioncode#.view.#local.record.id#}}";
-						}
-						else if (local.record.tags.keyExists("sections") ) {
-							local.link = "{{link.#local.record.id#}}";
-						}
-						else {
-							local.link = "";
-						}
-
-						local.submenuitem = {"link"="#local.link#","id"="submenu_#local.sectioncode#_#local.record.id#","title"=local.record.title};
-						
-						ArrayAppend(local.menuitem.submenu, local.submenuitem);
-					}
-				}
-				
+			local.item = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
+			
+			if (local.section.keyExists("children")) {
+				local.item["submenu"] = menuData(site=arguments.site, sections=local.section.children );
 			}
 
-			ArrayAppend(local.menuData,local.menuitem);
+			ArrayAppend(local.menuDataArr, local.item);
 		
 		}
 
-		return local.menuData;
+		return local.menuDataArr;
 
 	}
-
-
 
 	public string function getDataSetType(
 		required struct dataset
@@ -427,11 +423,11 @@ component accessors="true" extends="utils.baseutils" {
 		arguments.record["previous_link"] = info.previous neq "" ? pageLink(site=arguments.site, section=arguments.section, action=arguments.action, id = arguments.dataset[info.previous]) : "";
 		
 		if (info.next neq "") {
-			arguments.record["next_title"] = getRecord(site=arguments.site, ID=arguments.dataset[info.next], type=arguments.type)["title"];
+			arguments.record["next_title"] = this.dataObj.getRecord(site=arguments.site, ID=arguments.dataset[info.next], type=arguments.type)["title"];
 		}
 
 		if (info.previous neq "") {
-			arguments.record["previous_title"] = getRecord(site=arguments.site, ID=arguments.dataset[info.previous], type=arguments.type)["title"];
+			arguments.record["previous_title"] = this.dataObj.getRecord(site=arguments.site, ID=arguments.dataset[info.previous], type=arguments.type)["title"];
 		}
 
 	}
@@ -765,7 +761,7 @@ component accessors="true" extends="utils.baseutils" {
 				arguments.pageRequest.id = local.rc.sectionObj["data"][1];
 			}
 
-			local.rc.record = Duplicate(getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
+			local.rc.record = Duplicate( this.dataObj.getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
 
 			addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.type);
 		}
@@ -783,6 +779,12 @@ component accessors="true" extends="utils.baseutils" {
 				
 				local.data = {};
 				local.datatype = "sections";
+
+				if ( StructKeyExists( arguments.site.content[contentid] , "dataset") &&
+					! arguments.site.content[contentid].dataset.keyExists("name")
+					 )  {
+					arguments.site.content[contentid].dataset["name"] = "content_" & contentid;
+				}
 				// hardwired for list types at the minute. what to do???
 				// reasonably easy to define data sets but what about the links
 				// TO DO: linkto functionality for the lists
@@ -793,49 +795,50 @@ component accessors="true" extends="utils.baseutils" {
 					case "imagegrid":
 						
 						if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
-							arguments.site.content[contentid].data = getDataSet(
+							arguments.site.content[contentid].data = this.dataObj.getDataSet(
 								site=arguments.site,
 								dataset=arguments.site.content[contentid].dataset,
 								fields={"parent":arguments.pageRequest.section}
 							);
-							local.datatype = arguments.site.content[contentid].dataset.type;
-
 						}
 						else if ( StructKeyExists( local.rc.sectionObj,"data" ) ) {
-							local.datatype = local.type = getDataType(local.rc.sectionObj);
 							arguments.site.content[contentid].data = local.rc.sectionObj["data"];
+
 						}
 						else {
 							throw("No data set defined");
 						}
-
+						local.data =  this.dataObj.getRecords(arguments.site.content[contentid].data);
 						break;
 					case "menu":
-						if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
-							local.fields = {};
-							if ( local.rc.sectionObj.keyExists( "parent" )) {
-								local.fields["parent"] = local.rc.sectionObj.parent;
-							}
-							
-							local.menuDataSet = getDataSet(
-								site=arguments.site,
-								dataset=arguments.site.content[contentid].dataset,
-								fields=local.fields
-							);
-							local.datatype = arguments.site.content[contentid].dataset.type;
-							
-						}
-						else {
-							local.menuDataSet = arguments.site.content[contentid].data = getDataSet(
-								site=arguments.site,
-								dataset={"tag"=contentid,type="sections"},
-								fields={"parent":arguments.pageRequest.section}
-							);
-							local.datatype = "sections";
-						}
-						arguments.site.content[contentid].data = menuData(arguments.site,local.menuDataSet);
 
+						// TODO: resurrect "content" sub menus
+						// if ( StructKeyExists( arguments.site.content[contentid] , "dataset") )  {
+						// 	local.fields = {};
+						// 	if ( local.rc.sectionObj.keyExists( "parent" )) {
+						// 		local.fields["parent"] = local.rc.sectionObj.parent;
+						// 	}
+						// 	local.menuDataSet = this.dataObj.getDataSet(
+						// 		site=arguments.site,
+						// 		dataset=arguments.site.content[contentid].dataset,
+						// 		fields=local.fields
+						// 	);
+						// 	local.datatype = arguments.site.content[contentid].dataset.type;
+						// }
+						// else {
+						// 	local.menuDataSet = arguments.site.content[contentid].data = this.dataObj.getDataSet(
+						// 		site=arguments.site,
+						// 		dataset={"tag"=contentid,type="sections"},
+						// 		fields={"parent":arguments.pageRequest.section}
+						// 	);
+						// 	local.datatype = "sections";
+						// }
 						
+						local.sections = sectionList( site=arguments.site,"tag"=contentid )
+						arguments.site.content[contentid].data = menuData(site=arguments.site,sections=local.sections);
+
+						local.data = arguments.site.sections;
+
 						break;
 					case "form":
 
@@ -843,10 +846,9 @@ component accessors="true" extends="utils.baseutils" {
 						local.formdata = variables.utils.XML.xml2data(local.xmlData);
 
 						arguments.site.content[contentid].data = this.contentObj.contentSections.form.parseForm(local.formdata);
+						local.data = {};
 					
 				}
-
-				local.data = arguments.site[local.datatype];
 
 			}
 			
@@ -873,8 +875,7 @@ component accessors="true" extends="utils.baseutils" {
 			
 		}
 
-		pageContent.css = this.settingsObj.outputFormat(css=pageContent.css,media=arguments.site.styleSettings.media);
-
+		
 		// TODO: setting somewhere to include this or not
 		// pageContent.onready &= "$(""##ubercontainer"").mCustomScrollbar();";
 		// pageContent.css &= "body {height:100vh;overflow:hidden};";
@@ -886,7 +887,6 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		
 		pageContent.body &= local.errorsHtml;
-
 
 		// WILLDO: remove this. Leave for now as it's useful sometimes
 		// savecontent variable="local.temp" {
@@ -906,7 +906,10 @@ component accessors="true" extends="utils.baseutils" {
 	private void function loadSectionData(site, section) {
 		if ( ! StructKeyExists( arguments.section, "data" ) ) {
 			if ( StructKeyExists(arguments.section, "dataset") ) {
-				arguments.section.data = getDataSet(
+				if (! arguments.section.dataset.keyExists("name") ) {
+					arguments.section.dataset["name"] = "section_" & arguments.section.id;
+				}
+				arguments.section.data = this.dataObj.getDataSet(
 					site=arguments.site,
 					dataset=arguments.section.dataset
 				);
@@ -1002,17 +1005,17 @@ component accessors="true" extends="utils.baseutils" {
 		var cr = arguments.debug ? newLine() : "";
 		
 		css &= ":root {#cr#";
-		css &= this.settingsObj.colorVariablesCSS(arguments.site.styleSettings,arguments.debug);
-		css &= this.settingsObj.fontVariablesCSS(arguments.site.styleSettings,arguments.debug);
-		css &= this.settingsObj.variablesCSS(arguments.site.styleSettings,arguments.debug);
+		css &= this.settingsObj.colorVariablesCSS(arguments.site.styles,arguments.debug);
+		css &= this.settingsObj.fontVariablesCSS(arguments.site.styles,arguments.debug);
+		css &= this.settingsObj.variablesCSS(arguments.site.styles,arguments.debug);
 		css &=  "#cr#}#cr#";
 		css &= this.settingsObj.CSSCommentHeader("Layouts");
 		
 		local.written = {};
 		for (local.layout in arguments.site.layouts) {
 			try{
-				css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
-			} 
+				// css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
+			}
 			catch (any e) {
 				throw(
 					extendedinfo = e.extendedinfo,
@@ -1029,9 +1032,7 @@ component accessors="true" extends="utils.baseutils" {
 		// Main content section styling
 		css &= this.settingsObj.CSSCommentHeader("Content styling");
 		
-		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.style,media=arguments.site.styleSettings.media, format=false);
-		
-		css = this.settingsObj.outputFormat(css=css,media=arguments.site.styleSettings.media,debug=arguments.debug);
+		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.styles,debug=arguments.debug);
 		
 		return css;
 
@@ -1187,7 +1188,7 @@ component accessors="true" extends="utils.baseutils" {
 	 * 
 	 * Save the complete records of data. 
 	 *
-	 * TODO: split this into chunks of some sort.
+	 * TODO: completely broken. Needs rethinking anyway to split into chunks of some sort.
 	 */
 	public void function saveData(
 		required struct site,
@@ -1195,9 +1196,19 @@ component accessors="true" extends="utils.baseutils" {
 		) {
 		local.js = "if ( typeof site == 'undefined' ) site = {};";
 		local.js &= "site.data = {};"
-		local.js &= "site.data.images = " & serializeJSON(arguments.site.images) & ";";
-		local.js &= "site.data.articles = " & serializeJSON(arguments.site.articles) & ";";
-		FileWrite(arguments.outputDir & "/" & "sitedata.js", local.js);
+		// local.js &= "site.data.images = " & serializeJSON(arguments.site.images) & ";";
+		// local.js &= "site.data.articles = " & serializeJSON(arguments.site.articles) & ";";
+		try{
+			FileWrite(arguments.outputDir & "/" & "sitedata.js", local.js);
+		} 
+		catch (any e) {
+			local.extendedinfo = {"error"=e,"file"="sitedata.js","directory"=arguments.outputDir};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Unable to save JS file:" & e.message
+			);
+		}
+		
 	}
 
 }

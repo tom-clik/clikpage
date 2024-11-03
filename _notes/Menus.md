@@ -22,17 +22,26 @@ Icons need sorting somehow.
 
 ### Menu HTML
 
-
+Styling is applied to the `.menu` "container" (hence need for `<div>` for sub menus).
 
 ```html
 <div id="menu" class="cs-menu scheme-name">
-	<div class="menu">
-		<ul>
-			<li><a href="{{link.index}}" id="menu_index"><i class="icon-close"></i><span>Home page</span></a></li>
-			<li class=""><a id="menu_gallery" class="hasmenu"><i class="icon-menu"></i><span>Gallery</span><i class="icon-next openicon"></i></a>
-				<div class="cs-menu submenu">
-					<div class="menu">
-						<ul>
-							<li><a href="{{link.gallery.view.1}}" id="menu_submenu_gallery_1"><i></i><span>Gallery test 1</span></a></li>
+	<ul>
+		<li class="hi"><a href="{{link.index}}" id="menu_index"><i class="icon-close"></i><span>Home page</span></a></li>
+		<li class="open"><a id="menu_gallery" class="hasmenu"><i class="icon-menu"></i><span>Gallery</span><i class="icon-next openicon"></i></a>
+			<div class="cs-menu submenu">
+				<div class="menu">
+					<ul>
+						<li><a href="{{link.gallery.view.1}}" id="menu_submenu_gallery_1"><i></i><span>Gallery test 1</span></a></li>
 ```
+
+#### Main icons
+
+Main icons appear before the text entry. 
+
+#### Open icons
+
+Menu items with a sub menu have an additional openicon. This appears after the text entry. When the menu is open, a class `open` is applied to the parent `li` element.
+
+
 

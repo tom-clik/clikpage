@@ -6,7 +6,13 @@ Handles parsing of the settings files and some writing out of CSS.
 
 ## Synopsis
 
-Settings are loaded from XML defnition file.
+Styles are stored in a css-like text format. This parses them into a struct and does some processing of media scopes.
+
+### 1. Parsing
+
+The css is parsed into a nested struct. The root keys are either system defs (fonts, media, colors, vars), individual IDs, or classes. Note that while you can use @, #, and . prefixes to distinguish these in the source, they are removed in the result.
+
+
 
 */
 
@@ -14,9 +20,8 @@ component output=false {
 
 	public settings function init(debug=false) {
 
-		this.cr = chr(13) & chr(10);
+		this.cr = newLine();
 		this.utils = CreateObject("component", "utils.utils");
-		this.utilsXML = CreateObject("component", "utils.xml");	
 		this.debug = arguments.debug;
 		this.cssParser = new cssParser();	
 
@@ -26,6 +31,12 @@ component output=false {
 		return this;
 	}
 
+	/**
+	 * Parse a stylesheet and append to struct. Note that the settings WON'T be overridden.
+	 *
+	 * @filename full path to stylesheet
+	 * @styles   struct to append to (won't overwrite existing) 
+	 */
 	public void function loadStylesheet(required string filename, required struct styles)   {
 		
 		if ( !FileExists(arguments.filename) ) {
@@ -54,7 +65,14 @@ component output=false {
 
 	}
 
+	/**
+	 * @hint Apply "inherits" styles
+	 *
+	 * Might prove problematic with complex inheritance structures. Always recurses every time, doesn't cache results. TODO: fix this
+	 * 
+	 */
 	private void function checkInheritance(required string key,required struct styles, required struct recursionCheck) localmode=true {
+		
 		section = arguments.styles[arguments.key];
 
 		if ( section.KeyExists("main") && section.main.KeyExists("inherit") ) {
@@ -105,9 +123,10 @@ component output=false {
 	
 			for (local.medium in arguments.styles.media) {
 				if (NOT IsStruct(local.styles)) {
+					local.extendedinfo = {"styles"=local.styles};
 					throw(
 						message      = "Styles not struct",
-						detail       = SerializeJSON(local.styles)
+						extendedinfo = SerializeJSON(local.extendedinfo)
 					);
 				}
 				if (StructKeyExists(local.styles,local.medium)) {
@@ -143,7 +162,7 @@ component output=false {
 	 * name
 	 * 
 	 * @containers Struct of containers with optional key for class
-	 * @settings   settings (e.g. from layouts>templatename in stylesheet)
+	 * @styles     settings (e.g. from layouts>templatename in stylesheet)
 	 * @media      struct of media settings
 	 * @selector   Settings qualififier e.g. body.templatename.
 	 * 
@@ -164,9 +183,11 @@ component output=false {
 				local.styles = {};
 
 				if ( StructKeyExists(local.cs,"class") ) {
+					
 					// classes must be applied in order they appear in stylesheet
+					local.classLookup = this.utils.listToStruct(local.cs.class, " ");
 					for (local.class in arguments.styles) {
-						if ( ListFindNoCase(local.cs.class, local.class, " ") AND 
+						if ( local.classLookup.keyExists( local.class ) AND 
 						 	StructKeyExists(arguments.styles[local.class], medium) ) {
 							this.utils.deepStructAppend(local.styles, arguments.styles[local.class][medium]);
 						}
@@ -303,17 +324,15 @@ component output=false {
      * 	}
 	 * 
 	 */
-	public string function colorVariablesCSS(required struct settings, boolean debug=this.debug) {
+	public string function colorVariablesCSS(required struct styles, boolean debug=this.debug) {
 
 		local.css = arguments.debug ? CSSCommentHeader("Colors") : "";
 		
-		if (StructKeyExists(arguments.settings,"colors")) {
-			for (local.colorname in arguments.settings.colors) {
-				local.color = arguments.settings.colors[local.colorname];
-				if (arguments.debug && ! StructKeyExists(local.color,"value")) {
-					local.css &= "/* No value specified for color #local.colorname# */" & newLine() ;
-				}
-				else {
+		if (StructKeyExists(arguments.styles,"colors")) {
+			for (local.colorname in arguments.styles.colors) {
+				local.color = arguments.styles.colors[local.colorname];
+				
+				if ( StructKeyExists(local.color,"value") ) {
 					
 					local.colorvalue = Left(local.color.value,2) eq "--" ? "var(#local.color.value#)" : local.color.value; 
 					local.css &= "--#local.colorname#: #local.colorvalue#;";
@@ -322,10 +341,11 @@ component output=false {
 						if ( StructKeyExists(local.color,"title") ) {
 							local.css &= " /* #local.color.title# */";
 						}
-						local.css &= newLine() ;;
+						local.css &= newLine() ;
 					}
-					
-
+				}
+				else if ( arguments.debug ) {
+					local.css &= "/* No value specified for color #local.colorname# */" & newLine() ;
 				}	
 				
 			}
@@ -393,7 +413,6 @@ component output=false {
 		local.innerCSS = "";
 		local.gridcss = "";
 		
-		
 		local.mainCSS = dimensions(settings=arguments.settings);
 		
 		if ( local.mainCSS neq "") {
@@ -405,7 +424,9 @@ component output=false {
 		}
 		
 		local.gridSettings = {"main"="","item"=""};
+
 		grid(arguments.settings,local.gridSettings);
+		
 		local.hasGrid = local.gridSettings.main != "" OR local.gridSettings.item != "";
 
 		if ( local.innerCSS NEQ "" OR local.hasGrid ) {
@@ -435,7 +456,6 @@ component output=false {
 		
 		return local.css;
 		
-
 	}
 
 	/** 

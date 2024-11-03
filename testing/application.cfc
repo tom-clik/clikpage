@@ -31,13 +31,20 @@ component {
 
 	function onError(e,method) {
 		
-		param name="request.isAjaxRequest" type="boolean" default="0";
+		// remember to add path for logs !!! this.mappings["/logs/"]=[outside your web root!];
+		local.args = {
+			e=e,
+			debug=1,
+			isAjaxRequest=request.prc.isAjaxRequest ? : 0,
+			pageTemplate=application.errorTemplate ? : "",
+			logger= application.errorLogger ? : new cferrorHandler.textLogger( ExpandPath( "/logs/errors" ) )
+		};
+
 		try {
-			new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);
+			new cferrorHandler.ErrorHandler(argumentcollection=local.args);
 		}
 		catch (any n) {
-			writeDump(n);
-			writeDump(e);
+			throw(object=e);
 		}
 	}
 

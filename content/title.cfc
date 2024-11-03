@@ -32,7 +32,8 @@ component extends="contentSection" {
 
 		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
 		var linkEnd = (local.hasLink) ? "</a>" : "";
-		return "<#arguments.content.settings.main.tag#>#linkStart#" & arguments.content.content & "#linkEnd#</#arguments.content.settings.main.tag#>";
+		var tag = arguments.content.tag ? : this.styleDefs.tag.default;
+		return "<#tag#>#linkStart#" & arguments.content.content & "#linkEnd#</#tag#>";
 	}
 
 	

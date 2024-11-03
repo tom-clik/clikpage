@@ -168,31 +168,7 @@ component {
 	}
 
 	/**
-	 * @hint Get CSS for complex settings
-     *
-	 * Some components have settings that don't translate exactly to css
-	 * properties e.g. menu direction is vertical | horizontal which is translated into grid functions
-	 * 
-	 * The css often needs applying to sub selectors. These are defined in this.selectors which provides 
-	 * a shorthand when we are building the css.
-     *
-     * More complex components will override this function and provide a range of settings.
-	 */
-	private string function css_settings(required string selector, required struct styles, struct full_styles={}, boolean debug=true) {
-		
-		var ret = "";
-
-		if ( arguments.debug ) ret &= "/* Main CSS goes here */" & newLine();
-		
-		return ret;
-	
-	}
-
-
-	/**
-	 * @hint Get CSS vars for simple settings
-	 *
-	 * Any simple property that translated directly into a css property is applied as a var here
+	 * @hint Get CSS vars for settings
 	 *
 	 * Some content sections have "states" such as rollover or hi (highlighted state)
 	 *
@@ -243,7 +219,7 @@ component {
 			
 			for (local.style in this.styleDefs) {
 				local.def = this.styleDefs[local.style];
-				if (local.def.keyExists("setting")) continue;
+				
 				if (StructKeyExists(local.state_styles,local.style)) {
 					if (isStruct(local.state_styles[local.style])) {
 						throw("incorrect value for #local.style#");
@@ -267,9 +243,9 @@ component {
 						css.append("#tab#--#local.style#: " & local.val & ";");
 					}
 				}
-				else if (arguments.debug ) {
-					css.append("#tab#/* no style for #local.style# */")	;
-				}
+				// else if (arguments.debug ) {
+				// 	css.append("#tab#/* no style for #local.style# */")	;
+				// }
 				
 			}
 
@@ -351,7 +327,6 @@ component {
 	public string function css(required string selector, required struct styles, struct full_styles={}, boolean debug=true) {
 		
 		var css_str = css_styles(argumentCollection = arguments);
-		css_str &= css_settings(argumentCollection = arguments);
 				
 		return css_str;
 

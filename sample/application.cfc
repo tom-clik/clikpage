@@ -18,9 +18,8 @@ component extends="clikpage.clikpageApplication" { //
 		"/_assets" = this.rootDir & "clikpage\_assets",
 	];
 	
-	this.mappings["/logs/"]=[outside your web root!];
+	// this.mappings["/logs/"]=[outside your web root!];
 		
-
 	this.debug = 1;
 	
 	public boolean function startApp(){
@@ -31,7 +30,7 @@ component extends="clikpage.clikpageApplication" { //
 			dataFolder=ExpandPath("_data/data")
 		};
 
-		application.dataObj = new clikpage.data.data_markdown(config);
+		application.dataObj = new clikpage.data.data_text(application.config);
 
 		// TODO: application.errorTemplate=staticHTMLFile
 

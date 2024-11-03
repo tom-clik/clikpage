@@ -4,7 +4,7 @@
 #articlelist {
 	max-width:800px;
 	title {
-		font-family: --title-font;
+		font-family: title-font;
 		font-size:1.4em;
 		font-weight:bold;
 	}
@@ -14,7 +14,7 @@
 	image-align:left;
 
 	@mid {
-		htop: 1;
+		htop: 0;
 		image-align:right;
 	}
 
@@ -129,7 +129,7 @@
 .scheme-articlelist_test9 {
 	wrap:1;
 	@mobile {
-		flow:0;
+		wrap:0;
 	}
 }
 
@@ -137,6 +137,6 @@
 	image-align:right;
 	wrap:1;
 	@mobile {
-		flow:0;
+		wrap:0;
 	}
 }

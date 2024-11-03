@@ -103,13 +103,7 @@
 			
 		}
 
-		#contentfooter {
-			grid-mode:auto;
-			grid-gap:14px;
-			@mobile {
-				grid-mode:none;
-			}
-		}
+		
 
 		#contentwrap {
 			grid-mode:templateareas;
@@ -134,25 +128,21 @@
 
 		}
 
-		#bottomnav {
-			position:fixed;
-			bottom:0px;
-			@mobile {
-				position:static;
-			}
-		}
-
-		.scheme-title {
-			
-		}
+		
+		
 	</style>
 </head>
 
 <body>
 
-	<div id="ubercontainer">
+<div id="ubercontainer" grid="1">
+
+	<!--- header is usually given a fixed height (see --header-height)
+		Much of the sticky/fixed functionality depends on this. ---> 
+	<div id="header" grid="1">
 		
-		<div id="header" class="scheme-spanning">
+		<div id="title" class="spanning">
+				
 			<content type="title" id="sitetitle">
 				<title>Site Title</title>
 				<description>The main site title</description>
@@ -162,23 +152,6 @@
 				color:paneltext;
 				margin:12 12 12 0;
 				font-size:220%;	
-				</style>
-			</content>
-
-			<content type="title" id="sitedescription">
-				<title>Site Description</title>
-				<description>Strapline appears in header with title</description>
-				<content>{{site.meta.description}}</content>
-				<style>
-					position:absolute;
-					color:paneltext;
-					top:14px;
-					right:0;
-					@mobile {
-						top:0;
-						position:static;
-						marging:4px 0;
-					}
 				</style>
 			</content>
 
@@ -203,93 +176,115 @@
 					}
 				</style>	
 			</content>
+
 			
 		</div>
-		
-		<div id="pagecontent" class="scheme-spanning">
-			
-			<div id="topnav">
-				<content id="mainmenu" type="menu">
-					<style>
-						position:sticky;
-						orientation:vertical;
-						align:left;
-						@mobile {
-							show:0;
-						}
-					</style>
-				</content>
-				<content id="mobilemenu" type="menu">
-					<style>
+
+		<!--- To remove this or place it above the title, adjust #header grid --->
+		<div id="nav" class="spanning">
+			<content id="mainmenu" type="menu">
+				<style>
+					position:sticky;
+					orientation:vertical;
+					align:left;
+					@mobile {
 						show:0;
-						orientation:vertical;
-						align:left;
-						@mobile {
-							background {
-								color:lightpanel-bg;
-							}
-							height:0;
-							padding:8;
-							position:static;
+					}
+				</style>
+			</content>
+			<content id="mobilemenu" type="menu">
+				<style>
+					show:0;
+					orientation:vertical;
+					align:left;
+					@mobile {
+						background {
+							color:lightpanel-bg;
 						}
-					</style>
-					<dataset tag="" type="sections"></dataset>
-				</content>
-			</div>
+						height:0;
+						padding:8;
+						position:static;
+					}
+				</style>
+				<dataset tag="" type="sections"></dataset>
+			</content>
+		</div>
+		
+	</div>
 
-			<div id="content">
-
-				<div id="contentheader">
+	<div id="content" grid="1">
+			
+			<div id="content_main" class="container spanning" grid="1">
+					
+				<div id="menu">
 					
 				</div>
-				
-				<div id="contentwrap">
 
+				<div id="content_wrap" grid="1">
+						
 					<div id="maincol">
 
 					</div>
+
 					<div id="xcol">
 						
 					</div>
-					
-				</div>
-				<div id="contentfooter" class="gridOuter">
 				
 				</div>
-			</div>
-		</div>
-		
-		<div id="footer" class="scheme-spanning">
-			<div id="footer_left">
-				<content id="footermenu" type="menu">
-					<style>
-						flex:true;
-						align:right;
-						border-type:dividers;
-						menu-item-padding:4px 12px;
-						menu-gap:0;
-						menu-item-border:1px;
-						stretch:0;
-						@mobile {
-							align:left;
-							menu-item-padding:4px;
-							flex:false;
-							stretch:1;
-							orientation:vertical;
-						}
-					</style>
+				
 
-				</content>
 			</div>
-			<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
-			<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
+		 
 		</div>
 
-		<!-- <div id="bottomnav" class="scheme-spanning">
-			<content id="bottomnav1" type="text">Lorem ispum etc</content>
-		</div>
- -->
 	</div>
+
+	<div id="footer">
+		
+			<!--- To remove this or place it below the footer, adjust #footer grid 
+
+			<div id="bottomnav">
+				<div class="inner spanning">
+					<p  class="cs-text">Bottom navigation</p>
+				</div>
+			</div>
+			--->
+
+			<div id="footer_main" grid="1" inner="1" spanning="1">
+
+				<div id="footer_left">
+					<content id="footermenu" type="menu">
+						<style>
+							flex:true;
+							align:right;
+							border-type:dividers;
+							menu-item-padding:4px 12px;
+							menu-gap:0;
+							menu-item-border:1px;
+							stretch:0;
+							@mobile {
+								align:left;
+								menu-item-padding:4px;
+								flex:false;
+								stretch:1;
+								orientation:vertical;
+							}
+						</style>
+
+					</content>
+				</div>
+				<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
+				<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
+				
+			</div>
+		
+		</div>
+
+	</div>
+
+</div>
+
+
 
 </body>
 </html>
