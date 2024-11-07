@@ -96,31 +96,21 @@ clik = {
 			
 		}
 
-		/** 
-		 * Some components only need a class adding to achieve all behaviours with CSS
-		 * 
-		 * This is done with a var "mode" which is appended to the class name mode-{mode}
-		 * They are exclusive, so any others are removed
-		 */
-		if(jQuery().varClass) {
-			$(".cs-grid").varClass(
-				{
-					name: "mode",
-					resize: resizeMethod,
+		if(jQuery().flickity) {
+			$('.list').each(function( index ) {
+				$list = $(this);
+				var settings = getSettings($list,"articlelist");
+				console.log(settings);
+				if (settings.carousel) {
+					$list.flickity({
+				  	  contain: settings["carousel-contain"], 
+				  	  freeScroll: settings["carousel-freeScroll"],
+				  	  wrapAround:settings["carousel-wrapAround"] 
+					});
 				}
-			);
-			$(".cs-menu").varClass(
-				{
-					name: "menu-orientation,menu-mode,menu-borders,menu-align,menu-stretch,menu-submenualign,menu-submenu-position,menu-submenu-show,menu-rollout",
-					resize: resizeMethod,
-				}
-			).menu();
-
-		
+			});
 		}
-
-
-
+		
 	},
 
 	trueFalse: function(value) {

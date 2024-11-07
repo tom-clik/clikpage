@@ -28,6 +28,9 @@
 			plugin.settings = $.extend({}, defaults, options);
 			console.log(plugin.settings.data);	
 			$inner = $element.find(".popup_inner");
+			if ($inner.length === 0) {
+				$inner = $("<div>",{class:"popup_inner"}).appendTo($element);
+			}
 			$inner.html(plugin.html());
 			$image = $element.find(".popup_image img");
 			

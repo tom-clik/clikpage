@@ -41,6 +41,20 @@ tests = [
 	<link rel="stylesheet" href="../css/modal.css">
 	<link rel="stylesheet" href="../css/schemes/columns_samples.css">
 	<link rel="stylesheet" href="../css/schemes/columns_demo.css">
+
+	<style>
+		
+		body {
+			--text-font:'Open Sans';
+			--site-width:1200px;
+/*			--site-width:100%;*/
+			--header-height: 100px;
+			--menu-width: 240px;
+			--xcol-width: 240px;
+		/*		--site-align:right;*/
+		}
+	
+	</style>
 	<!-- <link rel="stylesheet" href="../css/schemes/columns_cms.css"> -->
 	
 	<!-- <link rel="stylesheet" href="/_assets/css/icons.css"> -->
@@ -57,8 +71,8 @@ tests = [
 			Much of the sticky/fixed functionality depends on this. ---> 
 		<div id="header" class="cs-grid">
 			<div class="grid">
-				<div id="title">
-					<div class="inner spanning">
+				<div id="title" class="spanning">
+					<div class="inner">
 						
 						<div  id="site-title" class="cs-title">
 							<h1>Column Testing</h1>
@@ -68,8 +82,8 @@ tests = [
 				</div>
 
 				<!--- To remove this or place it above the title, adjust #header grid --->
-				<div id="nav" class="cs-grid">
-					<div class="inner spanning grid">
+				<div id="nav" class="cs-grid spanning">
+					<div class="inner  grid">
 						
 						<div id="menubuttons">
 							<div class="grid">
@@ -117,15 +131,15 @@ tests = [
 					(this is done in the "simpler" example)	or delete it and adjust the #content grid
 				 ---> 
 
-				<div id="content_top">
-					<div class="inner spanning">
+				<div id="content_top" class="spanning">
+					<div class="inner">
 						Content top element - can remove by adjusting #content grid
 					</div>
 				</div>
 
-				<div id="content_main" class="container cs-grid">
+				<div id="content_main" class="container spanning cs-grid">
 					
-					<div class="inner grid spanning">
+					<div class="inner grid">
 						
 						<div id="menu">
 							<div class="inner">
@@ -158,7 +172,7 @@ tests = [
 											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-											<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+											<!--<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
@@ -166,7 +180,7 @@ tests = [
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
-										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>-->
 
 
 										</div>
@@ -205,8 +219,8 @@ tests = [
 					</div>
 				</div>
 
-				<div id="content_bottom">
-					<div class="inner  spanning">
+				<div id="content_bottom" class="spanning">
+					<div class="inner">
 						<h1>Content bottom element</h1>
 					</div>
 				</div>
@@ -221,14 +235,14 @@ tests = [
 
 				<!--- To remove this or place it below the footer, adjust #footer grid --->
 
-				<div id="bottomnav">
-					<div class="inner spanning">
+				<div id="bottomnav" class="spanning">
+					<div class="inner">
 						<p  class="cs-text">Bottom navigation</p>
 					</div>
 				</div>
 
-				<div id="footer_main" class="cs-grid">
-					<div class="inner grid spanning">
+				<div id="footer_main" class="cs-grid spanning">
+					<div class="inner grid">
 						<div id="footer_left">
 							<div class="cs-text">This is the footer_left</div>
 						</div>

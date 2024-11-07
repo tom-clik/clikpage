@@ -121,7 +121,7 @@ None of this properties stuff seems to work. We get undefined values, values tha
 	--grid-template-columns: auto;
 	--grid-template-areas: none;
 	--flex-direction: row;
-	--justify-content: row;
+	--justify-content: normal;
 	--align-content: normal;
 	--align-items: normal;
 	--flex-stretch: 0;

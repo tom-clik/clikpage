@@ -27,7 +27,8 @@ component extends="clikpage.clikpageApplication" { //
 		application.config = {
 			layoutsFolder=ExpandPath("_data/layouts"),
 			siteDef=ExpandPath("_data/sampleSite.xml"),
-			dataFolder=ExpandPath("_data/data")
+			dataFolder=ExpandPath("_data/data"),
+			imageRoot = "/images/"
 		};
 
 		application.dataObj = new clikpage.data.data_text(application.config);

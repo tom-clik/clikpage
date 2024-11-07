@@ -8,18 +8,20 @@ component implements="clikpage.data.i_data" {
 
 		variables.directory = arguments.params.dataFolder;
 
-		StructAppend(arguments.params, {"markdown"=true,"json"=true,"xml"=true, "reload"=1}, false);
+		StructAppend(arguments.params, {"markdown"=true,"json"=true,"xml"=true, "reload"=1, "imageRoot"=""}, false);
 
 		if ( arguments.params.markdown ) {
 			variables.markdown = new markdown.flexmark(attributes=1);
 		}
+
+		variables.xmlObj = new utils.xml();
 
 		// Monitor files for updates and reload when changed
 		variables.reload = arguments.params.reload;
 
 		variables.dataSets = {};
 		variables.data = {};
-
+		variables.imageRoot = arguments.params.imageRoot;
 		variables.datatypes = {
 			"title": "string",
 			"description": "string",
@@ -62,7 +64,7 @@ component implements="clikpage.data.i_data" {
 
 	private query function getFileList() localmode=true {
 		
-		return DirectoryList(variables.directory,true,"query","*.md","name asc","file");
+		return DirectoryList(variables.directory,true,"query","*.md|*.xml|*.csv|*.json","name asc","file");
 		
 	}
 
@@ -76,43 +78,114 @@ component implements="clikpage.data.i_data" {
 		filelist = getFileList();
 
 		for (row in filelist) {
-			loadFile(row.directory & "/" & row.name);
+			try{
+				loadFile(row.directory & "/" & row.name);
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e, "filename"=row.directory & "/" & row.name};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Error:" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 		}
 		variables.datelastmodified = now();
+
 		StructClear(variables.dataSets);
 
 	}
 
 	private void function loadFile(required string filename) localmode=true {
 		
-		record = {};
-		html = variables.markdown.toHtml( fileRead(arguments.filename) , record);
-		StructAppend(record, {"body"=html, "tags"={}, "pubdate"=now(), "sort_order"=0, "description"=""}, false);
-		if ( isSimpleValue(record.tags) ) {
+		text = FileRead(arguments.filename);
+		type = ListLast(arguments.filename,".");
+		stem = ListFirst( ListLast( arguments.filename,"\/") ,".");
+		switch (type) {
+			case "md":
+				record = {};
+				record["body"] = variables.markdown.toHtml(  text, record );
+				if (! record.keyExists("id") ) record["id"] = ListFirst(getFileFromPath(arguments.filename),".");
+				checkRecord(record);
+				variables.data["#record.id#"] = record;
+				break;
+			case "xml":
+				xml = xmlParse( text );
+				sdata = variables.xmlObj.xml2Data(xml);
+				sort_order = 10;
+				for (record in sdata) {
+					if (! record.keyExists("sort_order") ) {
+						record["sort_order"] = sort_order;
+					}
+					checkRecord(record);
+					record.tags["#stem#"] = 1;
+					variables.data["#record.id#"] = record;
+					sort_order += 10;
+				}
+				break;
+			case "json":
+				sdata = deserializeJSON(text);
+				if ( isArray(sdata) ) {
+					for (record in sdata) {
+						checkRecord(record);
+						variables.data["#record.id#"] = record;
+					}
+				}
+				else {
+					record = sdata;
+					if (! record.keyExists("id") ) record["id"] = ListFirst(getFileFromPath(arguments.filename),".");
+					checkRecord(record);
+					record.tags["#stem#"] = 1;
+					variables.data["#record.id#"] = record;
+				}
+				
+				break;	
+		}
+		
+		// Use directory as a tag... will be a bit funny if not in a sub dir but no matter
+		//type  = ListLast(getDirectoryFromPath(arguments.filename),"/\");
+		//record.tags["#type#"] = 1;
+
+		
+	}
+
+	private void function checkRecord(record) localmode=true {
+		
+		if (! arguments.record.keyExists("id") ) {
+			extendedinfo = {"record"=arguments.record};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Id not defined in record"
+			);
+		}
+		
+		StructAppend(arguments.record, {"tags"={}, "pubdate"=now(), "sort_order"=0, "description"=""}, false);
+
+		if ( isSimpleValue(arguments.record.tags) ) {
 			tmpTags = {};
-			for (tag in ListToArray(record.tags) ) {
+			for (tag in ListToArray(arguments.record.tags) ) {
 				tmpTags[tag] = 1;
 			}
-			record.tags = tmpTags;
+			arguments.record.tags = tmpTags;
+		}
+		
+		for (field in ['image','image_thumb']) {
+			if ( arguments.record.keyExists( field ) ) {
+				arguments.record[field] = variables.imageRoot & arguments.record[field];
+			}
 		}
 
-		if (! isInstanceOf(record.pubdate, "java.util.Date")) {
+		if (! isInstanceOf(arguments.record.pubdate, "java.util.Date")) {
 			try {
-				record.pubdate = ParseDateTime(record.pubdate);
+				arguments.record.pubdate = ParseDateTime(arguments.record.pubdate);
 			}
 			catch (any e) {
-				record.pubdate = nullValue();
+				arguments.record.pubdate = nullValue();
 			}
-		}	
+		}
+	}	
 
-		// Use directory as a tag... will be a bit funny if not in a sub dir but no matter
-		type  = ListLast(getDirectoryFromPath(arguments.filename),"/\");
-		record.tags["#type#"] = 1;
-
-		if (! record.keyExists("id") ) record["id"] = ListFirst(getFileFromPath(arguments.filename),".")
-
-		variables.data["#record.id#"] = record;
-	}
 
 	private void function loadXML(required text) localmode=true {
 		try {
@@ -158,7 +231,7 @@ component implements="clikpage.data.i_data" {
 				sort_field = "title";
 				sort_dir = "asc";
 			}
-			
+
 			datares = datares.sort( function (any e1, any e2) { return dataCompare(e1, e2, sort_field, sort_dir); } ); 
 
 			variables.dataSets[arguments.dataset.name] = datares;
@@ -192,14 +265,14 @@ component implements="clikpage.data.i_data" {
 				temp = compareNoCase(val1, val2);
 				break;
 			case "sort_order":
-				temp = sgn(e1 -e2);
+				temp = sgn(val1 - val2);
 				break;
 			case "pubdate":
 				temp = dateCompare(val1, val2);
 				break;
 		}
 
-		if (arguments.sort_field eq "desc") temp = temp * -1;
+		if (arguments.sort_dir eq "desc") temp = temp * -1;
 
 		return temp;
 

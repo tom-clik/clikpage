@@ -8,7 +8,7 @@
 
 <body data-extends="main">
 
-	<div id="contentheader">
+	<div id="content_header">
 		<div id="contentheader_title">
 			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
 				<title>Section title</title>
@@ -27,7 +27,7 @@
 			<content id="sectioncopy" type="text">
 				<title>Section detail</title>
 				<content>
-				{{section.detail}}
+				{{section.body}}
 				</content>
 			</content>
 			
@@ -35,7 +35,12 @@
 
 
 		<div id="maincol_bottom">
-			
+			<content id="sectionother" type="text">
+				<title>Section detail</title>
+				<content>
+				{{section.other}}
+				</content>
+			</content>
 			
 		</div>	
 	</div>

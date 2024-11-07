@@ -31,7 +31,7 @@ component extends="contentSection" {
 
 
 		this.styleDefs = [
-			"mode":{"name"="Grid mode","type"="list","default"="flex","setting":1,"options":[
+			"mode":{"name"="Grid mode","type"="list","default"="flex","options":[
 					{"name"="Grid","value"="grid","description"="Menu with all items the same size"},
 					{"name"="Flex","value"="flex","description"="Flexible menu with items adjusted to their content"}
 				],
@@ -42,7 +42,6 @@ component extends="contentSection" {
 				"name": "Orientation",
 				"description": "Align the menu horizontally or vertically.",
 				"default":"horizontal",
-				"setting": 1,
 				"options":[
 					{"name":"Horizontal","value":"horizontal"},
 					{"name":"Vertical","value":"vertical"}

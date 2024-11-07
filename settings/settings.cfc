@@ -28,6 +28,101 @@ component output=false {
 		// set of "reserved" keys in stylesheets
 		variables.systemSettings = {"media"=1,"vars"=1,"colors"=1,"fonts"=1};
 
+		this.gridDefs = [
+			"grid-mode":{"name"="Grid mode","type"="list","default"="none","setting":1,"options":[
+					{"name"="None","value"="none","description"="Don't use a grid. Use this setting to turn off a grid in smaller screen sizes."},
+					{"name"="Auto fit","value"="fit","description"="Fit as many items as possible into the grid according to the minimum column size."},
+					{"name"="Auto fill","value"="fill","description"="Fit as many items as possible into the grid according to the minimum column size but don't stretch as much."},
+					{"name"="Fixed width","value"="fixedwidth","description"="A legacy mode in which all columns have the same width"},
+					{"name"="Columns","value"="fixed","description"="A grid with a fixed number of equal columns. Set the number in 'Columns'."},
+					{"name"="Set columns","value"="columns","description"="A grid with a width definition for the columns e.g. '20% auto 30% '"},
+					{"name"="Set rows","value"="rows","description"="A grid with a height definition for the rows e.g. '20% auto 30% '"},
+					{"name"="Named positions","value"="named","description"="An advanced mode in which you specify the specific order of the content items."},
+					{"name"="Flex","value"="flex","description"="The items in the grid will be as wide/high as their content"}
+				],
+				"description":"Select the way your grid is laid out"
+			},
+			"grid-width":{"name":"Item width","type"="dimension","default"="180px","description":"Minimum width of columns for an auto grid or specific width for a fixed width grid.",
+				"dependson":"grid-mode","dependvalue":["auto","fixedwidth"]},
+			"grid-max-width":{"name":"max width","type"="dimension","default"="1fr","note"="Not sure this should be exposed","hidden":1,"description":"","hidden":1},
+			"grid-max-height":{"name":"Max item height","type"="dimension","default"="auto","description":"Maximum height of items in grid"},
+			"grid-columns":{"name"="Columns","type"="integer","default"="2","description"="Number of columns for a fixed column grid":"grid-mode","dependvalue":"fixed"},
+			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items","setting":1},
+			"grid-template-columns":{"name":"Template columns","type"="text","description":"Column sizes when using fixed columns or named template areas","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
+			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using set rows or named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
+			"grid-template-areas":{"name"="Template areas","type"="text","dependson":"grid-mode","dependvalue":"templateareas","description":"","default":""},
+			"flex-direction":{"name":"Flexible grid direction","type"="list","default"="row","options"=[
+				{"name"="Row","value"="row","description"=""},
+				{"name"="Row reverse","value"="row-reverse","description"=""},
+				{"name"="Column","value"="column","description"=""},
+				{"name"="Column reverse","value"="column-reverse","description"=""}
+				],"dependson":"grid-mode","dependvalue":"flex","description":"The direction in which a flexible grid is shown"},
+			"justify-content":{"name"="Alignment","type"="list","default"="normal","options"=[
+				{"name"="Default","value"="normal","description"=""},
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""},
+				{"name"="Space around","value"="space-around","description"=""},
+				{"name"="Space evenly","value"="space-evenly","description"=""},
+				{"name"="Space betweem","value"="space-between","description"=""}
+				],"description":"Orientation in the same axis to the grid direction. This usually means horiztonal."},
+			"align-content":{"name"="Row Alignment","type"="list","default"="normal","options"=[
+				{"name"="Default","value"="normal","description"=""},
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""},
+				{"name"="Space around","value"="space-around","description"=""},
+				{"name"="Space evenly","value"="space-evenly","description"=""},
+				{"name"="Space betweem","value"="space-between","description"=""}
+				],"description":"Alignment of multiple rows","hidden":1},
+			"align-items":{"name"="Cross align","type"="list","default"="normal","options"=[
+				{"name"="Default","value"="normal","description"=""},
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""}
+				],"description":"Orientation in the opposite axis to the grid direction. This usually means vertical."},
+			
+			"flex-stretch":{"name":"Flex stretch","dependson":"grid-mode","dependvalue":"flex","description":"Stretch out the items to fill the available space","type"="boolean","default"="0"},
+			"flex-wrap":{"name":"Flex wrap","dependson":"grid-mode","dependvalue":"flex","description":"Wrap items onto multiple lines","type"="list","default"="wrap","options"=[
+				{"name"="Wrap","value"="wrap","description"=""},
+				{"name"="No Wrap","value"="nowrap","description"=""},
+				{"name"="Wrap reverse","value"="wrap-reverse","description"=""}
+				]}
+		];
+
+		this.columnDefs = [
+			"header-fixed":{ "type"="boolean", "title"="Fixed header","default"=" 0"},
+			"footer-fixed":{ "type"="boolean", "title"="Fixed footer","default"=" 0"},
+			"menupos ":{ "type"="list", "title"="Menu position","default"="static","options"=[{"value":"static"},{"value":"fixed"},{"value":"slide"}]},
+			"menu":{ "type"="list", "title"="Show menu column","default"="open","options"=[{"value":"open"},{"value":"close"}]},
+			"xcol":{ "type"="list", "title"="Show extra column","default"="open","options"=[{"value":"open"},{"value":"close"}]}, 
+			"framed":{ "type"="boolean", "title"="Frame site","default"="0"},
+			"site-align":{ "type"="halign", "title"="Align site","default"="center"},
+			"menu-width":{ "type"="dimension", "title"="Menu column width","default"="220px"},
+			"xcol-width":{ "type"="dimension", "title"="Extra column width","default"="160px"},
+			"header-height":{ "type"="dimension", "title"="Header height","default"=" 60px"},
+			"site-width":{ "type"="dimension", "title"="Site width","default"="960px"},
+			"footer-height":{ "type"="dimension", "title"="Footer height","default"="60px"},
+			"menu-anim-time":{ "type"="time", "title"="Menu animation time","default"="0.2s"}
+			
+
+			/* adjustment vars 
+			These either need setting explicitly or programatically with something like:
+
+			let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+			document.body.style.setProperty('--menu-top-padding', menuPad);
+			*/
+
+			// --menu-top-padding: 0px; /* Should be the same as the "top" padding of the menu container when set to sticky */
+			// --xcol-top-padding:0px ;/* Should be the same as the "top" padding of the xcol container when set to sticky */
+
+			// /* Individual components of "body" padding */
+			// --site-top-padding: 0px;
+			// --site-right-padding: 0px;
+			// --site-bottom-padding: 0px;
+			// --site-left-padding: 0px;
+		];
+
 		return this;
 	}
 
@@ -168,11 +263,12 @@ component output=false {
 	 * 
 	 */
 	
-	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="") {
+	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="", boolean debug=this.debug) {
 
 		var css = "";
-		
-		for ( var medium in arguments.media ) {
+		var cr = arguments.debug ? newLine() : "";
+
+		for ( medium in getMediaOrder( arguments.media ) ) {
 
 			var media = arguments.media[medium];
 			var section_css = "";
@@ -189,7 +285,7 @@ component output=false {
 					for (local.class in arguments.styles) {
 						if ( local.classLookup.keyExists( local.class ) AND 
 						 	StructKeyExists(arguments.styles[local.class], medium) ) {
-							this.utils.deepStructAppend(local.styles, arguments.styles[local.class][medium]);
+							this.utils.deepStructAppend(local.styles, arguments.styles[local.class][medium], true);
 						}
 					}
 				}
@@ -217,14 +313,37 @@ component output=false {
 
 			if (section_css NEQ "") {
 				if (medium NEQ "main") {
-					css &= "@media.#medium# {\n" & indent(section_css,1) & "\n}\n";
+					css &= mediaQuery( arguments.media[medium] ) & "{#cr#" & indent(section_css,1) & "#cr#}#cr#";
 				}
 				else {
-					css &= section_css;
+					css &= section_css & cr;
 				}
 			}
 		}
+
 		return css;
+
+	}
+
+
+	public function displaySetting(required string settingValue, required string type) {
+
+		switch (arguments.type) {
+			case "dimension":
+				local.val = displayDimension(arguments.settingValue);
+			break;
+			case "color":
+				local.val = displayColor(arguments.settingValue);
+			break;
+			case "boolean":
+				local.val = arguments.settingValue ? "1" : "0" ;
+			break;
+			default:
+				local.val = arguments.settingValue;
+			break;
+		}
+
+		return local.val;
 
 	}
 
@@ -374,7 +493,6 @@ component output=false {
 
 		css_ret = "";
 
-
 		for ( medium in getMediaOrder( arguments.media ) ) {
 			if ( cssData.keyExists(medium) ) {
 				if (medium != "main") css_ret &= mediaQuery( arguments.media[medium] ) & "{" & cr;
@@ -407,51 +525,36 @@ component output=false {
 			required string  selector, 
 					 boolean debug=this.debug
 			) {
+
+		var tab = arguments.debug ? "	": "";
+		var cr = arguments.debug ? newLine() : "";
+
 		local.css = "";
 
 		local.mainCSS = "";
 		local.innerCSS = "";
 		local.gridcss = "";
 		
-		local.mainCSS = dimensions(settings=arguments.settings);
-		
+		local.mainCSS = dimensions(settings=arguments.settings,debug=arguments.debug);
+		local.mainCSS &= grid(styles=arguments.settings,debug=arguments.debug);
 		if ( local.mainCSS neq "") {
-			local.css &= "#arguments.selector# {\n" & local.mainCSS & "}\n";
+			local.css &= "#arguments.selector# {#cr#" & local.mainCSS & "}#cr#";
 		}
-
+		
 		if (StructKeyExists(arguments.settings, "inner")) {
 			local.innerCSS &= dimensions(arguments.settings.inner);
+			if ( local.innerCSS NEQ "" ) {
+				local.css &= "#arguments.selector# > .inner {#cr#" & local.innerCSS & "}#cr#";
+			}
 		}
 		
-		local.gridSettings = {"main"="","item"=""};
-
-		grid(arguments.settings,local.gridSettings);
-		
-		local.hasGrid = local.gridSettings.main != "" OR local.gridSettings.item != "";
-
-		if ( local.innerCSS NEQ "" OR local.hasGrid ) {
-			local.css &= "#arguments.selector# > .inner {\n";
-			local.css &= local.innerCSS;
-			if ( local.hasGrid ) {
-				local.css &= local.gridSettings.main;
-			};
-			local.css &= "}\n";
-			// hacky here. Should use format qualifier mechanism from grid cs type
-			if (StructCount(local.gridSettings) AND local.gridSettings.item !="") {
-				local.css &= "#arguments.selector# .inner > * {\n";
-				local.css  &= local.gridSettings.item;
-				local.css &= "}\n";
-			};			
-		}
-
 		if (StructKeyExists(arguments.settings, "open")) {
 			local.openCss = dimensions(arguments.settings.open);
 			if ( local.openCss NEQ "") {
-				local.css &= "#arguments.selector#.open {\n";
+				local.css &= "#arguments.selector#.open {#cr#";
 				local.css  &= local.openCss;
-				local.css &= "}\n";
+				local.css &= "}#cr#";
 			}
-
 		}
 		
 		return local.css;
@@ -510,11 +613,17 @@ component output=false {
 				if (NOT arguments.settings.show ) {
 					local.css &= "#tab#display:" & "none;#cr#";
 				}
-				else if (NOT structKeyExists(arguments.settings, "grid")) {
+				else {
 					local.css &= "#tab#display:" & "block;#cr#";
 				}
 			}
 		}
+
+		if (StructKeyExists(arguments.settings,"sticky")) {
+			local.css &= "#tab#--sticky:" & displaySetting(arguments.settings.sticky,"boolean") & ";#cr#";
+			
+		}
+
 
 		for (local.property in ['color','link-color']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
@@ -576,9 +685,11 @@ component output=false {
 
 	}
 
-	private string function displayPosition(required struct settings) {
+	private string function displayPosition(required struct settings, boolean debug=this.debug) {
 		
-		var retVal = ["\tposition:" & arguments.settings.position & ";"];
+		var tab = arguments.debug ? "	": "";
+		var cr = arguments.debug ? newLine() : "";
+		var retVal = ["#tab#position:" & arguments.settings.position & ";"];
 
 		switch ( arguments.settings.position ) {
 			case "sticky":
@@ -617,7 +728,7 @@ component output=false {
 			
 		}
 		
-		return retVal.toList( "\n\t" ) & "\n";
+		return retVal.toList( tab & cr  ) & cr;
 
 	}
 
@@ -670,70 +781,50 @@ component output=false {
 	 * @hint CSS styling for a grid
 	 * 
 	 */
-	public string function grid(required struct styles, required string selector, boolean debug=true) {
+	public string function grid(required struct styles, boolean debug=true) {
 
-		if (! arguments.styles.keyExists("grid-mode") ) return "";
-
-		var css = [arguments.selector & " {"];
+		
+		var css = [];
 		var tab = arguments.debug ? "	": "";
 
-		switch (arguments.styles["grid-mode"]) {
-			case  "none":
-				css.append("#tab#display: block;");
-				break;
-
-			case  "fill":
-				css.append("#tab#--grid-fit: auto-fill;");
-			case  "fit":
-				css.append("#tab#display: grid;");	
-				css.append("#tab#grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));");
-				break;
+		for (local.style in this.gridDefs) {
+			local.def = this.gridDefs[local.style];
 			
-			case  "flex":	
-				css.append("#tab#display: flex;");
-				break;
-
-			case "fixed":
-				css.append("#tab#display: grid;");	
-				css.append("#tab#grid-template-columns: repeat(var(--grid-columns), 1fr);");
-				break;
-
-			case "fixedwidth":
-				css.append("#tab#display: grid;");	
-				css.append("#tab#grid-template-columns:  repeat(auto-fit, var(--grid-width));");
-				break;
-
-			case "columns":
-				css.append("#tab#display: grid;");	
-				css.append("#tab#grid-template-columns: var(--grid-template-columns);");
-				css.append("#tab#grid-template-rows: var(--grid-template-rows);");
-				break;
-
-			case "rows":
-				css.append("#tab#display: grid;");	
-				css.append("#tab#grid-template-columns: 1fr;");
-				css.append("#tab#grid-template-rows: var(--grid-template-rows);");
-				break;
-			case "named":
-				css.append("#tab#display: grid;");	
-				css.append("#tab#grid-template-areas: var(--grid-template-areas);");
-				css.append("#tab#grid-template-columns: var(--grid-template-columns);");
-				css.append("#tab#grid-template-rows: var(--grid-template-rows);");
-				break;
+			if (StructKeyExists(arguments.styles,local.style)) {
+				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
+			}
 		}
 
-		css.append("}");
-
-		if ( styles["grid-mode"] neq "named") {
-			css.append("#arguments.selector# > * {");
-			css.append("#tab#grid-area: unset !important;");
-			css.append("}");
-		}
 		css.append("");
 
 		return css.toList(arguments.debug ? newLine() : "");
 
 	}
+
+	/**
+	 * @hint CSS styling for standard column layout
+	 * 
+	 */
+	public string function columns(required struct styles, boolean debug=true) {
+
+		
+		var css = [];
+		var tab = arguments.debug ? "	": "";
+
+		for (local.style in this.columnDefs) {
+			local.def = this.columnDefs[local.style];
+			
+			if (StructKeyExists(arguments.styles,local.style)) {
+				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
+			}
+		}
+
+		css.append("");
+
+		return css.toList(arguments.debug ? newLine() : "");
+
+	}
+
 
 	/**
 	 * DEPRECATED - each function should have a debug switch

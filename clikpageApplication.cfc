@@ -127,7 +127,7 @@ component {
 			param name="request.rc.section" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
 			param name="request.rc.action" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
 			param name="request.rc.id" default="";
-			if (NOT (request.rc.id eq "" OR IsValid("integer",request.rc.id))) {
+			if (NOT (request.rc.id eq "" OR IsValid("regex",request.rc.id, "[A-Za-z0-9\-\_]+"))) {
 				throw(message="Invalid ID");
 			}
 		}

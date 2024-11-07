@@ -17,11 +17,14 @@ function getSettings($elem, type) {
 	let settings = {};
 	
 	for (let setting in clik_settings[type].styleDefs) {
-		// problems with things like grid-gap
-		// Need a better test than inherit.
-		if (true || clik_settings[type][setting].inherit) {
+		if ( clik_settings[type].styleDefs[setting].setting ) {
 			let val = $elem.css("--" + setting);
-			if (val) {
+			if (! val) {
+				if ("default" in clik_settings[type].styleDefs[setting]) {
+					val = clik_settings[type].styleDefs[setting].default;
+				}
+			}
+			if ( val ) {
 				settings[setting] = parseCssVar(val, clik_settings[type].styleDefs[setting].type.toLowerCase() );
 			}
 		}
@@ -48,6 +51,7 @@ function parseCssVar(stringVal, type) {
 	if (type == "boolean") {
 		val = parseInt(stringVal);
 		if (Number.isNaN(val)) {
+			console.log(val);
 			val = (stringVal.toLowerCase() == "true");
 		}
 		else {

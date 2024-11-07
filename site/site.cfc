@@ -882,7 +882,7 @@ component accessors="true" extends="utils.baseutils" {
 		// pageContent.static_js["scrollbar"] = 1;
 		// pageContent.static_css["scrollbar"] = 1;
 		
-		pageContent.body = this.layoutsObj.getHTML(local.rc.layout);
+		pageContent.body = "<div id='bodyWrapper' class='container'>" & this.layoutsObj.getHTML(local.rc.layout) & "</div>";
 		
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		
@@ -932,6 +932,10 @@ component accessors="true" extends="utils.baseutils" {
 					site=arguments.site
 				);
 			}
+		}
+		// manually supplied IDs.
+		else if (! isArray( arguments.section.data ) ) {
+			arguments.section.data = listToArray(arguments.section.data);
 		}
 
 	}
@@ -1013,12 +1017,14 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.written = {};
 		for (local.layout in arguments.site.layouts) {
+
 			try{
-				// css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written );
+				css &= getLayoutCss(layoutName=local.layout,site=arguments.site, written=local.written,debug=arguments.debug );
 			}
 			catch (any e) {
+				local.extendedinfo = {"error"=e};
 				throw(
-					extendedinfo = e.extendedinfo,
+					extendedinfo = SerializeJSON(local.extendedinfo),
 					message      = "Unable to write styling for template #local.layout#:" & e.message, 
 					detail       = e.detail
 				);
@@ -1037,32 +1043,45 @@ component accessors="true" extends="utils.baseutils" {
 		return css;
 
 	}
+
 	/** Get CSS for individual layout 
 	 * 
 	 * @layoutName    Name of layout
 	 * @site          Site struct
 	 * @written       Struct to ensure "extends" layouts only get written once
 	 */
-	private string function getLayoutCss(required string layoutName, required struct site, struct written={} ) {
+	private string function getLayoutCss(required string layoutName, required struct site, struct written={}, boolean debug=variables.debug ) {
 		
 		local.css = "";
 		local.layoutObj = this.layoutsObj.getLayout(arguments.layoutName);
 		
 		if (StructKeyExists(local.layoutObj, "extends" ) &&
 			NOT StructKeyExists( arguments.written, local.layoutObj.extends) ) {
-			local.css &= getLayoutCss(layoutName=local.layoutObj.extends, site=arguments.site, written=arguments.written );
+			local.css &= getLayoutCss(layoutName=local.layoutObj.extends, site=arguments.site, written=arguments.written, debug=arguments.debug );
 			arguments.written[local.layoutObj.extends] = 1;
 		}
 
 		local.styles = local.layoutObj.style ? : {};
-		variables.utils.utils.deepStructAppend(local.styles, arguments.site.style,false);
+		variables.utils.utils.deepStructAppend(local.styles, arguments.site.styles,false);
 
-		local.css &= "/* Layout #arguments.layoutName# */\n";
+		if ( arguments.debug ) {
+			local.css &= "/* Layout #arguments.layoutName# */" & newLine();
+		}
+
+		// Add individual cs styling to the stylesheet
+		for ( local.code in local.layoutObj.content ) {
+			local.csObj = local.layoutObj.content[local.code];
+			if ( local.csObj.keyExists( "style" ) ) {
+				StructAppend( arguments.site.styles, { "#local.code#": local.csObj.style }, true);
+			}
+		}
+
 		local.css &= this.settingsObj.layoutCss(
 			containers=local.layoutObj.containers, 
 			styles=local.styles,
-			media=arguments.site.styleSettings.media,
-			selector="body.template-#arguments.layoutName#"
+			media=arguments.site.styles.media,
+			selector="body.template-#arguments.layoutName#",
+			debug=arguments.debug
 		);
 
 		arguments.written[arguments.layoutName] = 1;
@@ -1196,8 +1215,8 @@ component accessors="true" extends="utils.baseutils" {
 		) {
 		local.js = "if ( typeof site == 'undefined' ) site = {};";
 		local.js &= "site.data = {};"
-		// local.js &= "site.data.images = " & serializeJSON(arguments.site.images) & ";";
-		// local.js &= "site.data.articles = " & serializeJSON(arguments.site.articles) & ";";
+		local.js &= "site.data.images = " & serializeJSON( this.dataObj.getRecords([]) ) & ";";
+		local.js &= "site.data.articles = " & serializeJSON( this.dataObj.getRecords([]) ) & ";";
 		try{
 			FileWrite(arguments.outputDir & "/" & "sitedata.js", local.js);
 		} 

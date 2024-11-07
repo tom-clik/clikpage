@@ -1,4 +1,4 @@
-component extends="utils.baseutils" {
+component extends="utils.baseutils" {  // TODO: put back in output=false
 	/** 
 	 * Constructor 
 	 *
@@ -9,7 +9,9 @@ component extends="utils.baseutils" {
 		    required   any      settingsObj,
 			           string   types="item,grid,title,menu,text,image,imagegrid,articlelist,button,form,columns",
 					   boolean  debug=false
-		)  output=false {
+		) {
+		
+		this.settingsObj = arguments.settingsObj;
 		
 		this.contentSections = {};
 		this.debug = arguments.debug;
@@ -22,7 +24,7 @@ component extends="utils.baseutils" {
 		}
 		
 		variables.defaultMedia = [{"name"="main"}];
-		this.settingsObj = arguments.settingsObj;
+		
 		
 
 		return this;

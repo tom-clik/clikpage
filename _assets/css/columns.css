@@ -139,25 +139,25 @@ div:not(.cs-grid):has( > .inner) {
 }
 
 
-.inner.spanning  {
+.spanning > .inner {
 	margin: 0 auto;
 	max-width: var(--site-width);
 }
 
 @container body ( style( --site-align:left) ) {
-	.inner.spanning {
+	.spanning > .inner  {
 		margin: 0 auto 0 0;
 	}
 }
 
 @container body ( style( --site-align:right) ) {
-	.inner.spanning {
+	.spanning > .inner  {
 		margin: 0 0 0  auto;
 	}
 }
 
 @container body ( style( --framed:1) ) {
-	.inner.spanning {
+	.spanning > .inner  {
 		width: auto;
 	}
 	#ubercontainer {
@@ -490,32 +490,32 @@ div:not(.cs-grid):has( > .inner) {
 		transform: translateX( calc( ( -1 * var(--menu-width)) - 10px) );
 	}
 
-	#content .spanning {
+	#content .spanning > .inner {
 		max-width: calc( var(--site-width) - var(--menu-width) );
 		transition: max-width var(--menu-anim-time) ease-in-out;
 	}
 
-	body.menu-close #content .spanning {
+	body.menu-close #content .spanning > .inner {
 		max-width:  var(--site-width) ;
 	}
 
 	@container body ( style( --footer-fixed:0 ) ) {
-		#footer .spanning {
+		#footer .spanning  > .inner {
 			max-width: calc( var(--site-width) - var(--menu-width) );
 			transition: max-width var(--menu-anim-time) ease-in-out;
 		}
-		body.menu-close #footer .spanning {
+		body.menu-close #footer .spanning > .inner {
 			max-width: calc( var(--site-width) - var(--menu-width) );
 			transition: max-width var(--menu-anim-time) ease-in-out;
 		}
 	}
 
 	@container body ( style( --header-fixed:0 ) ) {
-		#header .spanning {
+		#header .spanning > .inner {
 			max-width: calc( var(--site-width) - var(--menu-width) );
 			transition: max-width var(--menu-anim-time) ease-in-out;
 		}
-		body.menu-close #header .spanning {
+		body.menu-close #header .spanning > .inner {
 			max-width: calc( var(--site-width) - var(--menu-width) );
 			transition: max-width var(--menu-anim-time) ease-in-out;
 		}

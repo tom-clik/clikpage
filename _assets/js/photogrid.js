@@ -36,7 +36,7 @@ and then calls carousel or masonry if required.
       }
 
       plugin.reload = function() {
-
+        
         plugin.settings = getSettings($element, "imagegrid");
         console.log(plugin.settings);
         
@@ -111,16 +111,20 @@ and then calls carousel or masonry if required.
         }
         
         if ( plugin.settings.popup )  {
-          $('#' + id + '_popUp').popup({
+          let $pop = $('#' + id + '_popUp');
+          if ( $pop.length === 0 ) {
+            $pop = $("<div>", { id: id + '_popUp', class: "popup" }).appendTo($("body"));
+          }
+          $pop.popup({
             imagepath : '',
             data: clik.getImages(plugin.options.dataset),
           });
-          $popup = $('#' + id + '_popUp').data('popup');
+          $popup = $pop.data('popup');
           let count = 0;
-          $('#' + id + ' a').each(function() {
+          $element.find('a').each(function() {
             $(this).data('index', count++);
-          })
-          $('#' + id + ' > a').on('click',function(e) {
+          });
+          $element.on('click','a', function(e) {
             e.preventDefault();
             e.stopPropagation();
             $popup.goTo($(this).data('index'));

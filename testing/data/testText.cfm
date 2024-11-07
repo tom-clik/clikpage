@@ -1,18 +1,19 @@
 <cfscript>
 config = {"dataFolder": expandPath("../../sample/_data/data")};
+config.imageRoot = "/images/";
 
 dataObj = new clikpage.data.data_text(config);
 
 dataset = {
 	"name" = "test",
-	"tag" = "test",
-	"sort_order" = "pubdate desc"
+	"tag" = "gallery",
+	"sort_order" = "sort_order  desc"
 }
 
 dataset2 = {
-	"name" = "test2,sections",
-	"tag" = "sections",
-	"sort_order" = "pubdate desc"
+	"name" = "test2",
+	"tag" = "test2",
+	"sort_order" = "pubdate"
 }
 
 

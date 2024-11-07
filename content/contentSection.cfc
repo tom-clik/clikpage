@@ -102,22 +102,12 @@ component {
 		// Value of defaults for easy lookup
 		this.defaultStyles = {};
 
-		// Value of "setting defaults" -- the styles that aren't simple css vars
-		this.settings = {};
-
 		try {
 			for (local.setting_code in this.styleDefs){
 				local.setting  = this.styleDefs[local.setting_code];
+				StructAppend(local.setting,{"setting":false}, false);// use as JavaScript config param
 				if (StructKeyExists(local.setting,"default")) {
 					this.defaultStyles["#local.setting_code#"] = local.setting.default;
-				}
-				if (StructKeyExists(local.setting,"setting")) {
-					this.varClasses.append(local.setting_code);
-					if (! StructKeyExists(local.setting,"default")) {
-						throw("Setting #local.setting_code# had no default");
-					}
-					this.settings["#local.setting_code#"]  = local.setting.default;
-					
 				}
 			}
 		}
@@ -225,20 +215,9 @@ component {
 						throw("incorrect value for #local.style#");
 					}
 					else {
-						switch (local.def.type) {
-							case "dimension":
-								local.val = variables.contentObj.settingsObj.displayDimension(local.state_styles[local.style]);
-							break;
-							case "color":
-								local.val = variables.contentObj.settingsObj.displayColor(local.state_styles[local.style]);
-							break;
-							case "boolean":
-								local.val = local.state_styles[local.style] ? "1" : "0" ;
-							break;
-							default:
-								local.val = local.state_styles[local.style];
-							break;
-						}
+
+						local.val = variables.contentObj.settingsObj.displaySetting(local.state_styles[local.style], local.def.type);
+
 						// css &= this.settingsObj.CSSCommentHeader("Content styling");
 						css.append("#tab#--#local.style#: " & local.val & ";");
 					}

@@ -24,7 +24,12 @@ component extends="item" {
 			{"name"="text", "selector"=" .textWrap"}
 		];
 
-		this.styleDefs["carousel"] = {"type":"boolean","description":"use carousel for list","default"=false,"setting"=1};
+		StructAppend(this.styleDefs, {
+			"carousel" = {"type":"boolean","description":"use carousel for list","default"=0,"setting"=1},
+			"carousel-contain" = {"type":"boolean","description":"contain carousel content","default"=1,"setting"=1},
+			"carousel-freeScroll" = {"type":"boolean","description":"Free scroll","default"=0,"setting"=1},
+			"carousel-wrapAround" = {"type":"boolean","description":"Wrap around carousel scroll","default"=1,"setting"=1},
+		});
 		
 		updateDefaults();
 		
@@ -36,11 +41,10 @@ component extends="item" {
 
 	public string function html(required struct content,required struct data) {
 		
-		
 		var cshtml = "";
 		var classes = {};
 
-		local.link_format = arguments.content.link ? : "{{link.{{section.id}}.{{data.id}}}}";
+		local.link_format = arguments.content.link ? : "{{link.{{section.id}}.view.{{data.id}}}}";
 		
 		for (local.id in arguments.content.data) {
 			local.item = arguments.data[local.id];
@@ -51,8 +55,6 @@ component extends="item" {
 			cshtml &= local.tmpHTML;
 			cshtml &= "</div>";
 		}
-
-		
 
 		return cshtml;
 

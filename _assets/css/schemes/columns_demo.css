@@ -5,16 +5,6 @@ select {
 	padding:2px;
 }
 
-body {
-	--text-font:'Open Sans';
-/*	--site-width:1200px;*/
-	--site-width:100%;
-	--header-height: 100px;
-	--menu-width: 240px;
-	--xcol-width: 240px;
-/*		--site-align:right;*/
-}
-
 /*#header, #footer, #topnav, #bottomnav, #content_top, #content_bottom, #columns > div {
 	padding:4px;
 }*/

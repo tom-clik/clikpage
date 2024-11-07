@@ -120,6 +120,7 @@
 	overflow: hidden;
 	align-items: center;
 	justify-content: center;
+	z-index: 110;
 }
 
 .popup .button {

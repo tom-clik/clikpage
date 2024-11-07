@@ -19,7 +19,7 @@ start = getTickCount();
 site = siteObj.loadSite(config.siteDef);
 runtime = getTickCount() -start;
 
-writeDump(site.sections);
+writeDump(site.content);
 
 writeOutput("<p>Loaded site in <strong>#runtime#ms</strong></p>");
 

@@ -221,7 +221,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,clik_settings"
+      "requires": "jquery,modal,getSettings"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -271,13 +271,14 @@
       "min":"/_assets/js/clik_settings_live.js",
       "debug":"/_assets/js/clik_settings.js",
       "description": "Auto generated data file of style definitions for editing",
-      "name": "clik_settings"
+      "name": "clik_settings",
+      "requires": "jquery,throttledresize"
     },
     {
+      "name":"getSettings",
       "min":"/_assets/js/getSettings.js",
       "description": "Get content item settings from css custom vars",
-      "name": "getSettings",
-      "requires": "jquery"
+      "requires": "jquery,clik_settings"
     },
     {
       "min":"/_assets/js/jquery.tabs.js",
@@ -296,8 +297,6 @@
       "description": "Utility for removing classes by prefix",
       "name": "removeClassByPrefix",
       "requires": "jquery"
-    }
-    
-    
+    }    
   ]
 }
