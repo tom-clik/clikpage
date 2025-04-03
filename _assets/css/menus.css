@@ -234,6 +234,11 @@ hi      li.hi a
 	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out ;
 }
 
+/* Don't use flex mechanism if we're using access keys */
+.menu a[accesskey] {
+	display: inline-block;
+}
+
 /* Per class behaviour applied via JS. leave for now. */
 .menu.open {
 	height:auto;
@@ -358,8 +363,15 @@ Requires icons.css and navbuttons.css
 	overflow: hidden;
 }
 
-.menu a span {
+
+
+.menu a span:not(.accessKey) {
 	display: var(--menu-label-display);	
+}
+
+.menu span.accessKey {
+	display: inline;
+	text-decoration: underline;
 }
 
 
@@ -367,7 +379,7 @@ Requires icons.css and navbuttons.css
 	transform: rotate(90deg);
 }
 /* Expand label to fill space */
-.menu a > span {
+.menu a > span:not(.accessKey) {
 	flex-grow: var(--menu-icon-stretch);
 }
 
