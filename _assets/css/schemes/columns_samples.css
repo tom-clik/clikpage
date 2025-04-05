@@ -1,0 +1,120 @@
+/*
+
+Wild card based theming system wehre you can combine a layout selection with other options.
+
+The layouts are:
+
+layout-static
+: The defaulty. static can be ommitted
+layout-slide
+: slide out menu
+layout-fixed
+: fixed in place menu
+
+The options are:
+
+-fixheader
+: Fix header in place
+-fixfooter
+: Fix the footer in place
+-frame
+:Fit the site into a frame with the site width
+-sticky
+: Sticky xcol. The logic can be copied for the menu col
+-simpler
+:Hide #content_top, #content_bottom, #nav, #bottomnav. This can easily be replicated by hand.
+-mobilefixed
+:Working on this
+
+
+Always start with layout-*, (NB "static" can be omitted, e.g. layout-fixheader is the same as layout-static-fixheader)
+
+E.g.
+
+layout-fixheader-fixfooter-sticky
+layout-fixed-fixheader
+
+*/
+
+
+body[class*=-fixheader] {
+	--header-fixed :1;
+}
+
+body[class*=-fixfooter] {
+	--footer-fixed :1;
+}
+
+body[class*=-frame] {
+	--framed:1;
+}
+
+body[class*=-frame] {
+	padding:8px 12px;
+}
+
+@media (max-width:800px) {
+	body[class*=-frame] {
+		padding:0;
+	}
+}
+
+
+body[class*=-simpler] :is( #content_top, #content_bottom, #nav, #bottomnav) {
+	display:none;
+}
+
+body[class*=-simpler] :is( #header, #footer, #content) {
+	--grid-template-rows: auto;
+}
+
+body[class*="layout-slide"] {
+	--site-align: left;
+	--menupos: slide;
+	--menu-width: 240px;
+}
+
+body[class*=-sticky] :is( #xcol, #menu ) {
+	--sticky:1;
+}
+
+@media (max-width:800px) {
+
+	body[class*=-sticky] :is( #xcol, #menu ) {
+		--sticky:0;
+	}
+
+}
+
+@media (max-width:800px) {
+
+	body[class*="layout-slide"] {
+		--menupos: slidedown; 
+	}
+
+}
+
+body[class*="layout-fixed"] #menu {
+	--sticky:0;
+}
+
+body[class*="layout-fixed"] {
+	--menu-width:400px;
+	--menu: close;
+	--menupos:fixed;
+	--site-align:left;
+}
+
+@media (max-width:600px) {
+
+	body[class*="layout-fixed"] {
+		--menu-width:100vw;
+	}
+
+	body[class*="mobilefixed"] {
+		--menupos:fixed;
+		--menu-width:100%;
+		--menu: close;
+	}
+
+}

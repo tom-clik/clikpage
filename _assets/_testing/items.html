@@ -1,13 +1,35 @@
+<script>
+tests = [
+	{"id": "1", "description":"Heading Top"},
+	{"id": "1a", "description":"Heading Under"},
+	{"id": "2", "description":"Image Left"},
+	{"id": "3", "description":"Image right"},
+	{"id": "2a", "description":"Image Left image space"},
+	{"id": "3a", "description":"Image right image space"},
+	{"id": "4", "description":"Heading Under Image Left"},
+	{"id": "4a", "description":"Heading Under Image Left  image space"},
+	{"id": "5", "description":"Heading Under Image right"},
+	{"id": "5a", "description":"Heading Under Image right  image space"},
+	{"id": "6", "description":"No heading"},
+	{"id": "7", "description":"No heading left"},
+	{"id": "8", "description":"No heading right"},
+	{"id": "9", "description":"Wrap left"},
+	{"id": "10", "description":"Wrap right"},
+	{"id": "11", "description":"Heading Under Wrap left"},
+	{"id": "12", "description":"Heading Under Wrap right"},
+];
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Menu test</title>
+	<title>Items test</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/title.css">
-	<link rel="stylesheet" href="../css/panels.css">
-	<link rel="stylesheet" href="../css/schemes/panels-schemes.css">
+	<link rel="stylesheet" href="../css/items.css">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 	<meta charset="UTF-8">
 	<style>
 		body {
@@ -18,11 +40,185 @@
 			--accent-color:#DC00FE;
 		}
 
+		.list {
+			--grid-mode:none;
+			width:560px;
+		}
+
 		.item {
-			margin:20px;
 			border:1px solid #ccc;
 			padding:8px;
+			
 		}
+
+		.item figure  {
+			border: 2px solid teal;
+			padding: 2px;
+		}
+
+		.item:hover figure {
+			border: 2px solid #ff00ff;
+			padding: 2px;
+		}
+
+
+		.test-1a {
+			--htop:0;
+		}
+
+		.test-2 {
+			--image-align:left;
+		}
+
+		.test-3 {
+			--image-align:right;
+		}
+
+		@media screen and (max-width: 800px) {
+			.test-2 {
+				--image-align:center;
+			}
+
+			.test-3 {
+				--image-align:center;
+			}
+		}
+
+		.test-2a {
+			--image-align:left;
+			--imagespace:1;
+		}
+
+		.test-3a {
+			--image-align:right;
+			--imagespace:1;
+		}
+
+		.test-4 {
+			--htop:0;
+			--image-align:left;
+		}
+
+		.test-5 {
+			--htop:0;
+			--image-align:right;
+		}
+
+		.bodytest-5 .list, .bodytest-5a .list {
+			padding:20px;
+			width: 100%;
+			--grid-mode:fit;
+			--grid-gap:10px;
+			--item-gridgap:10px;
+			--grid-width: 420px;
+			--image-width:60%;
+		}
+
+		@media screen and (max-width: 660px) {
+			.bodytest-5 .list, .bodytest-5a  .list  {
+				--image-align:center;
+			}
+		}
+
+		.test-4a {
+			--htop:0;
+			--image-align:left;
+			--imagespace:1;
+		}
+
+		.bodytest-4 .list, .bodytest-4a  .list {
+			font-family: inter;
+			--title-font: inter;
+		}
+
+		.bodytest-4 .list, .bodytest-4a  .list {
+			padding:20px;
+			width: 100%;
+			--grid-mode:fixed;
+			--grid-gap:30px;
+			--item-gridgap:30px;
+			--grid-columns: 2;
+			--image-width:60%;
+		}
+		.bodytest-4 .item, .bodytest-4a  .item {
+			padding:0;
+			border-width: 0;
+		}
+
+		.bodytest-4 .item .title, .bodytest-4a  .item .title {
+			border-top: 4px solid black;
+			padding-top:4px;
+			text-transform: uppercase;
+			font-weight: bold;
+			font-size: 32px;
+		}
+
+		.bodytest-4 .item figure, .bodytest-4a  .item figure {
+			padding:0;
+			border-width: 0;
+		}
+
+		@media screen and (max-width: 1050px) {
+			.bodytest-4 .list, .bodytest-4a  .list  {
+				--image-width:50%;
+			}
+		}
+
+
+		@media screen and (max-width: 950px) {
+			.bodytest-4 .list, .bodytest-4a  .list  {
+				--image-align:center;
+			}
+		}
+
+		@media screen and (max-width: 660px) {
+			.bodytest-4 .list, .bodytest-4a  .list  {
+				--grid-mode: none;
+			}
+		}
+
+		.test-5a {
+			--htop:0;
+			--image-align:right;
+			--imagespace:1;
+		}
+
+		.test-6 {
+			--show-title:0;
+		}
+
+		.test-7 {
+			--show-title:0;
+			--image-align:left;
+		}
+
+		.test-8{
+			--show-title:0;
+			--image-align:right;
+		}
+
+		.test-9{
+			--wrap:1;
+			--image-align:left;
+		}
+
+		.test-10{
+			--wrap:1;
+			--image-align:right;
+		}
+		.test-11{
+			--htop:0;
+			--wrap:1;
+			--image-align:left;
+		}
+
+		.test-12{
+			--htop:0;
+			--wrap:1;
+			--image-align:right;
+		}
+
+		/*
 
 		.item.scheme-box:hover {
 			--title-color: #00C0F9;
@@ -35,197 +231,99 @@
 
 		.item.scheme-underline:hover .imageWrap {
 			border-color:var(--accent-color);
-		}
+		}*/
 		
 	</style>
 </head>
 <body>
 
 <div class="cs-title">
-item Testing
+Item Testing Page
 </div>
 
-
-<div class="itemlist">
-
-	<div class="item setting-htop scheme-box" id="test1">
-
-		<h3 class="title">setting-htop scheme-box</h3>
-
-		<div class="imageWrap">
-			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-		</div>
-		
-		<div class="textWrap">
-			<p>Assign htop to put the headline abve the content</p>
-		</div>
-	
-	</div>
-	
-	<div class="item setting-htop setting-left setting-munder" id="test2">
-
-		<h3 class="title">Headline before image except in mobile</h3>
-
-		<div class="imageWrap">
-			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-		</div>
-		
-		<div class="textWrap">
-			<p>Set munder to put a heading under the image in mobile (if its got htop for main view)</p>
-		</div>
-	
-	</div>
-
-	<div class="item setting-htop setting-left scheme-wide" id="test3">
-
-		<h3 class="title">Larger image</h3>
-
-		<div class="imageWrap">
-			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-		</div>
-		
-		<div class="textWrap">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>				
-		</div>
-	
-	</div>
-
-	<div class="item setting-htop setting-right scheme-wide" id="test4">
-
-		<h3 class="title">Larger image right</h3>
-
-		<div class="imageWrap">
-			<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-		</div>
-		
-		<div class="textWrap">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>		
-		</div>
-	
-	</div>
-			
-	<div class="item setting-left" id="test5">
-
-	
-		<h3 class="title">No image with space still showing</h3>
-
-		<div class="imageWrap">
-			
-		</div>
-		
-
-		<div class="textWrap">
-			<p>Actualy here you just assign the image alignment class.</p>
-		</div>
-	
-	</div>
-
-	<div class="item  setting-noimage" id="test6">
-		
-		<h3 class="title">No image with no space</h3>
-
-		<div class="imageWrap">
-			
-		</div>
-
-		<div class="textWrap">
-			<p>You can just do nothing but noimage will set the imageWrap to display:none</p>
-		</div>
-	
-	</div>
-
-	<div class="item setting-left scheme-underline " id="test7">
-
-	
-		<h3 class="title">Headline is inline</h3>
-
-		<div class="imageWrap">
-			
-				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-			
-		</div>
-		
-
-		<div class="textWrap">
-			<p>This is actually the default. You have to put htop on to change it.</p>
-				
-		</div>
-	
-	</div>
-
-	<div class="item setting-flowleft scheme-wide " id="test8">
-
-		<h3 class="title">Flow settings</h3>
-
-		<div class="imageWrap">
-			
-				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-			
-		</div>
-		
-
-		<div class="textWrap">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-				
-		</div>
-	
-	</div>
-
-	<div class="item setting-flowright " id="test8">
-
-	
-		<h3 class="title">Flow settings right</h3>
-
-		<div class="imageWrap">
-			
-				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
-			
-		</div>
-		
-
-		<div class="textWrap">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. </p>
-			
-				
-		</div>
-	
-	</div>
+<div id="testmenu">
 
 </div>
+
+<div class="list cs-grid">
+	<div class="grid">
+		<div class="item">
+			<div class="itemInner">
+				<h3 class="title">Box title</h3>
+
+				<div class="imageWrap">
+					<figure>
+						<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+						<figcaption>An elephant at sunset</figcaption>
+					</figure>
+				</div>
+				
+				<div class="textWrap">
+					<!-- Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping. It can be omitted -->
+					<h3 class="title wraptitle">Box title</h3>
+
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+					<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>
+
+	<script src="/_assets/js/jquery-3.4.1.js"></script>
+	<script src="/_assets/js/jquery.throttledresize.js"></script>
+	<script src="/_assets/js/varClass.js"></script>
+	<script src="/_assets/js/removeClassByPrefix.js"></script>
+	
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+			// make the items - nothing to do with the styling.
+			var $item = $(".item");
+			var $list = $(".list > .grid");
+			for (i=1; i <= 6; i++) {
+				let $newItem = $item.clone();
+				if (i % 3 == 0) {
+					$newItem.find("figure").html("");
+					$newItem.find(".itemInner").addClass("noimage");
+				}
+				$list.append($newItem);
+			}
+
+			// Apply the layout class
+			var hash = window.location.hash || "#1";
+			hash = hash.replace("#","");
+			setTest(hash);
+			// / end apply layout class
+			
+			var menuHtml = "<select>\n";
+			for (let test of tests) {
+				selected = test.id == hash ? "selected" : ""; 
+				menuHtml += `<option ${selected} value="${test.id}">${test.description}</option>\n`;
+			}
+			menuHtml += "</select>\n";
+
+			$(menuHtml).appendTo("#testmenu").on("change", function( ) {
+				let test = $(this).val()
+				setTest(test);
+			});
+			
+		});
+
+		// Apply classes for the selected test
+		function setTest(test) {
+			$selector = $(".list");
+			$selector.removeClassByPrefix("test-");
+			$selector.addClass("test-" + test);
+			$("body").removeClassByPrefix("bodytest-");
+			$("body").addClass("bodytest-" + test);
+			window.location.hash = test;
+		}
+
+
+	</script>
 
 
 </body>

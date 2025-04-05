@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>	
-<articles>
-	<article id="1" src="data/articles/article1.md" />
-	<article id="2" src="data/articles/article2.md" />
-	<article id="3" src="data/articles/article3.md" />
-	<article id="3" src="data/articles/article4.md" />
-</articles>

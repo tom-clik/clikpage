@@ -2,30 +2,38 @@
 
 # Table styling
 
---table-cell-padding:0;
---table-text-align:inherit;
+Most styling is done using standard CSS properties applied to tr, th, or td. Only the padding and border settings, which can be difficult, have parameters.
+
+## Borders
+
+Adjust the following for the main table, th, and td and they **should** work.
+
+```
+--table-border-width:0px;
+--table-border-style:solid;
+--table-border-color:initial;
+```
+
+## Padding
+
+Adjust the following for the main table and optionally th if different.
+
+```
+--table-cell-padding: 2px;
+```
+
+## Fonts etc
+
+Use standard CSS properties applied to tr, th, or td.
+
+The default for th is bold, centered.
 
 # Backgrounds 
 
 --table-background: transparent
 --table-stripe-bg: var(--table-background)
 
-## Borders
-
---table-border-width:0px;
---table-border-style:solid;
---table-border-color:initial;
-
-## Sticky header
-
---table-sticky: sticky || table-row 
---table-sticky-top:0;
-
-## font/text color 
-
-Apply to td/th as you like
-
-Notes: 
+## Notes
 
 We can't use border collapse to do any sort of sensible table styling
 
@@ -40,16 +48,32 @@ table.info td, table.info th {
 }
 ```
 
-## Adjusting columns
+## Adjusting columns or rows
 
+Use numeric column values to adjust styling if you can't set a class (e.g. coming from Markdown)
+
+```
 table.info tr td:nth-of-type(3) {
-	--table-font-weight:bold;
-	--table-text-align:left;	
+	font-weight:bold;
+	text-align:left;	
 }
+```
+
+### First and last rows
+
+Use
+
+`table.info tr td:first-of-type` and `table.info tr td:last-of-type`
+
+## Stripes
+
+There is one more var, --table-stripe-bg, for striped rows.
+
+You can also use `tr:nth-child(odd|even)`
 
 ## To do
 
-Better mechanism for first and last column paddings? (not a priority).
+1. Better mechanism for first and last column paddings? (not a priority).
 
 */
 
@@ -77,6 +101,7 @@ table {
 	border-color: var(--table-border-color);
 	border-collapse: separate;
 	width: auto;/* will override leagcy table width= settings */
+	margin: 1em 0;
 }
 
 th, td  {
@@ -131,6 +156,12 @@ tr td:last-of-type, tr th:last-of-type {
 tbody  tr:last-of-type td {
 	border-bottom-width: 0;
 }
+/* NB recordlist, am_table deprecated */
+table:where(.info,.reverse,.recordlist,.am_table) {
+	--table-border-width:1px;
+	--table-border-style:solid;
+	--table-border-color:var(--border-color, black);
+	--table-cell-padding:2px;
 
 table.info {
 	--table-border-width: 1px;
@@ -139,10 +170,14 @@ table.info {
 	--table-sticky:sticky;
 }
 
-table.info td, table.info th {
-	--table-border-width: 1px;
+
+table.sticky {
+  position:relative;
 }
 
+table.sticky th {
+  position: sticky;
+  top: 0;
 table {
   position:relative;
 }
@@ -152,5 +187,7 @@ thead {
   top: var(--table-sticky-top);
 }
 
-
+table.nohead thead {
+    display: none;
+}
 

@@ -1,6 +1,6 @@
 .scheme-imagegrid {
 	
-	grid-mode: auto;
+	grid-mode: fit;
 	grid-width: 160px;
 	grid-gap:10px;
 	
@@ -15,7 +15,7 @@
 
 .scheme-fixedcols {
 	
-	grid-mode: fixedcols;
+	grid-mode: fixed;
 	grid-gap:2px;
 	grid-columns:4;
 	
@@ -30,7 +30,7 @@
 
 .scheme-setcols {
 	
-	grid-mode: fixedcols;
+	grid-mode: fixed;
 	grid-template-columns:200px 300px 200px 200px;
 	@mid {
 		grid-template-columns:190px 190px 190px 190px;

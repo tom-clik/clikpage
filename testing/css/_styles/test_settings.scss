@@ -1,0 +1,104 @@
+colors {
+	textcolor {
+		title:Main text color;
+		value:#333333;
+	}
+	myfavcolor {
+		title:My favourite colour;
+		value:#ff0000;
+	}
+	panel-bg {
+		title:Darker panel bg;
+		value:#01798a;
+	}
+	accent {
+		title:Accent colour;
+		value:#38bbcd;
+	}
+	panel-text {
+		title:Panel text;
+		value:#ffffff;
+		description: To stand out against darker panel or accent;
+	}
+	panel-overlay {
+		title:Semi transparent overlay;
+		value:rgba(33,33,33,0.4);
+	}
+	light-panel-bg {
+		title:Light panel packground;
+		value:#eaeaea;
+	}
+	linkcolor {
+		title:Link color;
+		value:#38bbcd;
+	}
+	overlaybg {
+		title:Overlay background;
+		value:rgba(0,0,0,0.2);
+	}
+	Bisque {value: Bisque;}
+	brown {value: brown;}
+	DarkCyan {value: DarkCyan;}
+	Cornsilk {value: Cornsilk;}
+}
+
+media {
+	max {
+		min:1200;
+		description:Full size only;
+	}
+	mid {
+		max:800;
+		description:Medium width for tablets;
+	}
+	mobile {
+		max:600;
+		description:mobile;
+	}
+	print {
+		media:print;
+		description:Print only;
+	}
+}
+
+fonts {
+	bodyfont {
+		title:Body font;
+		family:"Open Sans";
+	}
+	titlefont {
+		title:Title font;
+		family:Lato;
+	}
+	subtitlefont {
+		title:Sub Title font;
+		family:--titlefont;
+		description:Used by sub titles;
+	}
+	test {
+		family:broken;
+		weights:;
+		styles:;
+		variants:;
+		stretch:;
+	}
+}
+
+vars {
+	sitewidth {
+		title:Site width;
+		description:Maximum width of site containers;
+		value:1200px;
+	}
+	sitepadding {
+		title:Site padding;
+		description:Added to all spanning elements like header, footer
+		value:4px 6px;
+	}
+	sitepaddingmobile {
+		title:Site padding (mobile);
+		description:Site padding in mobile value:4px;
+	}
+}
+
+

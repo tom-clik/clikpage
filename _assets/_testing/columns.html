@@ -1,123 +1,390 @@
+<!---
+
+# Columns demo
+
+
+
+
+
+--->
+<script>
+tests = [
+	{"id": "static-sticky-mobilefixed", "description":"Basic"},
+	{"id": "static-fixheader-sticky-mobilefixed", "description":"Fixed header"},
+	{"id": "static-fixheader-fixfooter-sticky-mobilefixed", "description":"Fixed header and footer"},
+	{"id": "frame", "description":"Framed"},
+	{"id": "frame-fixheader-sticky", "description":"Framed Fixed header"},
+	{"id": "frame-fixheader-fixfooter-sticky", "description":"Framed, Fixed header and footer"},
+	{"id": "simpler", "description":"Simpler"},
+	{"id": "slide-sticky", "description":"slide menu"},
+	{"id": "slide-fixheader-sticky", "description":"slide menu and fixed header"},
+	{"id": "slide-fixheader-fixfooter-sticky", "description":"slide header, fixed and footer"},
+	{"id": "fixed-fixheader-fixfooter-sticky", "description":"Fixed menu, header and footer, and menu"}
+];
+</script>
+
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Table tests</title>
+	<title>Column tests</title>
+	<meta charset="UTF-8">
+	
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/title.css">
+	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
-	<link rel="stylesheet" href="../css/schemes/columns_schemes.css">
-	<meta charset="UTF-8">
-	<style>
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<link rel="stylesheet" href="../css/modal.css">
+	<link rel="stylesheet" href="../css/schemes/columns_samples.css">
+	<link rel="stylesheet" href="../css/schemes/columns_demo.css">
 
+	<style>
+		
 		body {
 			--text-font:'Open Sans';
+			--site-width:1200px;
+/*			--site-width:100%;*/
+			--header-height: 100px;
+			--menu-width: 240px;
+			--xcol-width: 240px;
+		/*		--site-align:right;*/
 		}
-
-		/* Page syling */
-		div:not(.inner) {
-			border:1px solid teal;
-			padding:4px;
-			margin:2px;
-		}
-
-		
+	
 	</style>
+	<!-- <link rel="stylesheet" href="../css/schemes/columns_cms.css"> -->
+	
+	<!-- <link rel="stylesheet" href="/_assets/css/icons.css"> -->
+
 </head>
-<body class="col-SXM topnav mob-MXS">
 
-	<div id="ubercontainer">
-		
-		<div id="header">
-			<div class="inner">
-				<h1>This is the site title</h1>
-			</div>
-		</div>
+<!-- <body class="layout-fixed-fixheader-fixfooter-sticky"> -->
+<body><div id="bodyWrapper" class="container">
 
-		<div id="topnav">
-			<div class="inner">
-				Top navigation elements
-			</div>
-		</div>
-
-		<div id="content" class="clear">
-			<div class="inner">
-				<div id="contenttop">
+<div id="ubercontainer" class="cs-grid">
+	
+	<div class="grid">
+		<!--- header is usually given a fixed height (see --header-height)
+			Much of the sticky/fixed functionality depends on this. ---> 
+		<div id="header" class="cs-grid">
+			<div class="grid">
+				<div id="title" class="spanning">
 					<div class="inner">
-						Content top element
-					</div>
-				</div>
-
-				<div id="columns">
-					<div id="subcol">
 						
-						<h1>Sub col</h1>
-
-							<!--<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-							<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>-->
-					</div>
-
-				
-					<div id="maincol">
-						
-						<div id="maincol_top">
-							<h2>Main col top</h2>
-							<p>Any odd text. Any odd text. Any odd text.</p>
+						<div  id="site-title" class="cs-title">
+							<h1>Column Testing</h1>
 						</div>
-						<div id="maincol_left">
-							<h2>Maincol left</h2>
-							<p>Any odd text. Any odd text. Any odd text.</p>
-							<p>Any odd text. Any odd text. Any odd text.</p>
-						</div>
-						<div id="maincol_right">
-							<h2>Maincol right</h2>
-							<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
-						</div>
-						<div id="maincol_bottom">
-							<h2>Maincol bottom</h2>
-							<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
-						</div>
-						
-					</div>
-
-					<div id="xcol">
-
-						
-						<h1>X col</h1>
-						<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 
 					</div>
 				</div>
 
-				<div id="contentbottom">
+				<!--- To remove this or place it above the title, adjust #header grid --->
+				<div id="nav" class="cs-grid spanning">
+					<div class="inner  grid">
+						
+						<div id="menubuttons">
+							<div class="grid">
+								<div id="menubutton" class="button auto navbutton state-open">
+									<a href="#menu.openclose" data-key="ctrl+m">
+										<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+									</a>					
+								</div>
+
+								<div id="hamburger" class="button auto navbutton ">
+									<a href="#menu.openclose">
+										<i class="icon-menu"></i>
+									</a>					
+								</div>
+
+								<div class="button auto navbutton ">
+									<a href="#popup.openclose" data-key="ctrl+q">
+										<i class="icon-squares"></i>
+									</a>					
+								</div>
+							</div>
+						</div>
+
+						<div id="navtext" class="cs-text">
+							Top navigation elements
+						</div>
+
+						<div class="button auto navbutton ">
+							<div id="xcolbutton" class="button auto navbutton state-open">
+								<a href="#xcol.openclose">
+									<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+								</a>					
+							</div>					
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content" class="cs-grid">
+			<div class="grid">
+			
+				<!--- To remove this (also for content_bottom) either use the show=hide functionality 
+					(this is done in the "simpler" example)	or delete it and adjust the #content grid
+				 ---> 
+
+				<div id="content_top" class="spanning">
+					<div class="inner">
+						Content top element - can remove by adjusting #content grid
+					</div>
+				</div>
+
+				<div id="content_main" class="container spanning cs-grid">
+					
+					<div class="inner grid">
+						
+						<div id="menu">
+							<div class="inner">
+
+								<div id="menuclose" class="button auto navbutton">
+									<a href="#menu.close">
+										<i class="icon-close"></i>
+									</a>					
+								</div>
+
+								<h1>Menu col</h1>
+
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+							</div>
+						</div>
+
+						<div id="content_wrap" class="cs-grid">
+							
+							<div class="grid">
+
+								<div id="maincol" class="cs-grid">
+
+									<div class="inner grid">
+
+										<div id="maincol_top">
+											<h2>Main col top XXX</h2>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<!--<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>-->
+
+
+										</div>
+										<div id="maincol_left">
+											<h2>Maincol left</h2>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+										</div>
+										<div id="maincol_right">
+											<h2>Maincol right</h2>
+											<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
+										</div>
+										<div id="maincol_bottom">
+											<h2>Maincol bottom</h2>
+											<div id="testmenu">
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div id="xcol">
+									<div class="inner">
+										<h1>X col</h1>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										
+
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						
+					</div>
+				</div>
+
+				<div id="content_bottom" class="spanning">
 					<div class="inner">
 						<h1>Content bottom element</h1>
 					</div>
 				</div>
-			</div>	
-		</div>
-
-		<div id="bottomnav">
-			Bottom navigation
-		</div>
-
-		<div id="footer">
-			<div class="inner">
-				<div id="footer_left">
-					<p>This is the footer_left</p>
-				</div>
-				<div id="footer_middle">
-					<p>This is the footer_middle</p>
-				</div>
-				<div id="footer_right">
-					<p>This is the footer_right</p>
-				</div>
+			 
 			</div>
+
+		</div>
+
+		<div id="footer" class="cs-grid">
+			
+			<div class="grid">
+
+				<!--- To remove this or place it below the footer, adjust #footer grid --->
+
+				<div id="bottomnav" class="spanning">
+					<div class="inner">
+						<p  class="cs-text">Bottom navigation</p>
+					</div>
+				</div>
+
+				<div id="footer_main" class="cs-grid spanning">
+					<div class="inner grid">
+						<div id="footer_left">
+							<div class="cs-text">This is the footer_left</div>
+						</div>
+						<div id="footer_middle">
+							<div class="cs-text">This is the footer_middle</div>
+						</div>
+						<div id="footer_right">
+							<div class="cs-text">This is the footer_right</div>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+
 		</div>
 
 	</div>
 
+</div>
 
-</body>
+<div id="popup" class="modal" title="Popup Examples">
+	poup content goes in here
+</div>
+
+<script src="/_assets/js/jquery-3.4.1.js"></script>
+<script src="/_assets/js/jquery.throttledresize.js"></script>
+<script src="/_assets/js/varClass.js"></script>
+<script src="/_assets/js/getSettings.js"></script>
+<script src="/_assets/js/removeClassByPrefix.js"></script>
+<script src="/_assets/js/jquery.animateAuto.js"></script>
+<script src="/_assets/js/jquery.autoButton.js"></script>
+<script src="/_assets/js/jquery.modal.js"></script>
+<script src="test_menu.js"></script>
+
+<script type="text/javascript">
+
+	
+	$(document).ready(function() {
+		
+		// Apply the layout class
+		hash = window.location.hash || "#" + tests[0].id;
+		hash = hash.replace("#","");
+		setTest(hash);
+		// / end apply layout class
+		
+		// generic clik stuff 
+		$(".button").autoButton();
+		$(".modal").modal({	});
+		
+		var $body = $("body");
+
+		setBodyPadding();
+
+		$(window).on("throttledresize", function() { 
+			setBodyPadding();
+		} );
+
+		// problem here is that it transitions on load if we put this
+		// into the CSS??? Need to try and work out why.
+		$(".bodyWrapper").css({"transition" : "padding var(--menu-anim-time) ease-in-out"});
+		
+		$menubutton = $("#menubutton");
+		
+		$("#menu,#xcol").on("open", function() {
+			$this = $(this);
+			const id = $this.attr("id");
+			let settings = getCssSettings($this,"menu-anim-time,height");
+			if (settings.height == "auto") {
+				$this.animateAuto("height", settings["menu-anim-time"], function() {
+					console.log("callback test")
+				});
+			}
+			else {
+				$this.css({'height':''});
+			}
+			const opts = {};
+			opts["--" + id] = "open";
+			$body.removeClass(id + "-close").addClass(id + "-open").css(opts);
+		}).on("close",function() {
+			$this = $(this);
+			const id = $this.attr("id");
+			let settings = getCssSettings($this,"menu-anim-time,height");
+			if (settings.height == "auto") {
+				$this.animate({"height":0}, settings["menu-anim-time"], function() { $this.css({"height":""}) });
+			}
+			else {
+				$this.css({'height':''});
+			}
+			const opts = {};
+			opts["--" + id] = "close";
+			$body.removeClass(id + "-open").addClass(id + "-close").css(opts);
+			$button = $("#" + id + "button");
+			$button.trigger("close");
+		});
+
+		demoMenu(tests);
+		
+	});
+
+	/**
+	 * We need individual elements of padding to do exotic things with them.
+	 *
+	 * For body padding, you can apply it to body and this will take care of it.
+	 * 
+	 * For these properties you can either use this function or specify them directly
+	 *
+	 * 
+	 * 
+	 */
+	function setBodyPadding() {
+		
+		console.log("running body padding");
+
+		// We need the "top" padding of the xcol and menu columns to make these sticky
+		// Not needed if these aren't sticky, or you can just set the vars as shown.
+
+		let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+		let xcolPad = window.getComputedStyle(document.querySelector('#xcol')).paddingTop;
+
+		document.body.style.setProperty('--menu-top-padding', menuPad);
+		document.body.style.setProperty('--xcol-top-padding', xcolPad);
+
+		// make sure we're getting property from stylesheet
+		document.body.style.setProperty('padding', "");
+
+		let $body =  document.querySelector('body');
+		let bodyTopPad = window.getComputedStyle($body).paddingTop || "0px";
+		let bodyRightPad = window.getComputedStyle($body).paddingRight || "0px";
+		let bodyBottomPad = window.getComputedStyle($body).paddingBottom || "0px";
+		let bodyLeftPad = window.getComputedStyle($body).paddingLeft || "0px";
+
+		document.body.style.setProperty('--site-top-padding', bodyTopPad);
+		document.body.style.setProperty('--site-right-padding', bodyRightPad);
+		document.body.style.setProperty('--site-bottom-padding', bodyBottomPad);
+		document.body.style.setProperty('--site-left-padding', bodyLeftPad);
+		document.body.style.setProperty('padding', "0");
+		
+	}
+
+
+</script>
+
+
+</div></body>
 </html>

@@ -1,47 +1,87 @@
-/* MUSTDO: parameterise this */
+:root {
+	--panel-bg: black;
+	--panel-text: white;
+	--border-color: black;
+}
 
 .modal {
-	--modal: true;
-	--draggable: false;
-	--dragTarget: h2;
+	--scroll: 1;
+	border:1px solid var(--border-color); 
 	display: none;
 	position: fixed;
 	top:50%;
 	left:50%;
 	transform:translate(-50%, -50%);
 	width:660px;
+	height: 400px;
+	background-color: white;
+	max-width: 100vw;
 }
 
-.modal.open {
-	display: block;
-	background-color: #fff;
-	border: 1px solid #000;
+
+.pulldown {
+	--modal:0;
+	--closebutton:;
 }
 
-.backdrop {
-	background-color: rgba(40,40,40,.6);
+.modal.pulldown {
+	transform:translate(0%, 0%);
 }
 
-.modal .inner {
+
+.modal  .wrapper {
+	overflow: hidden;
 	position: relative;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.modal  .content {
+	padding:4px;
+	flex-grow: 1;
+	overflow: clip;
 }
 
 .modal .closebutton {
-	--button-padding:4px;
-	--icon-height:1em;
-	--icon-width:1em;
-	--label-display:none;
+	padding:2px;
+	--icon-height:24px;
+	--icon-width:24px;
+	--label-display:0;
 	position: absolute;
 	top:2px;
 	right:2px;
 }
 
-.pulldown {
-	transform: translate(0);
-	--modal: false;
-	--draggable: false;
-	--position: right top;
-	--position_at: right bottom+2;
-	--position_of: #element.id_pulldown;
-	--close_icon:"";
+.modal .hasTitle .closebutton {
+
+}
+
+.modal.open {
+	display: block;
+}
+
+#backdrop {
+	display: none;
+	background-color: rgba(0,0,0,0.3);
+	position:fixed;
+	width:100vw;
+	height:100vh;
+	top:0; 
+	left:0;
+	z-index: 999;
+}
+
+.modal .title {
+	padding:4px;
+	background-color: var(--panel-bg);
+	color: var(--panel-text);
+	font-weight:bold;
+	font-size:1.2em;
+}
+
+.modal.hasTitle .closebutton {
+	color: var(--panel-text);
 }

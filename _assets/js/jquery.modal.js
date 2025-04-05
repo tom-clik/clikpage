@@ -5,110 +5,107 @@
 		var defaults = {
 			modal: true,
 			draggable: false,
-			dragTarget: "h2",
-			close_icon: "<i class='icon-close'></i>",
-			position:"",
-			position_at:"",
-			position_of:"",
-			onOpen: function() {},
-			onClose: function() {},
-			onOk: function() {},
-			onCancel: function() {}
+			dragTarget: ".title",
+			closebutton: "<i class='icon-close'></i>",
+			scroll: true, // 
+			onOpen: function($element) {},
+			onClose: function($element) {},
+			onOk: function($element) {},
+			onCancel: function($element) {}
 		}
 
-		var settingTypes = {
-			modal: "boolean",
-			close_icon: "string",
-			draggable: "boolean",
-			dragTarget: "string",
-			position:"string",
-			position_at:"string",
-			position_of:"string"
-		}
-
-		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
-		var backdrop;
 		var plugin = this;
 		var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
 		plugin.settings = {};
 
 		var $element = $(element),
-					   element = element; 
-					   
+					   element = element,
+					   $wrapper,
+					   $title,
+					   $content;
+
+		var $backdrop;
+
 		plugin.init = function() {
+			
 			plugin.settings = $.extend({}, defaults, options);
-			getCssSettings();
+			
+			plugin.settings.scroll = jQuery().mCustomScrollbar && plugin.settings.scroll;
+			
+			let cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
+			
+			$element.css(cssSettings)
+
+			$backdrop = $("#backdrop");
+
+			if ( ! $backdrop.length ) {
+				$backdrop = $("<div id='backdrop'></div>").appendTo("body");
+			}
+			
+			let html = $element.html();
+			
+			//  Optional title attribute on DIV
+			const title = $element.attr("title");
+			
+			$element.wrapInner(`<div class='wrapper'><div class='content'></div></div>`);
+			
+			$wrapper = $element.find(".wrapper");
+			$content = $element.find(".content");
+			
+			if (title) {
+				$title = $(`<div class='title'>${title}</div>`).prependTo($wrapper);
+				$element.addClass("hasTitle");
+			}
+
+			if (plugin.settings.scroll) {
+				$content.mCustomScrollbar();
+			}
+			
+			if ( plugin.settings.closebutton !== "" ) {
+				let tmp = `<div class="closebutton button auto">
+					<a href="#">${plugin.settings.closebutton}<label>Close Popup</label>
+					</a>				
+				   </div>`;
+				$(tmp).prependTo($wrapper).on("click",function() { plugin.close(); });
+			}
+			
+			
 			if (plugin.settings.draggable) {
 				$element.on("mousedown",plugin.settings.dragTarget,function() {
 					dragMouseDown();
 				});
 			}
-
-			$element.addClass("modal").wrapInner("<div class='inner'></div>");
-			var $wrapper = $element.find(".inner");
-			if (plugin.settings.close_icon != "") {
-				let id = $element.attr("id") || "";
-				var $closebutton = $(`<div id="${id}_closebutton" class="closebutton button">
-					<a href="#popup.cancel">
-					${plugin.settings.close_icon}
-					<label>Close</label>
-					</a>				
-				</div>`).appendTo($wrapper);
-				
-				$closebutton.on("click",`a`, function() {
-					$element.trigger("close");
-				});
-			}
-
 		}
 
-		$element.on("open",function(e) {
-			e.stopPropagation();
+		$element.on("open",function() {
 			plugin.open();
 		});
 
-		$element.on("close",function(e) {
-			e.stopPropagation();
+		$element.on("close",function() {
 			plugin.close();
 		});
 
-		$element.on("ok",function(e) {
-			e.stopPropagation();
+		$element.on("ok",function() {
 			plugin.ok();
 		});
 
-		$element.on("cancel",function(e) {
-			e.stopPropagation();
+		$element.on("cancel",function() {
 			plugin.cancel();
 		});
 
 		// public methods
 		plugin.open = function() {
 			
-			var cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
-			$element.css(cssSettings).addClass("open");
 
-			if (plugin.settings.position != "") {
-				// use {element.id}_pulldown for the button ID
-				plugin.settings.position_of = plugin.settings.position_of.replace("element.id", $element.attr("id"));
-				if ($(plugin.settings.position_of).length) {
-					$element.position({
-						my: plugin.settings.position,
-						at: plugin.settings.position_at,
-						of: plugin.settings.position_of
-					});
-				}
-				else {
-					console.warn(`invalid position of ${plugin.settings.position_of}`);
-				}
-			}
-			
+			let titleheight = $title !== undefined ? $title.height() : 0;
+			$content.height($wrapper.innerHeight() - titleheight);
+
+			$element.addClass("open");
 			
 			if (plugin.settings.modal) {
-				backdrop = $("<div class='backdrop'></div>").appendTo("body")
-				.css(backdropSettings)
-				.on("mousedown.modal",function(e) {
+				$backdrop.show();
+				$backdrop.on("click",function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 					plugin.close();	
@@ -125,30 +122,35 @@
 			}
 
 			// don't close if we click on the modal
-			$element.on("mousedown.modal", function(e) {
+			$element.on("click", function(e) {
 				e.stopPropagation();
 			});
 			
-			plugin.settings.onOpen();
+			plugin.settings.onOpen($element);
 		}
 
 		plugin.close = function() {
+			
 			$element.removeClass("open");
-			if (plugin.settings.modal && backdrop != undefined) {
-				backdrop.remove();
+			
+			if (plugin.settings.modal) {
+				$backdrop.hide();
+				$backdrop.off("mousedown.modal");
 			}
+			
 			$(window).off("keydown.modal");
-			plugin.settings.onClose();
+			plugin.settings.onClose($element);
 		}
 
 		plugin.ok = function() {
+			console.log("ok");
 			plugin.close();
-			plugin.settings.onOk();
+			plugin.settings.onOk($element);
 		}
 
 		plugin.cancel = function() {
 			plugin.close();
-			plugin.settings.onCancel();
+			plugin.settings.onCancel($element);
 		}
 
 		var dragMouseDown = function(e) {
@@ -171,29 +173,14 @@
 			plugin.pos3 = e.clientX;
 			plugin.pos4 = e.clientY;
 			// set the element's new position:
-			let top = element.offsetTop - plugin.pos2;
-			let left = element.offsetLeft - plugin.pos1;
-			// TODO: restrict. Need to cope with translate styling 
-			// on modal popups. Don't use translate on draggable
-			// Then we can just restrict to window
-			element.style.top = top + "px";
-			element.style.left = left + "px";
+			element.style.top = (element.offsetTop - plugin.pos2) + "px";
+			element.style.left = (element.offsetLeft - plugin.pos1) + "px";
 		}
 
 		var closeDragElement = function() {
 			/* stop moving when mouse button is released:*/
 			document.onmouseup = null;
 			document.onmousemove = null;
-		}
-
-		var getCssSettings = function() {
-			
-			for (let setting in settingTypes) {
-				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
-				
-				if (val != null) plugin.settings[setting] = val;
-			}
-
 		}
 
 		plugin.init();

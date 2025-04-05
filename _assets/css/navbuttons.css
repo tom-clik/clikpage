@@ -7,20 +7,19 @@ Both of these get styled through the browser defaults and reset.
 To get around this and preserve inheritance, all buttons need to be wrapped in
 another div with a class of .button which allows us to provide the consistency.
 
-Most styling should be applied to the .button element, but padding needs to be on the inner `<a>`.
+Styling should be applied to the .button element.
 
 To assign icons we can use icons or svgs. For icons, always use our standard icon vars, see icons.css.
 
 Either way the icon needs a class of "icon".
 
-Note that the button must always have an <a> tag or an <input> as the first child.
-
-```
+```css
 <div class="button"><a href="#"><i class="icon icon-close"></i><label>Button text</label></a></div>
 
-<div class="button"><input type="submit" value="Button text"></div>
+<div class="button"><input type="submit" value="">Button text
+Button text</div>
 
-<div class="button"><a href="#"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></a></div>
+<div class="button"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></svg></div>
 ```
 
 # Notes
@@ -28,16 +27,14 @@ Note that the button must always have an <a> tag or an <input> as the first chil
 There is no "width" for a whole button, only the icon. In common with much modern styling, widths
 should be assigned by the containing div through grid or flexbox.
 
-The buttons are always inline-blocks, so always style the surrounding div with grid or flexbox to control
- the whitespace between the them.
+The buttons are inline-blocks, so always style the surrounding div with grid or flexbox to control
+ the whitespace between them.
 
 # Usage
 
-Aside from the link-color variable, there is no general CSS stlying applied via variables.
+Styling should be applied to `.button` with hover state `.button:hover`
 
-General CSS styling should be applied to `.button` with hover state `.button:hover`
-
-The label itself can also be styles with a selector of `.button label`.
+The label itself can also be styled with a selector of `.button label`.
 
 E.g.
 
@@ -45,7 +42,6 @@ E.g.
 .scheme-button.button 
 .scheme-button.button label
 .scheme-button.button:hover label
-
 ```
 
 */
@@ -54,18 +50,18 @@ E.g.
 	--icon-width: 32px; /* size of icon */
 	--icon-height: var(--icon-width); /* size of icon */
 	--label-gap: 10px;
-	--label-display:block;/* Turn button or label off with block|none */
-	--icon-display:block;/* ---- " ---- */
-	--button-align:center; /* icon halign flex-start|center|flex-end */
-	--button-vertical-align:center; /* icon valign flex-start|center|flex-end */
-	--button-direction: row;/* row or row reverse to align left or right */
+	--label-display:1;
+	--icon-display:1;
+	--button-align:left; /* align icon left,center or right */
+	--button-valign:center; /* icon valign csnter, start, or end */
 	--link-color:inherit;
 	--label-align:left;
 	--stretch:0;/* expand text label */
-	--button-padding:4px;
+	--popout: 0;
 }
 
 .button {
+	container-name: button;
 	display: inline-block;
 	cursor: pointer;
 	position: relative;
@@ -74,23 +70,21 @@ E.g.
 	fill:var(--link-color);
 }
 
-.button a {
-	padding: var(--button-padding);
-}
-
 .button input {
 	width: 100%;
 }
 
-.button a, .button a:hover, .button input {
+.button a, .button input {
 	display:flex;
+	align-items: var(--button-valign);
+  	flex-direction: row;
+  	grid-gap:var(--label-gap);
+}
+
+.button a, .button a:hover, .button input {
 	color:inherit;
 	stroke: inherit;
 	fill:inherit;
-	justify-content: var(--button-align);
-  	align-items: var(--button-vertical-align);
-  	flex-direction: var(--button-direction);
-  	grid-gap:var(--label-gap);
 }
 
 .button svg {
@@ -99,22 +93,32 @@ E.g.
 	display:block;
 }
 
-.button *[class^="icon"] {
-	cursor: inherit;
-	display: var(--icon-display);
+.button [class*="icon"] {
+	display: block;
 	width:var(--icon-width);
 	height:var(--icon-height);
 	line-height:var(--icon-height);
 	font-size: var(--icon-height);
-	overflow: visible;/* very weird bug with "use" part of svgs */
+}
+
+@container button ( style(--icon-display:0) ) {
+	icon {
+		display: none;
+	}
+
 }
 
 .button label {
-	cursor: inherit;
-	display:  var(--label-display);
+	display: block;
 	line-height: var(--icon-height);
 	text-align: var(--label-align);
 	flex-grow: var(--stretch);
+}
+
+@container button ( style(--label-display:0) ) {
+	.button  label {
+		display:none;
+	}
 }
 
 /** See auto button functionality */
@@ -122,38 +126,65 @@ E.g.
     display: none;
 }
 
-.button.setting-popout{
-	--label-gap:0;
+@container button ( style(--button-align:right) ) {
+
+	.button a {
+		flex-direction: row-reverse;
+	}
+
 }
 
-.button.setting-popout a {
-	display: block;
-	position: relative;
+@container button ( style(--button-align: center) ) {
+
+	.button a {
+		flex-direction: column;
+	}
+
 }
 
-.button.setting-popout label {
-	visibility: hidden;
-	position: absolute;
-	width: 0;
-	overflow: hidden;
-	top:0;
-	/*	top: calc(-1 * var(--button-padding));*/
-	left:calc(var(--icon-width) + var(--button-padding));
-	transition: width 0.3s ease-in-out;
-	white-space: nowrap;
+@container button ( style(--popout:1) ) {
+
+	a {
+		display: block;
+		position: relative;
+		width: var(--icon-width);
+	}
+
+	label {
+		line-height: var(--icon-height);
+		visibility: hidden;
+		position: absolute;
+		width: 0;
+		overflow: hidden;
+		top: calc(-1 * var(--button-padding));
+		left:calc(var(--icon-width) + var(--button-padding));
+		transition: width 0.3s ease-in-out;
+		white-space: nowrap;
+	}
+
+	a:hover label {
+		visibility: visible;
+		width:200px;
+	}
+
+	@container button ( style(--button-align:right) ) {
+		
+		label {
+			left:unset;
+			right:0;
+		}
+
+		
+
+	}
+
 }
 
-.button.right.setting-popout label {
-	left:unset;
-	right:0;
+
+.button.scheme-rotate.state-open a .icon {
+	transform: rotate(90deg);
 }
 
-.button.setting-popout:hover label {
-	visibility: visible;
-	width:200px;
-}
-
-.button .accessKey {
-	display: inline-block;
-	margin:0;
+.button.scheme-flip.state-open a .icon {
+	transform: rotate(180deg);
 }

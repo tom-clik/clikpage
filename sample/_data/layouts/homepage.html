@@ -5,13 +5,19 @@
 	<meta name="description" content="A test layout to extend another">
 	<meta name="author" content="Tom peer">
 	<style>
-		
+	#content_footer {
+		grid-mode:fit;
+		grid-gap:14px;
+		@mobile {
+			grid-mode:none;
+		}
+	}	
 	</style>
 </head>
 
 <body data-extends="main">
 		
-	<div id="maincol">
+	<div id="maincol" grid="1">
 
 		<div id="maincol_top">
 
@@ -40,7 +46,7 @@
 		</div>	
 	</div>
 
-	<div id="contentfooter" class="cs-grid">
+	<div id="content_footer" class="grid">
 		<content id="welcome1" data-notes="Notes here">
 			<title>Footer item 1</title>
 			<content>

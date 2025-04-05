@@ -38,6 +38,8 @@ the correct width.
      */
     $.fn.animateAuto = function(prop, duration, callback){
         var elem, height, width;
+        // var argCallback = callback;
+
         return this.each(function(i, el){
 
             let $el = jQuery(el); 
@@ -59,30 +61,38 @@ the correct width.
             $el.css(props);
             height = $el.css("height");
             width = $el.css("width");
+
             // $elem.remove();
+            
             if(prop === "height") {
                 $el.css({"height":0});   
-                $el.animate({"height":height}, {"easing":"linear","duration":duration,"complete":function() {
-                       $el.css({"display":""});
-                       callback();
+                $el.animate({"height":height}, {"duration":duration,"complete": function () {
+                    $el.css({"height":"auto"});
+                    if (callback) {
+                        callback();
                     }
-                });
+                    else {
+                        console.log("No callback");
+                    } 
+                }});
             }
             else if(prop === "width") {
                 $el.css({"width":0}); 
-                $el.animate({"width":width}, {"easing":"linear","duration":duration,"complete":function() {
-                        $el.css({"display":""}); 
-                        callback();
-                    }
-                });  
+                $el.animate({"width":width}, {"duration":duration,"complete":function () {
+                    $el.css({"width":"auto"});
+                    if (callback) {
+                        callback;
+                    } 
+                }});  
             }
             else if(prop === "both") {
                 $el.css({"height":0,"width":0});   
-                $el.animate({"width":width,"height":height}, {"easing":"linear","duration":duration,"complete":function() {
-                        $el.css({"display":""}); 
-                        callback();
-                    }
-                });
+                $el.animate({"width":width,"height":height}, {"duration":duration,"complete":function () {
+                    $el.css({"height":"auto","width":"auto"});
+                    if (callback) {
+                        callback;
+                    } 
+                }});
             }
         });  
     }

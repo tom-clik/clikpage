@@ -5,7 +5,6 @@
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
 	<link rel="stylesheet" href="../css/title.css">
-	<link rel="stylesheet" href="../css/grids.css">
 	<link rel="stylesheet" href="../css/navbuttons.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
@@ -95,8 +94,8 @@
 		/* Scheme rollout */
 		.scheme-rollout .button {
 			color:teal;
-			--icon-width:16px;
-			--icon-height:16px;
+			--icon-width:32px;
+			--icon-height:32px;
 			padding:2px;
 		}
 		
@@ -111,15 +110,17 @@
 		}
 		
 		.setting-align-left {
-			--button-align:flex-start; 
-			--button-direction: row;	
+			--button-align:left;	
 		}
 		.setting-align-right {
-			--button-align:flex-start; 
-			--button-direction: row-reverse;		
+			--button-align:right; 		
 		}
 		.setting-align-center {
 			--button-align:	center;
+		}
+
+		.setting-popout {
+			--popout: 1;
 		}
 
 		/* container styling */
@@ -133,7 +134,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
-			width:32px;
+			width:42px;
 		}
 
 		.flex-end {
@@ -149,6 +150,8 @@
 
 </head>
 <body>
+
+
 
 <div class="panels">
 
@@ -223,7 +226,7 @@
 	<div class="">
 		<div class="cs-title"><a href="#test4">Rollout labels</a></div>
 		<div class="test scheme-rollout flex-column" id="test4">
-			<div class="button  setting-popout"><a href="#"><i class="icon icon-close"></i><label>icon-close spaces !^&!% fref</label></a></div>
+			<div class="button setting-popout"><a href="#"><i class="icon icon-close"></i><label>icon-close spaces !^&!% fref</label></a></div>
 			<div class="button setting-popout"><a href="#"><i class="icon icon-menu"></i><label>icon-menu spaces !^&!% fref</label></a></div>
 			<div class="button setting-popout"><a href="#"><i class="icon icon-previous"></i><label>icon-previous  spaces !^&!% fref</label></a></div>
 			<div class="button setting-popout"><a href="#"><i class="icon icon-next"></i><label>icon-next  spaces !^&!% fref</label></a></div>
@@ -300,17 +303,17 @@
 	</div>
 	<div>
 		<div class="cs-title"><a href="#test9">Icons, labels with grid</a></div>
-		<div class="test button-menu scheme-panel cs-grid" id="test9">
+		<div class="test button-menu scheme-panel flex" id="test9">
 			<!-- setting-align takes the class left or right and justfies the content accordingly -->
 			<div class="button setting-align-left"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
-			<div class="button setting-align-left"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
+			<div class="button setting-align-right"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
 			<div class="button setting-align-left"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
 			<div class="button setting-align-center"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
 			<div class="button setting-align-center"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
 			<div class="button setting-align-center"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
 			<div class="button setting-align-right"><a href="#"><i class="icon icon-home"></i><label>Home</label></a></div>
 			<div class="button setting-align-right"><a href="#"><i class="icon icon-search"></i><label>Search</label></a></div>
-			<div class="button setting-align-right"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
+			<div class="button setting-align-left"><a href="#"><i class="icon icon-account"></i><label>Account</label></a></div>
 		</div>
 	</div>
 </div>

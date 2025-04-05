@@ -10,7 +10,6 @@ outDir = ExpandPath("_output/");
 layoutsObj = new clikpage.layouts.layouts(inputDir);
 files = DirectoryList(inputDir,0,"name");
 
-
 for (filename in files) {
 	id = ListFirst(filename,".");
 	layout = layoutsObj.getLayout(id);

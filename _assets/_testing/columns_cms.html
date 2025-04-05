@@ -1,0 +1,238 @@
+<!---
+
+# CMS Columns demo
+
+Just trying out the new system with a simple style
+
+--->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CMS Columns demo tests</title>
+	<meta charset="UTF-8">
+	
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="../css/title.css">
+	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
+	<link rel="stylesheet" href="../css/columns.css">
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/menus.css">
+	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<link rel="stylesheet" href="../css/modal.css">
+	<link rel="stylesheet" href="../css/schemes/columns_cms.css">
+
+</head>
+
+<body><div id="bodyWrapper" class="container">
+
+<div id="ubercontainer" class="cs-grid">
+	
+	<div class="grid">
+		
+		<div id="header" class="cs-grid">
+			<div class="grid">
+				
+				<div id="title">
+					<div  id="site-title" class="cs-title">
+							Clik CMS
+					</div>
+				</div>
+
+				<!--- To remove this or place it above the title, adjust #header grid --->
+				<div id="nav" class="cs-grid">
+					<div class="inner spanning grid">
+						
+						<div id="menubuttons">
+							<div class="grid">
+								
+								<div id="hamburger" class="button auto navbutton ">
+									<a href="#menu.openclose">
+										<i class="icon-menu"></i>
+									</a>					
+								</div>
+
+							</div>
+						</div>
+
+						<div id="section-title" class="cs-title">
+							Section title
+						</div>
+
+						<div class="button auto navbutton ">
+							<div id="xcolbutton" class="button auto navbutton state-open">
+								<a href="#xcol.openclose">
+									<i class="icon-next"></i>
+								</a>					
+							</div>					
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content" class="cs-grid">
+			<div class="grid">
+			
+				<div id="content_main" class="container cs-grid">
+					
+					<div class="inner grid spanning">
+						
+						<div id="menu">
+							<div class="inner">
+
+								<div id="menuclose" class="button auto navbutton">
+									<a href="#menu.close">
+										<i class="icon-close"></i>
+									</a>					
+								</div>
+
+								<div id="mainmenu" class="cs-menu"><div class="menu"><ul><li class='hi'><a href="{{link.index}}" id="menu_index"><i class="icon-close"></i><span>Home page</span></a></li><li><a id="menu_gallery"><i class="icon-menu"></i><span>Gallery</span></a></li><li><a id="menu_gallery2"><i class="icon-previous"></i><span>Gallery 2</span></a></li><li><a href="{{link.about}}" id="menu_about"><i class="icon-next"></i><span>About</span></a></li><li><a href="{{link.news}}" id="menu_news"><i class="icon-first_page"></i><span>News</span></a></li><li><a href="{{link.images}}" id="menu_images"><i class="icon-squares"></i><span>Images</span></a></li><li><a href="{{link.singlearticle}}" id="menu_singlearticle"><i class="icon-fullscreen_exit"></i><span>Single article</span></a></li></ul></div></div>
+							</div>
+						</div>
+
+						<div id="content_wrap" class="cs-grid">
+							
+							<div class="grid">
+
+								<div id="maincol" class="cs-grid">
+
+									<div class="inner grid">
+
+										<div id="maincol_top">
+											<h2>Main col top XXX</h2>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
+											<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+
+
+										</div>
+										<div id="maincol_left">
+											<h2>Maincol left</h2>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+											<p>Any odd text. Any odd text. Any odd text.</p>
+										</div>
+										<div id="maincol_right">
+											<h2>Maincol right</h2>
+											<p>Any odd text. Any odd text. Any odd text. Any odd text. Any odd text. Any odd text.</p>
+										</div>
+										<div id="maincol_bottom">
+											<h2>Maincol bottom</h2>
+											<div id="testmenu">
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div id="xcol">
+									<div class="inner">
+										<h1>X col</h1>
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+										
+
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div id="footer" class="cs-grid">
+			
+			<div class="inner spanning">
+				<p  class="cs-text">&copy Clik.com 2024</p>
+			</div>
+				
+		</div>
+
+	</div>
+
+</div>
+
+<div id="popup" class="modal" title="Popup Examples">
+	poup content goes in here
+</div>
+
+<script src="/_assets/js/jquery-3.4.1.js"></script>
+<script src="/_assets/js/jquery.throttledresize.js"></script>
+<script src="/_assets/js/varClass.js"></script>
+<script src="/_assets/js/getSettings.js"></script>
+<script src="/_assets/js/removeClassByPrefix.js"></script>
+<script src="/_assets/js/jquery.animateAuto.js"></script>
+<script src="/_assets/js/jquery.autoButton.js"></script>
+<script src="/_assets/js/jquery.modal.js"></script>
+
+<script type="text/javascript">
+
+	
+	$(document).ready(function() {
+		
+		$body = $("body");
+		
+		// generic clik stuff 
+		$(".button").autoButton();
+		$(".modal").modal({	});
+		
+		$("#menu,#xcol").on("open", function() {
+			$this = $(this);
+			const id = $this.attr("id");
+			let settings = getCssSettings($this,"menu-anim-time,height");
+			if (settings.height == "auto") {
+				$this.animateAuto("height", settings["menu-anim-time"], function() {
+					console.log("callback test")
+				});
+			}
+			else {
+				$this.css({'height':''});
+			}
+			const opts = {};
+			opts["--" + id] = "open";
+			$body.removeClass(id + "-close").addClass(id + "-open").css(opts);
+		}).on("close",function() {
+			$this = $(this);
+			const id = $this.attr("id");
+			let settings = getCssSettings($this,"menu-anim-time,height");
+			if (settings.height == "auto") {
+				$this.animate({"height":0}, settings["menu-anim-time"], function() { $this.css({"height":""}) });
+			}
+			else {
+				$this.css({'height':''});
+			}
+			const opts = {};
+			opts["--" + id] = "close";
+			$body.removeClass(id + "-open").addClass(id + "-close").css(opts);
+			$button = $("#" + id + "button");
+			$button.trigger("close");
+		});
+
+	
+	});
+
+
+</script>
+
+
+</div></body>
+</html>

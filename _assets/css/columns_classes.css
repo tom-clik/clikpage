@@ -1,0 +1,78 @@
+/*
+
+DEPRECATED. Check work in columns.css is complete and REMOVE
+
+MUSTDO: get rid of this.
+
+NOTES: 
+*/
+
+body[class*=-fixheader] {
+	--header-fixed :1;
+}
+body[class*=-fixfooter] {
+	--footer-fixed :1;
+}
+
+body[class*=-frame] {
+	--framed:1;
+}
+
+body[class*=-frame] {
+	padding:8px 12px;
+}
+
+@media (max-width:800px) {
+
+	body[class*=-frame] {
+		padding:0;
+	}
+}
+
+/* not sure about this mechanism maybe OTT */
+body.layout-simpler #content_top, body.layout-simpler #content_bottom, body.layout-simpler #nav, body.layout-simpler #bottomnav {
+	--show:hide;
+}
+
+body[class*="layout-slide"] {
+	--site-align: left;
+	--menupos: slide;
+	--menu-width: 240px;
+}
+
+/* can easily do same for menu */
+body[class*=-sticky] #xcol {
+	--sticky:1;
+}
+
+@media (max-width:800px) {
+
+	body[class*=-sticky] #xcol {
+		--sticky:0;
+	}
+
+}
+
+@media (max-width:800px) {
+
+	body[class*="layout-slide"] {
+		--menupos: slidedown; 
+	}
+
+}
+
+body[class*="layout-fixed"] {
+	--menu-width:400px;
+	--menu: close;
+	--menupos:fixed;
+	--site-align:left;
+}
+
+@media (max-width:600px) {
+
+	body[class*="layout-fixed"] {
+		--menu-width:100vw;
+	}
+
+}
+

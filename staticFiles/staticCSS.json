@@ -5,12 +5,15 @@
                 "reset",
                 "breadcrumb",
                 "definitions",
+                "admonitions",
                 "footnotes",
+                "columns",
+                "forms",
                 "grids",
                 "icons",
                 "images",
                 "menus",
-                "panels",
+                "items",
                 "navbuttons",
                 "justifiedGallery",
                 "tables",
@@ -18,7 +21,7 @@
                 "text",
                 "title",
                 "select2",
-                "forms"
+                "modal"
             ],
             "name":"content",
             "min":"/_assets/css/_min/mainpackage.0.9.min.css"
@@ -35,8 +38,8 @@
             "requires": "reset"
         },
         {
-            "min": "/_assets/css/panels.css",
-            "name": "panels",
+            "min": "/_assets/css/items.css",
+            "name": "items",
             "requires": "reset"
         },
         {
@@ -56,8 +59,13 @@
             "name": "grids"
         },
         {
+            "min": "/_assets/css/icons.css",
+            "name": "icons"
+        },
+        {
             "min": "/_assets/css/navbuttons.css",
-            "name": "navbuttons"
+            "name": "navbuttons",
+            "requires": "icons"
         },
         {
             "min": "/_assets/css/images.css",
@@ -68,8 +76,16 @@
             "name": "definitions"
         },
         {
+            "min": "/_assets/css/admonitions.css",
+            "name": "admonitions"
+        },
+        {
             "min": "/_assets/css/select2.min.css",
             "name": "select2"
+        },
+        {
+            "min": "/_assets/css/tables.css",
+            "name": "tables"
         },
         {
             "min": "/_assets/css/forms.css",
@@ -113,7 +129,7 @@
         {
             "min": "/_assets/css/styles.css",
             "name": "styles",
-            "requires": "reset,panels,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
+            "requires": "content"
         },
         {
         	"debug": "/_assets/css/fonts/font-awesome-local.css",
@@ -155,6 +171,11 @@
           "description": "Tooltip library",
           "name": "tooltipster",
           "packageExclude": 1
+        },
+        {
+          "min":"/_assets/css/modal.css",
+          "description": "Modal",
+          "name": "modal"
         }
     ]
 }

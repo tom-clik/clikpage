@@ -2,9 +2,17 @@
 
 Load a site and call  siteCSS
 
+
+// see test_settingsObj. This no longer works.
+
 --->
 
+
+
 <cfscript>
+
+abort("needs redoing for new settings Object");
+
 layoutsFolder = expandPath("../../sample/_data/layouts");
 siteFile = expandPath("../../sample/_data/sampleSite.xml");
 

@@ -144,7 +144,7 @@ component extends="contentSection" {
 		var cshtml = linkStart;
 
 		// TO DO: check this is handle by the settings and remove
-		local.shape = StructKeyExists(arguments.content.settings.main,"shape") ? arguments.content.settings.main.shape : "left_arrow";
+		local.shape = arguments.content.shape ?  : "left_arrow";
 		
 		cshtml &= displayShape(local.shape);
 
@@ -159,10 +159,15 @@ component extends="contentSection" {
 	}
 
 	public string function getClasses(required struct content) {
+		
 		var classList = this.classes;
-		if (arguments.content.settings.main.auto) {
+		
+		local.auto = arguments.content.auto ? : false;
+		
+		if (local.auto) {
 			classList = listAppend(classList, "auto"," ");
 		}
+		
 		return classList;
 	}
 

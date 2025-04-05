@@ -18,6 +18,11 @@ component {
 			siteDef=ExpandPath("sampleSite.xml"),
 			styledef=ExpandPath("styles/sample_style.xml")
 		};
+		application.dataObj = new clikpage.data.data_text(config);
+		// also
+		this.mappings["/logs/"]=[outside your web root!];
+		application.errorTemplate=staticHTMLFile
+
 		*/
 	}
 
@@ -28,8 +33,13 @@ component {
 		// TODO: some sort of check
 		//checkConfig();
 
+		if (! IsDefined("application.config") ) throw(message="application.config not defined. See notes regarding startApp() ");
+		if (! IsDefined("application.dataObj") ) throw(message="application.dataObj not defined. See notes regarding startApp() ");
+		 
 		try {
-			application.siteObj = new clikpage.site.site(argumentcollection=application.config,debug = this.debug);
+			
+			application.siteObj = new clikpage.site.site(argumentcollection=application.config,dataObj=application.dataObj, debug = this.debug);
+			
 			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;
 			application.siteObj.pageObj.content.static_css["content"] = 1;
@@ -41,14 +51,8 @@ component {
 
 		}
 		catch (any e) {
-			throw(e);
-			local.extendedinfo = {};
-			local.existing = deserializeJSON(e.extendedinfo);
-			if (IsStruct(local.existing)) {
-				StructAppend(local.extendedinfo,local.existing);
-			}
 			
-			local.extendedinfo["tagcontext"] = e.tagcontext;
+			local.extendedinfo["error"] = e;
 
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
@@ -88,7 +92,7 @@ component {
 			application.siteObj.cacheClear();
 			application.site = application.siteObj.loadSite(application.config.siteDef);
 			/** What on earth are these doing here
-			 * TODO: put this into the site object somewhere.
+			 * MUSTDO: TODO: put this into the site object somewhere.
 			 * I get the idea that we wanted to change the pageContent
 			 * but this is the wrong place.
 			 * */
@@ -123,7 +127,7 @@ component {
 			param name="request.rc.section" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
 			param name="request.rc.action" default="index" type="regex" pattern="[A-Za-z0-9\-\_]+";
 			param name="request.rc.id" default="";
-			if (NOT (request.rc.id eq "" OR IsValid("integer",request.rc.id))) {
+			if (NOT (request.rc.id eq "" OR IsValid("regex",request.rc.id, "[A-Za-z0-9\-\_]+"))) {
 				throw(message="Invalid ID");
 			}
 		}
@@ -149,7 +153,7 @@ component {
 
 	public void function onRequestEnd(){
 		
-		try { 
+		try {
 			
 			// pending formal mechanism for partial content
 			if (Left(request.prc.pageContent.layoutname,5) eq "popup") {
@@ -181,9 +185,18 @@ component {
 	}
 
 	function onError(e,method) {
-		param name="request.isAjaxRequest" type="boolean" default="0";
+		
+		// remember to add path for logs !!! this.mappings["/logs/"]=[outside your web root!];
+		local.args = {
+			e=e,
+			debug=this.debug ? : 0,
+			isAjaxRequest=request.prc.isAjaxRequest ? : 0,
+			pageTemplate=application.errorTemplate ? : "",
+			logger= application.errorLogger ? : new cferrorHandler.textLogger( ExpandPath( "/logs/errors" ) )
+		};
+
 		try {
-			new clikpage.errors.ErrorHandler(e=e,isAjaxRequest=request.isAjaxRequest,errorsFolder=this.errorsFolder,debug=this.debug);
+			new cferrorHandler.ErrorHandler(argumentcollection=local.args);
 		}
 		catch (any n) {
 			throw(object=e);

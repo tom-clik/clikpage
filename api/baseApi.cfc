@@ -13,10 +13,10 @@ component {
 		
 		StructAppend(arguments.returnData, {"statuscode":200},false);
 		
-		cfheader( name="statuscode", value=arguments.returnData.statuscode );
+		cfheader( statuscode=arguments.returnData.statuscode );
 		
 		if (structKeyExists(arguments.returnData, "statustext" )) {
-			cfheader( name="statustext", value="#arguments.returnData.statustext#" );
+			cfheader( statustext="#arguments.returnData.statustext#" );
 		}
 
 	}

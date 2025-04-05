@@ -2,7 +2,6 @@
 // A boilerplate for jumpstarting jQuery plugins development
 // version 1.1, May 14th, 2011
 // by Stefan Gabos
-// This version modified by Tom Peer
 
 // remember to change every instance of "pluginName" to the name of your plugin!
 (function($) {
@@ -36,10 +35,10 @@
 		// plugin.settings.propertyName from inside the plugin or
 		// element.data('pluginName').settings.propertyName from outside the plugin,
 		// where "element" is the element the plugin is attached to;
-		plugin.settings = {};
+		plugin.settings = {}
 
 		var $element = $(element), // reference to the jQuery version of DOM element
-			element = element; // reference to the actual DOM element
+		element = element; // reference to the actual DOM element
 
 		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
@@ -57,11 +56,11 @@
 				console.log("width now" + width);
 			});
 		}
-		
+
 		$element.on("Foo",function() {
 			plugin.settings.onFoo();
 		});
-		
+
 		if ( $.isFunction($.fn.swipeDetector) ) {
 			$element.swipeDetector(options);
 			$element.on("swipeLeft.sd",function() {
@@ -74,17 +73,17 @@
 		$(window).on("keydown.pluginName", function( event ) {
 			switch (event.key) {
 				case "Escape":
-		  		event.preventDefault();
-		  		plugin.public_method_close();
-		  		break;
-		  		case "ArrowLeft":
-		  		event.preventDefault();
-		  		plugin.public_method_left();
-		  		break;
-		  		case "ArrowRight":
-		  		event.preventDefault();
-		  		plugin.public_method_right();
-		  		break;
+				event.preventDefault();
+				plugin.public_method_close();
+				break;
+				case "ArrowLeft":
+				event.preventDefault();
+				plugin.public_method_left();
+				break;
+				case "ArrowRight":
+				event.preventDefault();
+				plugin.public_method_right();
+				break;
 		  	}	  	 	
 		});
 
@@ -100,7 +99,6 @@
 			private_method(plugin.settings.message);
 			plugin.settings.onPublic_method();
 			// code goes here
-
 		}
 
 		plugin.public_method_left = function() {
@@ -137,21 +135,21 @@
 		// iterate through the DOM elements we are attaching the plugin to
 		return this.each(function() {
 
-		  // if plugin has not already been attached to the element
-		  if (undefined == $(this).data('pluginName')) {
+			// if plugin has not already been attached to the element
+			if (undefined == $(this).data('pluginName')) {
 
-			  // create a new instance of the plugin
-			  // pass the DOM element and the user-provided options as arguments
-			  var plugin = new $.pluginName(this, options);
+				// create a new instance of the plugin
+				// pass the DOM element and the user-provided options as arguments
+				var plugin = new $.pluginName(this, options);
 
-			  // in the jQuery version of the element
-			  // store a reference to the plugin object
-			  // you can later access the plugin and its methods and properties like
-			  // element.data('pluginName').publicMethod(arg1, arg2, ... argn) or
-			  // element.data('pluginName').settings.propertyName
-			  $(this).data('pluginName', plugin);
+				// in the jQuery version of the element
+				// store a reference to the plugin object
+				// you can later access the plugin and its methods and properties like
+				// element.data('pluginName').publicMethod(arg1, arg2, ... argn) or
+				// element.data('pluginName').settings.propertyName
+				$(this).data('pluginName', plugin);
 
-		   }
+			}
 
 		});
 

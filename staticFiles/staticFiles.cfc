@@ -96,7 +96,7 @@ component {
 	}
 
 	public string function getLinks(required struct scripts, boolean debug=false) {
-
+		
 		local.packagesIncluded = {};
 		local.scriptsInPackage = {};
 		local.ret = "";
@@ -200,12 +200,11 @@ component {
 	 * @type        css|javascript
 	 * @overwrite   Allow overwrite of existing file. Recommended to leave this OFF. 
 	 *              You should always bump the version
-	 * @mappings    Struct of mappings to expand for file paths
 	 * @return      Array of results (result.name, result.saved [won't save if 
 	 *              pack=false or all scripts are excluded from packages], 	
 	 *              result.filename, result.files)
 	 */
-	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=],boolean minify=true) {
+	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=]) {
 		
 		local.results = [];
 		
@@ -243,24 +242,33 @@ component {
 				}
 				if (local.out != "") {
 					
+					local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
 					
-					if (arguments.minify) {
-						local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
-						
+					try {
 						if (arguments.type == "css") {
-							local.out = minifiyCSS(local.out);
+							local.compressed = minifiyCSS(local.out);
 						}
 						else {
-							local.out = minifiyJS(local.out);
+							local.compressed = minifiyJS(local.out);
 						}
 					}
-					try {
-						FileWrite(local.outputFile, local.out, "utf-8");
-					}
 					catch (any e) {
-						local.extendedinfo = {"tagcontext"=e.tagcontext};
+						local.extendedinfo = e.keyExists("extendedinfo") ? deserializeJSON(e.extendedinfo) : {};
+						StructAppend(local.extendedinfo, {"tagcontext"=e.tagcontext}, false);
+						
 						throw(
 							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Unable to minify file #local.outputFile#:" & e.message, 
+							detail       = e.detail,
+							errorcode    = "compressPackage.2"		
+						);
+					}
+
+					try {
+						FileWrite(local.outputFile, local.compressed, "utf-8");
+					}
+					catch (any e) {
+						throw(
 							message      = "Unable to save file #local.outputFile#:" & e.message, 
 							detail       = e.detail,
 							errorcode    = "compressPackage.1"		
@@ -292,7 +300,7 @@ component {
 	public string function removeJsComments(required string js) {
 		return variables.consolepattern.matcher(arguments.js).replaceAll("");
 	}
-	
+
 	private string function callCompressAPI(required string input, required string apiendpoint) {
 		local.httpService = new http(method = "POST", charset = "utf-8", url = arguments.apiendpoint,multipart="false");
 		local.httpService.addParam(type = "formfield",name="input", value = arguments.input);
@@ -306,14 +314,36 @@ component {
 		}
 
 		if ((! (StructKeyExists(local.result,"text") && local.result.text)) OR !StructKeyExists(local.result,"filecontent") OR NOT local.result.status_code eq 200)  {
-			local.extendedinfo = {data:arguments.input};
-			StructAppend(local.result,{"errordetail":"Unknown error"},false);
-			throw(
-					message="Compression API returned an error",
-					detail=local.result.errordetail,
-					extendedinfo=SerializeJSON(local.extendedinfo));
-		}
 
+			StructAppend(local.result,{"errordetail":"Unknown error"},false);
+
+			try {
+				local.result.filecontent = deserializeJSON(local.result.filecontent);
+			}
+			catch (any f) {
+				//ignore
+			}
+
+			local.extendedinfo = {"result"=local.result, "input"=arguments.input};
+
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Compression API return an error:" & local.result.errordetail, 
+				errorcode    = ""		
+			);
+		}
+		try{
+			
+		} 
+		catch (any e) {
+			
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error:" & e.message, 
+				detail       = e.detail,
+				errorcode    = ""		
+			);
+		}
 				
 
 		return local.result.filecontent;

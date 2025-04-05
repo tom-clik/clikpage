@@ -37,8 +37,11 @@ google icons. Some of the names are a bit funny though.
 	--icon-add: "add";
 	--icon-run: "run";
 }
-i[class^="icon"] {
+
+i[class*=icon] {
 	font:var(--icon-font);
+	font-weight: normal;
+	font-style: normal;
 	display: inline-block;
 	text-transform: none;
 }
