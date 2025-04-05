@@ -42,10 +42,10 @@ component extends="grid" {
 					{"name":"Carousel","description":"A horizontal scrolling panel","value":"carousel"},
 					{"name":"Justified Gallery","description":"Justify images horizontally","value":"justifiedGallery"}
 				],
-				"default":"standard","inherit":1
+				"default":"standard","setting":1
 			},
-			"popup" : {"name":"Popup","description":"Link to pop up image","type":"boolean","default":0,"inherit":1},
-			"grid-max-height": {"name":"Max image height","description":"","type":"dimension"},
+			"popup" : {"name":"Popup","description":"Link to pop up image","type":"boolean","default":0,"setting":1},
+			"grid-max-height": {"name":"Max image height","description":"","type":"dimension","setting":1},
 			"caption-position": {
 				"name":"Caption position","description":"","type":"list","options":[
 					{"name":"Top","description":"","value":"top"},
@@ -54,7 +54,7 @@ component extends="grid" {
 					{"name":"Under","description":"","value":"under"},
 					{"name":"Overlay","description":"","value":"overlay"}
 				],
-				"default":"bottom","inherit":1
+				"default":"bottom","setting":1
 			},
 			"align-frame": {
 				"name":"Image Align (horzontal)","default":"middle","description":"","type":"list","options":[
@@ -68,7 +68,7 @@ component extends="grid" {
 					{"name":"Top","description":"","value":"start"},
 					{"name":"Center","description":"","value":"center"},
 					{"name":"Bottom","description":"","value":"end"}
-				],"inherit":1
+				]
 			},
 			"object-fit": {
 				"name":"Image fit","default":"scale-down","description":"","type":"list","options":[
@@ -77,8 +77,7 @@ component extends="grid" {
 					{"name":"Stretch","description":"","value":"fill"}
 				]
 			},
-			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0,"inherit":1},
-			
+			"subcaptions" : {"name":"Subcaption","description":"Add sub caption to html. This will be deprecated in favour of a caption template system","type":"boolean","default":0},
 			"contain" : {"name":"Contain","type":"boolean","default":false,"dependson":"layout","dependvalue":"carousel"},
 			"freeScroll" : {"name":"Free Scroll","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
 			"wrapAround" : {"name":"Wrap Around","type":"boolean","default":true,"dependson":"layout","dependvalue":"carousel"},
@@ -95,78 +94,6 @@ component extends="grid" {
 		return this;
 	}
 
-	private string function css_settings(required string selector, required struct styles) {
-		
-		var data = getSelectorStruct();
-		
-		// image positions require some quite funny logic
-		// if caption is top or bottom, we need automargin on the image
-		// to fill the space if the image is top or bottom.
-		
-		local.imagegrow = 0;
-		switch(arguments.styles["caption-position"]){
-			case "top":
-			case "bottom":
-				local.imagegrow = (arguments.styles["justify-frame"] eq "center");
-				if (! local.imagegrow) {
-					if (arguments.styles["caption-position"] eq "top"){
-						data.image &= "/* caption at the top. */\n";
-						if (arguments.styles["justify-frame"] eq "end") {
-							data.image &= "\tmargin-top:auto;\n\tmargin-bottom:0;";
-						}
-					}
-					else {
-						data.image &= "/* caption at the bottom. */\n";
-						// caption at the bottom.
-						if (arguments.styles["justify-frame"] eq "start") {
-							data.image &= "\tmargin-top:0;\n\tmargin-bottom:auto;";
-						}
-					}
-				}
-				local.reverse = arguments.styles["caption-position"] eq "top" ? "-reverse" : "";
-				data.main &= "\t--frame-flex-direction:column" & (local.reverse) & ";\n";
-				data.main &= "\t--image-grow:#(local.imagegrow ? 1 : 0)#;\n";
-				
-				break;
-			
-			case "under":
-			case "above":
-				local.reverse = arguments.styles["caption-position"] eq "above" ? "-reverse" : "";
-				data.main &= "\t--frame-flex-direction:column#local.reverse#;\n";
-				data.image &= "\tmargin:0;";
-				data.main &= "\t--image-grow:0";
-				break;
-			case "overlay":
-				data.main &= "--justify-frame:start;\n";
-				data.main &= "--justify-caption:center;\n";
-				data.caption &= "position: absolute;\n";
-				data.caption &= "top:0;";
-				data.caption &= "left:0;";
-				data.caption &= "width: 100%;";
-				data.caption &= "height: 100%;";
-				data.caption &= "opacity: 0;";
-				break;
-		}
-
-		switch (arguments.styles["layout"]) {
-			case "masonry": case "carousel":
-				data.item &= "\twidth:var(--grid-width);/* added for masonry/carousel styles */\n";
-			case "justifiedGallery":
-				data.main &= "\tdisplay:block;\n";
-				break;
-			default:
-				local.gridstyles = {};
-				variables.contentObj.settingsObj.grid(arguments.styles,local.gridstyles);
-				for (local.item in local.gridstyles) {
-					data[local.item] &= local.gridstyles[local.item];
-				}
-		}
-		
-		return selectorQualifiedCSS(selector=arguments.selector, css_data=data);
-
-	}
-	
-
 	public string function html(required struct content,required struct data) {
 		
 		if (! StructKeyExists(arguments.content,"data")) {
@@ -178,7 +105,7 @@ component extends="grid" {
 			);
 		}
 
-		local.html = "";
+		local.html = "<div class='grid'>";
 
 		for (local.id in arguments.content.data) {
 			local.image = arguments.data[local.id];
@@ -187,19 +114,16 @@ component extends="grid" {
 			// 1. specify image type e.g. thumbnail
 			// 2. Popups proper target for open
 			// 3. Link types: none, gallery etc
-			local.link = "";
-			if (arguments.content.settings.main.popup) {
-				local.link = " href='" & ( arguments.content.link ? : local.image.image ) & "'";
+			if ( StructKeyExists( arguments.content, "link" )) {
+				// TODO: link for section detail page 
+				// local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
+				local.link = " href='" & Replace(arguments.content.link, "{{data.id}}",local.id,"all") & "'" ;
 			}
 			else {
-				if ( StructKeyExists( arguments.content, "link" )) {
-					local.link = " href='" & Replace(arguments.content.link, "{data.id}",local.id,"all") & "'" ;
-				}
-				else {
-					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
-				}
+				local.link = local.image.image;
+				
 			}
-
+			
 			local.html &= "<a class='frame'#local.link#>";
 			
 			local.image_src = local.image.image_thumb ? : local.image.image;
@@ -208,17 +132,19 @@ component extends="grid" {
 
 			if (local.image.title NEQ "") {
 				local.html &= "<div class='caption'>#local.image.title#";
-				if (arguments.content.settings.main.subcaptions AND local.image.description NEQ "") {
+				if (local.image.description NEQ "") {
 					local.html &= "<div class='subcaption'>#local.image.description#</div>";
 				}
 				local.html &= "</div>";
 			}
-
 			
 			local.html &= "</a>";
 
-		}		
-		if (arguments.content.settings.main.popup) {
+		}
+
+		local.html &= "</div>";
+
+		if (arguments.content.popup ? : false) {
 			local.html &= variables.contentObj.popupHTML("#arguments.content.id#_popUp");
 		}
 

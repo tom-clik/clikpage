@@ -6,101 +6,184 @@ Handles parsing of the settings files and some writing out of CSS.
 
 ## Synopsis
 
-Settings are loaded from XML defnition file.
+Styles are stored in a css-like text format. This parses them into a struct and does some processing of media scopes.
+
+### 1. Parsing
+
+The css is parsed into a nested struct. The root keys are either system defs (fonts, media, colors, vars), individual IDs, or classes. Note that while you can use @, #, and . prefixes to distinguish these in the source, they are removed in the result.
+
+
 
 */
 
-component {
+component output=false {
 
-	public settings function init(debug=false)  output=false {
+	public settings function init(debug=false) {
 
-		this.cr = chr(13) & chr(10);
+		this.cr = newLine();
 		this.utils = CreateObject("component", "utils.utils");
-		this.utilsXML = CreateObject("component", "utils.xml");	
 		this.debug = arguments.debug;
 		this.cssParser = new cssParser();	
+
+		// set of "reserved" keys in stylesheets
+		variables.systemSettings = {"media"=1,"vars"=1,"colors"=1,"fonts"=1};
+
+		this.gridDefs = [
+			"grid-mode":{"name"="Grid mode","type"="list","default"="none","setting":1,"options":[
+					{"name"="None","value"="none","description"="Don't use a grid. Use this setting to turn off a grid in smaller screen sizes."},
+					{"name"="Auto fit","value"="fit","description"="Fit as many items as possible into the grid according to the minimum column size."},
+					{"name"="Auto fill","value"="fill","description"="Fit as many items as possible into the grid according to the minimum column size but don't stretch as much."},
+					{"name"="Fixed width","value"="fixedwidth","description"="A legacy mode in which all columns have the same width"},
+					{"name"="Columns","value"="fixed","description"="A grid with a fixed number of equal columns. Set the number in 'Columns'."},
+					{"name"="Set columns","value"="columns","description"="A grid with a width definition for the columns e.g. '20% auto 30% '"},
+					{"name"="Set rows","value"="rows","description"="A grid with a height definition for the rows e.g. '20% auto 30% '"},
+					{"name"="Named positions","value"="named","description"="An advanced mode in which you specify the specific order of the content items."},
+					{"name"="Flex","value"="flex","description"="The items in the grid will be as wide/high as their content"}
+				],
+				"description":"Select the way your grid is laid out"
+			},
+			"grid-width":{"name":"Item width","type"="dimension","default"="180px","description":"Minimum width of columns for an auto grid or specific width for a fixed width grid.",
+				"dependson":"grid-mode","dependvalue":["auto","fixedwidth"]},
+			"grid-max-width":{"name":"max width","type"="dimension","default"="1fr","note"="Not sure this should be exposed","hidden":1,"description":"","hidden":1},
+			"grid-max-height":{"name":"Max item height","type"="dimension","default"="auto","description":"Maximum height of items in grid"},
+			"grid-columns":{"name"="Columns","type"="integer","default"="2","description"="Number of columns for a fixed column grid":"grid-mode","dependvalue":"fixed"},
+			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items","setting":1},
+			"grid-template-columns":{"name":"Template columns","type"="text","description":"Column sizes when using fixed columns or named template areas","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
+			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using set rows or named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
+			"grid-template-areas":{"name"="Template areas","type"="text","dependson":"grid-mode","dependvalue":"templateareas","description":"","default":""},
+			"flex-direction":{"name":"Flexible grid direction","type"="list","default"="row","options"=[
+				{"name"="Row","value"="row","description"=""},
+				{"name"="Row reverse","value"="row-reverse","description"=""},
+				{"name"="Column","value"="column","description"=""},
+				{"name"="Column reverse","value"="column-reverse","description"=""}
+				],"dependson":"grid-mode","dependvalue":"flex","description":"The direction in which a flexible grid is shown"},
+			"justify-content":{"name"="Alignment","type"="list","default"="normal","options"=[
+				{"name"="Default","value"="normal","description"=""},
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""},
+				{"name"="Space around","value"="space-around","description"=""},
+				{"name"="Space evenly","value"="space-evenly","description"=""},
+				{"name"="Space betweem","value"="space-between","description"=""}
+				],"description":"Orientation in the same axis to the grid direction. This usually means horiztonal."},
+			"align-content":{"name"="Row Alignment","type"="list","default"="normal","options"=[
+				{"name"="Default","value"="normal","description"=""},
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""},
+				{"name"="Space around","value"="space-around","description"=""},
+				{"name"="Space evenly","value"="space-evenly","description"=""},
+				{"name"="Space betweem","value"="space-between","description"=""}
+				],"description":"Alignment of multiple rows","hidden":1},
+			"align-items":{"name"="Cross align","type"="list","default"="normal","options"=[
+				{"name"="Default","value"="normal","description"=""},
+				{"name"="Start","value"="flex-start","description"=""},
+				{"name"="Center","value"="center","description"=""},
+				{"name"="End","value"="flex-end","description"=""}
+				],"description":"Orientation in the opposite axis to the grid direction. This usually means vertical."},
+			
+			"flex-stretch":{"name":"Flex stretch","dependson":"grid-mode","dependvalue":"flex","description":"Stretch out the items to fill the available space","type"="boolean","default"="0"},
+			"flex-wrap":{"name":"Flex wrap","dependson":"grid-mode","dependvalue":"flex","description":"Wrap items onto multiple lines","type"="list","default"="wrap","options"=[
+				{"name"="Wrap","value"="wrap","description"=""},
+				{"name"="No Wrap","value"="nowrap","description"=""},
+				{"name"="Wrap reverse","value"="wrap-reverse","description"=""}
+				]}
+		];
+
+		this.columnDefs = [
+			"header-fixed":{ "type"="boolean", "title"="Fixed header","default"=" 0"},
+			"footer-fixed":{ "type"="boolean", "title"="Fixed footer","default"=" 0"},
+			"menupos ":{ "type"="list", "title"="Menu position","default"="static","options"=[{"value":"static"},{"value":"fixed"},{"value":"slide"}]},
+			"menu":{ "type"="list", "title"="Show menu column","default"="open","options"=[{"value":"open"},{"value":"close"}]},
+			"xcol":{ "type"="list", "title"="Show extra column","default"="open","options"=[{"value":"open"},{"value":"close"}]}, 
+			"framed":{ "type"="boolean", "title"="Frame site","default"="0"},
+			"site-align":{ "type"="halign", "title"="Align site","default"="center"},
+			"menu-width":{ "type"="dimension", "title"="Menu column width","default"="220px"},
+			"xcol-width":{ "type"="dimension", "title"="Extra column width","default"="160px"},
+			"header-height":{ "type"="dimension", "title"="Header height","default"=" 60px"},
+			"site-width":{ "type"="dimension", "title"="Site width","default"="960px"},
+			"footer-height":{ "type"="dimension", "title"="Footer height","default"="60px"},
+			"menu-anim-time":{ "type"="time", "title"="Menu animation time","default"="0.2s"}
+			
+
+			/* adjustment vars 
+			These either need setting explicitly or programatically with something like:
+
+			let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+			document.body.style.setProperty('--menu-top-padding', menuPad);
+			*/
+
+			// --menu-top-padding: 0px; /* Should be the same as the "top" padding of the menu container when set to sticky */
+			// --xcol-top-padding:0px ;/* Should be the same as the "top" padding of the xcol container when set to sticky */
+
+			// /* Individual components of "body" padding */
+			// --site-top-padding: 0px;
+			// --site-right-padding: 0px;
+			// --site-bottom-padding: 0px;
+			// --site-left-padding: 0px;
+		];
 
 		return this;
 	}
 
 	/**
-	 * @hint Load XML style definition file
+	 * Parse a stylesheet and append to struct. Note that the settings WON'T be overridden.
 	 *
-	 * XML style definitions define colors, fonts, media queries
-	 * and vars. In the CSS files we only ever refer to variable
-	 * names defined here.
-	 *  
+	 * @filename full path to stylesheet
+	 * @styles   struct to append to (won't overwrite existing) 
 	 */
-	public struct function loadStyleSettings(required string filename) output=false  {
+	public void function loadStylesheet(required string filename, required struct styles)   {
+		
+		if ( !FileExists(arguments.filename) ) {
+	 		throw("Stylesheet #arguments.filename# not found");
+	 	}
 
-		if (!FileExists(arguments.filename)) {
-			throw("Stylesheet #arguments.filename# not found");
+	 	var newStyles = this.cssParser.parse( FileRead(arguments.filename) );
+	 	
+	 	for (key in newStyles) {
+	 		if (! variables.systemSettings.keyExists( key ) ) {
+	 			this.cssParser.addMainMedium(newStyles[key]);
+	 		}
 		}
-			
-		try {
-			
-			local.styles = {};// leave this -- see catch below
-			local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-			local.styles = this.utilsXML.xml2data(local.xmlData);
-			
-			local.defaults = {
-				"colors" :[=],
-				"fonts" :[=],
-				"media" :[=],
-				"vars" :[=],
-				"style": [=]
-			};
-			
-			StructAppend(local.styles,local.defaults,false);
-			
-			// TODO: surely this can't be right
-			for (local.default in local.defaults) {
-				if ( NOT IsStruct(local.styles[local.default]) ) {
-					local.styles[local.default] = [=];
+
+		this.utils.deepStructAppend(arguments.styles, newStyles, false);
+
+	 	for (key in arguments.styles) {
+
+	 		var recursionCheck = {};
+	 		if (! variables.systemSettings.keyExists( key ) ) {
+	 			checkInheritance(key=key,styles=arguments.styles, recursionCheck=recursionCheck);
+	 		}			
+		}
+
+	 	checkMedia(arguments.styles);
+
+	}
+
+	/**
+	 * @hint Apply "inherits" styles
+	 *
+	 * Might prove problematic with complex inheritance structures. Always recurses every time, doesn't cache results. TODO: fix this
+	 * 
+	 */
+	private void function checkInheritance(required string key,required struct styles, required struct recursionCheck) localmode=true {
+		
+		section = arguments.styles[arguments.key];
+
+		if ( section.KeyExists("main") && section.main.KeyExists("inherit") ) {
+			for (ikey in ListToArray(section.main.inherit, " ") ) {
+				tmpKey = ListFirst(ikey, ".##");
+				if (! arguments.recursionCheck.keyExists(tmpKey)) {
+					recursionCheck[arguments.key] = 1;
+					checkInheritance(key=tmpKey,styles=arguments.styles, recursionCheck=recursionCheck);
 				}
+				else {
+					throw("Circular inheritance reference to section #tmpKey#");
+				}
+				this.utils.deepStructAppend(section, arguments.styles[tmpKey], false);
 			}
-
-			// Load external files
-			if ( StructKeyExists(local.styles,"link") ) {
-				local.root = GetDirectoryFromPath(arguments.filename);
-				local.xmlData = this.utils.fnReadXML(arguments.filename,"utf-8");
-				if ( NOT isArray(local.styles.link) ) {
-					local.styles.link = [local.styles.link];
-				}
-				for (local.link in local.styles.link) {
-					if ( StructKeyExists(local.link,"href") && 
-						StructKeyExists(local.link,"rel") ) {
-						local.filepath = getCanonicalPath( local.root & local.link.href);
-						local.filedata = this.utils.fnReadFile(local.filepath,"utf-8");
-						switch (local.link.rel) {
-							case "stylesheet":
-								local.css = this.cssParser.parse(local.filedata);
-								for (local.key in local.css) {
-									this.cssParser.addMainMedium(local.css[local.key]);			
-								}
-								this.utils.deepStructAppend(local.styles.style,local.css);
-							break;
-						}
-					}
-				}
-				StructDelete( local.styles,"link" );
-			}
-
-			checkMedia( local.styles );
-			
+			section.main.delete("inherit");
 		}
-		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext,styles=local.styles};
-			throw(
-				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Unable to parse stylesheet #arguments.filename#:" & e.message, 
-				detail       = e.detail,
-				errorcode    = "settings.loadStyleSheet"		
-			);
-		}
-
-		return local.styles;
-
 	}
 
 	/**
@@ -109,18 +192,13 @@ component {
 	private void function checkMedia(required struct styles) {
 		
 		// Main medium can't be defined by user
-		structDelete(arguments.styles.media, "main"); 
-
-		// create new ordered struct with main first
-		local.tempMedia = ["main"={"title":"Main"}];
+		arguments.styles.media["main"] = ["main"={"title":"Main"}];
 		
 		for (local.medium in arguments.styles.media) {
 			// add default title
-			StructAppend(arguments.styles.media[local.medium],				{"title":local.medium},false);
-			local.tempMedia[local.medium] = arguments.styles.media[local.medium];
+			StructAppend(arguments.styles.media[local.medium],{"title":local.medium},false);
 		}
-		arguments.styles.media = local.tempMedia;
-
+		
 	}
 
 	/**
@@ -140,9 +218,10 @@ component {
 	
 			for (local.medium in arguments.styles.media) {
 				if (NOT IsStruct(local.styles)) {
+					local.extendedinfo = {"styles"=local.styles};
 					throw(
 						message      = "Styles not struct",
-						detail       = SerializeJSON(local.styles)
+						extendedinfo = SerializeJSON(local.extendedinfo)
 					);
 				}
 				if (StructKeyExists(local.styles,local.medium)) {
@@ -160,7 +239,7 @@ component {
 	 * not going to work becuase we need the contentObject
 	 * 
 	 */
-	// public string function siteCSS(required struct styles, boolean debug=this.debug)  output=false {
+	// public string function siteCSS(required struct styles, boolean debug=this.debug)  {
 		
 	// 	throw("WIP see test_styles.cfm");
 	// 	local.css &= fontVariablesCSS(arguments.styles);
@@ -178,17 +257,18 @@ component {
 	 * name
 	 * 
 	 * @containers Struct of containers with optional key for class
-	 * @settings   settings (e.g. from layouts>templatename in stylesheet)
+	 * @styles     settings (e.g. from layouts>templatename in stylesheet)
 	 * @media      struct of media settings
 	 * @selector   Settings qualififier e.g. body.templatename.
 	 * 
 	 */
 	
-	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="") {
+	public string function layoutCss(required struct containers, required struct styles, required struct media, string selector="", boolean debug=this.debug) {
 
 		var css = "";
-		
-		for ( var medium in arguments.media ) {
+		var cr = arguments.debug ? newLine() : "";
+
+		for ( medium in getMediaOrder( arguments.media ) ) {
 
 			var media = arguments.media[medium];
 			var section_css = "";
@@ -199,11 +279,13 @@ component {
 				local.styles = {};
 
 				if ( StructKeyExists(local.cs,"class") ) {
+					
 					// classes must be applied in order they appear in stylesheet
+					local.classLookup = this.utils.listToStruct(local.cs.class, " ");
 					for (local.class in arguments.styles) {
-						if ( ListFindNoCase(local.cs.class, local.class, " ") AND 
+						if ( local.classLookup.keyExists( local.class ) AND 
 						 	StructKeyExists(arguments.styles[local.class], medium) ) {
-							this.utils.deepStructAppend(local.styles, arguments.styles[local.class][medium]);
+							this.utils.deepStructAppend(local.styles, arguments.styles[local.class][medium], true);
 						}
 					}
 				}
@@ -231,38 +313,63 @@ component {
 
 			if (section_css NEQ "") {
 				if (medium NEQ "main") {
-					css &= "@media.#medium# {\n" & indent(section_css,1) & "\n}\n";
+					css &= mediaQuery( arguments.media[medium] ) & "{#cr#" & indent(section_css,1) & "#cr#}#cr#";
 				}
 				else {
-					css &= section_css;
+					css &= section_css & cr;
 				}
 			}
 		}
+
 		return css;
+
+	}
+
+
+	public function displaySetting(required string settingValue, required string type) {
+
+		switch (arguments.type) {
+			case "dimension":
+				local.val = displayDimension(arguments.settingValue);
+			break;
+			case "color":
+				local.val = displayColor(arguments.settingValue);
+			break;
+			case "boolean":
+				local.val = arguments.settingValue ? "1" : "0" ;
+			break;
+			default:
+				local.val = arguments.settingValue;
+			break;
+		}
+
+		return local.val;
 
 	}
 
 	/**
 	 * CSS for variable definitions
 	 */
-	public string function variablesCSS(required struct settings, boolean debug=this.debug)  output=false {
+	public string function variablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = CSSCommentHeader("Vars");
+		local.css = arguments.debug ? CSSCommentHeader("Vars") : "";
 
 		if (StructKeyExists(arguments.settings,"vars")) {
 			for (local.varname in arguments.settings.vars) {
 				local.var = arguments.settings.vars[local.varname];
-				if (! StructKeyExists(local.var,"value")) {
-					local.css &= "/* No value specified for var #local.varname# */\n";
+				if ( arguments.debug  && ! StructKeyExists(local.var,"value") ) {
+					local.css &= "/* No value specified for var #local.varname# */" & newLine();
 				}
 				else {
 					// A var can have a value of another var
 					local.varvalue = Left(local.var.value,2) eq "--" ? "var(#local.var.value#)" : local.var.value; 
 					local.css &= "--#local.varname#: #local.varvalue#;";
-					if (structKeyExists(local.var,"title")) {
-						local.css &= " /* #local.var.title# */";
+					if ( arguments.debug ) {
+						if ( StructKeyExists(local.var,"title") ) {
+							local.css &= " /* #local.var.title# */";
+						}
+						local.css &= newLine();
 					}
-					local.css &= "\n";
 				}	
 			}
 		}
@@ -290,23 +397,24 @@ component {
      *
      * The font faces should be defined in the static CSS.
 	 */
-	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug)  output=false {
+	public string function fontVariablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = CSSCommentHeader("Fonts");
+		local.css = arguments.debug ? CSSCommentHeader("Fonts") : "";
+		var cr = arguments.debug ? newLine() : "";
 
 		if (StructKeyExists(arguments.settings,"fonts")) {
 			for (local.fontname in arguments.settings.fonts) {
 				local.font = arguments.settings.fonts[local.fontname];
-				if (! StructKeyExists(local.font,"family")) {
-					local.css &= "/* No family specified for font #local.fontname# */\n";
+				if (arguments.debug && ! StructKeyExists(local.font,"family")) {
+					local.css &= "/* No family specified for font #local.fontname# */#cr#";
 				}
 				else {
 					local.fontfamily = Left(local.font.family,2) eq "--" ? "var(#local.font.family#)" : local.font.family; 
 					local.css &= "--#local.fontname#: #local.fontfamily#;";
-					if (structKeyExists(local.font,"title")) {
-						local.css &= " /* #local.font.title# */";
+					if (arguments.debug && StructKeyExists(local.font,"title")) {
+						local.css &= " /* #local.font.title# */#cr#";
 					}
-					local.css &= "\n";
+					local.css &= cr;
 
 				}	
 				
@@ -335,25 +443,28 @@ component {
      * 	}
 	 * 
 	 */
-	public string function colorVariablesCSS(required struct settings) {
+	public string function colorVariablesCSS(required struct styles, boolean debug=this.debug) {
 
-		local.css = CSSCommentHeader("Colors");
-
-		if (StructKeyExists(arguments.settings,"colors")) {
-			for (local.colorname in arguments.settings.colors) {
-				local.color = arguments.settings.colors[local.colorname];
-				if (! StructKeyExists(local.color,"value")) {
-					local.css &= "/* No value specified for color #local.colorname# */\n";
-				}
-				else {
+		local.css = arguments.debug ? CSSCommentHeader("Colors") : "";
+		
+		if (StructKeyExists(arguments.styles,"colors")) {
+			for (local.colorname in arguments.styles.colors) {
+				local.color = arguments.styles.colors[local.colorname];
+				
+				if ( StructKeyExists(local.color,"value") ) {
 					
 					local.colorvalue = Left(local.color.value,2) eq "--" ? "var(#local.color.value#)" : local.color.value; 
 					local.css &= "--#local.colorname#: #local.colorvalue#;";
-					if (structKeyExists(local.color,"title")) {
-						local.css &= " /* #local.color.title# */";
+					
+					if (arguments.debug ) {
+						if ( StructKeyExists(local.color,"title") ) {
+							local.css &= " /* #local.color.title# */";
+						}
+						local.css &= newLine() ;
 					}
-					local.css &= "\n";
-
+				}
+				else if ( arguments.debug ) {
+					local.css &= "/* No value specified for color #local.colorname# */" & newLine() ;
 				}	
 				
 			}
@@ -362,7 +473,47 @@ component {
 		return Indent(local.css);
 
 	}
+	/**
+	 * Concatenate an array of content section css data with media queries
+	 */
+	public string function contentCSS(required array css, required struct media) localmode=true {
+		
+		cr = newLine();
+
+		cssData = {};
+		
+		for (cs in arguments.css) {
+			
+			for (medium in cs) {
+				if (! cssData.keyExists(medium) ) cssData[medium] = "";
+				cssData[medium] &= cs[medium];
+			}
+
+		}
+
+		css_ret = "";
+
+		for ( medium in getMediaOrder( arguments.media ) ) {
+			if ( cssData.keyExists(medium) ) {
+				if (medium != "main") css_ret &= mediaQuery( arguments.media[medium] ) & "{" & cr;
+					css_ret &= cssData[medium];
+				if (medium != "main") css_ret &= "}" & cr;
+			}
+		}
+
+		return css_ret;
+
+	} 
+
+	/** TODO: this */
+	private array function getMediaOrder( required struct media ) {
+
+		return ["main","max","mid","mobile","print"];
+
+	}
+
 	
+
 	/** 
 	 * get CSS for a container
 	 * 
@@ -374,81 +525,75 @@ component {
 			required string  selector, 
 					 boolean debug=this.debug
 			) {
+
+		var tab = arguments.debug ? "	": "";
+		var cr = arguments.debug ? newLine() : "";
+
 		local.css = "";
 
 		local.mainCSS = "";
 		local.innerCSS = "";
 		local.gridcss = "";
 		
-		
-		local.mainCSS = dimensions(settings=arguments.settings);
-		
+		local.mainCSS = dimensions(settings=arguments.settings,debug=arguments.debug);
+		local.mainCSS &= grid(styles=arguments.settings,debug=arguments.debug);
 		if ( local.mainCSS neq "") {
-			local.css &= "#arguments.selector# {\n" & local.mainCSS & "}\n";
+			local.css &= "#arguments.selector# {#cr#" & local.mainCSS & "}#cr#";
 		}
-
+		
 		if (StructKeyExists(arguments.settings, "inner")) {
 			local.innerCSS &= dimensions(arguments.settings.inner);
+			if ( local.innerCSS NEQ "" ) {
+				local.css &= "#arguments.selector# > .inner {#cr#" & local.innerCSS & "}#cr#";
+			}
 		}
 		
-		local.gridSettings = {"main"="","item"=""};
-		grid(arguments.settings,local.gridSettings);
-		local.hasGrid = local.gridSettings.main != "" OR local.gridSettings.item != "";
-
-		if ( local.innerCSS NEQ "" OR local.hasGrid ) {
-			local.css &= "#arguments.selector# > .inner {\n";
-			local.css &= local.innerCSS;
-			if ( local.hasGrid ) {
-				local.css &= local.gridSettings.main;
-			};
-			local.css &= "}\n";
-			// hacky here. Should use format qualifier mechanism from grid cs type
-			if (StructCount(local.gridSettings) AND local.gridSettings.item !="") {
-				local.css &= "#arguments.selector# .inner > * {\n";
-				local.css  &= local.gridSettings.item;
-				local.css &= "}\n";
-			};			
-		}
-
 		if (StructKeyExists(arguments.settings, "open")) {
 			local.openCss = dimensions(arguments.settings.open);
 			if ( local.openCss NEQ "") {
-				local.css &= "#arguments.selector#.open {\n";
+				local.css &= "#arguments.selector#.open {#cr#";
 				local.css  &= local.openCss;
-				local.css &= "}\n";
+				local.css &= "}#cr#";
 			}
-
 		}
 		
 		return local.css;
 		
-
 	}
 
-	/** get general CSS for content */
-	public string function css(required struct settings) {
+	/** 
+	 * get general CSS for content
+	 */
+	public string function css(required struct settings, boolean debug=true) {
+		var cr = arguments.debug ? newline() : "";
+		var tab = arguments.debug ? "	" : "";
 		
-		local.css = "\t/* Font */\n";
-		local.css &= font(arguments.settings);
-		local.css &= "\t/* Dimensions */\n";
-		local.css &= dimensions(arguments.settings);
+		local.css = "";
 
-		return local.css;2
+		if (arguments.debug) local.css &= "#tab#/* Font */" & cr;
+		local.css &= font(arguments.settings,arguments.debug);
+		if (arguments.debug) local.css &= "#tab#/* Dimensions */" & cr;
+		local.css &= dimensions(arguments.settings,arguments.debug);
+
+		return local.css;
 
 	}
 
-	private string function font(required struct settings) {
+	private string function font(required struct settings,boolean debug=true) {
+
+		var cr = arguments.debug ? newline() : "";
+		var tab = arguments.debug ? "	" : "";
 
 		local.css = "";
 		for (local.property in ['font-family','color']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
-				local.css &= "\t#local.property#:var(--#arguments.settings[local.property]#);\n";
+				local.css &= "#tab##local.property#:var(--#arguments.settings[local.property]#);" & cr;
 			}
 		}
 
 		for (local.property in ['font-size','font-weight','font-style','font-variant','line-height','letter-spacing','text-decoration','text-align','text-transform','text-align-last','white-space','text-indent','word-spacing','word-wrap']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
-				local.css &= "\t#local.property#:#arguments.settings[local.property]#;\n";
+				local.css &= "#tab##local.property#:#arguments.settings[local.property]#;" & cr;
 			}
 		}
 		
@@ -456,24 +601,33 @@ component {
 
 	}
 
-	private string function dimensions(required struct settings) {
+	private string function dimensions(required struct settings, boolean debug=true) {
+
+		var cr = arguments.debug ? newline() : "";
+		var tab = arguments.debug ? "	" : "";
 
 		local.css = "";
 
 		if (StructKeyExists(arguments.settings,"show")) {
 			if (isBoolean(arguments.settings.show)) {
 				if (NOT arguments.settings.show ) {
-					local.css &= "\tdisplay:" & "none;\n";
+					local.css &= "#tab#display:" & "none;#cr#";
 				}
-				else if (NOT structKeyExists(arguments.settings, "grid")) {
-					local.css &= "\tdisplay:" & "block;\n";
+				else {
+					local.css &= "#tab#display:" & "block;#cr#";
 				}
 			}
 		}
 
+		if (StructKeyExists(arguments.settings,"sticky")) {
+			local.css &= "#tab#--sticky:" & displaySetting(arguments.settings.sticky,"boolean") & ";#cr#";
+			
+		}
+
+
 		for (local.property in ['color','link-color']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
-				local.css &= "\t--#local.property#:" & displayColor(arguments.settings[local.property]) & ";\n";
+				local.css &= "#tab#--#local.property#:" & displayColor(arguments.settings[local.property]) & ";#cr#";
 			}
 		}
 
@@ -483,12 +637,12 @@ component {
 		}
 
 		if ( structKeyExists( arguments.settings, "float") ) {
-			local.css &= "\tfloat:#arguments.settings.float#;\n";
+			local.css &= "#tab#float:#arguments.settings.float#;#cr#";
 			if ( structKeyExists( arguments.settings, "float-margin") ) {
 				local.margin = displayDimension(arguments.settings["float-margin"]);
-				local.css &= "\tmargin-bottom:#local.margin#;\n";
+				local.css &= "#tab#margin-bottom:#local.margin#;#cr#";
 				local.outside = arguments.settings.float eq "left" ? "right" : "left";
-				local.css &= "\tmargin-#local.outside#:#local.margin#;\n";
+				local.css &= "#tab#margin-#local.outside#:#local.margin#;#cr#";
 			}
 		}
 
@@ -497,7 +651,7 @@ component {
 			StructAppend(local.settings, {"style":"solid"}, false);
 			for (local.property in ['width','color','style']) {
 				if (StructKeyExists(local.settings,local.property)) {
-					local.css &= "\tborder-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";\n";
+					local.css &= "#tab#border-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";#cr#";
 				}
 			}
 		}
@@ -506,34 +660,36 @@ component {
 			local.settings = Duplicate(arguments.settings["background"]);
 			for (local.property in ['color','image','repeat','position']) {
 				if (StructKeyExists(local.settings,local.property)) {
-					local.css &= "\tbackground-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";\n";
+					local.css &= "#tab#background-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";#cr#";
 				}
 			}
 		}
 
 		for (local.property in ['padding','margin','width','min-width','max-width','height','min-height','max-height']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
-				local.css &= "\t#local.property#:" & displayProperty(local.property,arguments.settings[local.property]) & ";\n";
+				local.css &= "#tab##local.property#:" & displayProperty(local.property,arguments.settings[local.property]) & ";#cr#";
 			}
 		}
 
 		for (local.property in ['opacity','z-index','overflow','overflow-x','overflow-y','box-shadow','transform','transition']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
-				local.css &= "\t#local.property#:" & arguments.settings[local.property] & ";\n";
+				local.css &= "#tab##local.property#:" & arguments.settings[local.property] & ";#cr#";
 			}
 		}
 
 		if (StructKeyExists(arguments.settings,"align") && arguments.settings.align == "center") {
-			local.css &= "\tmargin-left:auto;\n\tmargin-right:auto;\n";
+			local.css &= "#tab#margin-left:auto;#cr##tab#margin-right:auto;#cr#";
 		}
 
 		return local.css;
 
 	}
 
-	private string function displayPosition(required struct settings) {
+	private string function displayPosition(required struct settings, boolean debug=this.debug) {
 		
-		var retVal = ["\tposition:" & arguments.settings.position & ";"];
+		var tab = arguments.debug ? "	": "";
+		var cr = arguments.debug ? newLine() : "";
+		var retVal = ["#tab#position:" & arguments.settings.position & ";"];
 
 		switch ( arguments.settings.position ) {
 			case "sticky":
@@ -572,7 +728,7 @@ component {
 			
 		}
 		
-		return retVal.toList( "\n\t" ) & "\n";
+		return retVal.toList( tab & cr  ) & cr;
 
 	}
 
@@ -625,76 +781,54 @@ component {
 	 * @hint CSS styling for a grid
 	 * 
 	 */
-	public void function grid(required struct settings, required struct out) {
+	public string function grid(required struct styles, boolean debug=true) {
 
-		var styles = arguments.settings;
 		
-		arguments.out["main"] = "";
-		arguments.out["item"] = "";
-		
-		for (local.setting in ['grid-gap','flex-direction','align-items','justify-content','flex-wrap','grid-fit','grid-width','grid-max-width','grid-template-rows']) {
-			if (StructKeyExists(styles,local.setting)) {
-				arguments.out.main &= "\t--#local.setting#:#styles[local.setting]#;\n";
+		var css = [];
+		var tab = arguments.debug ? "	": "";
+
+		for (local.style in this.gridDefs) {
+			local.def = this.gridDefs[local.style];
+			
+			if (StructKeyExists(arguments.styles,local.style)) {
+				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
 			}
 		}
-		
-		if (StructKeyExists(styles,"grid-mode")) {
-			switch (styles["grid-mode"]) {
-				case "none":
-					arguments.out.item &= "\tgrid-area:unset;\n;";
-					arguments.out.main &= "\tdisplay:block;\n";
-					break;
-				case "auto":
-					arguments.out.item &= "\tgrid-area:unset;\n;";
-					arguments.out.main &= "\tdisplay:grid;\n";
-					arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width), var(--grid-max-width)));\n";
-				break;	
-				case "fixedwidth":
-					arguments.out.item &= "\tgrid-area:unset;\n;";
-					arguments.out.main &= "\tdisplay:grid;\n";
-					arguments.out.main &= "\tgrid-template-columns: repeat(var(--grid-fit), var(--grid-width));\n";
-					break;	
-				case "fixedcols":
-					arguments.out.item &= "\tgrid-area:unset;\n;";
-					arguments.out.main &= "\tdisplay:grid;\n";
-					// specified column width e.g. 25% auto 15% - this is the most useful application of this mode
-					if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
-						local.spec = styles["grid-template-columns"];
-						// try and fix the grid bust out issue
-						local.spec = Replace(local.spec,"auto", "minmax(0,1fr)","all");
-						arguments.out.main &= "\tgrid-template-columns: " & local.spec & ";\n";
-					}
-					// specified number of columns
-					else if (StructKeyExists(styles,"grid-columns") AND isValid("integer", styles["grid-columns"])) {
-						arguments.out.main &= "\tgrid-template-columns: repeat(" & styles["grid-columns"] & ",minmax(0,1fr));\n";
-					}
-					// All columns in one row -- not a very good idea.
-					else {
-						arguments.out.main &= "\tgrid-template-columns: repeat(auto-fit, minmax(0, max-content));\n";
-					}
-					break;	
-				case "templateareas":
-					arguments.out.main &= "\tdisplay:grid;\n";
-					if (NOT StructKeyExists(styles,"grid-template-areas")) {
-						throw("Grid mode templateareas requires grid-template-areas to be set");
-					}
-					arguments.out.main &= "\tgrid-template-areas:" & styles["grid-template-areas"] & ";\n";
-					if (StructKeyExists(styles,"grid-template-columns") AND styles["grid-template-columns"] neq "") {
-						arguments.out.main &= "\tgrid-template-columns: " & styles["grid-template-columns"] & ";\n";
-					}
-					if (StructKeyExists(styles,"grid-template-rows") AND styles["grid-template-rows"] neq "") {
-						arguments.out.main &= "\tgrid-template-rows: " & styles["grid-template-rows"] & ";\n";
-					}
-					break;
-				case "flex":
-					arguments.out.main &= "\tdisplay:flex;\n";
-					break;
-			}
-		}
+
+		css.append("");
+
+		return css.toList(arguments.debug ? newLine() : "");
 
 	}
 
 	/**
+	 * @hint CSS styling for standard column layout
+	 * 
+	 */
+	public string function columns(required struct styles, boolean debug=true) {
+
+		
+		var css = [];
+		var tab = arguments.debug ? "	": "";
+
+		for (local.style in this.columnDefs) {
+			local.def = this.columnDefs[local.style];
+			
+			if (StructKeyExists(arguments.styles,local.style)) {
+				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
+			}
+		}
+
+		css.append("");
+
+		return css.toList(arguments.debug ? newLine() : "");
+
+	}
+
+
+	/**
+	 * DEPRECATED - each function should have a debug switch
+	 * 
 	 * Remove \n,\ts etc from css string 
 	 * 
 	 * @css           CSS to process
@@ -735,7 +869,7 @@ component {
 	 *
 	 * @mediaQuery    struct of information 
 	 */
-	private string function mediaQuery(required struct mediaQuery)  output=false {
+	private string function mediaQuery(required struct mediaQuery) {
 
 		local.css = "";
 		
@@ -755,7 +889,7 @@ component {
 	 * Create a struct of styles to start playing with
 	 * probably not needed in final cut 
 	 */
-	public function newStyles()  output=false {
+	public function newStyles() {
 		var styles = {
 			"main": {},
 			"mobile": {},
@@ -768,19 +902,115 @@ component {
 	 * Indent string using tabs
 	 */
 	public string function indent(required string input, numeric num=1){
-		local.indent = repeatString("\t", arguments.num);
-		local.ret = ListToArray(arguments.input,"\n",false,true);
-		return local.indent & local.ret.toList("\n" & local.indent) & "\n";
+		local.indent = repeatString("	", arguments.num);
+		local.ret = ListToArray(arguments.input,newLine(),false,false);
+		return local.indent & local.ret.toList(newLine() & local.indent) & newLine();
 	}
 
 	/**
 	 * Create a comment box for a CSS page
 	 */
 	public string function CSSCommentHeader(required string title, numeric width=66) {
-		ret = "/*" & repeatString("*", arguments.width-2) & "\n";
-		ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*\n";
-		ret &= "" & repeatString("*", arguments.width) & "/\n";
+		ret = "/*" & repeatString("*", arguments.width-2) & newLine();
+		ret &= "*  " & cJustify(arguments.title, arguments.width-4 ) & "*" & newLine();
+		ret &= "" & repeatString("*", arguments.width) & "/" & newLine();
 		return ret;
 	}
+
+	/**
+	 * @hint Ensure settings inherit through media hierarchy
+	 * 
+	 * This is one of the key functions to understand. Say for instance you have a required 
+	 * setting "orientation" for a menu. This will have a default value, but this might be 
+	 * overridden in "main". When we want to get the value for mobile, it should inherit 
+	 * from main or even mid, not the default value.
+	 *
+	 * This is easy for plain css variables as the media queries take care of this. For "settings",
+	 * we need to know the value when we write out the CSS.
+	 *
+	 * Say we have settings htop and align for an item. We may only redefine "align" in mobile, but to 
+	 * correctly write out the css, we need to also know the valye for htop.
+	 *
+	 * We could just write out every setting but this would lead to bloat. We only want to write out
+	 * settings in other media when they are redefined. 	 * 
+	 * 
+	 * @styles css styles (indivual content section styles)
+	 * @media  Media struct
+	 * @settings  "settings" defaults from Content section type. Tis is a struct of all default values for styledefs with setting=1   
+	 */
+	public struct function inheritSettings(required struct styles, required struct media, required struct settings) localmode=true {
+		
+		checkMediaInheritance(arguments.media);
+
+		fullStyles = {};
+
+		// settings required in main
+		if (! StructKeyExists( arguments.styles, "main" ) ) {
+			arguments.styles["main"] = Duplicate(arguments.settings)
+		}
+		else {
+			this.utils.deepStructAppend(arguments.styles["main"], arguments.settings, false);
+		}
+
+		// first pass - create "clean" copy of defined values
+		for (medium in arguments.media) {
+			
+			fullStyles["#medium#"] = {};
+
+			if ( arguments.styles.keyExists(medium) ) {
+				for (setting in  arguments.settings) {
+					if ( arguments.styles[medium].keyExists(setting) ) {
+						fullStyles[medium]["#setting#"] = arguments.styles[medium][setting];
+					}
+				}
+			}
+			
+		}
+
+		this.utils.deepStructAppend(fullStyles["main"], arguments.settings, false);
+
+		for (medium in arguments.media) {
+			if (medium eq "main") continue;
+			
+			mediumSettings = arguments.media[medium];
+
+			allMedia = ["main"];
+
+			if ( mediumSettings.keyExists( "inherit" ) ){
+				allMedia.append(mediumSettings.inherit, true);
+			}
+
+			for ( imedium in  allMedia ) {
+				this.utils.deepStructAppend(fullStyles[medium], fullStyles[imedium], false);
+			}
+
+		}
+		
+		return fullStyles;
+		
+	}
+
+	/**
+	 * Create an array of mediums to inherit from in each medium. The order is crucial
+	 * 
+	 * TODO: actually do this, it's hard wired...	 * 
+	 * 
+	 */
+	public void function checkMediaInheritance(required struct media) localmode=true {
+		
+		if ( arguments.media.keyExists("mobile") ) {
+			if ( ! arguments.media["mobile"].keyExists("inherit") ) {
+				arguments.media["mobile"]["inherit"] = ["mid"];
+			}
+		}
+		
+		for (medium in arguments.media) {
+			if ( arguments.media[medium].keyExists("inherit") && ! isArray(arguments.media[medium].inherit) ) {
+				arguments.media[medium].inherit = ListToArray(arguments.media[medium].inherit);
+			}
+		}
+
+	}
+
 
 }

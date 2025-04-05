@@ -16,27 +16,33 @@
         "photogrid",
         "justifiedGallery",
         "serializeData",
-        "throttledresize"
+        "throttledresize",
+        "heightFix",
+        "varClass"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.4.min.js",
+      "min": "/_assets/js/_min/clikmain.0.6.min.js",
     },
     {
       "scripts": [
-        "fuzzy",
-        "search",
+        "fuzzySearch",
         "menuScroll",
-        "menus"
+        "menus",
+        "varClass",
+        "throttledresize"
       ],
-      "min": "/_assets/js/_min/coldlightpackage.0.2.min.js",
+      "min": "/_assets/js/_min/coldlightpackage.0.6.min.js",
       "name": "coldlight"
     },
     {
+      "scripts_foobar": [
+        "clik_settings","messageHandler","settingsForm"
+      ],
       "scripts": [
         "clik_settings","messageHandler","settingsForm"
       ],
       "description": "Clik editing tools",
-      "min": "/_assets/js/_min/clikutils.0.2.min.js",
+      "min": "/_assets/js/_min/clikutils.0.3.min.js",
       "name": "clikutils"
     }
   ],
@@ -72,10 +78,15 @@
       "requires": "jquery"
     },
     {
-      "min": "/_assets/js/search.js",
-      "name": "search",
-      "description": "search symbol definitions with fuzzy logic",
+      "min": "/_assets/js/fuzzySearch.js",
+      "name": "fuzzySearch",
+      "description": "Search of symbol definitions with fuzzy logic",
       "requires": "fuzzy"
+    },
+    {
+      "min": "/_assets/js/fts_fuzzy_match.js",
+      "name": "fuzzy",
+      "description": "Fuzzy match library"
     },
     {
       "debug": "/_assets/js/select2.min.js",
@@ -210,7 +221,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,clik_settings"
+      "requires": "jquery,modal,getSettings"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -223,6 +234,12 @@
       "description": "Fix heights of containers to scale down images",
       "name": "heightFix",
       "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/varClass.js",
+      "description": "Get value of css variables and apply them as a class {varname}-{varvalue}",
+      "name": "varClass",
+      "requires": "jquery,removeClassByPrefix"
     },
     {
       "debug":"/_assets/js/tooltipster.main.js",
@@ -254,13 +271,14 @@
       "min":"/_assets/js/clik_settings_live.js",
       "debug":"/_assets/js/clik_settings.js",
       "description": "Auto generated data file of style definitions for editing",
-      "name": "clik_settings"
+      "name": "clik_settings",
+      "requires": "jquery,throttledresize"
     },
     {
+      "name":"getSettings",
       "min":"/_assets/js/getSettings.js",
       "description": "Get content item settings from css custom vars",
-      "name": "getSettings",
-      "requires": "jquery"
+      "requires": "jquery,clik_settings"
     },
     {
       "min":"/_assets/js/jquery.tabs.js",
@@ -273,7 +291,12 @@
       "description": "Settings Editing form",
       "name": "settingsForm",
       "requires": "jquery,clik_settings,messageHandler"
-    }
-    
+    },
+    {
+      "min":"/_assets/js/removeClassByPrefix.js",
+      "description": "Utility for removing classes by prefix",
+      "name": "removeClassByPrefix",
+      "requires": "jquery"
+    }    
   ]
 }

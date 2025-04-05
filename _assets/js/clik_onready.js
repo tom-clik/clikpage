@@ -12,8 +12,8 @@ clik = {
 
 		resizeMethod = jQuery().throttledresize ? 'throttledresize' : 'resize';
 
-		if(jQuery().button) {
-			$('.button.auto').button();
+		if(jQuery().autoButton) {
+			$('.button.auto').autoButton();
 		}
 
 		if(jQuery().modal) {
@@ -21,18 +21,16 @@ clik = {
 			const optionTypes = {
 				"draggable": "boolean",
 				"modal": "boolean",
-				"menuAnimationTime": "integer"
+				"modalAnimationTime": "integer",
+				"closebutton" : "string"
 			};
 			// Need to iterate to apply the callback functions
 			$('.modal,.pulldown').each(function( index ) {
 				let $modal = $(this);
 				let isModal = !$modal.hasClass('pulldown');
 
-				let options = {
-					draggable:false,
-					modal:isModal,
-					menuAnimationTime: menuAnimationTime
-				}
+				let options = {};
+
 				for (let option in optionTypes) {
 					let val = $modal.css("--" + option);
 					if (val) {
@@ -40,23 +38,26 @@ clik = {
 					}
 				}
 
-				if ($modal.hasClass('animate')) {
+				if ("modalAnimationTime" in options) {
 					options.onOpen =  function() {
 						$modal.css({"visibility": "visible"});
-						$modal.animateAuto("height", options/menuAnimationTime, function() {
+						$modal.animateAuto("height", options.modalAnimationTime, function() {
 							console.log("Animation complete");
 							$(this).css({"height":"auto"});
 						});
 					};
 					options.onClose = function() {
-						$modal.animate({"height":0}, menuAnimationTime, function() {
+						$modal.animate({"height":0}, options.modalAnimationTime, function() {
 							$modal.css({"visibility": "hidden"});
 						});
 					}
 				}
+
 				$modal.modal(options);
+
 			});
 		}
+
 		if(jQuery().heightFix) {
 			$(".cs-image").heightFix(
 				{
@@ -64,6 +65,7 @@ clik = {
 				}
 			);
 		}
+
 		if(jQuery().tabs) {
 			$(".cs-tabs").tabs({"resize":"throttledresize","fit":true,"fixedheight":false,"allowClosed":false});
 		}
@@ -93,6 +95,22 @@ clik = {
 			});
 			
 		}
+
+		if(jQuery().flickity) {
+			$('.list').each(function( index ) {
+				$list = $(this);
+				var settings = getSettings($list,"articlelist");
+				console.log(settings);
+				if (settings.carousel) {
+					$list.flickity({
+				  	  contain: settings["carousel-contain"], 
+				  	  freeScroll: settings["carousel-freeScroll"],
+				  	  wrapAround:settings["carousel-wrapAround"] 
+					});
+				}
+			});
+		}
+		
 	},
 
 	trueFalse: function(value) {

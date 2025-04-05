@@ -16,6 +16,7 @@ and then calls carousel or masonry if required.
       
       var $element = $(element), 
           element = element, 
+          $inner = $element.find(".grid"),
           id = $element.attr("id"),
           $grid,
           $carousel,
@@ -35,7 +36,7 @@ and then calls carousel or masonry if required.
       }
 
       plugin.reload = function() {
-
+        
         plugin.settings = getSettings($element, "imagegrid");
         console.log(plugin.settings);
         
@@ -57,7 +58,7 @@ and then calls carousel or masonry if required.
         if (plugin.settings.layout == "masonry") {
           console.log("Applying masonry",plugin.settings);
           $element.addClass("masonry");
-          $grid = $element.isotope({
+          $grid = $inner.isotope({
             layoutMode: 'masonry',
             itemSelector: '.frame',
             masonry: {
@@ -71,8 +72,9 @@ and then calls carousel or masonry if required.
           });
         }
         else if (plugin.settings.layout == "carousel") {
+          $element.addClass("carousel");
           console.log("Applying carousel",plugin.settings);
-          $grid = $element.flickity({
+          $grid = $inner.flickity({
               contain: plugin.settings.contain,
               freeScroll: plugin.settings.freeScroll,
               wrapAround: plugin.settings.wrapAround,
@@ -80,16 +82,18 @@ and then calls carousel or masonry if required.
               prevNextButtons: plugin.settings.prevNextButtons
             }).on( 'change.flickity', function( event, index ) {
              console.log( 'Slide changed to ' + index );
-             var cellElements = $element.flickity('getCellElements')
+             var cellElements = $inner.flickity('getCellElements')
            }).on( 'staticClick.flickity', function( event, pointer,cellElement, cellIndex ) {
              // dismiss if cell was not clicked
              if ( !cellElement ) {
                return;
              }
-             $element.flickity("select", cellIndex,true);
+             $inner.flickity("select", cellIndex,true);
            });
         
         } else if (plugin.settings.layout == "justifiedGallery") {
+          // not really working - extant bug with classes being applied to inner
+          $element.addClass("justifiedGallery");
           console.log("Applying justifiedGallery",plugin.settings);
           let jgSettings = {
             imgSelector:".image > img",
@@ -102,21 +106,25 @@ and then calls carousel or masonry if required.
             jgSettings.margins = plugin.settings["grid-gap"];
           }
           
-          $grid = $element.justifiedGallery(jgSettings);
+          $grid = $inner.justifiedGallery(jgSettings);
         
         }
         
         if ( plugin.settings.popup )  {
-          $('#' + id + '_popUp').popup({
+          let $pop = $('#' + id + '_popUp');
+          if ( $pop.length === 0 ) {
+            $pop = $("<div>", { id: id + '_popUp', class: "popup" }).appendTo($("body"));
+          }
+          $pop.popup({
             imagepath : '',
             data: clik.getImages(plugin.options.dataset),
           });
-          $popup = $('#' + id + '_popUp').data('popup');
+          $popup = $pop.data('popup');
           let count = 0;
-          $('#' + id + ' a').each(function() {
+          $element.find('a').each(function() {
             $(this).data('index', count++);
-          })
-          $('#' + id + ' > a').on('click',function(e) {
+          });
+          $element.on('click','a', function(e) {
             e.preventDefault();
             e.stopPropagation();
             $popup.goTo($(this).data('index'));

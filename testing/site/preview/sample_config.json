@@ -1,5 +1,6 @@
 {
 	"layoutsFolder":"D:/dev/_data/layouts",
 	"siteDef":"D:/dev/_data/sampleSite.xml",
-	"styledef":"D:/dev/_data/styles/sample_style.xml"
+	"styles":"D:/dev/_data/styles/sample_style.scss",
+	"dataFolder": "C:/git/libraries/clikpage/sample/_data/data"
 }

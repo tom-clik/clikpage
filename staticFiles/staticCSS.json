@@ -5,22 +5,49 @@
                 "reset",
                 "breadcrumb",
                 "definitions",
+                "admonitions",
                 "footnotes",
+                "columns",
                 "forms",
                 "grids",
                 "icons",
                 "images",
                 "menus",
-                "panels",
+                "items",
                 "navbuttons",
                 "justifiedGallery",
                 "tables",
                 "tabs",
                 "text",
-                "title"
-            ],
+                "title",
+                "modal"            ],
             "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.7.min.css"
+            "min":"/_assets/css/_min/mainpackage.0.14.min.css"
+        },
+        {
+            "scripts": [
+                "reset",
+                "breadcrumb",
+                "definitions",
+                "admonitions",
+                "footnotes",
+                "columns",
+                "grids",
+                "icons",
+                "images",
+                "menus",
+                "items",
+                "navbuttons",
+                "tables",
+                "tabs",
+                "text",
+                "title",
+                "modal",
+                "jqueryui",
+                "select2"
+            ],
+            "name":"cms",
+            "min":"/_assets/css/_min/cms.0.13.min.css"
         }
     ],
     "scripts": [
@@ -34,8 +61,8 @@
             "requires": "reset"
         },
         {
-            "min": "/_assets/css/panels.css",
-            "name": "panels",
+            "min": "/_assets/css/items.css",
+            "name": "items",
             "requires": "reset"
         },
         {
@@ -55,8 +82,13 @@
             "name": "grids"
         },
         {
+            "min": "/_assets/css/icons.css",
+            "name": "icons"
+        },
+        {
             "min": "/_assets/css/navbuttons.css",
-            "name": "navbuttons"
+            "name": "navbuttons",
+            "requires": "icons"
         },
         {
             "min": "/_assets/css/images.css",
@@ -65,6 +97,14 @@
         {
             "min": "/_assets/css/definitions.css",
             "name": "definitions"
+        },
+        {
+            "min": "/_assets/css/admonitions.css",
+            "name": "admonitions"
+        },
+        {
+            "min": "/_assets/css/tables.css",
+            "name": "tables"
         },
         {
             "min": "/_assets/css/forms.css",
@@ -109,7 +149,7 @@
         {
             "min": "/_assets/css/styles.css",
             "name": "styles",
-            "requires": "reset,panels,columns,breadcrumb,fonts,elegant_font,footnotes,menus,navbuttons,images,definitions,fontawesome"
+            "requires": "content"
         },
         {
         	"debug": "/_assets/css/fonts/font-awesome-local.css",
@@ -151,6 +191,11 @@
           "description": "Tooltip library",
           "name": "tooltipster",
           "packageExclude": 1
+        },
+        {
+          "min":"/_assets/css/modal.css",
+          "description": "Modal",
+          "name": "modal"
         }
     ]
 }

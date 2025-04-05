@@ -5,15 +5,14 @@
 		var defaults = {
 			modal: true,
 			draggable: false,
-			dragTarget: "h2",
-			closebutton: "<svg class=\"icon\"  viewBox=\"0 0 357 357\"><use xlink:href=\"/_assets/images/close47.svg#close\"></svg>",
-			onOpen: function() {},
-			onClose: function() {},
-			onOk: function() {},
-			onCancel: function() {}
+			dragTarget: ".title",
+			closebutton: "<i class='icon-close'></i>",
+			scroll: true, // 
+			onOpen: function($element) {},
+			onClose: function($element) {},
+			onOk: function($element) {},
+			onCancel: function($element) {}
 		}
-
-		var backdropSettings = {position:'fixed',width:'100vw',height:'100vh',top:0,left:0,'z-index': 999};
 
 		var plugin = this;
 		var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -21,10 +20,57 @@
 		plugin.settings = {};
 
 		var $element = $(element),
-					   element = element; 
-					   
+					   element = element,
+					   $wrapper,
+					   $title,
+					   $content;
+
+		var $backdrop;
+
 		plugin.init = function() {
+			
 			plugin.settings = $.extend({}, defaults, options);
+			
+			plugin.settings.scroll = jQuery().mCustomScrollbar && plugin.settings.scroll;
+			
+			let cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
+			
+			$element.css(cssSettings)
+
+			$backdrop = $("#backdrop");
+
+			if ( ! $backdrop.length ) {
+				$backdrop = $("<div id='backdrop'></div>").appendTo("body");
+			}
+			
+			let html = $element.html();
+			
+			//  Optional title attribute on DIV
+			const title = $element.attr("title");
+			
+			$element.wrapInner(`<div class='wrapper'><div class='content'></div></div>`);
+			
+			$wrapper = $element.find(".wrapper");
+			$content = $element.find(".content");
+			
+			if (title) {
+				$title = $(`<div class='title'>${title}</div>`).prependTo($wrapper);
+				$element.addClass("hasTitle");
+			}
+
+			if (plugin.settings.scroll) {
+				$content.mCustomScrollbar();
+			}
+			
+			if ( plugin.settings.closebutton !== "" ) {
+				let tmp = `<div class="closebutton button auto">
+					<a href="#">${plugin.settings.closebutton}<label>Close Popup</label>
+					</a>				
+				   </div>`;
+				$(tmp).prependTo($wrapper).on("click",function() { plugin.close(); });
+			}
+			
+			
 			if (plugin.settings.draggable) {
 				$element.on("mousedown",plugin.settings.dragTarget,function() {
 					dragMouseDown();
@@ -33,7 +79,6 @@
 		}
 
 		$element.on("open",function() {
-			console.log("open handler");
 			plugin.open();
 		});
 
@@ -51,12 +96,16 @@
 
 		// public methods
 		plugin.open = function() {
-			var cssSettings = {'z-index': (plugin.settings.modal ? 1000 : 998)};
-			$element.css(cssSettings).addClass("open");
+			
+
+			let titleheight = $title !== undefined ? $title.height() : 0;
+			$content.height($wrapper.innerHeight() - titleheight);
+
+			$element.addClass("open");
+			
 			if (plugin.settings.modal) {
-				backdrop = $("<div class='backdrop'></div>").appendTo("body")
-				.css(backdropSettings)
-				.on("mousedown.modal",function(e) {
+				$backdrop.show();
+				$backdrop.on("click",function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 					plugin.close();	
@@ -73,30 +122,35 @@
 			}
 
 			// don't close if we click on the modal
-			$element.on("mousedown.modal", function(e) {
+			$element.on("click", function(e) {
 				e.stopPropagation();
 			});
 			
-			plugin.settings.onOpen();
+			plugin.settings.onOpen($element);
 		}
 
 		plugin.close = function() {
+			
 			$element.removeClass("open");
+			
 			if (plugin.settings.modal) {
-				backdrop.remove();
+				$backdrop.hide();
+				$backdrop.off("mousedown.modal");
 			}
+			
 			$(window).off("keydown.modal");
-			plugin.settings.onClose();
+			plugin.settings.onClose($element);
 		}
 
 		plugin.ok = function() {
+			console.log("ok");
 			plugin.close();
-			plugin.settings.onOk();
+			plugin.settings.onOk($element);
 		}
 
 		plugin.cancel = function() {
 			plugin.close();
-			plugin.settings.onCancel();
+			plugin.settings.onCancel($element);
 		}
 
 		var dragMouseDown = function(e) {

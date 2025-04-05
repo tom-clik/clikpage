@@ -1,29 +1,55 @@
-# CSS Grids
+# Grid Layouts
 
-Clik offers five flavours of grid.
+We think of grids as having a "mode". To apply these, ensure "--mode" is set and the javascript is run to apply the mode class or else explicity set the class with e.g. `class="cs-grid mode-cols"`. Explicitly setting classes can't work for different modes in different viewports. Either get the JS running or see the CSS below to do it manually, which beats the point of using this script.
 
-## 1. Plain
+There is only one "varClass[^varclasses]": `mode`. The javascript needed is 
 
-Minimum width applied to items and the grid will fill as many as it can, balancing the rows. Ideal for photos. Usually done with an `auto-fill`, but this can be changed to `auto-fit`. Needs a minimum column width.
+[^varclasses]: See [](varclasses.md)
 
-## 2. Flexible
+```
+$(".cs-grid").varClass({name:"mode"});
+```
 
-Flexbox with either stretch=0 or 1 to allow the items to expand. The items will take as much space as they need for their content. Good choice for hoirzontal menus.
 
-## 3. Fixed Columns
 
-Specified number of columns divided equally. Usually for containers.
+### Content fit (mode-fit)
 
-You can also specify the widths (e.g. 25% auto 25%) which overrides the number setting.
+This is default and the mode you want if you don't already know. With a minimum width set for the content items, this will add as many items as possible per row and stretch any items to ensure no gap is left.
 
-### 3.5 Auto columns
+The only setting you usually need is `--grid-width` which is the minimum width. Note that for fot and fill the `--grid-max-width` rarely does what you want it to do. It only really works when left to its default value of 1fr.
 
-Fixed columns but calculated from the number of children. Only supposed to be used for menus to be put into one line. Sometimes you see this for galleries. Col number "auto". It is much better to use an auto grid to do this.
+NB The mode can be omitted as it's the default for `.cs-grid`.
 
-## 4. Fixed Width
+### Content fill (mode-fill)
 
-Each column is a set width and as many will be shown as possible. Legacy behaviour suitable for smaller thumbnails were you want to show them at the max size always. Far better now to use bigger thumbnails and allow the browser to size them down.
+Sort of like fit but will create empty cells to fill up the space if they would fit. Rarely used.
 
-## 5. Named positions
+### Fixed columns (mode-fixed)
 
-`grid-template-areas` is set with the names of the containers and then `grid-template-columns` and/or `grid-template-rows` are set to specify the widths.
+The number of columns in the grid is fixed. The columns are all equal. Set the columns with `--grid-columns`.
+
+### Set column widths (mode-columns)
+
+Explicitly set the grid template columns in `--grid-template-columns`. Useful for having one column stretch.
+
+### Set column rows (mode-rows)
+
+Explicitly set the grid template rows in `--grid-template-rows`. Useful for having one row stretch.
+
+### Named positions (mode-named)
+
+Supply template positions in  `--grid-template-areas`.
+
+### Fixed width (mode-fixedwidth)
+
+Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fill` in preference although honestly you're usually just better off with `fit`.
+
+## Other grid layouts
+
+If you want to set your own you could set `mode` to none or basically you'd just be better off not using this.
+
+## Flex Layouts (mode-flex)
+
+Flex layouts are simpler. Most stretch properties translate with an equalivant var of the same name.
+
+NB flex-grow is a var --flex-stretch (??)

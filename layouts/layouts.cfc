@@ -161,11 +161,14 @@ component name="layouts" {
 		
 	}
 
-	// Many field names aren't allowed by jsoup
-	// We have to prefix them with field- 
-	// (see xml2data in utils -- standard functionality)
-	// TODO: this should be private and there should
-	// be a single method to parse thigns
+	/**
+	 * @hint Fix Jsoup friendly field names
+	 * 
+	 * Many field names aren't allowed by jsoup. We have to prefix them with field- (see xml2data in utils -- standard functionality)
+	 *
+	 * TODO: this should be private and there should be a single method to parse thigns
+	 * 
+	 */
 	public string function replaceFieldNames(required string input) {
 		local.start = find("<body",arguments.input);
 		local.end = find("</body>",arguments.input);
@@ -339,14 +342,20 @@ component name="layouts" {
 		local.test = arguments.layoutObj.layout.select("div");
 		
 		for (local.div in local.test) {
-			if (local.div.id() != "" AND Find( "_", local.div.id()) eq 0 ) {
+			if (local.div.id() != "" ) {
 				arrayAppend(local.divs, local.div.id());
 			}
 		}
 		
 		for (local.div in local.divs) {
 			local.node = arguments.layoutObj.layout.select("###local.div#");
-			local.node.html("<div class='inner'>" & local.node.html() & "</div>");
+			local.class = "inner";
+			if ( local.node.attr("grid") neq "" ) {
+				local.class &= " grid";
+				local.node.removeAttr("grid");
+				local.node.addClass("cs-grid");					
+			}
+			local.node.html("<div class='#local.class#'>" & local.node.html() & "</div>");
 		}
 			
 	}

@@ -1,255 +1,573 @@
+/* 
+
+# Columns CSS
+
+Style a standard layout with some pre-defined options
+
+## Synopsis
+
+
+
+*/
+
 :root {
-	--sitewidth:100%;
-	/* spanning now set by these. No classes */
-	--inner-width:100%;
-	--subcolwidth:25%;
-	--xcolwidth:15%;
-	--columns-grid-gap:5px;
-	--content-grid-gap:5px;
-	--xcol-display:block;
-	--subcol-display:block;
-	--uber-grid-template-areas: "header"
-						 "topnav"	 
-						 "content" 
-						 "bottomnav"
-						 "footer";
-	--uber-grid-template-rows: min-content min-content auto min-content min-content;
-	--uber-grid-template-columns: 1fr;
-	--content-grid-template-areas: "content_top" "content" "content_bottom";
-	--content-grid-template-rows: min-content auto min-content;
-	--columns-grid-template-areas: "subcol maincol xcol";
-	--columns-grid-template-columns: var(--subcolwidth) auto var(--xcolwidth);
-	--columns-grid-template-rows: auto;
-	--footer-grid-template-areas:"footer_left footer_middle footer_right";
-	--footer-grid-template-columns: 33% auto 33%;
-	--maincol-grid-template-columns: 1fr 1fr;
-	--maincol-grid-gap: var(--columns-grid-gap);
-	--header-position: static;
-	--footer-position: static;
-	--header-display: flex;
-	--footer-display: flex;
-	--topnav-display: flex;
-	--topnav-position: static;
-	--topnav-top:0px;
-	--topnav-height:auto;
-	--bottomnav-display: flex;
-	--content_top-display: block;
-	--content_bottom-display: block;
-	--topnav-width: 100%;
-	--header-width: 100%;
-	--footer-width: 100%;
-	/* the fixed height vars need to be set when the elements
-	are fixed to enable calcs */
-	--header-fixed-height:0px;
-	--header-fixed:0;
-	--header-height:auto;
-	--footer-fixed-height:0px;
-	--footer-fixed:0;
-	--footer-height:auto;
-	--body-margin-top:0px;
-	--body-margin-bottom:0px;
-	--body-margin-left:0px;
-	--body-margin-right:0px;
-	/* ignore unless providing editing functionality */
-	--overlay-margin-top:0px;
-	--overlay-margin-bottom:0px;
-	--overlay-margin-left:0px;
-	--overlay-margin-right:0px;
+	--header-fixed: 0;
+	--footer-fixed: 0;
+	--menupos : static;/* static|fixed|slide   */
+	--menu: open; /* open | close */
+	--xcol: open; /* open | close */
+	--framed: 0;
+	--site-align:center;
+
+	/* style vars */
+	--menu-width:220px;
+	--xcol-width:160px;
+	--header-height: 60px;
+	--site-width:960px;
+	--footer-height:60px;
+	--menu-anim-time:0.2s;
+
+	/* adjustment vars 
+	These either need setting explicitly or programatically with something like:
+
+	let menuPad = window.getComputedStyle(document.querySelector('#menu')).paddingTop;
+	document.body.style.setProperty('--menu-top-padding', menuPad);
+	*/
+
+	--menu-top-padding: 0px; /* Should be the same as the "top" padding of the menu container when set to sticky */
+	--xcol-top-padding:0px ;/* Should be the same as the "top" padding of the xcol container when set to sticky */
+
+	/* Individual components of "body" padding */
+	--site-top-padding: 0px;
+	--site-right-padding: 0px;
+	--site-bottom-padding: 0px;
+	--site-left-padding: 0px;
+}
+
+body {
+	container-name:body;
+}
+
+div:not(.cs-grid):has( > .inner) {
+	container-name:hasInner;
+	--sticky: 0;
+}
+
+.container {
+	display: flex;
+}
+
+.container > * {
+	flex: 1;
 }
 
 #header {
 	grid-area:header;
-	display: var(--header-display);
-	position:var(--header-position);
-	top:calc(var(--body-margin-top) + var(--overlay-margin-top));
-	left:calc(var(--body-margin-left) + var(--overlay-margin-left));
-	width: calc(var(--header-width) - var(--header-fixed) * (var(--overlay-margin-left) + var(--overlay-margin-right)));
-	min-height:var(--header-height);
-	z-index: 200;
-}
-#subcol {
-	grid-area:subcol;
-	display:var(--subcol-display);
-}
-#maincol {
-	grid-area:maincol;
-}
-#xcol {
-	grid-area:xcol;
-	display:var(--xcol-display);
-}
-#content {
-	grid-area:content;
-	min-height: 100%;
-	width: 100%;
-}
-#content_top {
-	grid-area:content_top;
-}
-#content_bottom {
-	grid-area:content_bottom;
-}
-#footer {
-	grid-area:footer;
-	display: var(--footer-display);
-	position:var(--footer-position);
-	bottom:calc(var(--body-margin-bottom) + var(--overlay-margin-bottom));
-	left:calc(var(--body-margin-left) + var(--overlay-margin-left));
-	width: calc(var(--footer-width) - var(--footer-fixed) * (var(--overlay-margin-left) + var(--overlay-margin-right)));
-	min-height:var(--footer-height);
-	z-index: 200
+	height: var(--header-height);
 }
 
-#topnav {
-	grid-area:topnav;
-	display: var(--topnav-display);
-	width: var(--topnav-width);
-	height: var(--topnav-height);
-	position: var(--topnav-position); 
-	top: var(--topnav-top);
-}
-#bottomnav {
-	grid-area:bottomnav;
-	display: var(--bottomnav-display);
-}
-
-#content_top {display: var(--content_top-display)}
-#content_bottom {display: var(--content_bottom-display)}
-
-#header, #topnav, #bottomnav, #xcol, #content, #footer {
-	align-items: stretch;
-}
-
-#maincol_top {grid-area: maincol_top}
-#maincol_left{grid-area: maincol_left}
-#maincol_right{grid-area: maincol_right}
-#maincol_grid{grid-area: maincol_grid}
-#maincol_bottom{grid-area: maincol_bottom}
-#footer_left{grid-area: footer_left}
-#footer_right{grid-area: footer_right}
-#footer_middle{grid-area: footer_middle}
-
-/* calc(var(--body-margin-top) + var(--overlay-margin-top)); */
-body {
-	padding-top: calc(var(--header-fixed-height) + var(--body-margin-top) + var(--overlay-margin-top));
-	padding-bottom: calc(var(--footer-fixed-height) + var(--body-margin-bottom) + var(--overlay-margin-bottom));
-	padding-left:calc(var(--body-margin-left) + var(--overlay-margin-left));
-	padding-right:calc(var(--body-margin-right) + var(--overlay-margin-right));
+/* Body wrapper is required to allow padding between content and the edge of page */
+#bodyWrapper {
+	min-height:100%;
+	padding: var(--site-top-padding) var(--site-right-padding)	var(--site-bottom-padding)	var(--site-left-padding);
 }
 
 
 #ubercontainer {
+	min-height:100%;
+	--grid-mode: rows;
+	--grid-template-rows: min-content auto min-content;
+}
+
+@container body ( style(--header-fixed:1) ) {
+	#bodyWrapper  {
+		padding-top:0;
+	}
+	#header {
+		position: fixed;
+		width:100%;
+		top: var(--site-top-padding);
+		left: 0;
+		z-index: 100;
+	}
+	#ubercontainer {
+		padding-top: calc( var(--header-height) + var(--site-top-padding) );
+		--grid-mode: rows;
+		--grid-template-rows: auto min-content;
+		min-height:100%;
+	}
+}
+
+@container body ( style(--footer-fixed:1) ) {
+	#bodyWrapper  {
+		padding-bottom:0;
+	}
+
+	#footer {
+		position: fixed;
+		width:100%;
+		bottom:  var(--site-bottom-padding) ;
+		left: 0;
+		z-index: 100;
+	}
+
+	#ubercontainer {
+		padding-bottom: calc( var(--footer-height) + var(--site-bottom-padding) );
+	}
+
+	@container body ( style(--header-fixed:0) ) {
+		#ubercontainer {
+			--grid-mode: rows;
+			--grid-template-rows: min-content auto ;
+		}
+	}
+	@container body ( style(--header-fixed:1) ) {
+		#ubercontainer {
+			--grid-mode: rows;
+			--grid-template-rows:  auto ;
+		}
+	}
+
+}
+
+@container body ( style( --menupos:slide) ) {
+	#bodyWrapper {
+		padding-left: calc( var(--menu-width) + var(--site-left-padding) );
+		/* This triggers on page load !!! See JS, we add it after load */
+		/* transition : padding var(--menu-anim-time) ease-in-out;*/
+	}
+}
+
+
+.spanning > .inner {
+	margin: 0 auto;
+	max-width: var(--site-width);
+}
+
+@container body ( style( --site-align:left) ) {
+	.spanning > .inner  {
+		margin: 0 auto 0 0;
+	}
+}
+
+@container body ( style( --site-align:right) ) {
+	.spanning > .inner  {
+		margin: 0 0 0  auto;
+	}
+}
+
+@container body ( style( --framed:1) ) {
+	.spanning > .inner  {
+		width: auto;
+	}
+	#ubercontainer {
+		max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+		margin-left:auto;
+		margin-right:auto;
+	}
+	@container body ( style( --site-align:left) ) {
+		.framed {
+			margin: 0 auto 0 0;
+		}
+	}
+	@container body ( style( --site-align:right) ) {
+		.framed {
+			margin: 0 0 0 auto ;
+		}
+	}
+
+	@container body ( style( --header-fixed:1 ) ) {
+		#header {
+			width: 100%;
+			max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+			left:auto;
+			top: var(--site-top-padding);
+		}
+	}
+	
+
+	@container body ( style( --footer-fixed:1 ) ) {
+		#footer {
+			width: 100%;
+			max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
+			left:auto;
+			bottom: var(--site-bottom-padding);
+		}
+	}
+
+}
+
+
+
+#content {
+	grid-area:content;
+}
+#bottomnav {
+	grid-area:bottomnav;
+}
+#footer {
+	grid-area:footer;
+}
+#footer_left {
+	grid-area:footer_left;
+}
+#footer_middle {
+	grid-area:footer_middle;
+}
+#footer_right {
+	grid-area:footer_right;
+}
+#content_top {
+	grid-area:content_top;
+}
+#content_wrap {
+	grid-area:content_wrap;
+}
+#content_bottom {
+	grid-area:content_bottom;
+}
+#menu {
+	grid-area:menu;
+	overflow: clip;
+}
+#maincol {
+	grid-area:maincol;
+	overflow: clip;
+}
+#xcol {
+	grid-area:xcol;
+	overflow: clip;
+}
+#maincol_top {
+	grid-area:maincol_top;
+}
+#maincol_left {
+	grid-area:maincol_left;
+}
+#maincol_right {
+	grid-area:maincol_right;
+}
+#maincol_bottom {
+	grid-area:maincol_bottom;
+}
+
+/** Have thought about some sort of generic setting here:
+ * 
+ *  Would need to get the top of the element + the top padding
+ *  
+ */
+
+@container hasInner ( style( --sticky:1 ) ) {
+
+	
+	#xcol .inner {
+		position:sticky;
+		top: calc( (var(--header-fixed) * var(--header-height) ) + var(--xcol-top-padding, 4px) );
+		z-index: 90;
+	}
+
+	#menu .inner {
+		position:sticky;
+		top: calc( (var(--header-fixed) * var(--header-height) ) + var(--menu-top-padding,4px) );
+		z-index: 90;
+	}
+
+
+}
+
+.inner {
+	--grid-mode: none;
 	position: relative;
-	min-height: 100%;
-	max-width: var(--sitewidth);
-	margin-left:auto;
-	margin-right:auto;
-	display: grid;
-	grid-template-areas: var(--uber-grid-template-areas);
-	grid-template-rows: var(--uber-grid-template-rows);
-	grid-template-columns: var(--uber-grid-template-columns);
 }
 
-div.inner {
-	flex-grow: 1;
-	min-height: 100%;
-	position: relative;
+.show-hide {
+	height:0 !important;
+	visibility: hidden !important;
+	border-width: 0 !important;
+	margin:0 !important;
+	padding:0 !important;
+	overflow: hidden !important;
 }
 
-/* spanning substitute */
-#ubercontainer > div .inner {
-	max-width: var(--inner-width);
-	margin: var(--inner-margin);
-	min-height: 100%;
-	position: relative;
+
+#content_main {
+	--grid-mode: named;
+	--grid-template-areas: "menu content_wrap";
+	--grid-template-columns: var(--menu-width) auto;
+	--grid-template-rows: auto;
 }
 
-#content > .inner {
-	display: grid;
-	grid-template-areas: var(--content-grid-template-areas);
-	grid-column-gap: var(--content-grid-gap);
-	grid-template-rows: var(--content-grid-template-rows);
+#content {
+	--grid-mode: rows;
+	--grid-template-rows: min-content auto min-content;
 }
 
-#columns {
-	display: grid;
-	grid-template-areas: var(--columns-grid-template-areas);
-	grid-column-gap: var(--columns-grid-gap);
-	grid-template-columns: var(--columns-grid-template-columns);
-	grid-template-rows: var(--columns-grid-template-rows);
+#content_wrap {
+	--grid-mode: named;
+	--grid-template-areas: "maincol xcol";
+	--grid-template-columns: auto var(--xcol-width) ;
+	--grid-template-rows: auto;
+	height:100%;
 }
 
-#footer > .inner {
-	display: grid;
-	grid-template-areas: var(--footer-grid-template-areas) ;
-	grid-template-columns: var(--footer-grid-template-columns);
+
+@container body ( style( --xcol:close ) ) {
+	#xcol {
+		display:none;
+	}
+	
+	#content_wrap {
+		--grid-mode: flex;
+		--flex-direction: column;
+		height: auto;
+	}
+}
+
+
+#maincol {
+	height:100%;
 }
 
 #maincol {
-	display: grid;
-	grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_grid maincol_grid" "maincol_bottom maincol_bottom";
-	grid-template-rows: min-content min-content min-content  auto ;
-	grid-template-columns: var(--maincol-grid-template-columns);
+	--grid-mode: named;
+	--grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
+	--grid-template-rows: min-content auto min-content;
+	--grid-template-columns:  1fr 1fr ;
 }
 
-@media screen and (max-width: 800px) {
-	:root {
-		--columns-grid-template-areas: "subcol maincol" "subcol xcol";
-		--columns-grid-template-columns: var(--subcolwidth) auto;
-	}
+#footer {
+	height: var(--footer-height);
+	--grid-mode: rows;
+	--grid-template-rows: min-content auto;
 }
 
-@media screen and (max-width:630px) {
+#footer_left {
+	justify-self: start;
+}
+
+#footer_right {
+	justify-self: end;
+}
+
+#footer_middle {
+	justify-self: center;
+}
+
+
+#header {
+	--grid-mode: rows;
+	--grid-template-rows:auto  min-content ;
+}
+
+#nav {
+	--grid-mode: flex;
+	--align-items: center;
+	--grid-gap: 8px;
+}
+
+#footer_main {
+	--grid-mode: fixed;
+	--grid-columns: 3;
+}
+
+@media (max-width:800px) {
 	
-	.mobile {
-		display:block;
-	}
-	.notmobile {
-		display:none;
-	}
-
-	body[class^=col] {
-		--columns-grid-template-columns: 1fr;
+	#content_wrap {
+		--grid-mode: flex;
+		--flex-direction: column;
+		height: auto;
 	}
 
-	:root {
-		--footer-grid-template-areas: "footer_right" "footer_middle"  "footer_left";
-		--footer-grid-template-columns: 1fr;
-		--columns-grid-template-areas: "subcol" "maincol" "xcol";
-		--columns-grid-template-columns: 1fr;
+	#maincol {
+		height:auto;
+	}
+
+}
+
+@media (max-width:600px) {
+
+	body {
+		--menu: close;
+	}
+
+	#content_main {
+		--grid-mode: none;
+		min-height: auto;
+	}
+
+	#content {
+		--grid-mode: none;
+	}
+
+	#maincol {
+		height:auto;
+	}
+
+	#maincol {
+		--grid-mode: none;
+	}
+
+	#footer_main {
+		--grid-mode: flex;
+		--flex-direction: column-reverse;
+		--justify-content:start;
+	}
+
+	@container body ( style( --footer-fixed:0 ) ) {
+		#footer {
+			height: auto;
+			--grid-mode: flex;
+			--flex-direction: column;
+			--justify-content:start;
+		}
 	}
 	
 }
 
-
-/* Legacy mobile and mid stuff */
-
-.mobile {
-	display:none;
+:is(#menubutton,#xcolbutton).state-open a .icon {
+	transform: rotate(180deg);
 }
 
-.mid {
-	display:none;
-}
-
-@media screen and (max-width:800px) {
-
-	.mid {
-		display:block;
-	}
-
-	.notmid {
-		display:none;
+@media (max-width:600px) {
+	body {
+		--menupos: slidedown;
+		--menu:close;
 	}
 }
 
-@media screen and (max-width:630px) {
+
+#menubutton, #hamburger, #menuclose {
+	display: none;
+}
+
+@container body ( style( --menupos:fixed ) or style( --menupos:slide )  ) {
+	#content_main {
+		--grid-mode: none;
+	}
+	#menu {
+		--height: fixed;/* WIP trying to animate thesee */ 
+		position: fixed;
+		top: calc(var(--header-fixed) * var(--header-height) );
+		left: 0;
+		height: calc( 100vh - (var(--header-fixed) * var(--header-height)) - (var(--footer-fixed) * var(--footer-height) ) );
+		width: var(--menu-width);
+		transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
+	}
+}	
+
+@container body ( style( --menupos:fixed ) ) {
 	
-	.mobile {
-		display:block;
+	#menu {
+		left:  calc( ( -1 * var(--menu-width)) - 10px) ;
+		top: 0;
+		height: 100vh;
+		z-index: 110;
 	}
-	.notmobile {
-		display:none;
+
+	#hamburger,  #menuclose {
+		display: block;
+	}
+
+	body.menu-open #menu {
+		transform: translateX( calc( ( var(--menu-width)) + 10px) );
 	}
 
 }
+
+@container body ( style( --menupos:none ) ) { 
+	#menu {
+		display: none;
+	}
+}
+
+
+@container body ( style( --menupos:slide ) ) {
+	body.menu-close #bodyWrapper {
+		padding-left: 0;
+	}
+
+	body.menu-close #menu {
+		transform: translateX( calc( ( -1 * var(--menu-width)) - 10px) );
+	}
+
+	#content .spanning > .inner {
+		max-width: calc( var(--site-width) - var(--menu-width) );
+		transition: max-width var(--menu-anim-time) ease-in-out;
+	}
+
+	body.menu-close #content .spanning > .inner {
+		max-width:  var(--site-width) ;
+	}
+
+	@container body ( style( --footer-fixed:0 ) ) {
+		#footer .spanning  > .inner {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+		body.menu-close #footer .spanning > .inner {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+	}
+
+	@container body ( style( --header-fixed:0 ) ) {
+		#header .spanning > .inner {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+		body.menu-close #header .spanning > .inner {
+			max-width: calc( var(--site-width) - var(--menu-width) );
+			transition: max-width var(--menu-anim-time) ease-in-out;
+		}
+	}
+	
+	#menubutton {
+		display: block;
+	}
+
+}
+
+@container body ( style( --menupos:slidedown ) ) {
+	
+	#menu {
+		--height: auto;/* WIP trying to animate these */ 
+	}
+
+	#menubutton {
+		display: block;
+	}
+
+	#menubutton.state-open a .icon {
+		transform: rotate(90deg);
+	}
+
+	@container body ( style( --menu:close ) ) {
+		#menu {
+			height:0 !important;
+			padding:0 !important;
+			margin:0 !important;
+			overflow: hidden;
+		}
+	}
+	body.menu-close	#menu {
+		height:0;
+	}
+
+	@container body ( style( --menu:open ) ) {
+		#menu {
+			position: static;
+			height: auto;
+			width: auto;
+		}
+	}
+	
+	body.menu-open #menu {
+		position: static;
+		height: auto;
+		width: auto;
+		/*	transform: translateY( -100% );
+		transition: transform var(--menu-anim-time) ease-in-out; /* Smooth transition */
+	}
+
+}
+

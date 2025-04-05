@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="/_assets/css/grids.css">
+
+	<title>
+		
+	</title>
+	<style>
+
+		@property --grid-mode {
+			syntax: "none | fit | fill | fixed | fixedwidth | columns | rows | named | flex";
+			inherits: false;
+			initial-value: fit;
+		}
+		
+		@container grid ( style(--grid-mode:fit) ) {
+			.cs-grid  {
+				grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
+			}
+		}
+
+		.wrapper {
+			container-name: grid;
+		}
+
+		body {
+			container-name: body;
+			--show-header:1;
+		}
+
+		@media (max-width:800px) {
+			.wrapper {
+				--grid-mode:none;
+			}
+			body {
+				--show-header:0;
+			}
+		}
+		
+		#header {
+			padding:20px;
+			background-color: #efefef;
+		}
+
+		@container body ( style(--show-header:0) ) {
+			#header  {
+				display:none
+			}
+		}
+
+
+	</style>
+</head>
+<body>
+
+	<div id="header">
+		This is the header
+	</div>
+
+<div class="wrapper">
+<div id="grid" class="cs-grid"></div>
+</div>
+
+<script src="/_assets/js/jquery-3.4.1.js"></script>
+<script>
+$(document).ready(function() {
+
+	$("#grid").html(testGrid(8));
+
+
+	function testGrid(cols) {
+		lorem = ["Lorem","ipsum","dolor","sit","amet,","consectetur","adipisicing","elit,","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua."];
+			var html = "";
+			text = "";
+			for (let i = 1 ; i <= cols; i++) {
+				text += lorem[i] + " ";
+				html += "<g>" + text + "</g>";
+			}
+			return html;
+	}
+});
+
+</script>
+</body>
+</html>

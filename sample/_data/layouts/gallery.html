@@ -5,7 +5,7 @@
 	<meta name="description" content="A test layout to extend another">
 	<meta name="author" content="Tom peer">
 	<style>
-		#contentwrap {
+		#content_wrap {
 			grid-mode:none;
 		}
 		#xcol {
@@ -16,7 +16,7 @@
 
 <body data-extends="main">
 	
-	<div id="contentheader">
+	<div id="content_header">
 		<content id="gallery_section_title" type="title" class="scheme-title">
 			<title>Section title</title>
 			<content>
@@ -24,43 +24,37 @@
 			</content>
 		</content>
 	</div>
-
-	<div id="contentwrap">
 		
-		<div id="maincol">
+	<div id="maincol">
 
-			<div id="maincol_top">
+		<div id="maincol_top">
 
-				
-
-				<content id="imagegrid" type="imagegrid" class="scheme-overlay" >
-					<style>
-						layout:masonry;
-						popup:true;
-						grid-width:24%;
-						grid-gap:8px;
-						
-						@mid {
-							grid-width:48%;
-						}
-
-						@mobile {
-							masonry:false;
-							grid-width:100%;
-						}
-
-					</style>
-					<notes>Notes here</notes>
-					<controls>popup</controls>
-					<link>#popup.open</content>
-				</content>
-				<!--<content id="popup" type="popupimage">
+			<content id="imagegrid" type="imagegrid" class="scheme-overlay" >
+				<style>
+					layout:masonry;
+					popup:true;
+					grid-width:24%;
+					grid-gap:8px;
 					
-				</content>-->
-			</div>	
+					@mid {
+						grid-width:48%;
+					}
 
-		</div>
+					@mobile {
+						masonry:false;
+						grid-width:100%;
+					}
+
+				</style>
+				<notes>Notes here</notes>
+				<controls>popup</controls>
+				<link>#popup.open</content>
+			</content>
+			
+		</div>	
+
 	</div>
+	
 
 </body>
 </html>

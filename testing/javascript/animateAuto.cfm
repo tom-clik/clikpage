@@ -122,7 +122,7 @@ Only the vertical menu uses animate auto. A side menu is shown using CSS transit
 
 	$(document).ready(function() {
 
-		$(".button").button();
+		$(".button").autoButton();
 		
 		menuAnimationTime = 500;
 

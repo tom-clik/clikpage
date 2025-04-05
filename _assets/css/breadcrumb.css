@@ -1,3 +1,6 @@
+/**
+ * Not sure if this is really worth it. Could add the functionality to basic flexbox
+ */
 .breadcrumb {
 	display: -ms-flexbox;
     display: flex;

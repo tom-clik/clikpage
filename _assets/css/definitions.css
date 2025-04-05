@@ -1,16 +1,23 @@
+/**
+ * Use grid column to solve the problem of styling definition lists where
+ * there may or may not be multiple definintions for a single term
+ *
+ * @dl-gap  dimensionlist  [4px 8px]  Grip gap for definition lists
+ * @term-width  columnwidth [max-content] Width of first column. Apply dimension or percentage if whole list has a width
+ */
+:root {
+  --dl-gap: 4px 8px ;
+  --term-width: max-content;
+}
 dl {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-column-gap: 8px;
-}
-
-dt, dd {
-	padding:2px 0;
+  grid-template-columns: var(--term-width) 1fr;
+  gap: var(--dl-gap);
+  margin-bottom:1rem;
 }
 
 dt {
   grid-column: 1;
-  white-space: nowrap;
 }
 
 dd {

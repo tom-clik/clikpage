@@ -1,0 +1,208 @@
+/* 
+
+Static CSS for new var style grid styling of "items"
+
+htop
+: 1*|0 Place heading above image. When aligning left or right setting htop=0 puts the into the text column
+
+align
+: center*|left|right Use a separate column for the image or wrap the text to the side (center leaves 1 column)
+
+wrap
+: 1|0* float the image and wrap text around it (align must be left or right). Note to use htop=0 for this you need an additional duplicate tag for the title in the textWrap - see the sample HTML
+
+title
+: 1*|0 show title 
+
+image
+: 1*|0 show image 
+
+imagespace
+: Leave space for the image even when there is none. Useful when you have multiple items in a list and some may or may not have images.
+: Note for imagespace to work a class "noimage" has to be added to any items without images. Some tag must be left in even if there is no image. Easiest is just to leave the .imageWrap tag.
+
+*/
+
+:root {
+	--htop:1;
+	--imagespace:0;
+	--image-align:center;
+	--wrap:0;
+	--show-title:1;
+	--show-image:1;
+	--caption-display:none;
+	--image-width: 40%;
+	--item-gridgap: 10px;	
+}
+
+.item {
+	container-name:item;
+}
+
+.imageWrap img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping */
+.wraptitle {
+	display: none;
+}
+
+.item .title {
+	grid-area: title;
+}
+.item .textWrap {
+	grid-area: textWrap;
+}
+.item .imageWrap {
+	grid-area: imageWrap;
+}
+
+.textWrap > p {
+	margin-top:0;
+}
+
+.itemInner {
+	display: grid;
+	grid-template-areas: "title" "imageWrap"  "textWrap";
+	grid-gap: var(--item-gridgap);
+	grid-template-rows: auto;
+	grid-template-columns:   1fr;
+}
+
+.item figcaption {
+	display: var(--caption-display);
+}
+
+.noimage figure {
+	display: none;
+}
+
+.item:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+
+@container item ( style(--htop:0 ) ) {
+	.itemInner {
+		grid-template-areas:  "imageWrap" "title" "textWrap";
+	}
+}
+
+@container item ( style(--image-align:left ) ) {
+	.itemInner {
+		grid-template-columns:  var(--image-width) auto;
+		grid-template-areas:  "title title" "imageWrap  textWrap";
+	}
+	@container item ( style(--htop:0 ) ) {
+		.itemInner {
+			grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			grid-template-rows: min-content 1fr;
+		}
+	}
+	@container item ( style(--show-title:0 ) ) {
+		.itemInner {
+			grid-template-areas:  "imageWrap textWrap";
+		}
+	}
+}
+
+@container item ( style(--image-align:right ) ) {
+	.itemInner {
+		grid-template-columns: auto var(--image-width);
+		grid-template-areas:  "title title" "textWrap imageWrap";
+	}
+	@container item ( style(--htop:0 ) ) {
+		.itemInner {
+			grid-template-areas:  "title imageWrap" "textWrap imageWrap";
+			grid-template-rows: min-content 1fr;
+		}
+	}
+	@container item ( style(--show-title:0 ) ) {
+		.itemInner {
+			grid-template-areas:  "textWrap imageWrap";
+		}
+	}
+}
+
+@container item ( style(--show-image:0 ) ) {
+	.itemInner {
+		grid-template-areas:  "title" "textWrap";
+		grid-template-rows: min-content auto;
+		grid-template-columns:   1fr;
+	}
+	.imageWrap {
+		display: none;
+	}
+}
+
+
+/* noimage class needs to be applied to item if there is no image. This is for removing
+the space in a list of items with the same class */
+@container item ( style(--imagespace:0 ) ) {
+	/*	TODO: check these work. May need to appy to itemInner*/
+	.itemInner.noimage {
+		grid-template-areas:  "title" "textWrap";
+		grid-template-rows: min-content auto;
+		grid-template-columns:   1fr;
+	}
+
+	.itemInner.noimage .imageWrap {
+		display: none;
+	}
+
+}
+
+@container item ( style(--wrap:1 ) ) {
+	
+	.itemInner {
+		display:block;
+	}
+	
+	.imageWrap {
+		width: var(--image-width);
+	}
+
+	/*	TODO: check these work. May need to appy to itemInner*/
+	.itemInner.noimage .imageWrap {
+		display: none;
+	}
+
+	@container item ( style(--image-align:left ) ) {
+		.imageWrap {
+			float: left;
+			margin-right: var(--item-gridgap);
+			margin-bottom: var(--item-gridgap);
+		}
+	}
+
+	@container item ( style(--image-align:right ) ) {
+		.imageWrap {
+			float: right;
+			margin-left: var(--item-gridgap);
+			margin-bottom: var(--item-gridgap);
+		}
+	}
+
+	@container item ( style(--htop:0 ) ) {
+		.itemInner > .title {
+			display: none;
+		}
+		.wraptitle {
+			display: block;
+		}
+	}
+	
+}
+
+@container item ( style(--show-title:0 ) ) {
+	.title {
+		display: none;
+	}
+}

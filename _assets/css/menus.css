@@ -5,130 +5,343 @@ Create a grid or flexbox menu from a ul
 
 ## Grid menus
 
-By default menus are horizontal grids. Change this to vertical with scheme-vertical
+The following "var classes" need to be applied IN ORDER (orientation sets align defaults)
 
-scheme-flex will use a flexbox which only makes sense for horizontal menus.
+orientation,mode,borders,align,stretch,submenualign
+
+orientation
+: horizontal* | vertical 
+
+mode
+: grid|flex flex is default for horizontal
+
+borders
+: normal|boxes|dividers border mode. Using boxes or dividers, adjusts borders to allow for justa single width value to be supplied.
+
+submenualign
+: (menu-)top|bottom-left|right (default top-right) alignment of absolute position submenu. Relative to item unless prefixed with menu
+
+
+stretch
+: 0|1*   Stretch flex menu
+
+align
+: center left|center|right  Align text. Also for flex menus that don't stretch, align the whole menu. 
+
+
+### Other settings
+
+--menu-submenu-position
+: absolute* | relative  Sub menu rollover style or inline
+
+submenu-display
+: none*|block show sub menus: obvs need to be inline
+
+
 
 ## Notes
 
 The a tags are actually set to display flex themselves in order to accomodate icons. To align the lext you have to set
 the justify-content property.
 
-# usage
+# Highlights etc
+
+Use the following selector 
 
 hover   li a:hover
 hi      li.hi a
 */
 
+
 :root {
 	--link-color: #000;
+	--menu-mode: flex;/* grid|flex */
+	--menu-borders: normal; /* normal|boxes|dividers */
+	--menu-orientation: horizontal;/* horizontal | vertical */
+	--menu-submenualign: bottom-left; /* (top|bottom)-(left|right) */
+	--menu-submenu-position: absolute; /* absolute | relative */
+	--menu-submenu-show: hide; /* show|hide|hover using hover works quite well without need for JS, no animations though */ 
+	--menu-stretch: 1; /* 1|0 */
+	--menu-align:center;
 	--menu-border-color:var(--link-color);
 	--menu-background: transparent;
-	--menu-gap: 4px;/* Gap between items (only grid modes: use itempadding for flex); */
+	--menu-gap: 4px;/* Gap between items */
 	--menu-item-padding: 0 8px;
-	--menu-item-border:0;/* single value for dividers or boxes or use normal border width (can use e.g. 0 1px 0 0) */
+	--menu-item-border:0;/* item border width */
+	--menu-item-width: 140px; /* min width of menu items in grid layou */
 	--menu-icon-display: none;/* none or block */
 	--menu-label-display: block;/* text part of menu item:; none or block */
-	--icon-width:32px;/* normal menu icons */
-	--icon-height:32px;	
+	--menu-icon-width:32px;/* normal menu icons */
+	--menu-icon-height:32px;	
 	--menu-icon-valign: middle;/* WIP */
 	--menu-icon-gap: 8px;/* gap between label and icon */
+	--menu-icon-stretch: 1;/* stretch labels to fill remaining space */
+	--menu-icon-align: row; /* flex direction for icon alignment */
 	--menu-openicon-width:16px;/* "openicon" is the automatic icon applied for sub menus. Needs work */
 	--menu-openicon-height:16px;	
 	--menu-openicon-adjust: -4px;
 	--menu-text-align: center;/* alignment of text in menu items */
 	--menu-anim-time: 0.3s;
+	--menu-reverse: 0; /* reverse irection of flex menus */
+	--menu-item-justify: center; /* item aligment start|center|end. Also see menu-text-align which usually needs setting as well */
+	--menu-item-align: center; /* cross axis aligment, e.g. vertical when menu is horizontal */
+	--menu-wrap: wrap;
+	--menu-rollout: 0;
+	--sub-menu-adjust:0px;/* add to positioning of sub menus */
 }
 
-.cs-menu ul {
-	list-style: none;
-	margin:0;
-	padding-left: 0em;
-    text-indent: 0px;
-	display:grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
-	grid-gap:var(--menu-gap);
+.menu {
+	container-name: menu;
+	--menu-item-border-width: var(--menu-item-border); /* reserved for system. Used with e.g. boxes and dividers schemes */
+	/* Individual v and h settings for sub menu adjust ments */
+	--sub-menu-adjust-v: var(--sub-menu-adjust);
+	--sub-menu-adjust-h: var(--sub-menu-adjust);
 }
 
+/* apply to all...having no criteria doesn't seem to work */
+@container menu ( style(--menu-mode:flex) or style(--menu-mode:grid) ) {
+	ul, ul ul {
+		list-style: none;
+		margin:0;
+		padding-left: 0em;
+	    text-indent: 0px;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(var(--menu-item-width),1fr));
+		grid-gap:var(--menu-gap);
+		justify-content: var(--menu-item-justify);
+		align-items: var(--menu-item-align);
+		margin: 0 auto;
+	}
+}
 
-.cs-menu li {
+@container menu ( style(--menu-align:left) ) {
+	ul {
+		margin-left:0;
+		--menu-item-justify: start;
+		--menu-text-align: left;
+	}
+}
+
+@container menu ( style(--menu-align:right) ) {
+	ul {
+		margin-right:0;
+		--menu-item-justify: end;
+		--menu-text-align: right;
+	}
+}
+
+@container menu ( style(--menu-mode:flex ) ) {
+	ul {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: var(--menu-wrap);
+	}
+
+	@container menu ( style(--menu-reverse:1 ) ) {
+		ul {
+			flex-direction: row-reverse;
+		}
+	}
+}
+
+@container menu ( style(--menu-orientation:vertical ) ) {
+	
+	ul {
+		display: grid;
+		grid-template-columns: 1fr;
+		--menu-text-align: left;
+		--menu-item-justify: start;
+	}
+
+	@container menu ( style(--menu-align:right ) ) {
+		ul {
+			--menu-text-align: right;
+			--menu-item-justify: end;
+		}
+	}
+
+	@container menu ( style(--menu-align: center ) ) {
+		ul {
+			--menu-text-align: center;
+			--menu-item-justify: center;
+		}
+	}
+
+}
+
+@container menu ( style(--menu-borders: dividers ) ) {
+	ul {
+		--menu-gap:0px;
+		--menu-item-border-width: 0 var(--menu-item-border) 0 0;
+	}
+
+	li:last-of-type {
+		--menu-item-border-width: 0;
+	}
+
+	@container menu ( style(--menu-orientation: vertical ) ) {
+		ul {
+			--menu-item-border-width: 0 0 var(--menu-item-border) 0;
+		}
+	}
+}
+
+@container menu ( style(--menu-borders: boxes ) ) {
+	ul {
+		--menu-gap:0px;
+		--menu-item-border-width: var(--menu-item-border) 0 var(--menu-item-border) var(--menu-item-border);
+	}
+
+	li:last-of-type {
+		--menu-item-border-width: var(--menu-item-border);
+	}
+
+	@container menu ( style(--menu-orientation: vertical ) ) {
+		ul {
+			--menu-item-border-width: var(--menu-item-border) var(--menu-item-border) 0 var(--menu-item-border);
+		}
+	}
+}
+
+.menu li {
 	position:relative;
-	/*min-height:100%;*/
+	flex-grow: var(--menu-stretch);
 }
 
-.cs-menu a, .cs-menu a:hover {
+@container menu ( style(--menu-stretch: 1 ) ) {
+	ul {
+		width:100%;
+	}
+}
+
+.menu a, .menu a:hover {
 	white-space: nowrap;
 	color:var(--link-color);
 	display:flex;
 	flex-grow: 1;
+	flex-direction: var(--menu-icon-align);
 	align-items: center;
-	justify-content: center; /* needs formalising. This is the align mechanism as the a tags themselves are now flexboxes */
+	justify-content: var(--menu-item-justify); /* This is the icon, label etc  */
 	grid-gap: var(--menu-icon-gap);
 	text-decoration: none;
 	padding:var(--menu-item-padding);	
-	color:var(--link-color);
-	border-width:var(--menu-item-border);
+	border-width:var(--menu-item-border-width);
 	border-style:solid;
 	border-color:var(--menu-border-color);
 	background-color: var(--menu-background);
 	/* watch browser agent default. Can't apply to ul */
 	text-align: var(--menu-text-align);	
-	transition-property: background-color;
-    transition-duration: var(--menu-anim-time);
-    transition-timing-function: ease-in-out;
+	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out ;
+}
+
+/* Don't use flex mechanism if we're using access keys */
+.menu a[accesskey] {
+	display: inline-block;
 }
 
 /* Per class behaviour applied via JS. leave for now. */
-.cs-menu.open {
+.menu.open {
 	height:auto;
 }
 
-@media screen and (max-width:630px) {
-
-	.cs-menu.mobilemenu {
-		height:0;
-		overflow: hidden;
-	}
-	 /*need this. Watch specificity*/
-	.cs-menu.mobilemenu.open {
-		height:auto;
-	}
-
-}
-
-/* Watch the specifity here. JS library creates clone to get heights */
-ul.submenu {
+.submenu {
+	display:none;
+	position: var(--menu-submenu-position);
+	top:0;
+	left:0;
 	z-index: 100;
-  	min-width:100%;
-  	height: 0;
-  	overflow: hidden;
-  	grid-template-columns: 1fr;
-	--menu-gap:0px;
+	min-width:100%;
+  	height: auto;
+  	width: max-content;
 }
 
-ul.submenu.open, ul.submenu.show  {
-	height: auto;
-	overflow: visible;
+@container menu ( style(--menu-submenu-show: show ) ) {
+	.submenu {
+		display:block;
+	}
 }
 
 
-.cs-menu li.open > ul.submenu {
+@container menu ( style(--menu-orientation: horizontal ) ) {
+	.submenu {
+		--menu-orientation:vertical;
+	}
+}
+
+/* position submenus relative to whole menu */
+@container menu ( style(--menu-submenualign: menu-bottom-left ) or style(--menu-submenualign: menu-top-left ) or style(--menu-submenualign: menu-top-right ) or style(--menu-submenualign: menu-bottom-right ) ) {
+
+	ul {
+		position:relative;
+	}
+
+	.menu li {
+		position:static;
+	}
+
+}
+
+
+@container menu ( style(--menu-submenu-position: absolute ) ) {
+
+	.submenu {
+		position: absolute;
+	}
+
+	@container menu ( style(--menu-submenualign: menu-top-left ) or style(--menu-submenualign: top-left ) ) {
+		.submenu {
+			right: var(--sub-menu-adjust-h);
+			top:0;
+		}
+	}
+
+	@container menu ( style(--menu-submenualign: menu-bottom-left ) or style(--menu-submenualign: bottom-left ) ) {
+		.submenu {
+			right: 0;
+			top: calc( 100% + var(--sub-menu-adjust-v));
+		}
+	}
+
+	@container menu ( style(--menu-submenualign: menu-top-right ) or style(--menu-submenualign: top-right ) ) {
+		.submenu {
+			left:  calc( 100% + var(--sub-menu-adjust-v));
+			top:0;
+		}	
+	}
+
+	@container menu ( style(--menu-submenualign: menu-bottom-right ) or style(--menu-submenualign: bottom-right ) ) {
+		.submenu {
+			left:  calc( 100% + var(--sub-menu-adjust-h));
+			top: 100%;
+		}
+	}
+}
+
+li.open > .submenu, .submenu.show  {
 	display:block;
 }
 
-.cs-menu ul.submenu li.open > ul.submenu {
+@container menu ( style(--menu-submenu-show: hover ) ) {
+	li:hover > .submenu {
+		display:block;
+	}
+}
+
+
+.submenu > ul > li.open > .submenu {
 	margin-top:0px;
 }
 
 /* sub menu indicator */
-.cs-menu a .icon {
+.menu a > i[class*=icon].openicon {
+	--menu-icon-height: var(--menu-openicon-height);
+	--menu-icon-width: var(--menu-openicon-width);
+	display: block;
 	flex-grow: 0;
 	position: relative;
-	right:var(--menu-openicon-adjust);
+	right:var(--menu-openicon-adjust, 0);
 	max-height:100%;
 	top:0;
-	width: var(--menu-openicon-width);
-	width: var(--menu-openicon-height);
 	fill:var(--link-color);
 	stroke:var(--link-color);
 	transition-property: transform;
@@ -140,56 +353,87 @@ ul.submenu.open, ul.submenu.show  {
 
 Requires icons.css and navbuttons.css
 
-
-
 */
-.cs-menu a b  {
+.menu a > i[class*=icon]  {
 	display: var(--menu-icon-display);
-	font:var(--icon-font);
-	width:var(--icon-width);
-	height:var(--icon-height);
-	line-height:var(--icon-height);
-	font-size: var(--icon-height);
+	width:var(--menu-icon-width);
+	height:var(--menu-icon-height);
+	line-height:var(--menu-icon-height);
+	font-size: var(--menu-icon-height);
 	overflow: hidden;
 }
 
-.cs-menu a span {
+
+
+.menu a span:not(.accessKey) {
 	display: var(--menu-label-display);	
 }
 
-.cs-menu a b:before {
-	content:var(--menu-icon);
+.menu span.accessKey {
+	display: inline;
+	text-decoration: underline;
 }
 
-.cs-menu li.open > a .icon {
+
+.menu li.open > a .openicon {
 	transform: rotate(90deg);
 }
-
-.cs-menu a > span {
-	flex-grow: 1;
+/* Expand label to fill space */
+.menu a > span:not(.accessKey) {
+	flex-grow: var(--menu-icon-stretch);
 }
 
-/*.
+@container menu ( style(--menu-rollout: 1 ) ) {
+	a span {
+		visibility: hidden;
+		overflow: hidden;
+		position: absolute;
+		top:100%;
+		left:0;
+		width:0;
+		transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out, width var(--menu-anim-time)  ease-in-out ;
+		align-items: center;
+		justify-content: start;
+	}
 
-TODO: check deprecation;
-cs-menu li:hover > a svg {
-	fill:var(--link-color);
-	stroke:var(--link-color);
+	a:hover span {
+		width: var(--menu-item-width);
+		box-sizing: content-box;
+		display: flex;
+		visibility: visible;
+		height: var(--menu-icon-height);
+		padding: var(--menu-item-padding);
+		background-color: var(--menu-background);
+	}
+
+	@container menu ( style(--menu-align: right ) ) {
+		a span {
+			left:auto;
+			right:0;
+			bottom:auto;
+			justify-content: end;
+		}
+	}
+	@container menu ( style(--menu-orientation: vertical ) ) {
+		@container menu ( style(--menu-align: left ) ) {
+			a span {
+				top:0;
+				left:100%;
+				bottom:auto;
+			}
+		}
+		@container menu ( style(--menu-align: right ) ) {
+			a span {
+				top:0;
+				right:100%;
+				bottom:auto;
+				left:auto;
+			}
+		}
+	}
 }
 
-.cs-menu li:hover > a {
-	color:var(--link-color);
-}
 
-.cs-menu li.hi > a, .cs-menu li.hi:hover  > a {
-	color:var(--link-color);
-}
-
-.cs-menu li.hi > a svg, .cs-menu li.hi:hover > a svg {
-	fill:var(--link-color);
-	stroke:var(--link-color);
-}
-*/
 
 
 

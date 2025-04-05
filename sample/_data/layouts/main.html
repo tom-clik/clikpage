@@ -6,6 +6,7 @@
 	<meta name="author" content="Tom peer">
 	<style>
 		.scheme-spanning {
+			
 			inner {
 				max-width:var(--sitewidth);
 				align:center;
@@ -24,17 +25,13 @@
 			font-family:bodyfont;
 			font-size:80%;
 			padding:0;
+			header-height:84px;
 		}
 
 		#ubercontainer {
-			height:100%;
-			padding:0 0 20px 0;
-			inner {
-				height:100%;
-			}
 			
-			grid-mode:templateareas;
-			grid-template-areas:"header" "pagecontent" "footer";
+			grid-mode:named;
+			grid-template-areas:"header" "content" "footer";
 			grid-template-rows:min-content 1fr min-content;
 			
 			@mobile {
@@ -42,21 +39,6 @@
 				grid-mode:none;
 				
 			}
-		}
-
-		#pagecontent {
-			
-			grid-mode:templateareas;
-			grid-template-areas:"topnav content";
-			grid-template-columns:180px minmax(0, 1fr);
-			
-			@mobile {
-				grid-mode:none;
-				inner {
-					padding:0;
-				}
-			}
-			
 		}
 
 		#topnav {
@@ -76,6 +58,7 @@
 			grid-template-columns:max-content minmax(0, 1fr);
 			
 			@mobile {
+
 				inner {
 					max-width:auto;
 					padding:4;
@@ -86,15 +69,14 @@
 			}
 
 			background {
-				color:panelbg;
+				color:panel-bg;
 			}
 			
 		}
 
 		#content {
-			grid-mode:templateareas;
-			grid-template-areas:"contentheader" "contentwrap" "contentfooter";
-			grid-template-rows:min-content minmax(0, 1fr) min-content;
+			grid-mode:rows;
+			grid-template-rows:min-content auto min-content;
 			
 			@mobile {
 				grid-mode:none;
@@ -103,30 +85,19 @@
 			
 		}
 
-		#contentfooter {
-			grid-mode:auto;
-			grid-gap:14px;
+		#menu {
+			sticky: 1;
 			@mobile {
-				grid-mode:none;
+				show: 0;
 			}
-		}
-
-		#contentwrap {
-			grid-mode:templateareas;
-			grid-template-areas:"maincol xcol";
-			grid-template-columns:minmax(0, 1fr) 140px;
-			
-			@mid {
-				grid-mode:none;
-			}
-			
-		}		
+		}	
 
 		#footer {
 
-			grid-mode:templateareas;
-			grid-template-areas: "footer_right footer_mid footer_left";
-			grid-template-columns:20% 30% minmax(0, 1fr);
+			grid-mode:columns;
+			grid-template-columns: minmax(0, 1fr) 20% 30%;
+			grid-template-rows: auto;
+			align-content: center;
 			
 			@mobile {
 				grid-mode:none;
@@ -134,51 +105,29 @@
 
 		}
 
-		#bottomnav {
-			position:fixed;
-			bottom:0px;
-			@mobile {
-				position:static;
-			}
-		}
-
-		.scheme-title {
-			
-		}
+		
 	</style>
 </head>
 
 <body>
 
-	<div id="ubercontainer">
+<div id="ubercontainer" grid="1">
+
+	<!-- header is usually given a fixed height (see -header-height)
+		Much of the sticky/fixed functionality depends on this. --> 
+	<div id="header" grid="1">
 		
-		<div id="header" class="scheme-spanning">
+		<div id="title" class="spanning">
+				
 			<content type="title" id="sitetitle">
 				<title>Site Title</title>
 				<description>The main site title</description>
 				<content>{{site.title}}</content>
 				<link>{{link.index}}</link>
 				<style>
-				color:paneltext;
+				color:panel-text;
 				margin:12 12 12 0;
 				font-size:220%;	
-				</style>
-			</content>
-
-			<content type="title" id="sitedescription">
-				<title>Site Description</title>
-				<description>Strapline appears in header with title</description>
-				<content>{{site.meta.description}}</content>
-				<style>
-					position:absolute;
-					color:paneltext;
-					top:14px;
-					right:0;
-					@mobile {
-						top:0;
-						position:static;
-						marging:4px 0;
-					}
 				</style>
 			</content>
 
@@ -203,93 +152,101 @@
 					}
 				</style>	
 			</content>
+
 			
 		</div>
-		
-		<div id="pagecontent" class="scheme-spanning">
+
+		<!-- To remove this or place it above the title, adjust #header grid -->
+		<div id="nav" class="spanning">
 			
-			<div id="topnav">
+			<content id="mobilemenu" type="menu">
+				<style>
+					show:0;
+					menu-orientation:vertical;
+					menu-align:left;
+					@mobile {
+						background {
+							color:lightpanel-bg;
+						}
+						height:0;
+						padding:8;
+					}
+				</style>
+				<dataset tag="" type="sections"></dataset>
+			</content>
+		</div>
+		
+	</div>
+
+	<div id="content" grid="1">
+		
+		<div id="content_header">
+
+		</div>
+
+		<div id="content_main" class="container spanning" grid="1">
+				
+			<div id="menu">
 				<content id="mainmenu" type="menu">
 					<style>
-						position:sticky;
-						orientation:vertical;
-						align:left;
+						menu-orientation:vertical;
+						menu-align:left;
 						@mobile {
 							show:0;
 						}
 					</style>
 				</content>
-				<content id="mobilemenu" type="menu">
-					<style>
-						show:0;
-						orientation:vertical;
-						align:left;
-						@mobile {
-							background {
-								color:lightpanel-bg;
-							}
-							height:0;
-							padding:8;
-							position:static;
-						}
-					</style>
-					<dataset tag="" type="sections"></dataset>
-				</content>
 			</div>
 
-			<div id="content">
+			<div id="content_wrap" grid="1">
+					
+				<div id="maincol">
 
-				<div id="contentheader">
+				</div>
+
+				<div id="xcol">
 					
 				</div>
-				
-				<div id="contentwrap">
-
-					<div id="maincol">
-
-					</div>
-					<div id="xcol">
-						
-					</div>
-					
-				</div>
-				<div id="contentfooter" class="gridOuter">
-				
-				</div>
+			
 			</div>
-		</div>
-		
-		<div id="footer" class="scheme-spanning">
-			<div id="footer_left">
-				<content id="footermenu" type="menu">
-					<style>
-						flex:true;
-						align:right;
-						border-type:dividers;
-						menu-item-padding:4px 12px;
-						menu-gap:0;
-						menu-item-border:1px;
-						stretch:0;
-						@mobile {
-							align:left;
-							menu-item-padding:4px;
-							flex:false;
-							stretch:1;
-							orientation:vertical;
-						}
-					</style>
+			
 
-				</content>
-			</div>
-			<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
-			<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
 		</div>
 
-		<!-- <div id="bottomnav" class="scheme-spanning">
-			<content id="bottomnav1" type="text">Lorem ispum etc</content>
+		<div id="content_footer" grid="1" class="spanning">
+
 		</div>
- -->
+
 	</div>
+
+	<div id="footer" grid="1" class="spanning">
+		
+		<div id="footer_left">
+			<content id="footermenu" type="menu">
+				<style>
+					menu-align:right;
+					menu-borders:dividers;
+					menu-item-padding:4px 12px;
+					menu-gap:0;
+					menu-item-border:1px;
+					menu-stretch:0;
+					@mobile {
+						menu-align:left;
+						menu-item-padding:4px;
+						menu-orientation:vertical;
+					}
+				</style>
+
+			</content>
+		</div>
+		<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
+		<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
+	
+	</div>
+
+</div>
+
+
 
 </body>
 </html>

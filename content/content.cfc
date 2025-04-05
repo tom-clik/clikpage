@@ -1,4 +1,4 @@
-component extends="utils.baseutils" {
+component extends="utils.baseutils" {  // TODO: put back in output=false
 	/** 
 	 * Constructor 
 	 *
@@ -7,9 +7,11 @@ component extends="utils.baseutils" {
 	*/
 	public content function init (
 		    required   any      settingsObj,
-			           string   types="item,grid,title,menu,text,image,imagegrid,articlelist,button,form",
+			           string   types="item,grid,title,menu,text,image,imagegrid,articlelist,button,form,columns",
 					   boolean  debug=false
-		)  output=false {
+		) {
+		
+		this.settingsObj = arguments.settingsObj;
 		
 		this.contentSections = {};
 		this.debug = arguments.debug;
@@ -22,7 +24,7 @@ component extends="utils.baseutils" {
 		}
 		
 		variables.defaultMedia = [{"name"="main"}];
-		this.settingsObj = arguments.settingsObj;
+		
 		
 
 		return this;
@@ -35,9 +37,13 @@ component extends="utils.baseutils" {
 		}
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext};
+			local.temp = deserializeJSON( e.extendedinfo );
+			if (isStruct(local.temp)) {
+				structAppend(local.extendedinfo, local.temp);
+			}
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
-				message      = "Unable to local cs type #arguments.type#:" & e.message, 
+				message      = "Unable to update type #arguments.type#:" & e.message, 
 				detail       = e.detail,
 				errorcode    = "clikpage.contentObj.load"
 			);
@@ -55,7 +61,7 @@ component extends="utils.baseutils" {
 				 string image, 
 				 string caption, 
 				 string link,
-				 struct data,
+				 array  data,
 				 struct style = {}
 				 ) {
 
@@ -71,7 +77,6 @@ component extends="utils.baseutils" {
 	/* generate html for a content section */
 	public string function html(required struct content, struct data={}) {
 		
-
 		var ret = this.contentSections[arguments.content.type].html(content=arguments.content, data=arguments.data);
 		
 		ret = this.settingsObj.outputFormat(css=ret,media={},debug=this.debug);
@@ -186,86 +191,86 @@ component extends="utils.baseutils" {
 				}
 			}
 		}
-
+  
 	}
 
 	/**
-	 * Generate CSS for a collection of content sections
+	 * Generate complete CSS for a collection of content sections
 	 * 
 	 * @styles           Struct of styles for addition of class settings
 	 * @content_sections Struct of content section definitions
-	 * @media            Struct of media query definitions
+	 *
 	 * @return CSS stylesheet
 	 */
 	
 	public string function contentCSS(
 		required struct  styles, 
 		required struct  content_sections, 
-		required struct  media, 
-				 boolean format=true
-		) {
+				 boolean debug=this.debug
+		) localmode=true {
+
+		cr = arguments.debug ? newLine() : "";
 		
-		local.css_out = "";
-		
-		loadSettings(
-			styles           = arguments.styles,
-			content_sections = arguments.content_sections, 
-			media            = arguments.media,
-			reload           = false 
-		);
+		cs_styles = [];
 
-		for (local.medium in arguments.media ) {
-			
-			local.media_css = "";
-
-			for (local.id in arguments.content_sections) {
-				local.cs = arguments.content_sections[local.id];				
-				local.media_css &= css(local.cs,local.medium,false);
-			}
-
-			if (local.media_css NEQ "") {
-				if (local.medium NEQ "main") {
-					local.css_out &= "@media.#local.medium# {\n" & this.settingsObj.indent(local.media_css,1) & "\n}\n";
-				}
-				else {
-					local.css_out &= local.media_css;
-				}
-			}
+		for (id in arguments.content_sections) {
+			cs_styles.append( css(styles=arguments.styles,content=arguments.content_sections[id],debug=arguments.debug) );
 		}
 
-		if (arguments.format) {
-			local.css_out = this.settingsObj.outputFormat(css=local.css_out, media=arguments.media,debug=this.debug);
-		}
-		
-		return local.css_out;
+		return this.settingsObj.contentCSS(css=cs_styles,media=arguments.styles.media);
 
 	}
 
 	/**
 	 * @hint Get css for a content section
 	 *
-	 * @content      Content section
-	 * @format       Format result. Turn off if concatenating many cs
-	 * @return       css string
+	 * @styles       Whole site stylesheet with media etc
+	 * @content      Content section (we need "id", "class", and "type")
+	 * @return       struct keyed by medium
 	 */
-	public string function css(required struct content, medium="main",boolean format=true) {
+	public struct function css(required struct styles, required struct content, boolean debug=this.debug, debugcontent={} ) localmode=true {
 		
-		var css = "";
+		css_out = {};
 
-		if (! StructKeyExists(arguments.content, "settings")) {
-			return "/* Settings not defined for cs */";
-		}
-		if (! StructKeyExists(arguments.content.settings,arguments.medium)) {
-			return "/* #arguments.medium# Settings not defined for cs */";
-		}
-		
-		css &= this.contentSections[arguments.content.type].css(styles=arguments.content.settings[arguments.medium], selector="##" & arguments.content.id);
-		
-		if (arguments.format) {
-			css = this.settingsObj.outputFormat(css=css,media={},debug=this.debug);
+		if (! StructKeyExists(arguments.styles, "media") ) {
+			throw("No media defined in stylesheet");
 		}
 
-		return css;
+		// Allow settings to be applied via "schemes" (aka classes)
+		// MUSTDO: same logic as for layoutCSS in settings.cfc
+		// Needs to be in order
+		styles_all = {}; 
+		if ( arguments.content.keyExists("class") ) {
+			for ( class in ListToArray(arguments.content.class, " ") ) {
+				if ( arguments.styles.keyExists(class) ) {
+					variables.utils.utils.deepStructAppend(styles_all,arguments.styles[class],true);
+				}
+			}
+		}
+
+		if ( arguments.styles.keyExists( arguments.content.id ) ) {
+			variables.utils.utils.deepStructAppend(styles_all,arguments.styles[arguments.content.id],true);
+		}
+
+		if (! StructCount( styles_all ) ) {
+			if (arguments.debug) css_out["main"] = "/* No styles defined for cs #arguments.content.id# */" & newLine() & newLine();
+			return css_out;
+		}
+
+		if (arguments.debug ) {
+			arguments.debugcontent["styles_all"] =styles_all;
+		}
+
+		for (medium in arguments.styles.media) {
+			if (! StructKeyExists( styles_all,  medium ) ) {
+				if (arguments.debug) css_out["#medium#"] = "/* #medium# Settings not defined for cs #arguments.content.id# */" & newLine() & newLine();
+				continue;
+			}
+			css_out["#medium#"] =  this.contentSections[arguments.content.type].css(styles=styles_all[medium], selector="##" & arguments.content.id, debug=arguments.debug);
+		}
+
+		return css_out;
+		
 	}
 
 	/**
@@ -274,6 +279,8 @@ component extends="utils.baseutils" {
 	 */
 	public void function settings(required struct content, required struct styles, required struct media) {
 		
+		throw("needs redoing...possibly deprecated");
+
 		var settings = {"main"={}};
 		// add default styling
 		variables.utils.utils.deepStructAppend(settings.main,this.contentSections[arguments.content.type].defaultStyles);
@@ -344,7 +351,7 @@ component extends="utils.baseutils" {
 	 * See [TODO: document the stylesheet generation process]()
 	 *
 	 * @page            Main page content
-	 * @pageContent     page content for indivudal cs (See getPageContent())
+	 * @pageContent     page content for individual cs (See getPageContent())
 	 */
 	public void function addPageContent(required struct page, required struct pageContent) {
 		
@@ -398,7 +405,6 @@ component extends="utils.baseutils" {
 	 * the old class based styling system, it is just to allow reuse of item html in different cases
 	 * 
 	 * @item  Item with keys title, description, image, link, caption, 
-	 * @settings  item settings. Required are the settings that adjust the html
 	 * @classes  Pass in struct by reference to return required classes for the wrapping div.
 	 */
 	public string function itemHtml(required struct item, string link="", struct settings={}, struct classes) {
@@ -411,15 +417,17 @@ component extends="utils.baseutils" {
 
 		arguments.classes["item"] = 1;
 		
-		 var cshtml = "";
+		var cshtml = "<div class='itemInner'>\n";
 
-		cshtml &= "\t<" & local.titletag & " class='title'>" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & ">\n";
+		cshtml &= "\t<div class='title'><" & local.titletag & ">" & linkStart & arguments.item.title & linkEnd &  "</" & local.titletag & "></div>\n";
 		cshtml &= "\t<div class='imageWrap'>\n";
 		if (StructKeyExists(arguments.item,"image")) {
+			cshtml &= "\t<figure>\n";
 			cshtml &= "\t\t#linkStart#<img src='" & arguments.item.image & "'>#linkEnd#\n";
 			if (StructKeyExists(arguments.item,"caption")) {
-				cshtml &= "\t\t<div class='caption'>" & arguments.item.caption & "</div>\n";
+				cshtml &= "\t\t<figcaption>" & arguments.item.caption & "</figcaption>\n";
 			}
+			cshtml &= "\t</figure>\n";
 		}
 		else {
 			arguments.classes["noimage"] = 1;
@@ -431,7 +439,7 @@ component extends="utils.baseutils" {
 		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
 			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
 		}
-		cshtml &= "</div>";
+		cshtml &= "</div>\n</div>";
 
 		return cshtml;
 
