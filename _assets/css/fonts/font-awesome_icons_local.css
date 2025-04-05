@@ -3,15 +3,12 @@
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  * Copyright 2022 Fonticons, Inc.
  */
-@import url('font-awesome-icons.css');
-
-:root, :host {
-  --icon-font: normal 400 1em/1 "Font Awesome"; 
-}
+@import url('font-awesome_icons_codes.css');
 
 @font-face {
   font-family: 'Font Awesome';
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url("../../fonts/fa-regular-400.woff2") format("woff2"), url("../webfonts/fa-regular-400.ttf") format("truetype"); }
+  src: url("../../fonts/fa-regular-400.woff2") format("woff2"), url("../webfonts/fa-regular-400.ttf") format("truetype"); 
+}

@@ -78,7 +78,7 @@
 		/* Scheme panel */
 		.scheme-panel .button {
 			background-color: #c5c5c5;
-			border-width: 1px solid hotpink;
+			border: 1px solid hotpink;
 			color:red;
 			fill:red;
 			stroke:red;
@@ -98,9 +98,15 @@
 			--icon-height:32px;
 			padding:2px;
 		}
+		
 		.scheme-rollout .button:hover  {
 			color:white;
 			background-color:teal;
+		}
+
+		.scheme-rollout  .button:hover label {
+			background-color: teal;
+			color:  inherit;
 		}
 		
 		.setting-align-left {
@@ -139,6 +145,7 @@
 		.flex-stretch div {
 			flex-grow: 1;
 		}
+
 	</style>
 
 </head>

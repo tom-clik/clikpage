@@ -3,6 +3,7 @@
     {
       "scripts": [
         "jquery",
+        "clik_common",
         "autoButton",
         "animateAuto",
         "popup",
@@ -18,10 +19,11 @@
         "serializeData",
         "throttledresize",
         "heightFix",
-        "varClass"
+        "varClass",
+        "autoopen"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.6.min.js",
+      "min": "/_assets/js/_min/clikmain.0.11.min.js",
     },
     {
       "scripts": [
@@ -39,6 +41,13 @@
         "clik_settings","messageHandler","settingsForm"
       ],
       "scripts": [
+        "clikForm"
+      ],
+      "min": "/_assets/js/_min/clikForm.0.1.min.js",
+      "name": "forms"
+    },
+    {
+      "scripts": [
         "clik_settings","messageHandler","settingsForm"
       ],
       "description": "Clik editing tools",
@@ -53,6 +62,12 @@
       "name": "jquery",
       "packageExclude": 1,
       "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
+    },
+    {
+      "min": "/_assets/js/clik_common.js",
+      "name": "clik_common",
+      "description": "",
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/jquery-ui.min.js",
@@ -169,7 +184,7 @@
       "min": "/_assets/js/jquery.clikForm.js",
       "description": "Combines forms and validate in one plug-in to submit a form and display a returned|supplied message",
       "name": "clikForm",
-      "requires": "jquery,forms,elastic,select2,validate,clikutils"
+      "requires": "jquery,elastic,select2,validate,serializeData"
     },
     {
       "min": "/_assets/js/jquery.autoButton.js",
@@ -221,7 +236,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,getSettings"
+      "requires": "jquery,modal,clik_settings,clik_common"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -291,6 +306,12 @@
       "description": "Settings Editing form",
       "name": "settingsForm",
       "requires": "jquery,clik_settings,messageHandler"
+    },
+    {
+      "min":"/_assets/js/jquery.autoopen.js",
+      "description": "Add open close methods to containers",
+      "name": "autoopen",
+      "requires": "jquery"
     },
     {
       "min":"/_assets/js/removeClassByPrefix.js",

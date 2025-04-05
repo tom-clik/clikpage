@@ -46,7 +46,7 @@ component {
 				'statuscode': 401,
 				'statustext': 'login required'
 			};
-			rep ( local.return )
+			rep( local.return );
 		}
 
 		return local.return;
@@ -98,10 +98,19 @@ component {
 
 	}
 
+	/** Use to force a json return e.g. after login fail
+	 * Don't use this in general operation. See the sample function below
+	 **/
 	private string function rep(required struct return) {
 		setJSON();
 		setStatus(arguments.return);
 		writeOutput( serializeJSON( arguments.return ) );
+		abort;
+	}
+
+	private string function javascript(required string data) {
+		content type="text/javascript; charset=utf-8";
+		writeOutput( arguments.data );
 		abort;
 	}
 
@@ -111,7 +120,7 @@ component {
 	/**
 	remote function sampleFunction(
 			string action
-		)
+		) returnformat="json"
 		{
 		
 		local.return = _checkAuth();
@@ -123,8 +132,9 @@ component {
 			addError(local.return,"Action is required");
 		}
 		
-		
-		rep (local.return);
+		setStatus(local.return);
+
+		return local.return;
 	
 	}
 	*/

@@ -20,34 +20,11 @@
                 "tabs",
                 "text",
                 "title",
-                "modal"            ],
-            "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.14.min.css"
-        },
-        {
-            "scripts": [
-                "reset",
-                "breadcrumb",
-                "definitions",
-                "admonitions",
-                "footnotes",
-                "columns",
-                "grids",
-                "icons",
-                "images",
-                "menus",
-                "items",
-                "navbuttons",
-                "tables",
-                "tabs",
-                "text",
-                "title",
-                "modal",
-                "jqueryui",
-                "select2"
+                "select2",
+                "modal"
             ],
-            "name":"cms",
-            "min":"/_assets/css/_min/cms.0.13.min.css"
+            "name":"content",
+            "min":"/_assets/css/_min/mainpackage.0.9.min.css"
         }
     ],
     "scripts": [
@@ -103,6 +80,10 @@
             "name": "admonitions"
         },
         {
+            "min": "/_assets/css/select2.min.css",
+            "name": "select2"
+        },
+        {
             "min": "/_assets/css/tables.css",
             "name": "tables"
         },
@@ -115,13 +96,12 @@
             "name": "title"
         },
         {
-            "min": "/_assets/css/tabs.css",
-            "name": "tabs"
+            "min": "/_assets/css/tables.css",
+            "name": "tables"
         },
         {
-        	"debug": "/_assets/css/select2_clik.css",
-            "min": "/_assets/css/min/select2_clik.min.css",
-            "name": "select2"
+            "min": "/_assets/css/tabs.css",
+            "name": "tabs"
         },
         {
         	"debug": "/_assets/css/jquery-ui.css",

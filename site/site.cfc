@@ -52,8 +52,9 @@ component accessors="true" extends="utils.baseutils" {
 		local.root = GetDirectoryFromPath(arguments.filename);
 
 		local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
+
 		local.site = variables.utils.XML.xml2data(local.xmlData);
-		
+
 		local.site["mode"] = "preview";
 
 		if (NOT StructKeyExists(local.site,"layout")) {
@@ -551,13 +552,22 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 
-	private string function getDataValue(data,field) {
+	private string function getDataValue(required struct data, required string field) {
 		local.val = "<!-- field #arguments.field# not found -->";
 		
 		if (ListLen(arguments.field,".") gt 1) {
 			local.subscope = ListFirst(arguments.field,".");
 			local.subfield = ListRest(arguments.field,".");
 			if (StructKeyExists(arguments.data, local.subscope)) {
+				if (! isStruct(arguments.data[local.subscope]) ) {
+					local.extendedinfo = {"data"=arguments.data, "subscope" = local.subscope};
+					throw(
+						extendedinfo = SerializeJSON(local.extendedinfo),
+						message      = "Data is not struct"
+					);
+				
+					
+				}
 				local.val = getDataValue(arguments.data[local.subscope],local.subfield);
 			}
 		}

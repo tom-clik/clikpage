@@ -6,7 +6,7 @@ This needs the container to have a fixed height of some sort, or the images will
 
 You can, if every element from the body down has a height of 100%, get the image to fit using pure CSS and grid row sizing.  You can't use a `min-height:100%` on the ubercontainer to do this, which makes things very difficult.
 
-Instead, we use grids to create a cell of the correct size. We can then use JavaScript to fix the height of the image container and only then show the image.
+Instead, we use use JavaScript to fix the height of the image container and only then show the image.
 
 ## Examples
 
@@ -32,13 +32,15 @@ A grid layout has fixed height header and footer and variable content. The conte
 
 ### Fixed height of CS
 
-An easy solution is to apply a fixed height to the content section. This will automatically fit the image according to the object fit property.
+The easiest solution is to apply a fixed height to the content section. This will automatically fit the image according to the object fit property.
 
-#### Implementation
+The problem is we don't always know the height and usually want it to be whatever the height of the container is according to the page size.
 
-Images have a `max-height` of `100%`. With a fixed parent height this will work. Note that the surrounding "frame" div has to have `display:flex` to make this work[^frame].
+### "heightfix" property
 
-[^frame]: this is the simplest solution. Applying `height:100%` to the frame will have a very funny effect if the cs doesn't have a height. Most alternatives require some sort of check on whether there is a height on the cs itself.
+Javascript is used to fix the height of the content section. It works well enough but we're getting FOUCs that need fixing.
+
+
 
 ### Fill available space
 
@@ -52,6 +54,6 @@ We define a property "heightfix" on the image. This will enable the following:
 4. Set height of image container
 5. Set position to static and visibility to visible
 
-#### Implementation
+### Implementation
 
 See `heightfix.js`. This is applied to all image cs in `clik_onready`. If the `--heightfix` property is true, it applies the logic above. It does the calcs and applies a class to the cs to apply height:100%, width:100% to the frame.

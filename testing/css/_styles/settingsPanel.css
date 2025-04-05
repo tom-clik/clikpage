@@ -1,19 +1,14 @@
 .settings_panel {
 	position: fixed;
-	top:20px;
-	left:20px;
+	top:-2000px;
+	left:-2000px;
 	border:1px solid #3c3c3c;
 	background-color: #e5e5e5;
 	padding:8px;
 	min-width:200px;
-	min-height: 260px;
+	min-height: 360px;
 	z-index: 500;
 	width:480px;
-	height: 460px;
-	display: none;
-}
-
-.settings_panel {
 	--draggable:true;
 	--modal:false;
 	--fixed:true;
@@ -36,7 +31,8 @@
 }
 
 .settings_panel.open {
-	display: block;
+	top:20px;
+	left:20px;
 }
 
 #settings_panel_open {

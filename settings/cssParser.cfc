@@ -39,8 +39,8 @@ component {
 		variables.patternObj = createObject( "java", "java.util.regex.Pattern");
 		// pattern to remove comments
 		variables.commentpattern = variables.patternObj.compile("\/\*[^*]*\*+([^/*][^*]*\*+)*\/", variables.patternObj.MULTILINE + variables.patternObj.UNIX_LINES);
-		// pattern to characets from start of "key"
-		variables.keypattern = variables.patternObj.compile("[##\.]");
+		// pattern for characters at start of "key"
+		variables.keypattern = variables.patternObj.compile("^[##\.]");
 		return this;
 	}
 

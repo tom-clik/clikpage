@@ -1,0 +1,31 @@
+/*
+WIP
+ */
+
+body { 
+	--icon-close:'\f00d';
+	--icon-menu:'\f0c9';
+	--icon-previous:'\f104';
+	--icon-next:'\f105';
+	--icon-squares:'\f00a';
+	--icon-fullscreen: "\f31e";
+	--icon-fullscreen_exit: "\f066";
+	--icon-first_page: "\f100";
+	--icon-last_page: "\f101";
+	--icon-help: "\f059";
+	--icon-cart: "\f07a";
+	--icon-done: "\f00c";
+	--icon-favorite: "\f004";
+	--icon-home: "\f015";
+	--icon-search: "\f002";
+	--icon-account: "\f2bd";
+	--icon-list: "\f03a";
+	--icon-sortasc: "\f882";
+	--icon-sort: "\f0dc";
+	--icon-sortdesc: "\f15d";
+	--icon-grip: "\f58e";
+	--icon-info: "\f05a";
+	--icon-font: normal 400 1em/1 "Font Awesome"; 
+}
+
+	

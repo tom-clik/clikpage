@@ -591,7 +591,19 @@ component output=false {
 			}
 		}
 
-		for (local.property in ['font-size','font-weight','font-style','font-variant','line-height','letter-spacing','text-decoration','text-align','text-transform','text-align-last','white-space','text-indent','word-spacing','word-wrap']) {
+		for (local.property in ['heading-font','table-border-color','table-background','table-stripe-bg']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t--#local.property#:var(--#arguments.settings[local.property]#);\n";
+			}
+		}
+
+		for (local.property in ['table-border-width','table-border-style','table-cell-padding','table-text-align','table-vertical-align','table-sticky','table-sticky-top','heading-font-size','heading-margin','heading-font-align']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "\t--#local.property#:#arguments.settings[local.property]#;\n";
+			}
+		}
+
+			for (local.property in ['font-size','font-weight','font-style','font-variant','line-height','letter-spacing','text-decoration','text-align','text-transform','text-align-last','white-space','text-indent','word-spacing','word-wrap']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "#tab##local.property#:#arguments.settings[local.property]#;" & cr;
 			}
@@ -649,7 +661,7 @@ component output=false {
 		if (StructKeyExists(arguments.settings,"border")) {
 			local.settings = Duplicate(arguments.settings["border"]);
 			StructAppend(local.settings, {"style":"solid"}, false);
-			for (local.property in ['width','color','style']) {
+			for (local.property in ['width','color','style','radius']) {
 				if (StructKeyExists(local.settings,local.property)) {
 					local.css &= "#tab#border-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";#cr#";
 				}

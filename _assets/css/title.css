@@ -26,11 +26,6 @@
 	--heading-padding:0;
 	--link-color:inherit;
 
-	--button-border-color:var(--link-color);
-	--button-border-width:1px;
-	--button-background-color: transparent;
-	--button-border-style:solid;
-	--button-padding: 8px;
 }
 
 body {
@@ -40,13 +35,8 @@ body {
 }
 
 /* Need the hover to override reset.css value */
-a, a:hover, input.button, input.button:hover {
+a, a:hover {
 	color:var(--link-color);
-}
-
-.noicon {
-	--buttonwidth:0px;
-	--buttongap: 0px;
 }
 
 .cs-title, .title {
@@ -55,6 +45,15 @@ a, a:hover, input.button, input.button:hover {
 	text-align: var(--title-font-align);
 	color:  var(--title-color);
 	font-size: var(--title-font-size);
+}
+
+.cs-title h1, .cs-title h2, .cs-title h3, .cs-title h4, .cs-title h5, .cs-title h6,
+.title h1, .title h2, .title h3, .title h4, .title h5, .title h6 {
+	font-family: inherit;
+	font-weight:  inherit;
+	text-align: inherit;
+	color:  inherit;
+	font-size: inherit;
 }
 
 .cs-title a, .cs-title a:hover {
@@ -82,6 +81,13 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: var(--heading-font-align);
 	color:  var(--heading-color);
 	font-size: var(--heading-font-size);
+}
+
+/* TEMP fix for wrapped anchor tags coming from flexmark */
+h1 a,h1 a:hover, h2 a,h2 a:hover, h3 a,h3 a:hover, h4 a,h4 a:hover, h5 a,h5 a:hover, h6 a, h6 a:hover {
+	color:inherit;
+	text-decoration: inherit;
+	font-size: inehrit;
 }
 
 

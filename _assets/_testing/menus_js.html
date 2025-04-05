@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Menu test</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/fonts/fonts_local.css">
+	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/menus.css">
+	<link rel="stylesheet" href="../css/icons.css">
+	<link rel="stylesheet" href="../css/schemes/menus-schemes.css">
+	<meta charset="UTF-8">
+	<style>
+	body {
+		--title-font:font-family: 'Open Sans';
+	}
+
+	.cs-title {
+		font-size: 200%;
+		font-weight: bold;
+	}
+
+	.title {
+		font-size: 140%;
+		font-weight: bold;
+	}
+
+	.cs-menu {
+		margin-bottom: 12px;
+	} 
+
+	.scheme-main {
+		--menu-item-padding:8px;
+		--menucolor:#ff00ff;
+		--menu-background: #c3c3c3;
+		--menu-item-border: 1px;
+		--menu-gap:0;
+	}
+
+	.scheme-main li:hover {
+		--menucolor:#ffff00;
+		--menu-background: #efefef;
+	}
+
+	.scheme-plain {
+		--menu-item-border: 1px;
+	}
+
+	#test1 {
+		--menu-item-border: 0 12px 0 0;
+		--menu-gap:4px;
+	}
+	</style>
+</head>
+<body>
+
+<div class="cs-title">
+Menu Testing
+</div>
+<div id="menu" class="cs-menu">
+<ul class="menu"><li><a href="sample1-1.html" class="menu_sample1-1"><b></b><span>sectetur ad</span></a><ul class="submenu"><li><a href="sample1-2.html" class="menu_sample1-2"><b></b><span>etur adipisicing</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>ipsum dolor si</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>sum dolor </span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>orem ipsum dol</span></a></li>
+</ul></li>
+<li><a href="sample2-2.html" class="menu_sample2-2"><b></b><span>consectet</span></a></li>
+<li><a href="sample3-2.html" class="menu_sample3-2"><b></b><span>ipsum dolor sit</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span> consectetu</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>psum dolor</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>sum dolor sit am</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span> consectetur a</span></a></li>
+<li><a href="sample5-3.html" class="menu_sample5-3"><b></b><span>sum dolor si</span></a></li>
+</ul></li>
+</ul></li>
+<li><a href="sample2-1.html" class="menu_sample2-1"><b></b><span>etur adi</span></a></li>
+<li><a href="sample3-1.html" class="menu_sample3-1"><b></b><span>amet, co</span></a><ul class="submenu"><li><a href="sample1-2.html" class="menu_sample1-2"><b></b><span>met, conse</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>nsectetur </span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>et, consectetu</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>it amet, </span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>psum dolor sit</span></a></li>
+<li><a href="sample5-3.html" class="menu_sample5-3"><b></b><span> amet, c</span></a></li>
+</ul></li>
+<li><a href="sample2-2.html" class="menu_sample2-2"><b></b><span>it amet, </span></a></li>
+<li><a href="sample3-2.html" class="menu_sample3-2"><b></b><span>ipsum do</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>em ipsum do</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>or sit amet</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>Lorem ipsum</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>olor sit</span></a></li>
+</ul></li>
+<li><a href="sample4-2.html" class="menu_sample4-2"><b></b><span>em ipsum dolor s</span></a></li>
+<li><a href="sample5-2.html" class="menu_sample5-2"><b></b><span>, consectetur </span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span> consectetur ad</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>Lorem ipsum</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span> sit amet, co</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>sectetur </span></a></li>
+<li><a href="sample5-3.html" class="menu_sample5-3"><b></b><span> amet, consectet</span></a></li>
+</ul></li>
+</ul></li>
+<li><a href="sample4-1.html" class="menu_sample4-1"><b></b><span>met, consecte</span></a></li>
+<li><a href="sample5-1.html" class="menu_sample5-1"><b></b><span> amet, consec</span></a><ul class="submenu"><li><a href="sample1-2.html" class="menu_sample1-2"><b></b><span>t amet, c</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>m ipsum d</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>psum dol</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span> amet, consect</span></a></li>
+</ul></li>
+<li><a href="sample2-2.html" class="menu_sample2-2"><b></b><span>em ipsum dolo</span></a></li>
+<li><a href="sample3-2.html" class="menu_sample3-2"><b></b><span>ctetur adipi</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>r sit amet, cons</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>onsectetur </span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>tetur adipisi</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>etur adipis</span></a></li>
+<li><a href="sample5-3.html" class="menu_sample5-3"><b></b><span> ipsum do</span></a></li>
+</ul></li>
+<li><a href="sample4-2.html" class="menu_sample4-2"><b></b><span>ectetur adipis</span></a></li>
+<li><a href="sample5-2.html" class="menu_sample5-2"><b></b><span>met, conse</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>psum dolor sit </span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>psum dolor sit a</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>met, consectetur</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>it amet, </span></a></li>
+</ul></li>
+</ul></li>
+<li><a href="sample6-1.html" class="menu_sample6-1"><b></b><span>it amet, consect</span></a></li>
+<li><a href="sample7-1.html" class="menu_sample7-1"><b></b><span>m dolor sit</span></a><ul class="submenu"><li><a href="sample1-2.html" class="menu_sample1-2"><b></b><span> dolor sit ame</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span> dolor sit a</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>m ipsum </span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>t, consectetur a</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>t, consectetur </span></a></li>
+<li><a href="sample5-3.html" class="menu_sample5-3"><b></b><span>or sit amet, con</span></a></li>
+</ul></li>
+<li><a href="sample2-2.html" class="menu_sample2-2"><b></b><span>m ipsum dolor si</span></a></li>
+<li><a href="sample3-2.html" class="menu_sample3-2"><b></b><span>ctetur adi</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>ctetur ad</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>t, conse</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span>em ipsum d</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>it amet, con</span></a></li>
+<li><a href="sample5-3.html" class="menu_sample5-3"><b></b><span>r sit amet,</span></a></li>
+</ul></li>
+<li><a href="sample4-2.html" class="menu_sample4-2"><b></b><span>m dolor </span></a></li>
+<li><a href="sample5-2.html" class="menu_sample5-2"><b></b><span>consectetur adi</span></a><ul class="submenu"><li><a href="sample1-3.html" class="menu_sample1-3"><b></b><span>rem ipsum dolor</span></a></li>
+<li><a href="sample2-3.html" class="menu_sample2-3"><b></b><span>consectet</span></a></li>
+<li><a href="sample3-3.html" class="menu_sample3-3"><b></b><span> dolor sit am</span></a></li>
+<li><a href="sample4-3.html" class="menu_sample4-3"><b></b><span>onsectet</span></a></li>
+</ul></li>
+</ul></li>
+<li><a href="sample8-1.html" class="menu_sample8-1"><b></b><span> consect</span></a></li>
+</ul></div>
+
+<script src="../js/jquery-3.4.1.js"></script>
+<script src="../js/jquery.animateAuto.js"></script>
+<script src="../js/jquery.menu.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#menu").menu();
+	});
+</script>
+
+</body>
+</html>

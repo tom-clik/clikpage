@@ -280,7 +280,39 @@ component {
 				}
 			}
 			css.append("");
+		 throw("Stuff here needs reworking to use css array.");
+			/** Text styling etc. Can be h1-6, list, table, or arbitrary class prefixed by . */
+			for (local.class in local.state_styles) {
+				
+				local.type = listFirst(local.class,".");
+				
+				local.css = "";
+				switch (local.type)  {
+					case "h1":case "h2":case "h3":case "h4":case "h5":case "h6":
+						local.css = "/* heading definitions */";
+						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						break;
+					case "table":
+						local.css = "/* table definitions */";
+						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						break;
+					case "list":
+						local.css = "/* list definitions */";
+						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						break;
+					case "class":
+						local.css = "/* arbitrary class definitions */";
+						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						local.class = "." & ListRest(local.class,".");
+						
+						break;
+				}
+				if (local.css neq "") {
+					ret &= arguments.selector & local.state.selector & " " & local.class & " {" & local.css & "}\n";
+				}
+			}
 
+			
 		}
 
 		return css.toList(arguments.debug ? newLine() : "");
@@ -317,31 +349,31 @@ component {
 	 * @settings content section settings struct
 	 * @selector Css selector for main item (usually #id)
 	 *
-	 * Think derpecated.
+	 * Think deprecated.
 	 */
-	public string function panelCss(required struct settings, required string selector) {
-		var css = "";
+	// public string function panelCss(required struct settings, required string selector) {
+	// 	var css = "";
 		
-		for (local.panel in this.panels) {
+	// 	for (local.panel in this.panels) {
 			
-			if (StructKeyExists(arguments.settings,local.panel.name)) {
-				css &= arguments.selector & local.panel.selector & "{\n";
-				css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name]);
-				css &= "}\n";
+	// 		if (StructKeyExists(arguments.settings,local.panel.name)) {
+	// 			css &= arguments.selector & local.panel.selector & "{\n";
+	// 			css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name]);
+	// 			css &= "}\n";
 				
-				for (local.subpanel in variables.subpanels) {
-					if (StructKeyExists(arguments.settings[local.panel.name], local.subpanel.name)) {
-						css &= arguments.selector & local.panel.selector & local.subpanel.selector & "{\n";
-						css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name][local.subpanel.name]);
-						css &= "}\n";
-					}
-				}			
-			}
+	// 			for (local.subpanel in variables.subpanels) {
+	// 				if (StructKeyExists(arguments.settings[local.panel.name], local.subpanel.name)) {
+	// 					css &= arguments.selector & local.panel.selector & local.subpanel.selector & "{\n";
+	// 					css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name][local.subpanel.name]);
+	// 					css &= "}\n";
+	// 				}
+	// 			}			
+	// 		}
 
-		}
+	// 	}
 
-		return css;
-	}
+	// 	return css;
+	// }
 
 	/**
 	 *  return a struct of blank strings with one key for each selector
