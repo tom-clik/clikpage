@@ -62,15 +62,14 @@
 				$content.mCustomScrollbar();
 			}
 			
-			if ( plugin.settings.closebutton !== "none" ) {
-				
-				$(`<div class="closebutton button auto">
-					<a href="#">
-						${plugin.settings.closebutton}
-						<label>Close Popup</label>
+			if ( plugin.settings.closebutton !== "" ) {
+				let tmp = `<div class="closebutton button auto">
+					<a href="#">${plugin.settings.closebutton}<label>Close Popup</label>
 					</a>				
-				   </div>`).prependTo($wrapper).on("click",function() { plugin.close(); });
+				   </div>`;
+				$(tmp).prependTo($wrapper).on("click",function() { plugin.close(); });
 			}
+			
 			
 			if (plugin.settings.draggable) {
 				$element.on("mousedown",plugin.settings.dragTarget,function() {

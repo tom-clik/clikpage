@@ -6,16 +6,15 @@ Only top level menus as most sub menu functionality require JS
 
 ##
 
-
-
 --->
 
 <script>
 tests = [
-	{"id":"horiz", "description":"Horizontal"},
+	{"id":"standard", "description":"Horizontal"},
+	{"id":"horiz", "description":"Horizontal with Horizontal sub menu"},
 	{"id":"vert", "description":"Vertical"},//2
-	{"id":"vert-inline", "description":"Vertical Inline subs", "inherit":"2"},//2a
-	{"id":"vert-inline-open", "description":"Vertical Inline subs open", "inherit":"2,2a"},//2b
+	{"id":"vert-inline", "description":"Vertical Inline subs", "inherit":"vert"},//2a
+	{"id":"vert-inline-open", "description":"Vertical Inline subs open", "inherit":"vert,vert-inline"},//2b
 	{"id":"border", "description":"Manual Border", "inherit":"vert"}, //3
 	{"id":"flex", "description":"Flex"},//5
 	{"id":"flex_reverse", "description":"Flex Reverse", "inherit":"flex"},//6

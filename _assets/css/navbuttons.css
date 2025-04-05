@@ -13,7 +13,7 @@ To assign icons we can use icons or svgs. For icons, always use our standard ico
 
 Either way the icon needs a class of "icon".
 
-```
+```css
 <div class="button"><a href="#"><i class="icon icon-close"></i><label>Button text</label></a></div>
 
 <div class="button"><input type="submit" value="">Button text
@@ -27,14 +27,14 @@ Button text</div>
 There is no "width" for a whole button, only the icon. In common with much modern styling, widths
 should be assigned by the containing div through grid or flexbox.
 
-The buttons are always inline-blocks, so always style the surrounding div with grid or flexbox to control
- the whitespace between the them.
+The buttons are inline-blocks, so always style the surrounding div with grid or flexbox to control
+ the whitespace between them.
 
 # Usage
 
 Styling should be applied to `.button` with hover state `.button:hover`
 
-The label itself can also be styles with a selector of `.button label`.
+The label itself can also be styled with a selector of `.button label`.
 
 E.g.
 
@@ -42,7 +42,6 @@ E.g.
 .scheme-button.button 
 .scheme-button.button label
 .scheme-button.button:hover label
-
 ```
 
 */
@@ -94,7 +93,7 @@ E.g.
 	display:block;
 }
 
-.button .icon {
+.button [class*="icon"] {
 	display: block;
 	width:var(--icon-width);
 	height:var(--icon-height);
@@ -117,8 +116,8 @@ E.g.
 }
 
 @container button ( style(--label-display:0) ) {
-	label {
-		display:  var(--label-display);
+	.button  label {
+		display:none;
 	}
 }
 

@@ -250,9 +250,9 @@ hi      li.hi a
 	top:0;
 	left:0;
 	z-index: 100;
-  	min-width:100%;
-  	overflow: hidden;
+	min-width:100%;
   	height: auto;
+  	width: max-content;
 }
 
 @container menu ( style(--menu-submenu-show: show ) ) {
