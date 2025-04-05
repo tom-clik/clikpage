@@ -1,7 +1,7 @@
 component {
 
 	request.isAjaxRequest = 1;
-	
+	request.prc.isAjaxRequest = 1;
 	// VIRTUAL
 	private boolean function isLoggedIn() {
 		throw("You need to create your own isLoggedIn() method.");

@@ -220,6 +220,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 <script src="../js/jquery.elastic.1.6.11.js"></script>
 <script src="../js/jquery.validate.js"></script>
 <script src="../js/jquery.serializeData.js"></script>
+<script src="../js/jquery.form.js"></script>
 <script src="../js/jquery.clikForm.js"></script>
 
 <!---  	
@@ -253,7 +254,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 		$("#testform").clikForm({
 			debug:false,
 			rules : {
-				email: {
+				  email: {
 			    	required: true,
 			    	email: true
 			    },
@@ -274,7 +275,7 @@ Currently still uses lots of things like `field-background-color` and `button-bo
 			    }
 			},
 			messages: {
-		        field1: {
+		        email: {
 		            required: 'Email address is required',
 		            email: 'Please enter a valid email address'
 		        },
