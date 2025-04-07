@@ -6,14 +6,12 @@ Style a standard layout with some pre-defined options
 
 ## Synopsis
 
-
-
 */
 
 :root {
 	--header-fixed: 0;
 	--footer-fixed: 0;
-	--menupos : static;/* static|fixed|slide   */
+	--menupos : static;/* static|fixed|slide|none   */
 	--menu: open; /* open | close */
 	--xcol: open; /* open | close */
 	--framed: 0;
@@ -477,6 +475,9 @@ div:not(.cs-grid):has( > .inner) {
 @container body ( style( --menupos:none ) ) { 
 	#menu {
 		display: none;
+	}
+	#content_main {
+		--grid-mode: none;
 	}
 }
 

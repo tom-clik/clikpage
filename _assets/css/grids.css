@@ -151,6 +151,7 @@ None of this properties stuff seems to work. We get undefined values, values tha
 	flex-grow: var(--flex-stretch);
 }
 
+/* flex class deprecated - use grid-mode: flex */
 .flex {
 	grid-gap:var(--grid-gap);
 	display: flex;

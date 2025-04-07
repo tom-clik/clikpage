@@ -5,6 +5,7 @@
 	<meta name="description" content="Basic three column layout">
 	<meta name="author" content="Tom peer">
 	<style>
+
 		.scheme-spanning {
 			
 			inner {
@@ -26,19 +27,7 @@
 			font-size:80%;
 			padding:0;
 			header-height:84px;
-		}
-
-		#ubercontainer {
-			
-			grid-mode:named;
-			grid-template-areas:"header" "content" "footer";
-			grid-template-rows:min-content 1fr min-content;
-			
-			@mobile {
-				
-				grid-mode:none;
-				
-			}
+			menupos: 1;
 		}
 
 		#topnav {
@@ -77,7 +66,7 @@
 		#content {
 			grid-mode:rows;
 			grid-template-rows:min-content auto min-content;
-			
+			padding: 8 0;
 			@mobile {
 				grid-mode:none;
 				padding:8;

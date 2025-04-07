@@ -74,6 +74,10 @@ body[class*="layout-slide"] {
 	--menu-width: 240px;
 }
 
+body[class*="layout-nomenu"] {
+	--menupos: nomenu;
+}
+
 body[class*=-sticky] :is( #xcol, #menu ) {
 	--sticky:1;
 }

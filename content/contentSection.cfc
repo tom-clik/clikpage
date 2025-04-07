@@ -279,36 +279,38 @@ component {
 					css.append("/* No settings for panel #local.panel.panel# */");
 				}
 			}
+			
 			css.append("");
-		 throw("Stuff here needs reworking to use css array.");
-			/** Text styling etc. Can be h1-6, list, table, or arbitrary class prefixed by . */
+		 	/** Text styling etc. Can be h1-6, list, table, or arbitrary class prefixed by . */
+		 	// NOTE: dont' understand if this wasn't done or if it could be reworked.
+		 	// TODO: work out what's happened here
 			for (local.class in local.state_styles) {
 				
 				local.type = listFirst(local.class,".");
 				
-				local.css = "";
+				local.css_temp = "";
 				switch (local.type)  {
 					case "h1":case "h2":case "h3":case "h4":case "h5":case "h6":
-						local.css = "/* heading definitions */";
-						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						local.css_temp = "/* heading definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
 						break;
 					case "table":
-						local.css = "/* table definitions */";
-						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						local.css_temp = "/* table definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
 						break;
 					case "list":
-						local.css = "/* list definitions */";
-						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						local.css_temp = "/* list definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
 						break;
 					case "class":
-						local.css = "/* arbitrary class definitions */";
-						local.css &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						local.css_temp = "/* arbitrary class definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
 						local.class = "." & ListRest(local.class,".");
 						
 						break;
 				}
-				if (local.css neq "") {
-					ret &= arguments.selector & local.state.selector & " " & local.class & " {" & local.css & "}\n";
+				if (local.css_temp neq "") {
+					css.append( arguments.selector & local.state.selector & " " & local.class & " {" & local.css_temp & "}" ) ;
 				}
 			}
 
