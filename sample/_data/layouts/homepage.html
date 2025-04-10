@@ -15,27 +15,11 @@
 	</style>
 </head>
 
-<body data-extends="main">
+<body data-extends="section">
 		
 	<div id="maincol" grid="1">
 
-		<div id="maincol_top">
-
-			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-				<title>Section title</title>
-				<content>
-				{{section.title}}
-				</content>
-			</content>	
-
-			<content id="sectioncopy" type="text">
-				<title>Section detail</title>
-				<content>
-				{{section.detail}}
-				</content>
-			</content>
-			
-		</div>	
+		
 
 		<div id="maincol_bottom">
 			<content id="homearticlecarousel" class="scheme-carousel" type="articlelist">
@@ -44,7 +28,7 @@
 				<link>{link.news.view.{data.id}}</link>
 			</content>
 		</div>	
-	</div>
+	
 
 	<div id="content_footer" class="grid">
 		<content id="welcome1" data-notes="Notes here">

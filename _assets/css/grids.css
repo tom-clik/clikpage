@@ -6,130 +6,108 @@ Static CSS for grid and flex styling
 
 ## Notes
 
-See /notes/grids.md
+See /_notes/grids.md
+
+Also NB see note on use of "containers" for styling.
 
 */
 
-/*
+/* If you don't already know, you want fit, columns, or flex */
+@property --grid-mode {
+	syntax: 'none | fit | fill | fixed | fixedwidth | columns | rows | named | flex';
+	inherits: false;
+	initial-value: fit;
+}
 
-None of this properties stuff seems to work. We get undefined values, values that inherit when they shouldn't, the syntax stuff is a nightmare and basically they're not worth it
-
+/* Gap between cells. One value or column gap, row gap */
 @property --grid-gap {
-	syntax: "<length> | <percentage>";
+	syntax: '<length-percentage>{1,2}';
 	inherits: false;
-	initial-value: 0;
+	initial-value: 0px;
 }
 
-@property --grid-fit {
-	syntax: "auto-fit | auto-fill";
-	inherits: false;
-	initial-value: auto-fit;
-}
-
+/* Maximum width of cells when using fit|fill */
 @property --grid-width {
-	syntax: "*"; 
+	syntax: '<length> | <percentage>';
 	inherits: false;
 	initial-value: 180px;
 }
 
-@property --grid-max-width {
-	syntax: "*"; 
-	inherits: false;
-	initial-value: 1fr;
-}
-
+/* 1fr or a <length>. You probably want --grid-template-rows instead of this */
 @property --grid-max-height {
-	syntax: "*"; 
+	syntax: '*'; 
 	inherits: false;
 	initial-value: 1fr;
 }
 
+/*Number of columns when using mode=fixed. Actually what you want is mode=columns and set --grid-template-columns */
 @property --grid-columns {
-	syntax: "<integer>"; 
+	syntax: '<integer>''; 
 	inherits: false;
 	initial-value: 2;
 }
 
+/* explicitly list heights of rows e.g. 120px auto 160px */
 @property --grid-template-rows {
+	syntax: '*';
 	initial-value: auto;
 	inherits: true;
 }
 
+/* explicitly list widths of columns e.g. 120px auto 160px */
 @property --grid-template-columns {
+	syntax: '*';
 	inherits: false;
 	initial-value: auto;
 }
 
- e.g. "header header" "menu main" "footer footer" 
+/* e.g. "header header" "menu main" "footer footer" */
 @property --grid-template-areas {
+	syntax: '*';
 	inherits: false;
 	initial-value: none;
 }
 
 @property --flex-direction {
-	syntax: "row | row-reverse | column | column-reverse"; 
+	syntax: 'row | row-reverse | column | column-reverse'; 
 	inherits: false;
 	initial-value: row;
 }
 
 @property --justify-content {
-	syntax: "normal | start | end | center | space-between | space-around |  space-evenly |  stretch"; 
+	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
 	inherits: false;
 	initial-value: row;
 }
- alignment for multiple rows 
+/* alignment for multiple rows */
 @property --align-content {
-	syntax: "normal | start | end | center | space-between | space-around |  space-evenly |  stretch"; 
+	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
 	inherits: false;
 	initial-value: normal;
 }
 
- this the vertical alignment you want 
+/* this the vertical alignment you want */
 @property --align-items {
-	syntax: "normal | stretch | start | end | center "; 
+	syntax: 'normal | stretch | start | end | center '; 
 	inherits: false;
 	initial-value: normal;
 }
-
+/* the default for this 0 for mode=flex. This is applied explicitly below in a property query  */
 @property --flex-stretch {
-	syntax: "0 | 1 "; 
+	syntax: '0 | 1 '; 
 	inherits: true;
-	initial-value: 0;
+	initial-value: 1;
 }
 
 @property --flex-wrap {
-	syntax: "wrap | nowrap "; 
+	syntax: 'wrap | nowrap'; 
 	inherits: false;
 	initial-value: wrap;
 }
 
-@property --grid-mode {
-	syntax: "none | fit | fill | fixed | fixedwidth | columns | rows | named | flex";
-	inherits: false;
-	initial-value: fit;
-}*/
-
-:root {
-	--grid-mode: fit;
-	--grid-gap: 0;
-	--grid-fit: auto-fit;
-	--grid-width: 180px;
-	--grid-max-width: 1fr;
-	--grid-max-height: 1fr;
-	--grid-columns: 2;
-	--grid-template-rows: auto;
-	--grid-template-columns: auto;
-	--grid-template-areas: none;
-	--flex-direction: row;
-	--justify-content: normal;
-	--align-content: normal;
-	--align-items: normal;
-	--flex-stretch: 0;
-	--flex-wrap: wrap;
-}
-
 .cs-grid {
 	container-name:grid;
+	display: grid; /* need to get content to expand */
 }
 
 .grid {
@@ -140,10 +118,14 @@ None of this properties stuff seems to work. We get undefined values, values tha
 	align-items: var(--align-items);
 	justify-content: var(--justify-content);
 	flex-wrap: var(--flex-wrap);
+	grid-template-columns: var(--grid-template-columns);
+	grid-template-rows: var(--grid-template-rows);
 }
 
 .cs-grid > .grid {
 	height:100%;
+	min-height: 100%;
+	align-self: stretch; /* for grid/flex contexts */
 }
 
 .grid > * {
@@ -168,21 +150,22 @@ None of this properties stuff seems to work. We get undefined values, values tha
 	}
 }
 
-@container grid ( style(--grid-mode:fill) ) {
+@container grid ( style(--grid-mode:fit) ) {
 	.grid {
-		--grid-fit: auto-fill;
+		grid-template-columns: repeat(auto-fit, minmax(var(--grid-width),1fr));
 	}
 }
 
-@container grid ( style(--grid-mode:fill) or style(--grid-mode:fit) ) {
+@container grid ( style(--grid-mode:fill) ) {
 	.grid {
-		grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
+		grid-template-columns: repeat(auto-fill, minmax(var(--grid-width),1fr));
 	}
 }
 
 @container grid ( style(--grid-mode:flex) ) {
 	.grid {
 		display: flex;
+		--flex-stretch: 0; /* see notes */
 	}
 }
 
@@ -198,28 +181,18 @@ None of this properties stuff seems to work. We get undefined values, values tha
 	}
 }
 
-@container grid ( style(--grid-mode:columns) ) {
-	.grid {
-		grid-template-columns: var(--grid-template-columns);
-		grid-template-rows: var(--grid-template-rows);
-	}
-}
-
 @container grid ( style(--grid-mode:rows) ) {
 	.grid {
 		grid-template-columns: 1fr;
-		grid-template-rows: var(--grid-template-rows);
 	}
 }
 
 @container grid ( style(--grid-mode:named) ) {
 	.grid {
 		grid-template-areas: var(--grid-template-areas);
-		grid-template-columns: var(--grid-template-columns);
-		grid-template-rows: var(--grid-template-rows);
 	}
 }
-
+/* Setting a name seems to cause issues when in other modes*/
 @container grid ( not style(--grid-mode:named) ) {
 	.grid > * {
 		grid-area: unset !important;

@@ -25,7 +25,7 @@
 		padding:2px;
 	}
 	
-	.cs-grid {
+	.cs-grid .grid {
 		--grid-gap:10px;
 	}
 
@@ -34,17 +34,20 @@
 	}
 	#testfix {
 		--grid-mode: fixed;
+	}
+
+	#testfix .grid {
 		--grid-columns:3;
 	}
 
 	@media screen and (max-width: 800px) {
-		#testfix {
+		#testfix .grid {
 			--grid-columns:2;
 		}
 	}
 
 	@media screen and (max-width: 600px) {
-		#testfix {
+		#testfix .grid {
 			--grid-mode:none;
 		}
 	}
@@ -57,25 +60,31 @@
 
 	#testcolumns {
 		--grid-mode: columns;
+	}
+	#testcolumns .grid {
 		--grid-template-columns: 220px auto 260px;
 	}
 
 	#testrows {
 		height: 400px;
 		--grid-mode: rows;
+	}
+	#testrows .grid {
 		--grid-template-rows: 40px auto 40px;
 	}
 
 	#testnamed {
 		height: 400px;
 		--grid-mode: named;
+	}
+	#testnamed .grid {
 		--grid-template-areas: "header header" "left right" "footer footer";
 		--grid-template-columns: 200px auto;
 		--grid-template-rows: 40px auto 40px;
 	}
 
 	@media screen and (max-width: 800px) {
-		#testnamed {
+		#testnamed  .grid {
 			height: 280px;
 			--grid-template-areas: "header header" "right right" "left footer";
 			--grid-template-columns: 200px auto;
@@ -98,13 +107,13 @@
 	}
 
 	@media screen and (max-width: 800px) {
-		#testcolumns {
+		#testcolumns .grid {
 			--grid-template-columns: 120px auto 160px;
 		}
 	}
 
 	@media screen and (max-width: 600px) {
-		#testcolumns {
+		#testcolumns .grid {
 			--grid-template-columns: 120px auto;
 		}
 	}
@@ -112,21 +121,29 @@
 
 	#testflex {
 		--grid-mode: flex;
+	}
+	#testflex .grid {
 		--justify-content: flex-end;
 	}
 	#testflexnowrap {
 		--grid-mode: flex;
+	}
+	#testflexnowrap .grid {
 		--flex-wrap: nowrap;
 		--align-items: center;
 	}
 
 	#testflexstretch {
 		--grid-mode: flex;
+	}
+	#testflexstretch .grid {
 		--flex-direction: row-reverse;
 		--flex-stretch: 1;
 	}
 	#testflexcenter {
 		--grid-mode: flex;
+	}
+	#testflexcenter .grid {
 		--justify-content: center;
 	}
 	</style>

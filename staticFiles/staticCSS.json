@@ -68,6 +68,12 @@
             "requires": "icons"
         },
         {
+            "min": "/_assets/css/fonts/google_icons.css",
+            "debug": "/_assets/css/fonts/google_icons_local.css",
+            "name": "google_icons",
+            "requires": "icons"
+        },
+        {
             "min": "/_assets/css/images.css",
             "name": "images"
         },

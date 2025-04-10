@@ -93,7 +93,7 @@ component output=false {
 		this.columnDefs = [
 			"header-fixed":{ "type"="boolean", "title"="Fixed header","default"=" 0"},
 			"footer-fixed":{ "type"="boolean", "title"="Fixed footer","default"=" 0"},
-			"menupos ":{ "type"="list", "title"="Menu position","default"="static","options"=[{"value":"static"},{"value":"fixed"},{"value":"slide"}]},
+			"menupos":{ "type"="list", "title"="Menu position","default"="static","options"=[{"value":"static"},{"value":"none"},{"value":"fixed"},{"value":"slide"}]},
 			"menu":{ "type"="list", "title"="Show menu column","default"="open","options"=[{"value":"open"},{"value":"close"}]},
 			"xcol":{ "type"="list", "title"="Show extra column","default"="open","options"=[{"value":"open"},{"value":"close"}]}, 
 			"framed":{ "type"="boolean", "title"="Frame site","default"="0"},
@@ -272,7 +272,13 @@ component output=false {
 
 			var media = arguments.media[medium];
 			var section_css = "";
-			
+
+			// Column layout short hand
+			if ( StructKeyExists(arguments.styles, "body") AND
+				StructKeyExists(arguments.styles.body, medium)) {
+				section_css &= arguments.selector & "{ " & cr & columns(arguments.styles.body[medium]) & cr & "}" & cr;
+			}
+
 			for ( var id in arguments.containers ) {
 				
 				local.cs = arguments.containers[id];
@@ -829,9 +835,10 @@ component output=false {
 			if (StructKeyExists(arguments.styles,local.style)) {
 				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
 			}
+			else if (arguments.debug) {
+				css.append("/* No setting for #local.style# */");
+			}
 		}
-
-		css.append("");
 
 		return css.toList(arguments.debug ? newLine() : "");
 

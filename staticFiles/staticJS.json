@@ -236,7 +236,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,clik_settings,clik_common"
+      "requires": "jquery,modal,getSettings,clik_common"
     },
     {
       "min":"/_assets/js/messageHandler.js",

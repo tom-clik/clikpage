@@ -168,7 +168,8 @@ component extends="contentSection" {
 		
 		for (local.item in arguments.items) {
 			local.class = "  class='menu_#local.item.id#'";
-			local.menu &= "<li><a href='#local.item.link#'#local.class#><i></i><span>#local.item.title#</span></a>";
+			local.iconClass = "icon-" & ( local.item.icon ? : "" ); 
+			local.menu &= "<li><a href='#local.item.link#'#local.class#><i class='#local.iconClass#'></i><span>#local.item.title#</span></a>";
 			if (StructKeyExists(local.item,"submenu")) {
 				local.menu &= "<div class='menu submenu'>" & menuHTML(items=local.item.submenu) & "</div>";
 			}

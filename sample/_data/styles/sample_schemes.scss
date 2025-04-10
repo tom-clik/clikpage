@@ -1,3 +1,18 @@
+scheme-spanning {
+	
+	inner {
+		max-width:var(--sitewidth);
+		align:center;
+		padding:var(--sitepadding);
+	}
+	@mobile {
+		inner {
+			max-width:auto;
+			padding:var(--sitepaddingmobile);
+		}
+	}
+}
+
 scheme-popupbutton {
 	position:fixed;
 	top:4px;
@@ -80,7 +95,7 @@ scheme-carousel {
 
 
 scheme-bodycopy {
-/*	 Won't don anything yet, just testing it parses*/
+	/*	 Won't do anything yet, just testing it parses*/
 	h1 {
 		heading-font-size:24px;
 		heading-margin: 0 0 1em 0;

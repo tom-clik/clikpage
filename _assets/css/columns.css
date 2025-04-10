@@ -11,7 +11,7 @@ Style a standard layout with some pre-defined options
 :root {
 	--header-fixed: 0;
 	--footer-fixed: 0;
-	--menupos : static;/* static|fixed|slide|none   */
+	--menupos: static;/* static|fixed|slide|none   */
 	--menu: open; /* open | close */
 	--xcol: open; /* open | close */
 	--framed: 0;

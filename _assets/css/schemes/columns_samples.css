@@ -75,7 +75,7 @@ body[class*="layout-slide"] {
 }
 
 body[class*="layout-nomenu"] {
-	--menupos: nomenu;
+	--menupos: none;
 }
 
 body[class*=-sticky] :is( #xcol, #menu ) {

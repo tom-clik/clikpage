@@ -1,4 +1,10 @@
-body {
+/**
+ * Convert our var names to Material icons names
+ *
+ * See also google_icons.css and google_icons_local.css
+ * 
+ */
+:root {
 	--icon-previous: "chevron_left";
 	--icon-next: "chevron_right"; 
 	--icon-squares: "apps";

@@ -5,6 +5,7 @@ $(document).ready(function() {
 });
 
 clik = {
+	// deprecated - should now use container css mechanism
 	clikContainers: function () {
 		$(".inner").parent().addClass("container");
 	},

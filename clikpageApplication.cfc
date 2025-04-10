@@ -43,6 +43,8 @@ component {
 			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;
 			application.siteObj.pageObj.content.static_css["content"] = 1;
+			application.siteObj.pageObj.content.static_css["google_icons"] = 1;
+			
 			application.siteObj.pageObj.content.static_js["clik_onready"] = 1;
 
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
@@ -87,7 +89,7 @@ component {
 		
 		local.update = arguments.reload OR checkStylesChanged();
 
-		if (local.update) {
+		if (local.update) {	
 			
 			application.siteObj.cacheClear();
 			application.site = application.siteObj.loadSite(application.config.siteDef);

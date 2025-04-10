@@ -6,30 +6,21 @@
 	<meta name="author" content="Tom peer">
 	<style>
 
-		.scheme-spanning {
-			
-			inner {
-				max-width:var(--sitewidth);
-				align:center;
-				padding:var(--sitepadding);
-			}
-			@mobile {
-				inner {
-					max-width:auto;
-					padding:var(--sitepaddingmobile);
-				}
-			}
-		}
-
 		body {
 			color:textcolor;
 			font-family:bodyfont;
 			font-size:80%;
 			padding:0;
 			header-height:84px;
-			menupos: 1;
+			header-fixed:1;
+			framed: 0;
+			menu-width: 200px;
+			xcol-width: 260px;
+			site-width: 1400px;
+			footer-height: 60px;
+			menu-anim-time: 400;
 		}
-
+		
 		#topnav {
 			padding:8 0;
 			background {
@@ -106,7 +97,7 @@
 		Much of the sticky/fixed functionality depends on this. --> 
 	<div id="header" grid="1">
 		
-		<div id="title" class="spanning">
+		<div id="title" class="scheme-spanning">
 				
 			<content type="title" id="sitetitle">
 				<title>Site Title</title>
@@ -146,7 +137,7 @@
 		</div>
 
 		<!-- To remove this or place it above the title, adjust #header grid -->
-		<div id="nav" class="spanning">
+		<div id="nav" class="scheme-spanning">
 			
 			<content id="mobilemenu" type="menu">
 				<style>
@@ -173,13 +164,15 @@
 
 		</div>
 
-		<div id="content_main" class="container spanning" grid="1">
+		<div id="content_main" class="container scheme-spanning" grid="1">
 				
 			<div id="menu">
 				<content id="mainmenu" type="menu">
 					<style>
 						menu-orientation:vertical;
 						menu-align:left;
+						menu-item-padding: 0;
+						menu-icon-gap: 0;
 						@mobile {
 							show:0;
 						}
@@ -202,13 +195,13 @@
 
 		</div>
 
-		<div id="content_footer" grid="1" class="spanning">
+		<div id="content_footer" grid="1" class="scheme-spanning">
 
 		</div>
 
 	</div>
 
-	<div id="footer" grid="1" class="spanning">
+	<div id="footer" grid="1" class="scheme-spanning">
 		
 		<div id="footer_left">
 			<content id="footermenu" type="menu">
@@ -228,6 +221,7 @@
 
 			</content>
 		</div>
+		
 		<div id="footer_mid"><content id="copyright">{{site.meta.copyright}}</content></div>
 		<div id="footer_right"><content id="contactme">{{site.meta.contacttel}}</content></div>
 	
