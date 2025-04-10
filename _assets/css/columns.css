@@ -51,14 +51,6 @@ div:not(.cs-grid):has( > .inner) {
 	--sticky: 0;
 }
 
-.container {
-	display: flex;
-}
-
-.container > * {
-	flex: 1;
-}
-
 #header {
 	grid-area:header;
 	height: var(--header-height);

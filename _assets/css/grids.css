@@ -92,18 +92,18 @@ E.g.
 
 /* main axis alignment */
 @property --justify-content {
-	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
+	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly'; 
 	inherits: false;
 	initial-value: row;
 }
-/* alignment for multiple rows */
+/* alignment for multiple rows within their container (no, me neither: what you want is actually align-items) */
 @property --align-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
 	inherits: false;
 	initial-value: normal;
 }
 
-/* this the vertical alignment you want */
+/* this the vertical alignment you're after */
 @property --align-items {
 	syntax: 'normal | stretch | start | end | center '; 
 	inherits: false;

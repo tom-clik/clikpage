@@ -22,7 +22,7 @@
 	g {
 		display: inline-block;
 		background-color: #cecece;
-		padding:2px;
+		padding:4px;
 	}
 	
 	.cs-grid .grid {
@@ -121,16 +121,19 @@
 
 	#testflex {
 		--grid-mode: flex;
+		height:250px;
+		background-color: #8c8c8c;
 	}
 	#testflex .grid {
 		--justify-content: flex-end;
+		--align-content: space-between;
 	}
 	#testflexnowrap {
 		--grid-mode: flex;
 	}
 	#testflexnowrap .grid {
 		--flex-wrap: nowrap;
-		--align-items: center;
+		--align-items: stretch;
 	}
 
 	#testflexstretch {
@@ -140,6 +143,12 @@
 		--flex-direction: row-reverse;
 		--flex-stretch: 1;
 	}
+
+	/* note the text centering is not within the scope of the grid system, you can do whatever you like here */
+	#testflexstretch g {
+		text-align: center;
+	}
+
 	#testflexcenter {
 		--grid-mode: flex;
 	}
@@ -195,17 +204,17 @@
 	</div>
 
 	<div class="test">
-		<div class="test-header">Flex</div>
+		<div class="test-header">Flex - with a height to show what align-content actually does</div>
 		<div id="testflex" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
-		<div class="test-header">Flex No Wrap</div>
+		<div class="test-header">Flex No Wrap - items stretched with align-items</div>
 		<div id="testflexnowrap" class="cs-grid"></div>
 	</div>
 
 	<div class="test">
-		<div class="test-header">Flex Stretch</div>
+		<div class="test-header">Flex Stretch - note text centering not part of grid system</div>
 		<div id="testflexstretch" class="cs-grid" data-cols="5"></div>
 	</div>
 
