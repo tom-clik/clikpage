@@ -4,11 +4,25 @@
 
 Static CSS for grid and flex styling 
 
-## Notes
-
 See /_notes/grids.md
 
-Also NB see note on use of "containers" for styling.
+## Notes
+
+IMPORTANT because grids can be within grids, we have an issue with CSS properties inheriting. To stop this, we use the @property
+definitions below. This stops the problem but means all properties (apart from "grid-mode") then have to be defined on the inner container 
+
+E.g. 
+
+```css
+
+#footer {
+	--grid-mode: columns;
+}
+
+#footer .grid {
+	--grid-template-columns: 
+	--grid-gap: 24px 0;
+}
 
 */
 
@@ -18,6 +32,8 @@ Also NB see note on use of "containers" for styling.
 	inherits: false;
 	initial-value: fit;
 }
+
+/* ALL OTHER PROPERTIES must be applied to .grid inner container 
 
 /* Gap between cells. One value or column gap, row gap */
 @property --grid-gap {
@@ -74,6 +90,7 @@ Also NB see note on use of "containers" for styling.
 	initial-value: row;
 }
 
+/* main axis alignment */
 @property --justify-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
 	inherits: false;
@@ -104,6 +121,7 @@ Also NB see note on use of "containers" for styling.
 	inherits: false;
 	initial-value: wrap;
 }
+
 
 .cs-grid {
 	container-name:grid;
