@@ -66,6 +66,8 @@ div:not(.cs-grid):has( > .inner) {
 #ubercontainer {
 	min-height:100%;
 	--grid-mode: rows;
+}
+#ubercontainer > .grid {
 	--grid-template-rows: min-content auto min-content;
 }
 
@@ -83,8 +85,10 @@ div:not(.cs-grid):has( > .inner) {
 	#ubercontainer {
 		padding-top: calc( var(--header-height) + var(--site-top-padding) );
 		--grid-mode: rows;
-		--grid-template-rows: auto min-content;
 		min-height:100%;
+	}
+	#ubercontainer > .grid {
+		--grid-template-rows: auto min-content;
 	}
 }
 
@@ -108,12 +112,16 @@ div:not(.cs-grid):has( > .inner) {
 	@container body ( style(--header-fixed:0) ) {
 		#ubercontainer {
 			--grid-mode: rows;
+		}
+		#ubercontainer > .grid {
 			--grid-template-rows: min-content auto ;
 		}
 	}
 	@container body ( style(--header-fixed:1) ) {
 		#ubercontainer {
 			--grid-mode: rows;
+		}
+		#ubercontainer > .grid {
 			--grid-template-rows:  auto ;
 		}
 	}
@@ -132,6 +140,7 @@ div:not(.cs-grid):has( > .inner) {
 .spanning > .inner {
 	margin: 0 auto;
 	max-width: var(--site-width);
+	width: 100%;
 }
 
 @container body ( style( --site-align:left) ) {
@@ -148,7 +157,7 @@ div:not(.cs-grid):has( > .inner) {
 
 @container body ( style( --framed:1) ) {
 	.spanning > .inner  {
-		width: auto;
+		width: 100%;
 	}
 	#ubercontainer {
 		max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
@@ -265,11 +274,6 @@ div:not(.cs-grid):has( > .inner) {
 
 }
 
-.inner {
-	--grid-mode: none;
-	position: relative;
-}
-
 .show-hide {
 	height:0 !important;
 	visibility: hidden !important;
@@ -282,6 +286,8 @@ div:not(.cs-grid):has( > .inner) {
 
 #content_main {
 	--grid-mode: named;
+}
+#content_main > .grid {
 	--grid-template-areas: "menu content_wrap";
 	--grid-template-columns: var(--menu-width) auto;
 	--grid-template-rows: auto;
@@ -289,11 +295,15 @@ div:not(.cs-grid):has( > .inner) {
 
 #content {
 	--grid-mode: rows;
+}
+#content > .grid {
 	--grid-template-rows: min-content auto min-content;
 }
 
 #content_wrap {
 	--grid-mode: named;
+}
+#content_wrap > .grid {
 	--grid-template-areas: "maincol xcol";
 	--grid-template-columns: auto var(--xcol-width) ;
 	--grid-template-rows: auto;
@@ -308,6 +318,8 @@ div:not(.cs-grid):has( > .inner) {
 	
 	#content_wrap {
 		--grid-mode: flex;
+	}
+	#content_wrap > .grid {
 		--flex-direction: column;
 		height: auto;
 	}
@@ -320,6 +332,8 @@ div:not(.cs-grid):has( > .inner) {
 
 #maincol {
 	--grid-mode: named;
+}
+#maincol > .grid {
 	--grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
 	--grid-template-rows: min-content auto min-content;
 	--grid-template-columns:  1fr 1fr ;
@@ -328,8 +342,11 @@ div:not(.cs-grid):has( > .inner) {
 #footer {
 	height: var(--footer-height);
 	--grid-mode: rows;
+}
+#footer > .grid {
 	--grid-template-rows: min-content auto;
 }
+
 
 #footer_left {
 	justify-self: start;
@@ -346,17 +363,24 @@ div:not(.cs-grid):has( > .inner) {
 
 #header {
 	--grid-mode: rows;
+}
+#header > .grid {	
 	--grid-template-rows:auto  min-content ;
 }
 
 #nav {
-	--grid-mode: flex;
-	--align-items: center;
+	--grid-mode: columns;
+}
+#nav > .grid {
+	--grid-template-columns: min-content 1fr min-content;
 	--grid-gap: 8px;
+/*	--align-items: center;*/
 }
 
 #footer_main {
 	--grid-mode: fixed;
+}
+#footer_main > .grid {
 	--grid-columns: 3;
 }
 
@@ -364,6 +388,8 @@ div:not(.cs-grid):has( > .inner) {
 	
 	#content_wrap {
 		--grid-mode: flex;
+	}
+	#content_wrap > .grid {
 		--flex-direction: column;
 		height: auto;
 	}
@@ -391,14 +417,13 @@ div:not(.cs-grid):has( > .inner) {
 
 	#maincol {
 		height:auto;
-	}
-
-	#maincol {
 		--grid-mode: none;
 	}
 
 	#footer_main {
 		--grid-mode: flex;
+	}
+	#footer_main > .grid {
 		--flex-direction: column-reverse;
 		--justify-content:start;
 	}
@@ -407,6 +432,8 @@ div:not(.cs-grid):has( > .inner) {
 		#footer {
 			height: auto;
 			--grid-mode: flex;
+		}
+		#footer > .grid {
 			--flex-direction: column;
 			--justify-content:start;
 		}

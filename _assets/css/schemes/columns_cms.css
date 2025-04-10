@@ -70,6 +70,8 @@ Blue grey sort of thing
 #nav {
  	border-bottom: 1px solid var(--border-color);
 	--grid-mode:flex; 
+}
+#nav .grid {
 	--flex-direction: row;
 }
 
@@ -79,7 +81,7 @@ Blue grey sort of thing
 	font-weight: normal;
 }
 
-#content {
+#content .grid {
 	--grid-template-rows: auto min-content;
 }
 

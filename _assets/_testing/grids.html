@@ -52,15 +52,14 @@
 		}
 	}
 
-
 	#testfixedwidth {
-		--bar: whatever;
 		--grid-mode: fixedwidth;
 	}
 
 	#testcolumns {
 		--grid-mode: columns;
 	}
+
 	#testcolumns .grid {
 		--grid-template-columns: 220px auto 260px;
 	}
@@ -118,16 +117,23 @@
 		}
 	}
 
-
 	#testflex {
 		--grid-mode: flex;
 		height:250px;
 		background-color: #8c8c8c;
 	}
+
 	#testflex .grid {
-		--justify-content: flex-end;
+		--justify-content: end;
 		--align-content: space-between;
 	}
+
+	@media screen and (max-width: 800px) {
+		#testflex {
+			height:auto;
+		}
+	}
+
 	#testflexnowrap {
 		--grid-mode: flex;
 	}

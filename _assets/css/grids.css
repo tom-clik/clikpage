@@ -37,7 +37,7 @@ E.g.
 
 /* Gap between cells. One value or column gap, row gap */
 @property --grid-gap {
-	syntax: '<length-percentage>{1,2}';
+	syntax: '*';
 	inherits: false;
 	initial-value: 0px;
 }
@@ -58,9 +58,9 @@ E.g.
 
 /*Number of columns when using mode=fixed. Actually what you want is mode=columns and set --grid-template-columns */
 @property --grid-columns {
-	syntax: '<integer>''; 
+	syntax: '<integer>'; 
 	inherits: false;
-	initial-value: 2;
+	initial-value: 3;
 }
 
 /* explicitly list heights of rows e.g. 120px auto 160px */
@@ -94,7 +94,7 @@ E.g.
 @property --justify-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly'; 
 	inherits: false;
-	initial-value: row;
+	initial-value: normal;
 }
 /* alignment for multiple rows within their container (no, me neither: what you want is actually align-items) */
 @property --align-content {
@@ -111,7 +111,7 @@ E.g.
 }
 /* the default for this 0 for mode=flex. This is applied explicitly below in a property query  */
 @property --flex-stretch {
-	syntax: '0 | 1 '; 
+	syntax: '<number>'; 
 	inherits: true;
 	initial-value: 1;
 }

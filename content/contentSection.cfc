@@ -209,8 +209,8 @@ component {
 			
 			for (local.style in this.styleDefs) {
 				local.def = this.styleDefs[local.style];
-				
-				if (StructKeyExists(local.state_styles,local.style)) {
+
+				if (StructKeyExists(local.state_styles,local.style) && ! StructKeyExists(variables.contentObj.settingsObj.gridDefs, local.style )) {
 					if (isStruct(local.state_styles[local.style])) {
 						throw("incorrect value for #local.style#");
 					}
@@ -218,7 +218,6 @@ component {
 
 						local.val = variables.contentObj.settingsObj.displaySetting(local.state_styles[local.style], local.def.type);
 
-						// css &= this.settingsObj.CSSCommentHeader("Content styling");
 						css.append("#tab#--#local.style#: " & local.val & ";");
 					}
 				}
@@ -228,9 +227,20 @@ component {
 				
 			}
 
+			local.gridcss = "";
+			if ( local.state_styles.keyExists("grid-mode") ) {
+				css.append("#tab#--grid-mode: " & local.state_styles["grid-mode"] & ";");
+				local.gridcss = variables.contentObj.settingsObj.grid(styles=local.state_styles,debug=arguments.debug);;
+			}
+
 			css.append(variables.contentObj.settingsObj.css(local.state_styles, arguments.debug));
 
 			css.append("}");
+			if (local.gridcss != "") {
+				css.append(arguments.selector & local.state.selector & " > .grid {");
+				css.append(local.gridcss);
+				css.append("}");
+			}
 
 			// additional panels for plain css styling
 			for (local.panel in this.panels) {

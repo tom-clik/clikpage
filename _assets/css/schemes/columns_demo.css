@@ -19,7 +19,11 @@ select {
 
 #menubuttons {
 	--grid-mode: flex;
+} 
+#menubuttons .grid {
+	--flex-wrap: nowrap;
 	--grid-gap:4px;
+	--justify-content: start;
 }
 
 #navtext {
@@ -48,10 +52,6 @@ select {
 	padding:4px;
 }
 
-/*  not part of columns */
-#nav > .cs-grid {
-	--grid-mode: flex;
-}
 
 .navbutton {
 	--icon-width:32px;
