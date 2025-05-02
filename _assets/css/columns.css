@@ -11,6 +11,7 @@ Style a standard layout with some pre-defined options
 :root {
 	--header-fixed: 0;
 	--footer-fixed: 0;
+	--headerpos: top; /* top|side */
 	--menupos: static;/* static|fixed|slide|none   */
 	--menu: open; /* open | close */
 	--xcol: open; /* open | close */
@@ -92,6 +93,36 @@ div:not(.cs-grid):has( > .inner) {
 	}
 }
 
+@container body ( style(--headerpos:side) ) {
+	
+	#header {
+		position: fixed;
+		width:var(--menu-width);
+		left: 0;
+		z-index: 100;
+		height: 100vh;
+	}
+	
+	#ubercontainer {
+		--grid-mode: rows;
+		min-height:100%;
+	}
+
+	#ubercontainer > .grid {
+		--grid-template-rows: auto min-content;
+	}
+
+	#menu {
+		display: none;
+	}
+
+	#nav {
+		display: none;
+	}
+
+
+}
+
 @container body ( style(--footer-fixed:1) ) {
 	#bodyWrapper  {
 		padding-bottom:0;
@@ -128,7 +159,7 @@ div:not(.cs-grid):has( > .inner) {
 
 }
 
-@container body ( style( --menupos:slide) ) {
+@container body ( style( --menupos:slide) or style( --headerpos:side) ) {
 	#bodyWrapper {
 		padding-left: calc( var(--menu-width) + var(--site-left-padding) );
 		/* This triggers on page load !!! See JS, we add it after load */
@@ -292,6 +323,15 @@ div:not(.cs-grid):has( > .inner) {
 	--grid-template-columns: var(--menu-width) auto;
 	--grid-template-rows: auto;
 }
+
+@container body ( style(--headerpos:side) ) {
+	
+	#content_main {
+		--grid-mode:none;
+	}
+
+}
+
 
 #content {
 	--grid-mode: rows;
@@ -483,6 +523,13 @@ div:not(.cs-grid):has( > .inner) {
 
 	#hamburger,  #menuclose {
 		display: block;
+	}
+
+	#menuclose {
+		position: absolute;
+		top:12px;
+		right:12px;
+		z-index: 500;
 	}
 
 	body.menu-open #menu {

@@ -5,16 +5,19 @@ Static CSS for new var style grid styling of "items"
 htop
 : 1*|0 Place heading above image. When aligning left or right setting htop=0 puts the into the text column
 
-align
+texttop
+: 1|0* Place text in its own column when aligning left and right. Has no affect with align center.
+
+image-align
 : center*|left|right Use a separate column for the image or wrap the text to the side (center leaves 1 column)
 
 wrap
 : 1|0* float the image and wrap text around it (align must be left or right). Note to use htop=0 for this you need an additional duplicate tag for the title in the textWrap - see the sample HTML
 
-title
+show-title
 : 1*|0 show title 
 
-image
+show-image
 : 1*|0 show image 
 
 imagespace
@@ -25,6 +28,7 @@ imagespace
 
 :root {
 	--htop:1;
+	--texttop:0;
 	--imagespace:0;
 	--image-align:center;
 	--wrap:0;
@@ -95,15 +99,35 @@ imagespace
 	}
 }
 
+@container item ( style(--htop:0 ) and ( style(--image-align:left ) or style(--image-align:right ) ) ) {
+	.itemInner {
+		grid-template-rows: min-content 1fr;
+	}
+}
+
 @container item ( style(--image-align:left ) ) {
 	.itemInner {
 		grid-template-columns:  var(--image-width) auto;
-		grid-template-areas:  "title title" "imageWrap  textWrap";
 	}
-	@container item ( style(--htop:0 ) ) {
+
+	@container item ( style(--texttop:0 ) ) {
 		.itemInner {
-			grid-template-areas:  "imageWrap title" "imageWrap textWrap";
-			grid-template-rows: min-content 1fr;
+			grid-template-areas:  "title title" "imageWrap  textWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			}
+		}
+	}
+	@container item ( style(--texttop:1 ) ) {
+		.itemInner {
+			grid-template-areas:  "title textWrap" "imageWrap  textWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "imageWrap textWrap" "title  textWrap";
+			}
 		}
 	}
 	@container item ( style(--show-title:0 ) ) {
@@ -116,12 +140,25 @@ imagespace
 @container item ( style(--image-align:right ) ) {
 	.itemInner {
 		grid-template-columns: auto var(--image-width);
-		grid-template-areas:  "title title" "textWrap imageWrap";
 	}
-	@container item ( style(--htop:0 ) ) {
+	@container item ( style(--texttop:0 ) ) {
 		.itemInner {
-			grid-template-areas:  "title imageWrap" "textWrap imageWrap";
-			grid-template-rows: min-content 1fr;
+			grid-template-areas:  "title title" "textWrap imageWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "title imageWrap" "textWrap imageWrap";
+			}
+		}
+	}
+	@container item ( style(--texttop:1 ) ) {
+		.itemInner {
+			grid-template-areas:  "textWrap title" "textWrap imageWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "textWrap imageWrap" "textWrap title";
+			}
 		}
 	}
 	@container item ( style(--show-title:0 ) ) {

@@ -62,3 +62,15 @@ select {
 body[class*=-fixfooter] {
 	--menu-width :260px;
 }
+
+.menu.test-vert {
+	padding:20px;
+	--menu-orientation:vertical;
+	--menu-gap:12px;
+	--menu-item-padding:12px 0;
+	--menu-borders:dividers;
+	--menu-item-border:1px;
+	--menu-align:left;
+	--menu-icon-stretch: 1;
+	--menu-submenualign: top-right;
+}

@@ -37,6 +37,13 @@ component extends="contentSection" {
 				"default"="false",
 				"setting":1
 			},
+			"texttop":{"title":"Text top", "type":"list","options": [
+				{"value":"1","name"="Text inline with title"},
+				{"value":"0","name"="Text below title"}
+				],
+				"description":"Align the top of the text with the title (only applies to left or right align)",
+				"default"="0"
+			},
 			"image-align":{"title":"Image alignment", "type":"halign","default":"center","setting":1},
 			"wrap":{"title":"Wrap text", "type":"boolean","default":"0","setting":1},
 			"item-gridgap":{"title":"Image margin", "type":"dimension","description":"Gap between image and text when aligned left or right. Use margins on the panels for other instances","default":"10px","setting":1},

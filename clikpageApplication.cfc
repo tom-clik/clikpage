@@ -22,7 +22,7 @@ component {
 		// also
 		this.mappings["/logs/"]=[outside your web root!];
 		application.errorTemplate=staticHTMLFile
-
+		
 		*/
 	}
 
@@ -38,7 +38,7 @@ component {
 		 
 		try {
 			
-			application.siteObj = new clikpage.site.site(argumentcollection=application.config,dataObj=application.dataObj, debug = this.debug);
+			application.siteObj = new clikpage.site.site(argumentcollection=application.config, dataObj=application.dataObj, debug = this.debug);
 			
 			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
 			application.siteObj.pageObj.content.static_css["fonts"] = 1;

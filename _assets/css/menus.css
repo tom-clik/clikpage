@@ -9,23 +9,23 @@ The following "var classes" need to be applied IN ORDER (orientation sets align 
 
 orientation,mode,borders,align,stretch,submenualign
 
-orientation
+menu-orientation
 : horizontal* | vertical 
 
-mode
+menu-mode
 : grid|flex flex is default for horizontal
 
-borders
+menu-borders
 : normal|boxes|dividers border mode. Using boxes or dividers, adjusts borders to allow for justa single width value to be supplied.
 
-submenualign
+menu-submenualign
 : (menu-)top|bottom-left|right (default top-right) alignment of absolute position submenu. Relative to item unless prefixed with menu
 
 
-stretch
+menu-stretch
 : 0|1*   Stretch flex menu
 
-align
+menu-align
 : center left|center|right  Align text. Also for flex menus that don't stretch, align the whole menu. 
 
 
@@ -231,7 +231,7 @@ hi      li.hi a
 	background-color: var(--menu-background);
 	/* watch browser agent default. Can't apply to ul */
 	text-align: var(--menu-text-align);	
-	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out ;
+	transition: background-color var(--menu-anim-time) ease-in-out , border-color var(--menu-anim-time)  ease-in-out, color .25s var(--menu-anim-time)  ease-in-out ;
 }
 
 /* Don't use flex mechanism if we're using access keys */

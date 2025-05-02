@@ -2,11 +2,9 @@
 
 # Columns demo
 
-
-
-
-
 --->
+
+
 <script>
 tests = [
 	{"id": "static-sticky-mobilefixed", "description":"Basic"},
@@ -17,6 +15,7 @@ tests = [
 	{"id": "frame-fixheader-fixfooter-sticky", "description":"Framed, Fixed header and footer"},
 	{"id": "simpler", "description":"Simpler"},
 	{"id": "nomenu", "description":"No menu"},
+	{"id": "sideheader-sticky", "description":"Side header"},
 	{"id": "slide-sticky", "description":"slide menu"},
 	{"id": "slide-fixheader-sticky", "description":"slide menu and fixed header"},
 	{"id": "slide-fixheader-fixfooter-sticky", "description":"slide header, fixed and footer"},
@@ -37,6 +36,7 @@ tests = [
 	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
 	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/menus.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
 	<link rel="stylesheet" href="../css/modal.css">
@@ -152,11 +152,8 @@ tests = [
 									</a>					
 								</div>
 
-								<h1>Menu col</h1>
+								<div id="menu" class="menu test-vert"><ul><li><a href="{{link.index}}" id="menu_index"><i class="icon-close"></i><span>Home page</span></a></li><li><a href="{{link.gallery}}" id="menu_gallery" class="hasmenu"><i class="icon-menu"></i><span>Gallery</span><i class="icon-next openicon"></i></a><div class="menu submenu"><ul><li><a href="{{link.gallery.view.1}}" id="menu_submenu_gallery_1"><i></i><span>Gallery test 1</span></a></li><li><a href="{{link.gallery.view.2}}" id="menu_submenu_gallery_2"><i></i><span>Gallery test 2</span></a></li><li><a href="{{link.gallery.view.3}}" id="menu_submenu_gallery_3"><i></i><span>Gallery test 3</span></a></li><li><a href="{{link.gallery.view.4}}" id="menu_submenu_gallery_4"><i></i><span>Gallery test 4</span></a></li></ul></div></li><li><a id="menu_gallery2" class="hasmenu"><i class="icon-previous"></i><span>Gallery 2</span><i class="icon-next openicon"></i></a><div class="menu submenu"><ul><li><a href="{{link.gallery2.view.1}}" id="menu_submenu_gallery2_1"><i></i><span>Gallery2 test 1</span></a></li><li><a href="{{link.gallery2.view.2}}" id="menu_submenu_gallery2_2"><i></i><span>Gallery2 test 2</span></a></li><li><a href="{{link.gallery2.view.3}}" id="menu_submenu_gallery2_3"><i></i><span>Gallery2 test 3</span></a></li><li><a href="{{link.gallery2.view.4}}" id="menu_submenu_gallery2_4"><i></i><span>Gallery2 test 4</span></a></li></ul></div></li><li><a href="{{link.about}}" id="menu_about"><i class="icon-next"></i><span>About</span></a></li><li><a href="{{link.news}}" id="menu_news" class="hasmenu"><i class="icon-first_page"></i><span>News</span><i class="icon-next openicon"></i></a><div class="menu submenu"><ul><li><a href="{{link.news.view.1}}" id="menu_submenu_news_1"><i></i><span>Article test 1</span></a></li><li><a href="{{link.news.view.2}}" id="menu_submenu_news_2"><i></i><span>Article test 2</span></a></li><li><a href="{{link.news.view.3}}" id="menu_submenu_news_3"><i></i><span>Article test 3</span></a></li><li><a href="{{link.news.view.4}}" id="menu_submenu_news_4"><i></i><span>Article test 4</span></a></li></ul></div></li><li><a href="{{link.images}}" id="menu_images"><i class="icon-squares"></i><span>Images</span></a></li><li><a href="{{link.singlearticle}}" id="menu_singlearticle"><i class="icon-fullscreen_exit"></i><span>Single article</span></a></li></ul></div>
 
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 							</div>
 						</div>
 

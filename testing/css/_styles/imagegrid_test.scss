@@ -87,8 +87,11 @@
 }
 
 .scheme-overlay {
+	grid-gap: 4px;
 	caption-position:overlay;
 	caption {
+		text-align: center;
+		padding:4px;
 		background {
 			color: panel-overlay;
 		}

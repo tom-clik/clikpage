@@ -102,10 +102,9 @@ E.g.
 }
 
 @container button ( style(--icon-display:0) ) {
-	icon {
-		display: none;
+	[class*="icon"] {
+		display: none !important;
 	}
-
 }
 
 .button label {

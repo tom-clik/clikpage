@@ -8,16 +8,18 @@
  *
  */
 
-path = ExpandPath("./preview/config.json");
-fileData = fileRead(path );
-config = deserializeJSON(fileData);
+savecontent variable="nully" {
+    cfinclude( template="test_site.cfm" );
+}
 
-siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
-siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+outputDir=ExpandPath("_out");
+pages = directoryList(outputDir,true,"path","*.js|*.html|*.css");
+for (page in pages) {
+    fileDelete(page);
+}
 
-site = siteObj.loadSite(config.siteDef);
 start = getTickCount();
-files = siteObj.save(site=site,outputDir=ExpandPath("_out"),debug=0);
+files = siteObj.save(site=site,outputDir=outputDir,debug=1);
 runtime = getTickCount() -start;
 writeDump(files);
 

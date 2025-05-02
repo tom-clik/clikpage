@@ -143,10 +143,10 @@ component extends="contentSection" {
 		var linkEnd = "</a>";
 		var cshtml = linkStart;
 
-		// TO DO: check this is handle by the settings and remove
-		local.shape = arguments.content.shape ?  : "left_arrow";
+		local.settings = Duplicate( arguments.content.style);
+		server.utils.utils.deepStructAppend( arguments.content.style, {"main"={"shape":"left_arrow"}}, false );
 		
-		cshtml &= displayShape(local.shape);
+		cshtml &= displayShape(arguments.content.style.main.shape);
 
 		if (StructKeyExists( arguments.content,"content") AND  arguments.content.content !="") {
 			cshtml &= "<label>#arguments.content.content#</label>";

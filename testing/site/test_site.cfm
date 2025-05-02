@@ -15,6 +15,12 @@ config = deserializeJSON(fileData);
 dataObj = new clikpage.data.data_text(config);
 siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live",dataObj=dataObj);
 
+siteObj.pageObj.content.static_css["fonts"] = 1;
+siteObj.pageObj.content.static_css["content"] = 1;
+siteObj.pageObj.content.static_css["google_icons"] = 1;
+siteObj.pageObj.content.static_js["clik_onready"] = 1;
+siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+
 start = getTickCount();
 site = siteObj.loadSite(config.siteDef);
 runtime = getTickCount() -start;

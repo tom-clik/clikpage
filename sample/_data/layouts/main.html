@@ -34,8 +34,7 @@
 
 		#header {
 			
-			grid-mode:fixedcols;
-			grid-template-columns:max-content minmax(0, 1fr);
+			
 			
 			@mobile {
 
@@ -43,9 +42,10 @@
 					max-width:auto;
 					padding:4;
 				}
-				grid {
-					grid-mode:none;
-				}
+				
+				grid-mode:columns;
+				grid-template-columns:max-content minmax(0, 1fr);
+				
 			}
 
 			background {

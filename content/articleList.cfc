@@ -25,10 +25,11 @@ component extends="item" {
 		];
 
 		StructAppend(this.styleDefs, {
-			"carousel" = {"type":"boolean","description":"use carousel for list","default"=0,"setting"=1},
-			"carousel-contain" = {"type":"boolean","description":"contain carousel content","default"=1,"setting"=1},
-			"carousel-freeScroll" = {"type":"boolean","description":"Free scroll","default"=0,"setting"=1},
-			"carousel-wrapAround" = {"type":"boolean","description":"Wrap around carousel scroll","default"=1,"setting"=1},
+			"inline" = {"type":"boolean","description":"Display full text of article inline","default"=0}, 
+			"carousel" = {"type":"boolean","description":"use carousel for list","default"=0},
+			"carousel-contain" = {"type":"boolean","description":"contain carousel content","default"=1},
+			"carousel-freeScroll" = {"type":"boolean","description":"Free scroll","default"=0},
+			"carousel-wrapAround" = {"type":"boolean","description":"Wrap around carousel scroll","default"=1},
 		});
 		
 		updateDefaults();
@@ -44,13 +45,18 @@ component extends="item" {
 		var cshtml = "";
 		var classes = {};
 
+		local.textfield = "description";
+		if ( arguments.content.style.main.keyExists("inline") && arguments.content.style.main.inline ) {
+			local.textfield = "body";
+		}
+
 		local.link_format = arguments.content.link ? : "{{link.{{section.id}}.view.{{data.id}}}}";
 		
 		for (local.id in arguments.content.data) {
 			local.item = arguments.data[local.id];
 			classes = {};
 			local.link = Replace(local.link_format, "{{data.id}}", local.id);
-			local.tmpHTML = variables.contentObj.itemHtml(item=local.item,link=local.link);
+			local.tmpHTML = variables.contentObj.itemHtml(item=local.item,link=local.link,textfield=local.textfield);
 			cshtml &= "<div class='item'>";
 			cshtml &= local.tmpHTML;
 			cshtml &= "</div>";

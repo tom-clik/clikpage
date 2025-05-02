@@ -18,8 +18,12 @@ component accessors="true" extends="utils.baseutils" {
 		
 		super.utils();
 
+		// variables pattern
 		variables.pattern = variables.utils.patternObj.compile("\{\{[\w\.]+?\}\}" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
 
+		// Remove whitespace between HTML tags
+		variables.pattern_whitespace =variables.utils.patternObj.compile("\s+{2,}",variables.utils.patternObj.MULTILINE);
+		
 		return this;
 	}
 
@@ -354,12 +358,22 @@ component accessors="true" extends="utils.baseutils" {
 			
 			local.section = arguments.site.sections[local.sectioncode];
 			
-			local.item = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
-			
 			if (local.section.keyExists("children")) {
 				local.item["submenu"] = menuData(site=arguments.site, sections=local.section.children );
 			}
 
+			try{
+				local.item = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e,"sections"=arguments.sections};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Unable to add section #local.sectioncode# to menu :" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 			ArrayAppend(local.menuDataArr, local.item);
 		
 		}
@@ -762,7 +776,7 @@ component accessors="true" extends="utils.baseutils" {
 		
 		loadSectionData(site=arguments.site, section=local.rc.sectionObj);
 
-		if (ArrayLen (local.rc.sectionObj.data) ) {
+		if (ArrayLen (local.rc.sectionObj.data) && local.rc.sectionObj.dataset.type != "sections" ) {
 			
 			local.type = getDataType(local.rc.sectionObj);
 
@@ -770,8 +784,18 @@ component accessors="true" extends="utils.baseutils" {
 			if (arguments.pageRequest.id eq "") {
 				arguments.pageRequest.id = local.rc.sectionObj["data"][1];
 			}
-
-			local.rc.record = Duplicate( this.dataObj.getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
+			try{
+				local.rc.record = Duplicate( this.dataObj.getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e,"section"=local.rc.sectionObj};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Error getting data for section:" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 
 			addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.type);
 		}
@@ -897,6 +921,8 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		
 		pageContent.body &= local.errorsHtml;
+		// MUSTDO: TODO: parameterise title template
+		pageContent.title = dataReplace(site=arguments.site, html="{{site.title}}: {{section.title}}", sectioncode=arguments.pageRequest.section, record=local.rc.record);
 
 		// WILLDO: remove this. Leave for now as it's useful sometimes
 		// savecontent variable="local.temp" {
@@ -1023,8 +1049,10 @@ component accessors="true" extends="utils.baseutils" {
 		css &= this.settingsObj.fontVariablesCSS(arguments.site.styles,arguments.debug);
 		css &= this.settingsObj.variablesCSS(arguments.site.styles,arguments.debug);
 		css &=  "#cr#}#cr#";
-		css &= this.settingsObj.CSSCommentHeader("Layouts");
-		
+		if (arguments.debug) {
+			css &= this.settingsObj.CSSCommentHeader("Layouts");
+		}
+
 		local.written = {};
 		for (local.layout in arguments.site.layouts) {
 
@@ -1046,8 +1074,9 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		// Main content section styling
-		css &= this.settingsObj.CSSCommentHeader("Content styling");
-		
+		if (arguments.debug) {
+			css &= this.settingsObj.CSSCommentHeader("Content styling");
+		}
 		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.styles,debug=arguments.debug);
 		
 		return css;
@@ -1134,8 +1163,7 @@ component accessors="true" extends="utils.baseutils" {
 			// TODO: better definitions of whether we have sub pages or not
 			// Need to think about galleries and sections with single items.
 			// 
-			if ( StructKeyExists( local.sectionObj, "dataset") AND  local.sectionObj.dataset.type NEQ "sections"
-				AND arrayLen(local.sectionObj.data) GT 1) {
+			if ( StructKeyExists( local.sectionObj, "dataset") AND	local.sectionObj.dataset.type != "sections" AND arrayLen(local.sectionObj.data) GT 1) {
 				for (local.id in local.sectionObj.data) {
 					local.pageRequest = {"section":local.section,"action":"view","id":local.id};
 					local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
@@ -1179,10 +1207,10 @@ component accessors="true" extends="utils.baseutils" {
 
 	// See save()
 	private string function saveStaticPage(
-		required struct site,
-		required struct pageRequest,
-		required string outputDir,
-		         boolean debug=0
+		required struct  site,
+		required struct  pageRequest,
+		required string  outputDir,
+		         boolean debug=variables.debug
 		) {
 		
 		local.filename = pageLink(
@@ -1194,7 +1222,7 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.content = page(arguments.pageRequest, arguments.site);
 
-		if (arguments.debug) {
+		if (! arguments.debug) {
 			local.content.onready = this.pageObj.jsStaticFiles.removeJsComments(local.content.onready);
 		}
 
@@ -1210,6 +1238,11 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.html = this.pageObj.buildPage(content=local.content,debug=arguments.debug);
+
+		if (! arguments.debug) {
+			// local.html  = variables.pattern_whitespace.matcher(local.html).replaceAll(" ");
+		}
+
 		FileWrite(arguments.outputDir & "/" & local.filename, local.html);
 
 		return local.filename;

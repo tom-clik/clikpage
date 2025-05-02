@@ -49,6 +49,8 @@ component name="layouts" {
 
 		variables.parser = new clikpage.settings.cssParser();
 
+		variables.markdown = new markdown.flexmark(attributes=1);
+
 		variables.layoutBase = arguments.layoutBase;
 		// remove trailing slash
 		variables.layoutBase = ReReplace(variables.layoutBase,"[\\\/]$","");
@@ -112,6 +114,8 @@ component name="layouts" {
 			local.layoutObj = {"id"=arguments.id};
 
 			local.layoutObj["layout"] = this.coldsoup.parse(local.html);
+			
+			this.coldsoup.removeComments(local.layoutObj["layout"]);
 			
 			local.title = local.layoutObj["layout"].select("title").first().text();
 			
@@ -210,8 +214,10 @@ component name="layouts" {
 		
 		for (local.div in local.test) {
 			local.div.tagName("div");
-			// local.div.html("");
 		}
+
+		arguments.layoutObj.layout.outputSettings().outline(false);
+		arguments.layoutObj.layout.outputSettings().prettyPrint(false);
 
 		return arguments.layoutObj.layout.body().html();
 
@@ -315,6 +321,12 @@ component name="layouts" {
 					}
 					else {
 						local.cs["type"] = "text";
+					}
+				}
+
+				if ( local.cs["type"] eq "item" ) {
+					if ( local.cs.keyExists("content") ) {
+						local.cs.content = variables.markdown.toHtml(  local.cs.content, {} );
 					}
 				}
 				

@@ -101,7 +101,7 @@ component {
 		this.varClasses = [];
 		// Value of defaults for easy lookup
 		this.defaultStyles = {};
-
+		
 		try {
 			for (local.setting_code in this.styleDefs){
 				local.setting  = this.styleDefs[local.setting_code];
@@ -215,27 +215,26 @@ component {
 						throw("incorrect value for #local.style#");
 					}
 					else {
-
 						local.val = variables.contentObj.settingsObj.displaySetting(local.state_styles[local.style], local.def.type);
-
 						css.append("#tab#--#local.style#: " & local.val & ";");
 					}
 				}
 				// else if (arguments.debug ) {
 				// 	css.append("#tab#/* no style for #local.style# */")	;
-				// }
-				
+				// }				
 			}
 
 			local.gridcss = "";
 			if ( local.state_styles.keyExists("grid-mode") ) {
 				css.append("#tab#--grid-mode: " & local.state_styles["grid-mode"] & ";");
-				local.gridcss = variables.contentObj.settingsObj.grid(styles=local.state_styles,debug=arguments.debug);;
 			}
 
 			css.append(variables.contentObj.settingsObj.css(local.state_styles, arguments.debug));
 
 			css.append("}");
+
+			local.gridcss = variables.contentObj.settingsObj.grid(styles=local.state_styles,debug=arguments.debug);;
+			
 			if (local.gridcss != "") {
 				css.append(arguments.selector & local.state.selector & " > .grid {");
 				css.append(local.gridcss);

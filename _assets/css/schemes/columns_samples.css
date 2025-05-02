@@ -5,7 +5,7 @@ Wild card based theming system wehre you can combine a layout selection with oth
 The layouts are:
 
 layout-static
-: The defaulty. static can be ommitted
+: The default. static can be ommitted
 layout-slide
 : slide out menu
 layout-fixed
@@ -24,7 +24,7 @@ The options are:
 -simpler
 :Hide #content_top, #content_bottom, #nav, #bottomnav. This can easily be replicated by hand.
 -mobilefixed
-:Working on this
+:fixed position for the mobile menu 
 
 
 Always start with layout-*, (NB "static" can be omitted, e.g. layout-fixheader is the same as layout-static-fixheader)
@@ -47,6 +47,12 @@ body[class*=-fixfooter] {
 
 body[class*=-frame] {
 	--framed:1;
+}
+
+body[class*=-sideheader] {
+	--headerpos:side;
+	--xcol: close;
+	--site-align: left;
 }
 
 body[class*=-frame] {

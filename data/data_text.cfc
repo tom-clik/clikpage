@@ -48,7 +48,7 @@ component implements="clikpage.data.i_data" {
 
 		for (row in filelist) {
 			if ( row.dateLastModified > variables.datelastmodified ) {
-				loadFile(row.directory & "/" & row.filename);
+				loadFile(row.directory & "/" & row.name);
 				changed = true;
 			}
 		}
@@ -277,7 +277,7 @@ component implements="clikpage.data.i_data" {
 		return temp;
 
 	}
-
+	
 	// we just return the whole set for this
 	public struct function getRecords(required array ID) {
 

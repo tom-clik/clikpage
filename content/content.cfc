@@ -407,7 +407,7 @@ component extends="utils.baseutils" {  // TODO: put back in output=false
 	 * @item  Item with keys title, description, image, link, caption, 
 	 * @classes  Pass in struct by reference to return required classes for the wrapping div.
 	 */
-	public string function itemHtml(required struct item, string link="", struct settings={}, struct classes) {
+	public string function itemHtml(required struct item, string link="", struct settings={}, struct classes, string textfield="description") {
 
 		local.titletag = arguments.settings.titletag ? : "h3"; 
 		local.hasLink = arguments.link != "";
@@ -435,7 +435,7 @@ component extends="utils.baseutils" {  // TODO: put back in output=false
 		cshtml &= "\t</div>\n";
 
 		cshtml &= "\t<div class='textWrap'>";
-		cshtml &= arguments.item.description ? : "";
+		cshtml &= arguments.item[arguments.textfield] ? : "";
 		if (local.hasLink && StructKeyExists(arguments.settings,"morelink")) {
 			cshtml &= "<span class='morelink'>" & linkStart & arguments.settings.morelink & linkEnd & "</span>";
 		}
