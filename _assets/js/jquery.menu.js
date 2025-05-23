@@ -75,7 +75,7 @@
 
 			$element.on("click",".hasmenu .openicon",function(e) {
 				
-				$item = $(this);
+				let $item = $(this);
 				e.preventDefault();
 				e.stopPropagation(); 
 				
@@ -122,8 +122,21 @@
 			}
 		}
 
-		plugin.init();
+		/* just get named settings -- no control over the type */
+		var getCssSettings = function($elem, names) {
+			let settings = {};
+			for (let setting of names.split(",")) {
+				let val = $elem.css("--" + setting);
+				if (val) {
+					settings[setting] = val;
+				}
+			
+			}
+			return settings;
+		}
 
+		plugin.init();
+		
 	}
 
 	$.fn.menu = function(options) {

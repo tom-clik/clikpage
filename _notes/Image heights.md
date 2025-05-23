@@ -8,6 +8,10 @@ You can, if every element from the body down has a height of 100%, get the image
 
 Instead, we use use JavaScript to fix the height of the image container and only then show the image.
 
+## Status
+
+It works well enough but we're getting FOUCs that need fixing.
+
 ## Examples
 
 A grid layout has fixed height header and footer and variable content. The content expands so the page fills the screen. Adding an image to the Content will "bust" the grid and push the footer off the screen.
@@ -38,14 +42,6 @@ The problem is we don't always know the height and usually want it to be whateve
 
 ### "heightfix" property
 
-Javascript is used to fix the height of the content section. It works well enough but we're getting FOUCs that need fixing.
-
-
-
-### Fill available space
-
-More useful is the functionality to fill the available space.
-
 We define a property "heightfix" on the image. This will enable the following:
 
 1. Set position to absolute and visibility to none
@@ -53,6 +49,7 @@ We define a property "heightfix" on the image. This will enable the following:
 3. Subtract margin (possibly ignore on fitted images)
 4. Set height of image container
 5. Set position to static and visibility to visible
+
 
 ### Implementation
 

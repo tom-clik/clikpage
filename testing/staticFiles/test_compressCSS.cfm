@@ -62,7 +62,7 @@ for (opts in ["CSS","JS"]) {
 
 	staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=jsonData);
 
-	packages = staticFilesObj.compressPackage(type=opts,overwrite=true,mappings=mappings,minify=true);
+	packages = staticFilesObj.compressPackage(type=opts,overwrite=false,mappings=mappings,minify=true);
 
 	for (res in packages) {
 		writeDump(res);

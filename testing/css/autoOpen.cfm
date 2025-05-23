@@ -15,8 +15,6 @@ Animate auto not working properly. Also this demo uses fixed widths and wouldn't
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/title.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/fonts/fonts_local.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/panels.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/panels-schemes.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/media.css">	
 	<meta charset="UTF-8">
 	<style>
@@ -115,9 +113,6 @@ Item 3
 <script src="/_assets/js/jquery.throttledresize.js"></script>
 <script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
-<script src="/_assets/js/clik_onready.js"></script>
-<!--- <script src="/_assets/js/_min/clikmain.0.9.min.js"></script> --->
-<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/clik_onready.js"></script>
 
 <script>

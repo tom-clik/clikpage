@@ -35,22 +35,31 @@ Where a single setting needs to update other settings, we can now set them using
 }
 ```
 
-The only complication is for grids, where the containers contain other containers. To avoid the CSS values for grids inheriting, we define them as `@property` values with `inherit=false`.
+Once complication is that the styling CAN'T be defined on the main container. All content sections have a "container" div to which the styling is applied and an inner div which uses the set values. E.g., a grid looks like
 
-The problem then is that the values CAN'T be defined on the main container. You can't assign stlying to the container itself and have to use an inner container, but the CSS vars HAVE to be applied to that inner container.
 
-E.g. we would like to do this:
-
+```html
+<div class='cs-grid' id='mygrid'>
+	<div class='grid'>...</div>
+</div>
 ```
-#header {
+
+While the user stylesheet would like this:
+
+```css
+#mygrid {
 	--grid-mode: columns;
-	--grid-template-columns: 40% 60&
+	--grid-template-columns: 40% 60%
 }
 ```
 
-But the grid template columns are applied to an inner container (`.grid):
+The static css applies the styling using the inner container. 
 
-```
+```css
+.cs-grid {
+	container-name:grid;
+}
+
 .grid {
 	display:grid;
 	grid-gap:var(--grid-gap);
@@ -64,14 +73,4 @@ But the grid template columns are applied to an inner container (`.grid):
 }
 ```
 
-According ALL css vars for grids apart from the mode have to be applied to the inner container, e.g.
-
-```
-#header {
-	--grid-mode: columns;
-}
-
-#header .grid {
-	--grid-template-columns: 40% 60&
-}
-```
+Note this can cause problems for grids, which can be nested, causing the values to inherti when we don't want them to. We can't turn off inhertiance because then we couldn't define the vars on the "container" div. For any grids that are nested, we therefore need to set the value explicitly even when they're the default.

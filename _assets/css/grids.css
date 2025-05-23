@@ -8,21 +8,31 @@ See /_notes/grids.md
 
 ## Notes
 
-IMPORTANT because grids can be within grids, we have an issue with CSS properties inheriting. To stop this, we use the @property
-definitions below. This stops the problem but means all properties (apart from "grid-mode") then have to be defined on the inner container 
+IMPORTANT because grids can be within grids, we have an issue with CSS properties inheriting. 
 
-E.g. 
+To stop this, you will need to define every property (except `grid-mode`) for any nested grid where any parent defines a property.
 
-```css
+The most commonly used are:
 
-#footer {
-	--grid-mode: columns;
-}
+```
+--grid-width: 180px;
+--grid-template-rows: auto;
+--grid-template-columns: auto;
+--flex-direction: row;
+```
 
-#footer .grid {
-	--grid-template-columns: 
-	--grid-gap: 24px 0;
-}
+Others:
+
+```
+--justify-content: normal;
+--align-content: normal;
+--align-items: normal;
+--flex-wrap: wrap;
+--grid-max-height: 1fr;
+```
+
+`--flex-stretch` is a special case. See the code. It's rare you'd ever need to nest this.
+
 
 */
 
@@ -32,30 +42,26 @@ E.g.
 	inherits: false;
 	initial-value: fit;
 }
-/* NB rows is a shortcut to having just one column. If you want to adjust rows and columns
-use column mode and set the grid-template-rows
-*/
-
-/* ALL OTHER PROPERTIES must be applied to .grid inner container 
+/* ALL OTHER PROPERTIES inherit and shuold be defined for every nested grid 
 
 /* Gap between cells. One value or column gap, row gap */
 @property --grid-gap {
 	syntax: '*';
-	inherits: false;
+	inherits: true;
 	initial-value: 0px;
 }
 
-/* Maximum width of cells when using fit|fill */
+/* Maximum width of cells when using fit|fill|fixedwidth */
 @property --grid-width {
 	syntax: '<length> | <percentage>';
-	inherits: false;
+	inherits: true;
 	initial-value: 180px;
 }
 
 /*Number of columns when using mode=fixed. Actually what you want is mode=columns and set --grid-template-columns */
 @property --grid-columns {
 	syntax: '<integer>'; 
-	inherits: false;
+	inherits: true;
 	initial-value: 3;
 }
 
@@ -69,43 +75,44 @@ use column mode and set the grid-template-rows
 /* explicitly list widths of columns e.g. 120px auto 160px */
 @property --grid-template-columns {
 	syntax: '*';
-	inherits: false;
+	inherits: true;
 	initial-value: auto;
 }
 
 /* e.g. "header header" "menu main" "footer footer" */
 @property --grid-template-areas {
 	syntax: '*';
-	inherits: false;
+	inherits: true;
 	initial-value: none;
 }
 
 @property --flex-direction {
 	syntax: 'row | row-reverse | column | column-reverse'; 
-	inherits: false;
+	inherits: true;
 	initial-value: row;
 }
 
 /* main axis alignment */
 @property --justify-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly'; 
-	inherits: false;
+	inherits: true;
 	initial-value: normal;
 }
 /* alignment for multiple rows within their container (no, me neither: what you want is actually align-items) */
 @property --align-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
-	inherits: false;
+	inherits: true;
 	initial-value: normal;
 }
 
 /* this the vertical alignment you're after */
 @property --align-items {
 	syntax: 'normal | stretch | start | end | center '; 
-	inherits: false;
+	inherits: true;
 	initial-value: normal;
 }
-/* the default for this 0 for mode=flex. This is applied explicitly below in a property query  */
+
+/* the default for this 0 for mode=flex. This is applied explicitly below in a property query NB this does inherit, be careful  */
 @property --flex-stretch {
 	syntax: '<number>'; 
 	inherits: true;
@@ -114,20 +121,15 @@ use column mode and set the grid-template-rows
 
 @property --flex-wrap {
 	syntax: 'wrap | nowrap'; 
-	inherits: false;
+	inherits: true;
 	initial-value: wrap;
 }
 
-
-/* NB this inherits. As its usage is usually reserved for content items and not grids, that's
-ok. It makes all the grid items a set height, usually used in image grids */
-/* 1fr or a <length>. You probably want --grid-template-rows instead of this */
 @property --grid-max-height {
 	syntax: '*'; 
 	inherits: true;
 	initial-value: 1fr;
 }
-
 
 .cs-grid {
 	container-name:grid;
@@ -137,11 +139,9 @@ ok. It makes all the grid items a set height, usually used in image grids */
 .grid {
 	display:grid;
 	grid-gap:var(--grid-gap);
-	flex-direction: var(--flex-direction);
 	align-content: var(--align-content);
 	align-items: var(--align-items);
 	justify-content: var(--justify-content);
-	flex-wrap: var(--flex-wrap);
 	grid-template-columns: var(--grid-template-columns);
 	grid-template-rows: var(--grid-template-rows);
 }
@@ -149,22 +149,11 @@ ok. It makes all the grid items a set height, usually used in image grids */
 .cs-grid > .grid {
 	height:100%;
 	min-height: 100%;
-	align-self: stretch; /* for grid/flex contexts */
+	align-self: stretch;
 }
 
 .grid > * {
 	height: var(--grid-max-height);
-	flex-grow: var(--flex-stretch);
-}
-
-/* flex class deprecated - use grid-mode: flex */
-.flex {
-	grid-gap:var(--grid-gap);
-	display: flex;
-	--flex-stretch:0;
-}
-
-.flex > * {
 	flex-grow: var(--flex-stretch);
 }
 
@@ -190,6 +179,8 @@ ok. It makes all the grid items a set height, usually used in image grids */
 	.grid {
 		display: flex;
 		--flex-stretch: 0; /* see notes */
+		flex-direction: var(--flex-direction);
+		flex-wrap: var(--flex-wrap);
 	}
 }
 

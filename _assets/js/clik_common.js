@@ -64,8 +64,8 @@ clik = {
 		clik.$body.removeClass("media-hide");
 	},
 	buttons: function() {
-		if(jQuery().button) {
-			$('.button.auto').button();
+		if(jQuery().autoButton) {
+			$('.button.auto').autoButton();
 		}
 	},
 	autoopen: function() {

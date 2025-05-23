@@ -169,6 +169,7 @@ Works by positioning the tab content absolutely. On seleting a tab, has to work 
 		}
 
 		// private methods
+		
 		var setHeight = function($tab) {
     		console.log("Setting height for " + $tab.attr("id"));
     		if (plugin.settings.accordian) return;

@@ -1,4 +1,24 @@
+/* 
 
+Fix the height of container to its parents height
+
+## Notes 
+
+See notes on [](Image Heights.md) and [](Grid Bust out.md)
+
+## Usage
+
+```
+$(".cs-image").heightFix(
+	{
+		resize: resizeMethod,
+	}
+);
+```
+
+NB this is done for all cs-image containers in clik_onready. No reason it can't be done for other containers where you want a similar effect. 
+
+*/
 (function($) {
 
 	$.heightFix = function(element, options) {

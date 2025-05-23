@@ -86,7 +86,7 @@ $.autoButton = function(element, options) {
 		}
 
 	    $links = $element.find("a")
-
+	    
 		$links.each(function() {
 			let $link  = $(this);
 			let href = $link.attr("href");
@@ -99,11 +99,16 @@ $.autoButton = function(element, options) {
 					$link.data( "target", $(attrs[0]) );
 					console.log("Adding autobutton", attrs[0], attrs[1]);
 				}
-				
+				// DEBUG
+				else {
+					console.log(`incorrect button definition ${attrs}`);
+				}
+				// /DEBUG
 				let key = $link.data("key");
 				if (key) {
 					keyBindings[ String(key).toLowerCase() ] = $link;
 				}
+
 
 			}
 			// DEBUG

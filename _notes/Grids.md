@@ -1,16 +1,14 @@
 # Grid Layouts
 
-We think of grids as having a "mode". To apply these, ensure "--mode" is set and the javascript is run to apply the mode class or else explicity set the class with e.g. `class="cs-grid mode-cols"`. Explicitly setting classes can't work for different modes in different viewports. Either get the JS running or see the CSS below to do it manually, which beats the point of using this script.
+We think of grids as having a "mode". This is set by a var `--grid-mode` and determines the behaviour. 
 
-There is only one "varClass[^varclasses]": `mode`. The javascript needed is 
+NB because grids can be within grids, we have a problem with values inheriting. Often you have to redefine a value when you only want it to be the default. See the CSS for code examples.
 
-[^varclasses]: See [](varclasses.md)
+## Modes
 
-```
-$(".cs-grid").varClass({name:"mode"});
-```
+The grid mode is applied with `--grid-mode`. To turn off a grid use `none`. 
 
-### Content fit (mode-fit)
+### Content fit (fit)
 
 This is default and the mode you want if you don't already know. With a minimum width set for the content items, this will add as many items as possible per row and stretch any items to ensure no gap is left.
 
@@ -18,30 +16,32 @@ The only setting you usually need is `--grid-width` which is the minimum width. 
 
 NB The mode can be omitted as it's the default for `.cs-grid`.
 
-### Content fill (mode-fill)
+### Content fill (fill)
 
 Sort of like fit but will create empty cells to fill up the space if the grid is on one line. Use if you don't want the cells stretched to crazy lengths.
 
-### Fixed columns (mode-fixed)
+### Fixed columns (fixed)
 
-The number of columns in the grid is fixed. The columns are all equal. Set the columns with `--grid-columns`.
+The number of columns in the grid is fixed. The columns are all equal. Set the number of columns with `--grid-columns`.
 
-### Set column widths (mode-columns)
+### Set column widths (columns)
 
-Explicitly set the grid template columns in `--grid-template-columns`. Useful for having one column stretch.
+Explicitly set the grid template columns in `--grid-template-columns`. Useful for having one column stretch. YOu can also set `grid-template-rows` if you like. 
 
-### Set column rows (mode-rows)
+### Set column rows (rows)
 
-Explicitly set the grid template rows in `--grid-template-rows`. Useful for having one row stretch.
+A shortcut to having just one column, essentially functions like columns.
 
-### Named positions (mode-named)
+### Named positions (named)
 
-Supply template positions in  `--grid-template-areas`.
+Supply template positions in  `--grid-template-areas`. Column and row sizes can be set in `--grid-template-columns` and 
+`--grid-template-rows`.
 
-### Fixed width (mode-fixedwidth)
+### Fixed width (fixedwidth)
 
-Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fill` or `fit` in preference.
+Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fill` or `fit` in preference. Set the width with `--grid-width`.
 
-## Flex Layouts (mode-flex)
+### Flex Layouts (flex)
 
-Uses flex box in preference to grid modes. 
+Uses flex box in preference to grid modes. Set direction with `--flex-direction` (` 'row | row-reverse | column | column-reverse'`) and whether to expand with  `--flex-stretch`. Alignment uses the normal flex properties which need not a little explanation.
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+
+	<title>jsTree demo</title>
+</head>
+<body>
+
+<div id="ajaxTree"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script>
+$(function () {
+	$('#ajaxTree').jstree({
+		'core': {
+			'check_callback': true,
+			'data': {
+				'url': function (node) {
+					// Root node uses different URL or ID
+					return node.id === '#' 
+						? 'api/getRootNodes.json' 
+						: 'api/getChildNodes_' + node.id + '.json'; // NB just for demo purposes see 'data'
+				},
+				'data': function (node) {
+					return { 'id': node.id };	// Pass node ID to server
+				}
+			},
+			'themes': {
+				'responsive': false
+			}
+		},
+		'plugins': ['contextmenu', 'wholerow','dnd'],
+		'contextmenu': {
+			'items': function(node) {
+			console.log(node.id);
+				return {
+					'Rename': {
+						'label': 'Rename',
+						'action': function () {
+							$('#myTree').jstree('edit', node);
+						}
+					},
+					'Delete': {
+						'label': 'Delete',
+						'action': function () {
+							$('#myTree').jstree('delete_node', node);
+						}
+					},
+					'Custom': {
+						'label': 'Custom Action',
+						'action': function () {
+							alert('Custom logic for node: ' + node.text);
+						}
+					}
+				};
+			}
+		}
+	});
+});
+</script>
+
+</body>
+</html>

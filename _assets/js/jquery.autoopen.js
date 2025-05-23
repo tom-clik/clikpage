@@ -4,7 +4,7 @@
 
 Apply open and close handlers to an element
 
-Will add open class on open and eventually animate width|height
+Will add open class on open, close class on close, and eventually animate width|height
 
 ## Synopsis
 
@@ -49,10 +49,11 @@ Will add open class on open and eventually animate width|height
 			
 			getCssSettings();
 			
+			console.log(plugin.settings);
+
 			setOpenClass();
 
 			$(window).on(plugin.settings.resize,function() {
-				console.log("Window resize");
 				$element.trigger("resize");
 			});
 

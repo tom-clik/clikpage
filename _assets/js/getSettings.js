@@ -25,41 +25,10 @@ function getSettings($elem, type) {
 				}
 			}
 			if ( val ) {
-				settings[setting] = parseCssVar(val, clik_settings[type].styleDefs[setting].type.toLowerCase() );
+				settings[setting] = clik.parseCssVar(val, clik_settings[type].styleDefs[setting].type.toLowerCase() );
 			}
 		}
 	}
 		
 	return settings;
-}
-
-/* just get named settings -- no control over the type */
-function getCssSettings($elem, names) {
-	settings = {};
-	for (let setting of names.split(",")) {
-		let val = $elem.css("--" + setting);
-		if (val) {
-			settings[setting] = val;
-		}
-	
-	}
-	return settings;
-}
-
-function parseCssVar(stringVal, type) {
-	let val = stringVal;
-	if (type == "boolean") {
-		val = parseInt(stringVal);
-		if (Number.isNaN(val)) {
-			console.log(val);
-			val = (stringVal.toLowerCase() == "true");
-		}
-		else {
-			// keep consistency on booleans
-			val = val ? true : false;
-		}
-		
-	}
-	
-	return val;
 }

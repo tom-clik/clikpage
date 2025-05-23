@@ -1,5 +1,21 @@
 /*
 
+# Usage
+
+Styling should be applied to `.button` with hover state `.button:hover`
+
+The label itself can also be styled with a selector of `.button label`.
+
+E.g.
+
+```
+.scheme-button.button 
+.scheme-button.button label
+.scheme-button.button:hover label
+```
+
+## Notes
+
 Buttons get complicated through the problem of <a> tags and inputs.
 
 Both of these get styled through the browser defaults and reset.
@@ -22,27 +38,13 @@ Button text</div>
 <div class="button"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></svg></div>
 ```
 
-# Notes
+### Sizing 
 
 There is no "width" for a whole button, only the icon. In common with much modern styling, widths
 should be assigned by the containing div through grid or flexbox.
 
 The buttons are inline-blocks, so always style the surrounding div with grid or flexbox to control
  the whitespace between them.
-
-# Usage
-
-Styling should be applied to `.button` with hover state `.button:hover`
-
-The label itself can also be styled with a selector of `.button label`.
-
-E.g.
-
-```
-.scheme-button.button 
-.scheme-button.button label
-.scheme-button.button:hover label
-```
 
 */
 

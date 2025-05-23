@@ -11,8 +11,6 @@ Different ideas for tabs. Working nicely.
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/title.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/fonts/fonts_local.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/panels.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/schemes/panels-schemes.css">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/tabs.css">
 
 	<meta charset="UTF-8">
@@ -96,10 +94,10 @@ Tab/Accordion/info panel Testing
 </cfoutput>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>	
 <script src="/_assets/js/jquery.tabs.js"></script>	
 <script src="/_assets/js/jquery.throttledresize.js"></script>
-<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/clik_onready.js"></script>
 
 <script>

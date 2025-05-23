@@ -30,10 +30,12 @@
         "fuzzySearch",
         "menuScroll",
         "menus",
-        "varClass",
-        "throttledresize"
+        "throttledresize",
+        "animateAuto",
+        "fuzzy",
+        "clik_common"
       ],
-      "min": "/_assets/js/_min/coldlightpackage.0.6.min.js",
+      "min": "/_assets/js/_min/coldlightpackage.0.10.min.js",
       "name": "coldlight"
     },
     {
@@ -236,7 +238,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,getSettings,clik_common"
+      "requires": "jquery,modal,clik_common"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -268,7 +270,7 @@
       "min":"/_assets/js/photogrid.js",
       "description": "Clik wrapper for all photogrid functions. ",
       "name": "photogrid",
-      "requires": "jquery,getSettings,justifiedGallery,masonry"
+      "requires": "jquery,clik_common,justifiedGallery,masonry"
     },
     {
       "min":"/_assets/js/jquery.justifiedGallery.js",
