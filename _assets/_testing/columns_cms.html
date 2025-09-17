@@ -180,15 +180,23 @@ Just trying out the new system with a simple style
 </div>
 
 <script src="/_assets/js/jquery-3.4.1.js"></script>
+<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/jquery.throttledresize.js"></script>
-<script src="/_assets/js/varClass.js"></script>
-<script src="/_assets/js/getSettings.js"></script>
-<script src="/_assets/js/removeClassByPrefix.js"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
 <script src="/_assets/js/jquery.modal.js"></script>
 
 <script type="text/javascript">
+
+	// NB in main framework there should be functionality to get settings
+	// for each "type"
+	function getColumnSettings() {
+		let settings =  {};
+		for (let setting of ["menu-anim-time","height"]) {
+			settings[setting] = clik.parseCssVar($this, setting);
+		}
+		return settings;
+	}
 
 	
 	$(document).ready(function() {
@@ -202,7 +210,7 @@ Just trying out the new system with a simple style
 		$("#menu,#xcol").on("open", function() {
 			$this = $(this);
 			const id = $this.attr("id");
-			let settings = getCssSettings($this,"menu-anim-time,height");
+			let settings = getColumnSettings();
 			if (settings.height == "auto") {
 				$this.animateAuto("height", settings["menu-anim-time"], function() {
 					console.log("callback test")
@@ -217,7 +225,7 @@ Just trying out the new system with a simple style
 		}).on("close",function() {
 			$this = $(this);
 			const id = $this.attr("id");
-			let settings = getCssSettings($this,"menu-anim-time,height");
+			let settings = getColumnSettings();
 			if (settings.height == "auto") {
 				$this.animate({"height":0}, settings["menu-anim-time"], function() { $this.css({"height":""}) });
 			}

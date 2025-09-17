@@ -68,7 +68,7 @@ div:not(.cs-grid):has( > .inner) {
 	min-height:100%;
 	--grid-mode: rows;
 }
-#ubercontainer > .grid {
+#ubercontainer {
 	--grid-template-rows: min-content auto min-content;
 }
 
@@ -88,7 +88,7 @@ div:not(.cs-grid):has( > .inner) {
 		--grid-mode: rows;
 		min-height:100%;
 	}
-	#ubercontainer > .grid {
+	#ubercontainer {
 		--grid-template-rows: auto min-content;
 	}
 }
@@ -108,7 +108,7 @@ div:not(.cs-grid):has( > .inner) {
 		min-height:100%;
 	}
 
-	#ubercontainer > .grid {
+	#ubercontainer {
 		--grid-template-rows: auto min-content;
 	}
 
@@ -144,7 +144,7 @@ div:not(.cs-grid):has( > .inner) {
 		#ubercontainer {
 			--grid-mode: rows;
 		}
-		#ubercontainer > .grid {
+		#ubercontainer {
 			--grid-template-rows: min-content auto ;
 		}
 	}
@@ -152,7 +152,7 @@ div:not(.cs-grid):has( > .inner) {
 		#ubercontainer {
 			--grid-mode: rows;
 		}
-		#ubercontainer > .grid {
+		#ubercontainer {
 			--grid-template-rows:  auto ;
 		}
 	}
@@ -318,7 +318,7 @@ div:not(.cs-grid):has( > .inner) {
 #content_main {
 	--grid-mode: named;
 }
-#content_main > .grid {
+#content_main {
 	--grid-template-areas: "menu content_wrap";
 	--grid-template-columns: var(--menu-width) auto;
 	--grid-template-rows: auto;
@@ -332,18 +332,15 @@ div:not(.cs-grid):has( > .inner) {
 
 }
 
-
 #content {
 	--grid-mode: rows;
-}
-#content > .grid {
 	--grid-template-rows: min-content auto min-content;
 }
 
 #content_wrap {
 	--grid-mode: named;
 }
-#content_wrap > .grid {
+#content_wrap {
 	--grid-template-areas: "maincol xcol";
 	--grid-template-columns: auto var(--xcol-width) ;
 	--grid-template-rows: auto;
@@ -352,6 +349,7 @@ div:not(.cs-grid):has( > .inner) {
 
 
 @container body ( style( --xcol:close ) ) {
+	
 	#xcol {
 		display:none;
 	}
@@ -359,10 +357,7 @@ div:not(.cs-grid):has( > .inner) {
 	#content_wrap {
 		--grid-mode: flex;
 	}
-	#content_wrap > .grid {
-		--flex-direction: column;
-		height: auto;
-	}
+	
 }
 
 
@@ -373,7 +368,7 @@ div:not(.cs-grid):has( > .inner) {
 #maincol {
 	--grid-mode: named;
 }
-#maincol > .grid {
+#maincol {
 	--grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
 	--grid-template-rows: min-content auto min-content;
 	--grid-template-columns:  1fr 1fr ;
@@ -383,7 +378,7 @@ div:not(.cs-grid):has( > .inner) {
 	height: var(--footer-height);
 	--grid-mode: rows;
 }
-#footer > .grid {
+#footer {
 	--grid-template-rows: min-content auto;
 }
 
@@ -404,23 +399,21 @@ div:not(.cs-grid):has( > .inner) {
 #header {
 	--grid-mode: rows;
 }
-#header > .grid {	
+#header {	
 	--grid-template-rows:auto  min-content ;
 }
 
 #nav {
 	--grid-mode: columns;
-}
-#nav > .grid {
 	--grid-template-columns: min-content 1fr min-content;
-	--grid-gap: 8px;
+	--grid-gap: 0 8px ;
 /*	--align-items: center;*/
 }
 
 #footer_main {
 	--grid-mode: fixed;
 }
-#footer_main > .grid {
+#footer_main {
 	--grid-columns: 3;
 }
 
@@ -428,12 +421,9 @@ div:not(.cs-grid):has( > .inner) {
 	
 	#content_wrap {
 		--grid-mode: flex;
-	}
-	#content_wrap > .grid {
 		--flex-direction: column;
-		height: auto;
 	}
-
+	
 	#maincol {
 		height:auto;
 	}
@@ -463,7 +453,7 @@ div:not(.cs-grid):has( > .inner) {
 	#footer_main {
 		--grid-mode: flex;
 	}
-	#footer_main > .grid {
+	#footer_main {
 		--flex-direction: column-reverse;
 		--justify-content:start;
 	}
@@ -473,7 +463,7 @@ div:not(.cs-grid):has( > .inner) {
 			height: auto;
 			--grid-mode: flex;
 		}
-		#footer > .grid {
+		#footer {
 			--flex-direction: column;
 			--justify-content:start;
 		}

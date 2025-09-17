@@ -178,7 +178,7 @@ Others:
 @container grid ( style(--grid-mode:flex) ) {
 	.grid {
 		display: flex;
-		--flex-stretch: 0; /* see notes */
+/*		--flex-stretch: 0; doesn't work, can't override */
 		flex-direction: var(--flex-direction);
 		flex-wrap: var(--flex-wrap);
 	}
@@ -187,7 +187,7 @@ Others:
 /* set a default for template columns in columns mode - just something to make it obvious what's happening */
 @container grid ( style(--grid-mode:columns) ) {
 	.grid {
-		--grid-template-columns: 36% 64%;
+/*		--grid-template-columns: 36% 64%; doesn't work, can't override */
 	}
 }
 
