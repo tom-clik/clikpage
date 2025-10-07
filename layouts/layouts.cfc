@@ -34,8 +34,12 @@ component name="layouts" {
 
 		variables.charset = arguments.charset
 
+		if (! IsDefined("server.system.environment.javalib") ) {
+			throw("You must define server.system.environment.javalib before using this component and ensure jsoup-1.20.1.jar is present. Jsoup is now used by multiple Java libs and we don't have a good solution for determining which one to load.");
+		}
+
 		try {
-			this.coldsoup = new coldsoup.coldSoup();
+			this.coldsoup = new coldsoup.coldSoup(server.system.environment.javalib & "\jsoup-1.20.1.jar");
 		}
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext};

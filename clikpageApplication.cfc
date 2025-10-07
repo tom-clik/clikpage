@@ -142,13 +142,13 @@ component {
 		}
 		
 		if (this.debug) {
-			param name="request.rc.reload" default="false" type="boolean";
+			param name="request.rc.reload" default="true" type="boolean";
 		  	if (request.rc.reload) {
 		  		onApplicationStart();
 		  	}
 		  	loadSite(reload=request.rc.reload);
 		}
-
+		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 
 	}
@@ -164,6 +164,7 @@ component {
 			else {
 				writeOutput(application.siteObj.pageObj.buildPage(request.prc.pageContent));
 			}
+			
 
 		}
 		catch (any e) {

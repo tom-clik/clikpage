@@ -185,6 +185,47 @@ clik = {
 		
 		return val;
 	},
+	
+
+	parseCssVars: function($element, settings) {
+		
+		const computed = getComputedStyle($element[0]);
+		const results = {};
+
+		for (const [setting, type] of Object.entries(settings)) {
+			let val = computed.getPropertyValue(`--${setting}`).trim();
+			if (!val) continue;
+
+			switch (type) {
+				case "boolean":
+					let bval = parseInt(val);
+					if (Number.isNaN(bval)) {
+						val = val.toLowerCase() === "true";
+					} else {
+						val = !!bval;
+					}
+					break;
+
+				case "integer":
+					val = parseInt(val);
+					if (Number.isNaN(val)) continue;
+					break;
+
+				case "numeric":
+					val = parseFloat(val);
+					if (Number.isNaN(val)) continue;
+					break;
+
+				case "string":
+					val = val.replace(/^"|"$/g, '');
+					break;
+			}
+
+			results[setting] = val;
+		}
+
+		return results;
+	},
 	/*
 	Return settings for a CS item from the CSS
 
@@ -193,7 +234,8 @@ clik = {
 	For every property defined in styledefs (these are saved in clik_settings.js)
 	we check if it's a "setting" as opposed to a plain style and then fetch
 	it from the CSS if it is.
-
+	
+	TODO: deprecate this and just call parseCSSvars
 	*/
 	getSettings: function ($elem, type) {
 		if (! clik_settings || ! type in clik_settings) {
@@ -205,18 +247,11 @@ clik = {
 		
 		for (let setting in clik_settings[type].styleDefs) {
 			if ( clik_settings[type].styleDefs[setting].setting ) {
-				let val = $elem.css("--" + setting);
-				if (! val) {
-					if ("default" in clik_settings[type].styleDefs[setting]) {
-						val = clik_settings[type].styleDefs[setting].default;
-					}
-				}
-				if ( val ) {
-					settings[setting] = clik.parseCssVar(val, clik_settings[type].styleDefs[setting].type.toLowerCase() );
-				}
+				// see TODO: above
+				settings[setting] = clik_settings[type].styleDefs[setting].type.toLowerCase();
 			}
 		}
 			
-		return settings;
+		return clik.parseCssVars($elem, settings);
 	}
 };

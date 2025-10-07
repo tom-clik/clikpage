@@ -162,6 +162,7 @@ table:where(.info,.reverse,.recordlist,.am_table) {
 	--table-border-style:solid;
 	--table-border-color:var(--border-color, black);
 	--table-cell-padding:2px;
+}
 
 table.info {
 	--table-border-width: 1px;
@@ -170,7 +171,6 @@ table.info {
 	--table-sticky:sticky;
 }
 
-
 table.sticky {
   position:relative;
 }
@@ -178,6 +178,8 @@ table.sticky {
 table.sticky th {
   position: sticky;
   top: 0;
+}
+
 table {
   position:relative;
 }

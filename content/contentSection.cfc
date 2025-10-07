@@ -65,17 +65,20 @@ component {
 		this.defaultStyles = {};
 
 		/*
-		 Keys of this struct are treated as special cases requiring logic to produce CSS
-		 
-		 They are not added directly to the CSS. Note the values of the struct are the default.
+		 Keys of this struct are used by the javaScript to adjust behaviour.
 
-		 NB see note above. Possibly we should create this automatically.
+		 They are populated by adding setting:1 to the styleDef options 
+
+		 This struct helps the JavaScript fetch the settings it needs. The defaults
+		 are still added to the CSS
 		 
+		 NOTE: MUSTDO: this hasn't been done yet. There is a hardwired set to settings defs
+		 the JS uses. Want to update all this.
+
 		 e.g.	
 			this.settings = [
-				"orientation": "horizontal",
-				"popup":"false",
-				"padding-adjust": true
+				"popup":"boolean",
+				"padding-adjust": "boolean"
 			];
 		*/
 			
@@ -106,19 +109,21 @@ component {
 			for (local.setting_code in this.styleDefs){
 				local.setting  = this.styleDefs[local.setting_code];
 				StructAppend(local.setting,{"setting":false}, false);// use as JavaScript config param
+				if ( local.setting.setting ) {
+					this.settings["#local.setting_code#"] = local.setting.type;
+				}
 				if (StructKeyExists(local.setting,"default")) {
 					this.defaultStyles["#local.setting_code#"] = local.setting.default;
 				}
 			}
 		}
 		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext, "setting_code"=local.setting_code};
+			local.extendedinfo = {"error"=e, "setting_code"=local.setting_code, "styleDefs"=this.styleDefs};
 
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
 				message      = "Error updating defaults:" & e.message, 
-				detail       = e.detail,
-				errorcode    = ""		
+				detail       = e.detail
 			);
 		}
 

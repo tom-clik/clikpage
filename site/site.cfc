@@ -89,7 +89,7 @@ component accessors="true" extends="utils.baseutils" {
 
 		}
 		else {
-			throw("No styles defined");
+			throw(message="No styles defined",detail="");
 		}
 		
 		// load sections
@@ -742,6 +742,7 @@ component accessors="true" extends="utils.baseutils" {
 	public struct function page(required struct pageRequest, required struct site) {
 
 		var pageContent = this.pageObj.getContent();
+		
 		addJSData(pageContent);
 
 		local.rc = {};
@@ -751,7 +752,7 @@ component accessors="true" extends="utils.baseutils" {
 		arguments.site.sections[arguments.pageRequest.section].location = sectionLocation(site=arguments.site,section=arguments.pageRequest.section);
 
 		pageContent.layoutname = getLayoutName(section=local.rc.sectionObj,action=arguments.pageRequest.action,site=arguments.site);
-
+		
 		local.rc.layout = this.layoutsObj.getLayout(pageContent.layoutname);
 
 		pageContent.bodyClass =  local.rc.layout.bodyClass;
@@ -776,7 +777,7 @@ component accessors="true" extends="utils.baseutils" {
 		
 		loadSectionData(site=arguments.site, section=local.rc.sectionObj);
 
-		if (ArrayLen (local.rc.sectionObj.data) && local.rc.sectionObj.dataset.type != "sections" ) {
+		if (ArrayLen (local.rc.sectionObj.data) ) {
 			
 			local.type = getDataType(local.rc.sectionObj);
 

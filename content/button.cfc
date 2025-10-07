@@ -143,10 +143,11 @@ component extends="contentSection" {
 		var linkEnd = "</a>";
 		var cshtml = linkStart;
 
-		local.settings = Duplicate( arguments.content.style);
-		server.utils.utils.deepStructAppend( arguments.content.style, {"main"={"shape":"left_arrow"}}, false );
-		
-		cshtml &= displayShape(arguments.content.style.main.shape);
+		local.settings = arguments.content.keyExists("style") ? Duplicate( arguments.content.style) : {};
+		server.utils.utils.deepStructAppend( local.settings , {"main"={"icon-display":"none"}}, false );
+		if ( local.settings.main["icon-display"] != "none" ) {
+			cshtml &= displayShape(local.settings.main.shape);
+		}
 
 		if (StructKeyExists( arguments.content,"content") AND  arguments.content.content !="") {
 			cshtml &= "<label>#arguments.content.content#</label>";

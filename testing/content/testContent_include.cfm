@@ -1,7 +1,12 @@
 <cfscript>
 
 path = ExpandPath("../site/preview/config_main.json");
-fileData = fileRead(path );
+try {
+	fileData = fileRead(path );
+}
+catch (any e) {
+	throw(message="Main config not defined.",detail="See clikpage.testing.site.preview. You need to create the config files for testing");
+}
 config = deserializeJSON(fileData);
 debug = 1;
 outPath = "_out/";
@@ -12,7 +17,6 @@ outDir = ExpandPath(outPath);
 
 settingsObj = new clikpage.settings.settings(debug=debug);
 contentObj = new clikpage.content.content(settingsObj=settingsObj,debug=debug);
-
 
 styles = {};
 settingsObj.loadStyleSheet(expandPath("../css/_styles/test_settings.scss"), styles);

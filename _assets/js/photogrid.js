@@ -11,6 +11,7 @@ and then calls carousel or masonry if required.
       var defaults = {
         dataset: []
       };
+
       plugin.settings = {};
       plugin.options = $.extend({}, defaults, options);
       
@@ -37,8 +38,7 @@ and then calls carousel or masonry if required.
 
       plugin.reload = function() {
         
-        plugin.settings = getSettings($element, "imagegrid");
-        console.log(plugin.settings);
+        plugin.settings = clik.getSettings($element, "imagegrid");
         
         // remove any existing plug ins
         if (layout == "masonry") {
