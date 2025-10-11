@@ -25,7 +25,7 @@ Will add open class on open, close class on close, and eventually animate width|
 
 			animate: "horizontal", 
 			animationTime: 600,
-			open: true,
+			open: false,
 			resize: "resize"
 			
 		}
@@ -44,13 +44,11 @@ Will add open class on open, close class on close, and eventually animate width|
 			element = element; // reference to the actual DOM element
 
 		plugin.init = function() {
-
-			plugin.settings = $.extend({}, defaults, options);
+			var id = $element.attr("id");
+			plugin.settings = $.extend(true, {}, defaults, options);
 			
 			getCssSettings();
 			
-			console.log(plugin.settings);
-
 			setOpenClass();
 
 			$(window).on(plugin.settings.resize,function() {
@@ -69,13 +67,14 @@ Will add open class on open, close class on close, and eventually animate width|
 
 		$element.on("close",function(e) {
 			e.stopPropagation();
+			console.log("Closing " + $element.attr("id"));
 			plugin.settings["open"] = false;
 			setOpenClass();
 			
 		});
 
 		$element.on("resize",function(e) {
-			console.log("Resizing");
+			console.log("Resizing" + $element.attr("id"));
 			e.stopPropagation();
 			getCssSettings();
 			setOpenClass();
@@ -91,15 +90,16 @@ Will add open class on open, close class on close, and eventually animate width|
 		}
     	var getCssSettings = function() {
 			
+			var settings = clik.parseCssVars($element,settingTypes);
 			for (let setting in settingTypes) {
-				let val = clik.parseCssVar($element,setting,settingTypes[setting]);
-				if (val != undefined)  {
+				if (setting in settings)  {
+					let val = settings[setting];
 					if (setting == "animate") {
 						if (val != "width" && val != "height" ) {
 							val = "none";
 						}
 					}
-					plugin.settings[setting] = val;
+					plugin.settings[setting] = settings[setting];
 				}
 			}
 

@@ -7,12 +7,17 @@
 	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="/_assets/css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="/_assets/css/modal.css">
+	<link rel="stylesheet" href="/_assets/css/grids.css">
+	<link rel="stylesheet" href="/_assets/css/menus.css">
+	<link rel="stylesheet" href="/_assets/css/schemes/menus-schemes.css">
 	<link rel="stylesheet" href="/_assets/css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="/_assets/css/icons.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<style>
-	
+	:root {
+		--grid-gap:20px;
+	}
 	.bigbuttons {
 		border:1px solid teal;
 		border-radius: 4px;
@@ -71,60 +76,76 @@
 	}
 	
 	#menu.open {
-		
 		transform: translate(0%, 0%);
 	}
 
-	#pulldown {
-		display:block;
-		top:40px;
-		left:420px;
-		height:0;
-		width:240px;
-		transition: height 0.6s ease-in;
+	#popup{
+		--modal:1;
+		--closebutton:"";
+	}
+	#popup2, #menu {
+		--draggable:1
+	}
+	#menu {
+		--scroll: 0
+	}
+	.pulldown {
+		--scroll: 0;
+		--positionMy: right top+3;
+		--positionAt: right bottom;
+	}	
+
+	.pulldown {
 		border-width:0;
 		padding:0;
-		overflow: clip;
+/*		overflow: clip;*/
 		background-color: #c3c3c3;
 	}
 
-	#pulldown .wrapper {
+	.pulldown .wrapper {
 		border:1px solid black;
 	}
-	#pulldown.open {
-		height: 140px;
-
-	}
+	
 	</style>
 </head>
 <body>
 
 
-<div class="container">
- 	<div class="button auto bigbuttons">
-		<a href="#popup.open">
-				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
-				<label>Open Modal</label>
-			</a>				
-	</div>
-	<div class="button auto bigbuttons">
-		<a href="#popup2.open">
-				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
-				<label>Open Draggable</label>
-			</a>				
-	</div>
-	<div class="button auto bigbuttons">
-		<a href="#menu.open">
-				<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
-				<label>Open Menu</label>
-			</a>				
-	</div>
-	<div id="pulldown_menu" class="button auto scheme-rotate bigbuttons">
+<div class="cs-grid">
+	<div class="grid">
+	 	<div class="button auto bigbuttons">
+			<a href="#popup.open">
+					<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
+					<label>Open Modal</label>
+				</a>				
+		</div>
+		<div class="button auto bigbuttons">
+			<a href="#popup2.open">
+					<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/open_in_full.svg#open_in_full"></svg>
+					<label>Open Draggable</label>
+				</a>				
+		</div>
+		<div class="button auto bigbuttons">
+			<a href="#menu.open">
+					<svg  class="icon"  viewBox="0 0 24 24"><use xlink:href="/_assets/images/menu.svg#menu"></svg>
+					<label>Open Menu</label>
+				</a>				
+		</div>
+		<div id="pulldown_menu" class="button auto scheme-rotate bigbuttons">
 
-		<a href="#pulldown.openclose">
-				<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
-				<label>Open Pulldown</label>
-			</a>				
+			<a href="#pulldown.openclose">
+					<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+					<label>Open Pulldown</label>
+				</a>				
+		</div>
+
+		<div id="pulldown_menu2" class="button auto scheme-rotate bigbuttons">
+
+			<a href="#pulldown2.openclose">
+					<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
+					<label>Open Pulldown 2</label>
+				</a>				
+		</div>
 	</div>
 </div>
 
@@ -155,12 +176,30 @@
 	</div>
 </div>
 
-<div id="pulldown" class="pulldown modal">
-	Small amount of content
+<div id="pulldown" class="pulldown modal" data-parent="pulldown_menu">
+	<div class="menu vertical">
+		<ul>
+			<li><a href="#whatever"><span>Menu 1</span></a></li>
+			<li><a href="#whatever"><span>Menu 2</span></a></li>
+			<li><a href="#whatever"><span>Menu 3</span></a></li>
+			<li><a href="#whatever"><span>Menu 4</span></a></li>
+		</ul>
+	</div>
 </div>
 
+<div id="pulldown2" class="pulldown modal" data-parent="pulldown_menu2">
+	<div class="menu vertical">
+		<ul>
+			<li><a href="#whatever"><span>Other Menu 1</span></a></li>
+			<li><a href="#whatever"><span>Other Menu 2</span></a></li>
+			<li><a href="#whatever"><span>Other Menu 3</span></a></li>
+			<li><a href="#whatever"><span>Other Menu 4</span></a></li>
+		</ul>
+	</div>
+</div>
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
 <script src="/_assets/js/jquery.modal.js"></script>
 <script src="/_assets/js/jquery.mousewheel.js"></script>
@@ -171,8 +210,6 @@
 <script>
 
 	$(document).ready(function() {
-
-		$('.button.auto').autoButton();
 
 		html = "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
 
@@ -185,30 +222,13 @@
 			onCancel: function() {console.log("No dice")}
 		});
 
-		$("#popup2").modal({
+		$("#popup2,#menu,.pulldown").modal({
 			draggable:true,
 			modal:false
 		});
 
-		$("#menu").modal({
-			draggable:false,
-			modal:false,
-			scroll: false
-		});
-
+		// #menu has scroll truned off and we set custom scroller
 		$("#menu .main_content").mCustomScrollbar();
-	
-		$pulldown = $("#pulldown").modal({
-			draggable:false,
-			modal:false,
-			scroll: false,
-			closebutton: ""
-		}).position({
-			my: "right top+3",
-			at: "right bottom",
-			of: "#pulldown_menu"
-		});
-
 
 	});
 
