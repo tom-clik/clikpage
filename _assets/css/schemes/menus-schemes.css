@@ -10,3 +10,17 @@ No longer really needed. Add them using new var mechanism
 	--menu-orientation: vertical;
 	--menu-align:left;
 }
+
+.menu.boxes {
+	--menu-borders: boxes;
+	--menu-item-border: 1px;
+}
+
+.menu.dividers {
+	--menu-borders: dividers;
+	--menu-item-border: 1px;
+}
+
+.menu.right {
+	--menu-align:right;
+}

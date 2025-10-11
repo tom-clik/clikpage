@@ -25,7 +25,7 @@
 		padding:4px;
 	}
 	
-	.cs-grid .grid {
+	.cs-grid {
 		--grid-gap:10px;
 	}
 
@@ -34,20 +34,17 @@
 	}
 	#testfix {
 		--grid-mode: fixed;
-	}
-
-	#testfix .grid {
 		--grid-columns:3;
 	}
 
 	@media screen and (max-width: 800px) {
-		#testfix .grid {
+		#testfix  {
 			--grid-columns:2;
 		}
 	}
 
 	@media screen and (max-width: 600px) {
-		#testfix .grid {
+		#testfix  {
 			--grid-mode:none;
 		}
 	}
@@ -58,32 +55,25 @@
 
 	#testcolumns {
 		--grid-mode: columns;
-	}
-
-	#testcolumns .grid {
 		--grid-template-columns: 220px auto 260px;
 	}
 
 	#testrows {
 		height: 400px;
 		--grid-mode: rows;
-	}
-	#testrows .grid {
 		--grid-template-rows: 40px auto 40px;
 	}
 
 	#testnamed {
 		height: 400px;
 		--grid-mode: named;
-	}
-	#testnamed .grid {
 		--grid-template-areas: "header header" "left right" "footer footer";
 		--grid-template-columns: 200px auto;
 		--grid-template-rows: 40px auto 40px;
 	}
 
 	@media screen and (max-width: 800px) {
-		#testnamed  .grid {
+		#testnamed  {
 			height: 280px;
 			--grid-template-areas: "header header" "right right" "left footer";
 			--grid-template-columns: 200px auto;
@@ -117,35 +107,29 @@
 		}
 	}
 
-	#testflex {
+	#testflexheight {
 		--grid-mode: flex;
 		height:250px;
 		background-color: #8c8c8c;
-	}
-
-	#testflex .grid {
 		--justify-content: end;
 		--align-content: space-between;
 	}
+	
 
 	@media screen and (max-width: 800px) {
-		#testflex {
+		#testflexheight {
 			height:auto;
 		}
 	}
 
 	#testflexnowrap {
 		--grid-mode: flex;
-	}
-	#testflexnowrap .grid {
 		--flex-wrap: nowrap;
 		--align-items: stretch;
 	}
 
 	#testflexstretch {
 		--grid-mode: flex;
-	}
-	#testflexstretch .grid {
 		--flex-direction: row-reverse;
 		--flex-stretch: 1;
 	}
@@ -155,12 +139,13 @@
 		text-align: center;
 	}
 
-	#testflexcenter {
+	#testflex {
 		--grid-mode: flex;
+		--align-items: center;
 	}
-	#testflexcenter .grid {
-		--justify-content: center;
-	}
+	
+
+
 	</style>
 </head>
 <body>
@@ -210,12 +195,17 @@
 	</div>
 
 	<div class="test">
-		<div class="test-header">Flex - with a height to show what align-content actually does</div>
-		<div id="testflex" class="cs-grid"></div>
+		<div class="test-header">Flex</div>
+		<div id="testflex" class="cs-grid" data-cols="5"></div>
 	</div>
 
 	<div class="test">
-		<div class="test-header">Flex No Wrap - items stretched with align-items</div>
+		<div class="test-header">Flex - with a height to show what align-content actually does</div>
+		<div id="testflexheight" class="cs-grid"></div>
+	</div>
+
+	<div class="test">
+		<div class="test-header">Flex No Wrap</div>
 		<div id="testflexnowrap" class="cs-grid"></div>
 	</div>
 
@@ -223,12 +213,7 @@
 		<div class="test-header">Flex Stretch - note text centering not part of grid system</div>
 		<div id="testflexstretch" class="cs-grid" data-cols="5"></div>
 	</div>
-
-	<div class="test">
-		<div class="test-header">Flex align center</div>
-		<div id="testflexcenter" class="cs-grid" data-cols="5"></div>
-	</div>
-
+	
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	
 	<script type="text/javascript">

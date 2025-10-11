@@ -67,7 +67,7 @@ hi      li.hi a
 	--menu-background: transparent;
 	--menu-gap: 4px;/* Gap between items */
 	--menu-item-padding: 0 8px;
-	--menu-item-border:0;/* item border width */
+	--menu-item-border:0px;/* item border width MUST be single value for boxes or dividers */
 	--menu-item-width: 140px; /* min width of menu items in grid layou */
 	--menu-icon-display: none;/* none or block */
 	--menu-label-display: block;/* text part of menu item:; none or block */
