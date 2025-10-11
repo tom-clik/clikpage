@@ -60,6 +60,7 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 	--label-align:left;
 	--stretch:0;/* expand text label */
 	--popout: 0;
+	--button-padding: 0px; /* single value padding MUST be used if adding padding to pop outs */
 }
 
 .button {
@@ -77,6 +78,7 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 }
 
 .button a, .button input {
+	padding: var(--button-padding);
 	display:flex;
 	align-items: var(--button-valign);
   	flex-direction: row;
@@ -152,12 +154,13 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 	}
 
 	label {
-		line-height: var(--icon-height);
+		line-height: calc( var(--icon-height) + var(--button-padding) * 2 );
 		visibility: hidden;
 		position: absolute;
 		width: 0;
 		overflow: hidden;
-		top: calc(-1 * var(--button-padding));
+		top: 0;
+		height:  calc( var(--icon-height) + var(--button-padding) * 2 );
 		left:calc(var(--icon-width) + var(--button-padding));
 		transition: width 0.3s ease-in-out;
 		white-space: nowrap;
@@ -165,7 +168,7 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 
 	a:hover label {
 		visibility: visible;
-		width:200px;
+		width:200px;/* can't be auto. doesn't animate */
 	}
 
 	@container button ( style(--button-align:right) ) {
