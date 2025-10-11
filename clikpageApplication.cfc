@@ -30,6 +30,8 @@ component {
 		
 		startApp();
 
+	
+
 		// TODO: some sort of check
 		//checkConfig();
 
@@ -40,13 +42,6 @@ component {
 			
 			application.siteObj = new clikpage.site.site(argumentcollection=application.config, dataObj=application.dataObj, debug = this.debug);
 			
-			application.siteObj.pageObj.addCss(application.siteObj.pageObj.content, "styles/styles.css");
-			application.siteObj.pageObj.content.static_css["fonts"] = 1;
-			application.siteObj.pageObj.content.static_css["content"] = 1;
-			application.siteObj.pageObj.content.static_css["google_icons"] = 1;
-			
-			application.siteObj.pageObj.content.static_js["clik_onready"] = 1;
-
 			application.siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 			
 			loadSite(reload=true);
@@ -144,10 +139,12 @@ component {
 		if (this.debug) {
 			param name="request.rc.reload" default="true" type="boolean";
 		  	if (request.rc.reload) {
+
 		  		onApplicationStart();
 		  	}
 		  	loadSite(reload=request.rc.reload);
-		}
+		} 
+
 		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
 

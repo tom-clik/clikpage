@@ -14,6 +14,14 @@ component accessors="true" extends="utils.baseutils" {
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
 
 		this.pageObj = new clikpage.page(debug=getdebug());
+
+		this.pageObj.content.static_css["fonts"] = 1;
+		this.pageObj.content.static_css["content"] = 1;
+		this.pageObj.content.static_css["google_icons"] = 1;
+		this.pageObj.content.static_js["main"] = 1;
+		this.pageObj.addCss( this.pageObj.content, "styles/styles.css");
+
+
 		this.dataObj = arguments.dataObj;
 		
 		super.utils();
@@ -105,6 +113,7 @@ component accessors="true" extends="utils.baseutils" {
 		// Load all separate (ie reusable) content sections
 		loadContent( site=local.site, directory=local.root );
 
+
 		// process styling from layouts
 		loadSiteLayouts(local.site);
 
@@ -120,10 +129,18 @@ component accessors="true" extends="utils.baseutils" {
 			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
 		}
 
+		setContentStyles(content=local.site.content,styles=local.site.styles)
+
 		return local.site;
 
 	}
 
+
+	private void function setContentStyles(required struct content, required struct styles) {
+		for (id in content) {
+			this.contentObj.setStyle(content=arguments.content[id], styles=arguments.styles);
+		}
+	}
 	
 
 	/**
@@ -183,6 +200,7 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.html = this.layoutsObj.replaceFieldNames(local.csData);
+		
 		local.layout = {"id"="importCSS"};
 		local.layout["layout"] = this.layoutsObj.coldsoup.parse(local.html);
 		this.layoutsObj.parseContentSections(local.layout);
@@ -317,7 +335,7 @@ component accessors="true" extends="utils.baseutils" {
 				variables.utils.utils.deepStructAppend( arguments.site.sections[section], sectionData[section], false );
 			}
 		}
-
+				
 	}
 
 	/**
@@ -743,6 +761,8 @@ component accessors="true" extends="utils.baseutils" {
 
 		var pageContent = this.pageObj.getContent();
 		
+		// writeDump(var=pageContent,abort=1);
+
 		addJSData(pageContent);
 
 		local.rc = {};
@@ -777,9 +797,9 @@ component accessors="true" extends="utils.baseutils" {
 		
 		loadSectionData(site=arguments.site, section=local.rc.sectionObj);
 
-		if (ArrayLen (local.rc.sectionObj.data) ) {
-			
-			local.type = getDataType(local.rc.sectionObj);
+		local.type = getDataType(local.rc.sectionObj);
+
+		if (ArrayLen ( local.rc.sectionObj.data)  && local.type != "sections") {
 
 			// always gets record -- maybe do something about this
 			if (arguments.pageRequest.id eq "") {
@@ -1148,26 +1168,62 @@ component accessors="true" extends="utils.baseutils" {
 		checkoutputDirectories(arguments.outputDir)
 		
 		local.outfile = arguments.outputDir & "/styles/styles.css";
-		local.css = siteCSS(site=arguments.site,debug=arguments.debug);
-		FileWrite(local.outfile, local.css);
-
+		
+		try{
+			local.css = siteCSS(site=arguments.site,debug=arguments.debug);
+			FileWrite(local.outfile, local.css);
+		} 
+		catch (any e) {
+			local.extendedinfo = {"error"=e};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error saving stylesheet:" & e.message, 
+				detail       = e.detail
+			);
+		}
+		
 		saveData(site=arguments.site,outputDir=arguments.outputDir & "/scripts");
 
 		for (local.section in arguments.site.sections) {
+			
 			local.sectionObj = getSection(site=arguments.site,section=local.section);
-			loadSectionData(site=arguments.site, section=local.sectionObj);
-
-			local.pageRequest = {"section":local.section,"action":"index","id":""};
-			local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+				
+			try{
+				loadSectionData(site=arguments.site, section=local.sectionObj);
+				local.pageRequest = {"section":local.section,"action":"index","id":""};
+				local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e, section=local.sectionObj, pageRequest=local.pageRequest};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Error saving section #local.section#:" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 			ret.pages[local.page] = 1;
 
 			// TODO: better definitions of whether we have sub pages or not
 			// Need to think about galleries and sections with single items.
-			// 
-			if ( StructKeyExists( local.sectionObj, "dataset") AND	local.sectionObj.dataset.type != "sections" AND arrayLen(local.sectionObj.data) GT 1) {
+			
+			local.datatype = getDataType(local.sectionObj);
+			if ( StructKeyExists( local.sectionObj, "dataset") AND	local.datatype != "sections" AND arrayLen(local.sectionObj.data) GT 1) {
 				for (local.id in local.sectionObj.data) {
 					local.pageRequest = {"section":local.section,"action":"view","id":local.id};
-					local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+					try{
+						local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+					} 
+					catch (any e) {
+						local.extendedinfo = {"error"=e, section=local.sectionObj, pageRequest=local.pageRequest};
+						throw(
+							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Error saving detail page:" & e.message, 
+							detail       = e.detail
+						);
+					}
+
+					
 					ret.pages[local.page] = 1;
 				}
 			}
@@ -1223,14 +1279,12 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.content = page(arguments.pageRequest, arguments.site);
 
+		// writeDump(local.content);
+		// abort;
+
 		if (! arguments.debug) {
 			local.content.onready = this.pageObj.jsStaticFiles.removeJsComments(local.content.onready);
 		}
-
-		local.content.static_js["main"] = 1;
-		local.content.static_css["content"] = 1;
-
-		this.pageObj.addCss(local.content,"styles/styles.css");
 
 		if (StructKeyExists(arguments.site,"links")) {
 			for (local.link in arguments.site.links) {
