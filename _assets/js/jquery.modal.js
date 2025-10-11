@@ -95,11 +95,11 @@
 					if (plugin.settings.width == "auto") {
 						$element.width($(`#${parent}`).outerWidth());
 					}
-					$element.position(
+					$element.position({
 						my: plugin.settings.positionMy,
 						at: plugin.settings.positionAt,
 						of: `#${parent}`
-					);
+					});
 				}
 			}
 

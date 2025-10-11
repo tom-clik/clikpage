@@ -100,10 +100,31 @@
 		padding:0;
 /*		overflow: clip;*/
 		background-color: #c3c3c3;
+/*		border:1px solid black;*/
 	}
 
+	/* Note we have issues settings width when the
+	border is applied to the outer element */
 	.pulldown .wrapper {
 		border:1px solid black;
+	}
+
+	.pulldown .content {
+		padding:0;
+	}
+
+	/* pull down menu styling */
+	.menu {
+		--menu-item-padding: 8px;
+		--menu-orientation: vertical;
+		--menu-borders: dividers;
+		--menu-item-border: 1px;
+		--menu-align:right;
+	}
+
+	.menu a:hover {
+		font-weight: bold;
+		--menu-background: #ffffff;
 	}
 	
 	</style>
@@ -177,7 +198,7 @@
 </div>
 
 <div id="pulldown" class="pulldown modal" data-parent="pulldown_menu">
-	<div class="menu vertical">
+	<div class="menu ">
 		<ul>
 			<li><a href="#whatever"><span>Menu 1</span></a></li>
 			<li><a href="#whatever"><span>Menu 2</span></a></li>
@@ -188,7 +209,7 @@
 </div>
 
 <div id="pulldown2" class="pulldown modal" data-parent="pulldown_menu2">
-	<div class="menu vertical">
+	<div class="menu">
 		<ul>
 			<li><a href="#whatever"><span>Other Menu 1</span></a></li>
 			<li><a href="#whatever"><span>Other Menu 2</span></a></li>
@@ -212,7 +233,7 @@
 	$(document).ready(function() {
 
 		$('.button.auto').autoButton();
-		
+
 		html = "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
 
 		$(".placeholderContent").html(html.repeat(6));

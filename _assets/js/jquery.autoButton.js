@@ -108,12 +108,21 @@ Typical actions are open, close (or the special case openclose which can be appl
 					action = getState() === "open" ? "close" : "open";
 					action === "open" ? plugin.open() : plugin.close();
 				}
+				else {
+					var index = $element.data("index");
+					if (!index) {
+						index = 0;
+					}
+					index++;
+					if (index == $links.length) index = 0; 
+					$element.data("index",index);
+				}
 
 				$target.trigger(action);
 
 				if ($links.length > 1) {
-					$links.hide();
-					$links.filter(`[href$='.${action}']`).show();
+					$links.css({"display":"none"});
+					$($links[index]).css({"display":"flex"});
 				}
 			});
 
