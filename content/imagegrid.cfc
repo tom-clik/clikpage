@@ -92,6 +92,7 @@ component extends="grid" {
 		updateDefaults();
 
 		return this;
+
 	}
 
 	public string function html(required struct content,required struct data) {
@@ -115,9 +116,12 @@ component extends="grid" {
 			// 2. Popups proper target for open
 			// 3. Link types: none, gallery etc
 			if ( StructKeyExists( arguments.content, "link" )) {
-				// TODO: link for section detail page 
-				// local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
-				local.link = " href='" & Replace(arguments.content.link, "{{data.id}}",local.id,"all") & "'" ;
+				if (arguments.content.link eq "view") {
+					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
+				}
+				else {
+					local.link = " href='" & Replace(arguments.content.link, "{{data.id}}",local.id,"all") & "'" ;
+				}
 			}
 			else {
 				local.link = local.image.image;

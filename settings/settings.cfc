@@ -47,7 +47,7 @@ component output=false {
 			"grid-max-width":{"name":"max width","type"="dimension","default"="1fr","note"="Not sure this should be exposed","hidden":1,"description":"","hidden":1},
 			"grid-max-height":{"name":"Max item height","type"="dimension","default"="auto","description":"Maximum height of items in grid"},
 			"grid-columns":{"name"="Columns","type"="integer","default"="2","description"="Number of columns for a fixed column grid":"grid-mode","dependvalue":"fixed"},
-			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items"},
+			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items","setting":true},
 			"grid-template-columns":{"name":"Template columns","type"="text","description":"Column sizes when using fixed columns or named template areas","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
 			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using set rows or named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
 			"grid-template-areas":{"name"="Template areas","type"="text","dependson":"grid-mode","dependvalue":"templateareas","description":"","default":""},
@@ -412,7 +412,7 @@ component output=false {
 		local.css = arguments.debug ? CSSCommentHeader("Fonts") : "";
 		var cr = arguments.debug ? newLine() : "";
 		var tab = arguments.debug ? chr(9) : "";
-
+		
 		if (StructKeyExists(arguments.settings,"fonts")) {
 			for (local.fontname in arguments.settings.fonts) {
 				local.font = arguments.settings.fonts[local.fontname];
@@ -457,6 +457,7 @@ component output=false {
 	public string function colorVariablesCSS(required struct styles, boolean debug=this.debug) {
 
 		var tab = arguments.debug ? "	": "";
+		var cr = arguments.debug ? newLine() : "";
 		var css = arguments.debug ? [CSSCommentHeader("Colors")] : [];
 		
 		if (StructKeyExists(arguments.styles,"colors")) {
@@ -484,11 +485,17 @@ component output=false {
 
 		}
 
-		return css.toList(arguments.debug ? newLine() : "");
+		return css.toList(arguments.debug ? newLine() : "") & cr;
 
 	}
 	/**
-	 * Concatenate an array of content section css data with media queries
+	 * @hint Concatenate an array of content section css data with media queries
+	 *
+	 * Not really specific to the content. Could be used by anything, it's just that
+	 * we use it for the content sections.
+	 *
+	 * Takes an array of structs keyed by medium and just joins them together in the right order 
+	 * 
 	 */
 	public string function contentCSS(required array css, required struct media) localmode=true {
 		

@@ -46,11 +46,13 @@ component extends="item" {
 		var classes = {};
 
 		local.textfield = "description";
+		local.inline = 0;
 		if ( arguments.content.style.main.keyExists("inline") && arguments.content.style.main.inline ) {
 			local.textfield = "body";
+			local.inline = 1;
 		}
-
-		local.link_format = arguments.content.link ? : "{{link.{{section.id}}.view.{{data.id}}}}";
+		
+		local.link_format = arguments.content.link ? : ( local.inline ? "" : "{{link.{{section.id}}.view.{{data.id}}}}" );
 		
 		for (local.id in arguments.content.data) {
 			local.item = arguments.data[local.id];

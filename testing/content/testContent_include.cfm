@@ -37,7 +37,8 @@ pageObj = new clikpage.page(debug=debug);
 function testCS(required struct cs) {
 	
 	try {
-		
+		contentObj.setStyle(arguments.cs, styles);
+
 		css = CSS(arguments.cs);
 		
 		writeOutput("<pre>" & css & "</pre>");

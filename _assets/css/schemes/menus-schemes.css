@@ -6,3 +6,7 @@ No longer really needed. Add them using new var mechanism
 
 */
 
+.menu.vertical {
+	--menu-orientation: vertical;
+	--menu-align:left;
+}

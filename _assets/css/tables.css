@@ -113,12 +113,21 @@ th, td  {
 	vertical-align:var(--table-vertical-align);
 }
 
+/* legacy styling needed for markdown tables */
+th[align="center"], td[align="center"] {
+	--table-text-align:center;
+}
+
+th[align="right"], td[align="right"] {
+	--table-text-align:right;
+}
+
 tbody tr {
-	background: var(--table-background);
+	background-color: var(--table-background);
 }
 
 tbody tr:nth-of-type(2n) {
-	--table-background: var(--table-stripe-bg);
+	background-color: var(--table-stripe-bg);
 }
 
 thead {
@@ -169,6 +178,15 @@ table.info {
 	--table-cell-padding: 2px;
 	--table-margin:0 0 1em 0;
 	--table-sticky:sticky;
+}
+
+table.stripy {
+	--table-stripe-bg: #d3d3d3;
+}
+
+table.reverse th {
+	background-color: var(--panelbg, black);	
+	color: var(--paneltext, white);
 }
 
 table.sticky {

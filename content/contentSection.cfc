@@ -147,7 +147,7 @@ component {
 				 struct style={}
 				 ) {
 
-		var cs = {"id"=arguments.id, "type"=variables.type, "settings":{}};
+		var cs = { "id"=arguments.id, "type"=variables.type };
 		
 		variables.contentObj.deepStructAppend(cs,arguments,true);
 		variables.contentObj.deepStructAppend(cs,variables.defaults,false);
@@ -235,16 +235,14 @@ component {
 			}
 
 			css.append(variables.contentObj.settingsObj.css(local.state_styles, arguments.debug));
-
-			css.append("}");
-
+			
 			local.gridcss = variables.contentObj.settingsObj.grid(styles=local.state_styles,debug=arguments.debug);;
 			
 			if (local.gridcss != "") {
-				css.append(arguments.selector & local.state.selector & " > .grid {");
 				css.append(local.gridcss);
-				css.append("}");
 			}
+
+			css.append("}");
 
 			// additional panels for plain css styling
 			for (local.panel in this.panels) {
