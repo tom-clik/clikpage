@@ -175,17 +175,18 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 			right:0;
 		}
 
-		
-
 	}
 
 }
 
+.button a .icon {
+	transition: transform 0.5s ease-in;
+}
 
-.button.scheme-rotate.state-open a .icon {
+.button.rotate.state-open a .icon {
 	transform: rotate(90deg);
 }
 
-.button.scheme-flip.state-open a .icon {
+.button.flip.state-open a .icon {
 	transform: rotate(180deg);
 }
