@@ -47,21 +47,21 @@ Others:
 /* Gap between cells. One value or column gap, row gap */
 @property --grid-gap {
 	syntax: '*';
-	inherits: true;
+	inherits: false;
 	initial-value: 0px;
 }
 
 /* Maximum width of cells when using fit|fill|fixedwidth */
 @property --grid-width {
 	syntax: '<length> | <percentage>';
-	inherits: true;
+	inherits: false;
 	initial-value: 180px;
 }
 
 /*Number of columns when using mode=fixed. Actually what you want is mode=columns and set --grid-template-columns */
 @property --grid-columns {
 	syntax: '<integer>'; 
-	inherits: true;
+	inherits: false;
 	initial-value: 3;
 }
 
@@ -69,65 +69,65 @@ Others:
 @property --grid-template-rows {
 	syntax: '*';
 	initial-value: auto;
-	inherits: true;
+	inherits: false;
 }
 
 /* explicitly list widths of columns e.g. 120px auto 160px */
 @property --grid-template-columns {
 	syntax: '*';
-	inherits: true;
+	inherits: false;
 	initial-value: auto;
 }
 
 /* e.g. "header header" "menu main" "footer footer" */
 @property --grid-template-areas {
 	syntax: '*';
-	inherits: true;
+	inherits: false;
 	initial-value: none;
 }
 
 @property --flex-direction {
 	syntax: 'row | row-reverse | column | column-reverse'; 
-	inherits: true;
+	inherits: false;
 	initial-value: row;
 }
 
 /* main axis alignment */
 @property --justify-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly'; 
-	inherits: true;
+	inherits: false;
 	initial-value: normal;
 }
 /* alignment for multiple rows within their container (no, me neither: what you want is actually align-items) */
 @property --align-content {
 	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
-	inherits: true;
+	inherits: false;
 	initial-value: normal;
 }
 
 /* this the vertical alignment you're after */
 @property --align-items {
 	syntax: 'normal | stretch | start | end | center '; 
-	inherits: true;
+	inherits: false;
 	initial-value: normal;
 }
 
 /* the default for this 0 for mode=flex. This is applied explicitly below in a property query NB this does inherit, be careful  */
 @property --flex-stretch {
 	syntax: '<number>'; 
-	inherits: true;
+	inherits: false;
 	initial-value: 1;
 }
 
 @property --flex-wrap {
 	syntax: 'wrap | nowrap'; 
-	inherits: true;
+	inherits: false;
 	initial-value: wrap;
 }
 
 @property --grid-max-height {
 	syntax: '*'; 
-	inherits: true;
+	inherits: false;
 	initial-value: 1fr;
 }
 
@@ -136,7 +136,29 @@ Others:
 	display: grid; /* need to get content to expand */
 }
 
+.cs-grid > .grid {
+	height:100%;
+	min-height: 100%;
+	align-self: stretch;
+}
+
+/* Note the inheritance from the container. This is all to cope with
+grids within grids. We don't want the properties to inherit,
+but we need them to apply to the "inner" div */
 .grid {
+	--grid-gap: inherit;
+	--grid-width: inherit;
+	--grid-columns: inherit;
+	--grid-template-rows: inherit;
+	--grid-template-columns: inherit;
+	--grid-template-areas: inherit;
+	--flex-direction: inherit;
+	--justify-content: inherit;
+	--align-content: inherit;
+	--align-items: inherit;
+	--flex-stretch: inherit;
+	--flex-wrap: inherit;
+	--grid-max-height: inherit;
 	display:grid;
 	grid-gap:var(--grid-gap);
 	align-content: var(--align-content);
@@ -146,13 +168,8 @@ Others:
 	grid-template-rows: var(--grid-template-rows);
 }
 
-.cs-grid > .grid {
-	height:100%;
-	min-height: 100%;
-	align-self: stretch;
-}
-
 .grid > * {
+	--flex-stretch: inherit;
 	height: var(--grid-max-height);
 	flex-grow: var(--flex-stretch);
 }
