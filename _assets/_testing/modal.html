@@ -29,6 +29,13 @@
 		background-color: #dedede;
 	}
 
+	#buttonmenu {
+		--grid-mode: flex;
+		--flex-stretch: 0;
+		margin:20px;
+		--justify-content: space-evenly;
+	}
+
 	img {
 		max-width: 100%;
 	  	height: auto;
@@ -96,6 +103,10 @@
 /*		border:1px solid black;*/
 	}
 
+	#pulldown_menu2 {
+		--button-align:right;
+	}
+
 	/* Note we have issues settings width when the
 	border is applied to the outer element */
 	.pulldown .wrapper {
@@ -106,14 +117,27 @@
 		padding:0;
 	}
 
+	#pulldown2 {
+		--width:auto;
+	}
+
 	/* pull down menu styling */
 	.menu {
-		--menu-item-padding: 8px;
+		--menu-item-padding: 8px 20px;
 		--menu-orientation: vertical;
 		--menu-borders: dividers;
 		--menu-item-border: 1px;
 		--menu-align:right;
+		--menu-mode:grid;
 	}
+
+
+	.menu.flexvertical {
+		--menu-mode:flex;
+		--flex-stretch:1;
+	}
+
+	
 
 	.menu a:hover {
 		font-weight: bold;
@@ -125,7 +149,7 @@
 <body>
 
 
-<div class="cs-grid">
+<div class="cs-grid" id="buttonmenu">
 	<div class="grid">
 	 	<div class="button auto bigbuttons">
 			<a href="#popup.open">
@@ -154,11 +178,10 @@
 		</div>
 
 		<div id="pulldown_menu2" class="button auto rotate bigbuttons">
-
 			<a href="#pulldown2.openclose">
-					<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
-					<label>Open Pulldown 2</label>
-				</a>				
+				<i class="icon icon-next"></i>
+				<label>Open Pulldown 2</label>
+			</a>				
 		</div>
 	</div>
 </div>
@@ -191,7 +214,7 @@
 </div>
 
 <div id="pulldown" class="pulldown modal" data-parent="pulldown_menu">
-	<div class="menu ">
+	<div class="menu">
 		<ul>
 			<li><a href="#whatever"><span>Menu 1</span></a></li>
 			<li><a href="#whatever"><span>Menu 2</span></a></li>
@@ -202,11 +225,11 @@
 </div>
 
 <div id="pulldown2" class="pulldown modal" data-parent="pulldown_menu2">
-	<div class="menu">
+	<div class="menu flexvertical">
 		<ul>
-			<li><a href="#whatever"><span>Other Menu 1</span></a></li>
-			<li><a href="#whatever"><span>Other Menu 2</span></a></li>
-			<li><a href="#whatever"><span>Other Menu 3</span></a></li>
+			<li><a href="#whatever"><span>Other Menu 1 yadda yiddi</span></a></li>
+			<li><a href="#whatever"><span>Other Menu 2 whats</span></a></li>
+			<li><a href="#whatever"><span>Other Menu 3nodo</span></a></li>
 			<li><a href="#whatever"><span>Other Menu 4</span></a></li>
 		</ul>
 	</div>

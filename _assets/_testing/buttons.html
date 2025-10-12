@@ -15,10 +15,31 @@
 			--grid-gap:4px;
 		}
 
-		
 		#test1 {
 			--icon-width:64px;
 			--icon-height:64px;
+		}
+		/* container styling */
+		/* icons are always a list of inline blocks.
+		Use a wrapper and a flexbox to align them */
+		.flex {
+			display: flex;
+			grid-gap:4px;
+		}
+		.flex-column {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			width:42px;
+		}
+
+		.flex-end {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.flex-stretch div {
+			flex-grow: 1;
 		}
 	</style>
 	<style id="test2" data-title="other styling">
@@ -54,8 +75,10 @@
 			font-family:var(--text-font);
 		}
 		
-		.button label {
-			padding:4px;
+		@container button {
+			label {
+				padding:4px;
+			}
 		}
 
 		.button:hover  {
@@ -108,6 +131,15 @@
 			background-color: teal;
 			color:  inherit;
 		}
+
+		@media only screen and (max-width: 767px) {
+			.scheme-rollout .button {
+				--popout: 0;
+			}
+			.flex-column {
+				width:auto;
+			}
+		}
 		
 		.setting-align-left {
 			--button-align:left;	
@@ -123,28 +155,7 @@
 			--popout: 1;
 		}
 
-		/* container styling */
-		/* icons are always a list of inline blocks.
-		Use a wrapper and a flexbox to align them */
-		.flex {
-			display: flex;
-			grid-gap:4px;
-		}
-		.flex-column {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-start;
-			width:42px;
-		}
-
-		.flex-end {
-			display: flex;
-			justify-content: flex-end;
-		}
-
-		.flex-stretch div {
-			flex-grow: 1;
-		}
+		
 
 	</style>
 
@@ -224,7 +235,7 @@
 	</div>
 
 	<div class="">
-		<div class="cs-title"><a href="#test4">Rollout labels</a></div>
+		<div class="cs-title"><a href="#test4">Rollout labels (off in mobile)</a></div>
 		<div class="test scheme-rollout flex-column" id="test4">
 			<div class="button setting-popout"><a href="#"><i class="icon icon-close"></i><label>icon-close spaces !^&!% fref</label></a></div>
 			<div class="button setting-popout"><a href="#"><i class="icon icon-menu"></i><label>icon-menu spaces !^&!% fref</label></a></div>
@@ -242,28 +253,6 @@
 			<div class="button setting-popout"><a href="#"><i class="icon icon-home"></i><label>icon-home  spaces !^&!% fref</label></a></div>
 			<div class="button setting-popout"><a href="#"><i class="icon icon-search"></i><label>icon-search  spaces !^&!% fref</label></a></div>
 			<div class="button setting-popout"><a href="#"><i class="icon icon-account"></i><label>icon-account  spaces !^&!% fref</label></a></div>
-		</div>
-	</div>
-
-	<div class="">
-		<div class="cs-title"><a href="#test4a">No font</a></div>
-		<div class="test scheme-no-font flex-column" id="test4a">
-			<div class="button"><a href="#"><i class="icon icon-close"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-menu"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-previous"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-next"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-squares"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-fullscreen"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-fullscreen_exit"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-first_page"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-last_page"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-help"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-cart"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-done"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-favorite"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-home"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-search"></i></a></div>
-			<div class="button"><a href="#"><i class="icon icon-account"></i></a></div>
 		</div>
 	</div>
 
@@ -317,6 +306,37 @@
 		</div>
 	</div>
 </div>
+
+<script src="/_assets/js/jquery-3.4.1.js"></script>
+<!--- No Javascript necessary for buttons but for popouts 
+	you can set the widths otherwise they need to be fixed (--popoutwidth)
+	for animation. You can just use "auto" but they the don't pop --->
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".scheme-rollout label").each(function() {
+            var $el = $(this);
+
+            // Skip if element is hidden or has display:inline
+            var originalPadding = $el.css('padding');
+            
+            // Clone element off-screen to measure natural width
+            var $clone = $el.clone().css({
+                width: 'auto',
+                visibility: 'hidden',
+                position: 'absolute',
+                left: -9999,
+                top: -9999,
+                padding: originalPadding
+            }).appendTo('body');
+
+            var autoWidth = $clone.outerWidth(); // natural width in px
+            $clone.remove();
+
+            // Set the measured width on the element
+            $el.css('--popoutwidth', autoWidth + 'px');
+        });
+});
+</script>
 
 </body>
 </html>

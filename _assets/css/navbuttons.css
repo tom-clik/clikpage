@@ -111,11 +111,13 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 	}
 }
 
-.button label {
-	display: block;
-	line-height: var(--icon-height);
-	text-align: var(--label-align);
-	flex-grow: var(--stretch);
+@container button {
+	label {
+		display: block;
+		line-height: var(--icon-height);
+		text-align: var(--label-align);
+		flex-grow: var(--stretch);
+	}
 }
 
 @container button ( style(--label-display:0) ) {
@@ -151,6 +153,7 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 		display: block;
 		position: relative;
 		width: var(--icon-width);
+		--popoutwidth: 200px;
 	}
 
 	label {
@@ -158,6 +161,7 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 		visibility: hidden;
 		position: absolute;
 		width: 0;
+		padding: 0 12px 0 0;
 		overflow: hidden;
 		top: 0;
 		height:  calc( var(--icon-height) + var(--button-padding) * 2 );
@@ -168,7 +172,7 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 
 	a:hover label {
 		visibility: visible;
-		width:200px;/* can't be auto. doesn't animate */
+		width:var(--popoutwidth);/* can't be auto. doesn't animate */
 	}
 
 	@container button ( style(--button-align:right) ) {

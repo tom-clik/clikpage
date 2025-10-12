@@ -12,7 +12,7 @@
 			positionMy: "right top+1", // relative to data-parent
 			positionAt: "right bottom",
 			animationTime: 400,
-			width: "auto",
+			width: "parent",
 			onOpen: function($element) {},
 			onClose: function($element) {},
 			onOk: function($element) {},
@@ -38,18 +38,16 @@
 		let $wrapper, $title, $content, $backdrop;
 		const parent = $element.data("parent");
 		
-		if (parent) {
-			var $parent = $("#" + parent);
-		}
 		
-		plugin.settings = $.extend(true, {}, defaults, options);
 
 		// ---------------------------------------------------------
 		// Init
 		// ---------------------------------------------------------
-		plugin.init = function() {
+		plugin.init = function(options) {
 
-			getCssSettings();
+			plugin.settings = $.extend(true, {}, defaults, clik.parseCssVars($element, settingTypes), options);
+
+			console.log(plugin.settings);
 
 			plugin.settings.scroll = jQuery().mCustomScrollbar && plugin.settings.scroll;
 
@@ -89,20 +87,6 @@
 				});
 			}
 
-			if (plugin.settings.pulldown) {
-			
-				if (parent) {
-					if (plugin.settings.width == "auto") {
-						$element.width($(`#${parent}`).outerWidth());
-					}
-					$element.position({
-						my: plugin.settings.positionMy,
-						at: plugin.settings.positionAt,
-						of: `#${parent}`
-					});
-				}
-			}
-
 			// Draggable setup
 			if (plugin.settings.draggable) {
 			$element.on("mousedown", plugin.settings.dragTarget, function(e) {
@@ -128,9 +112,36 @@
 
 			if (!plugin.settings.pulldown) {
 				$content.height($wrapper.innerHeight() - titleheight);
+				$element.addClass("open");
+			}
+			else {
+
+				let $parent = $('#' + parent);
+				
+				$element.css({visibility: "hidden"}).addClass("open");
+
+				if ($parent.length) {
+					if (plugin.settings.width == "parent") {
+						$element.width($parent.outerWidth());
+					}
+					// content assumed to be a vertical menu in flex mode
+					else if (plugin.settings.width == "auto") {
+						let $li = $element.find("li").first();
+						console.log($li.outerWidth());
+						$element.width($li.outerWidth());
+					}
+					$element.css({ top: 0, left: 0 }).position({
+						my: plugin.settings.positionMy,
+						at: plugin.settings.positionAt,
+						of: $parent
+					});
+				}
+
+				$element.css({visibility: "visible"})
+			
 			}
 
-			$element.addClass("open");
+			
 
 			// --- Handle pulldown animation ---
 			if (plugin.settings.pulldown) {
@@ -178,9 +189,11 @@
 				});
 
 			// Prevent modal click from closing it
-			$element.on("click.modal", function(e) {
-				e.stopPropagation();
-			});
+			if (plugin.settings.modal) {
+				$element.on("click.modal", function(e) {
+					e.stopPropagation();
+				});
+			}	
 
 			plugin.settings.onOpen($element);
 		};
@@ -206,7 +219,7 @@
 			$element.off("click.modal");
 
 			if (parent) {
-				$parent.trigger("close");
+				$(parent).trigger("close");
 			}
 			
 			plugin.settings.onClose($element);
@@ -235,14 +248,6 @@
 		// Internal helpers
 		// ---------------------------------------------------------
 
-		const getCssSettings = function() {
-			const settings = clik.parseCssVars($element, settingTypes);
-			for (let setting in settingTypes) {
-			if (setting in settings) {
-				plugin.settings[setting] = settings[setting];
-			}
-			}
-		};
 
 		const dragMouseDown = function(e) {
 			e.preventDefault();
@@ -269,7 +274,7 @@
 		// ---------------------------------------------------------
 		// Init call
 		// ---------------------------------------------------------
-		plugin.init();
+		plugin.init(options);
 	};
 
 	// jQuery wrapper

@@ -26,6 +26,13 @@
 			onClose: function() {}
 		}
 
+		const settingTypes = {
+			hilight: "string",
+			arrow: "string",
+			animate: "string",
+			menuAnimationTime: "string"
+		};
+
 		var plugin = this;
 
 		plugin.settings = {}
@@ -38,13 +45,10 @@
 
 			// the plugin's final properties are the merged default and
 			// user-provided options (if any)
+			let cssSettings = (typeof clik !== "undefined" && typeof clik.parseCssVars === "function") ? (clik.parseCssVars($element, settingTypes) ) : {}; 
+			console.log(cssSettings);
+			plugin.settings = $.extend({}, defaults, cssSettings , options);
 			
-			let temp = $.extend({}, defaults, options);
-			let cssVars = getCssSettings($element,"hilight,arrow,animate,menuAnimationTime");
-			plugin.settings = $.extend({}, temp, cssVars);
-
-			console.log(plugin.settings);
-
 			switch(plugin.settings.animate) {
 				case "height":
 					props.height = 0;
@@ -120,19 +124,6 @@
 					$parent.addClass("open");
 				}
 			}
-		}
-
-		/* just get named settings -- no control over the type */
-		var getCssSettings = function($elem, names) {
-			let settings = {};
-			for (let setting of names.split(",")) {
-				let val = $elem.css("--" + setting);
-				if (val) {
-					settings[setting] = val;
-				}
-			
-			}
-			return settings;
 		}
 
 		plugin.init();

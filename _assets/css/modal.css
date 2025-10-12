@@ -54,6 +54,14 @@
 	initial-value: right bottom;
 }
 
+/** Width of pull down menus: auto or parent  */
+@property --width {
+	syntax: '*';
+	inherits: false;
+	initial-value: parent;
+}
+
+
 
 :root {
 	--panel-bg: black;
