@@ -48,7 +48,11 @@ select {
 	right:4px;
 }
 
-#menu > .inner , #xcol > .inner, #maincol > .inner, #content_top > .inner, #content_bottom >.inner {
+#menu > .inner , 
+#xcol > .inner, 
+#maincol > .inner, 
+#content_top > .inner, 
+#content_bottom >.inner {
 	padding:4px;
 }
 

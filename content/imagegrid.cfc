@@ -12,10 +12,10 @@ component extends="grid" {
 		
 		super.init(arguments.contentObj);
 		
-		this.classes = ListAppend(this.classes, "cs-grid", " ");	
+		this.classes = ListAppend(this.classes, "grid", " ");	
 
 		variables.static_css = {"images"=1,"flickity"=1,"grids"=1,"justifiedGallery"=1};
-		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1,"photogrid"=1,"getSettings"=1,"justifiedGallery"=1};
+		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1,"photogrid"=1,"justifiedGallery"=1};
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
@@ -106,7 +106,7 @@ component extends="grid" {
 			);
 		}
 
-		local.html = "<div class='grid'>";
+		local.html = "<div class='gridInner'>";
 
 		for (local.id in arguments.content.data) {
 			local.image = arguments.data[local.id];
@@ -155,7 +155,6 @@ component extends="grid" {
 		return local.html;
 		
 	}
-	/* TODO: remove once new plug in is working */
 	public string function onready(
 		required struct content, 
 		required struct pageContent,

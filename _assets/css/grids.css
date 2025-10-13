@@ -131,12 +131,16 @@ Others:
 	initial-value: 1fr;
 }
 
-.cs-grid {
+.grid {
 	container-name:grid;
 	display: grid; /* need to get content to expand */
 }
 
-.cs-grid > .grid {
+.grid.list {
+	--grid-mode: none;
+}
+
+.grid > .gridInner {
 	height:100%;
 	min-height: 100%;
 	align-self: stretch;
@@ -145,7 +149,7 @@ Others:
 /* Note the inheritance from the container. This is all to cope with
 grids within grids. We don't want the properties to inherit,
 but we need them to apply to the "inner" div */
-.grid {
+.gridInner {
 	--grid-gap: inherit;
 	--grid-width: inherit;
 	--grid-columns: inherit;
@@ -168,32 +172,32 @@ but we need them to apply to the "inner" div */
 	grid-template-rows: var(--grid-template-rows);
 }
 
-.grid > * {
+.gridInner > * {
 	--flex-stretch: inherit;
 	height: var(--grid-max-height);
 	flex-grow: var(--flex-stretch);
 }
 
 @container grid ( style(--grid-mode:none) ) {
-	.grid {
+	.gridInner {
 		display: block;
 	}
 }
 
 @container grid ( style(--grid-mode:fit) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns: repeat(auto-fit, minmax(var(--grid-width),1fr));
 	}
 }
 
 @container grid ( style(--grid-mode:fill) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns: repeat(auto-fill, minmax(var(--grid-width),1fr));
 	}
 }
 
 @container grid ( style(--grid-mode:flex) ) {
-	.grid {
+	.gridInner {
 		display: flex;
 /*		--flex-stretch: 0; doesn't work, can't override */
 		flex-direction: var(--flex-direction);
@@ -203,37 +207,37 @@ but we need them to apply to the "inner" div */
 
 /* set a default for template columns in columns mode - just something to make it obvious what's happening */
 @container grid ( style(--grid-mode:columns) ) {
-	.grid {
+	.gridInner {
 /*		--grid-template-columns: 36% 64%; doesn't work, can't override */
 	}
 }
 
 @container grid ( style(--grid-mode:fixed) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns: repeat(var(--grid-columns), 1fr);
 	}
 }
 
 @container grid ( style(--grid-mode:fixedwidth) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns:  repeat(auto-fit, var(--grid-width));
 	}
 }
 /* See notes on mode=rows */
 @container grid ( style(--grid-mode:rows) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns: 1fr;
 	}
 }
 
 @container grid ( style(--grid-mode:named) ) {
-	.grid {
+	.gridInner {
 		grid-template-areas: var(--grid-template-areas);
 	}
 }
 /* Setting a name seems to cause issues when in other modes*/
 @container grid ( not style(--grid-mode:named) ) {
-	.grid > * {
+	.gridInner > * {
 		grid-area: unset !important;
 	}
 }

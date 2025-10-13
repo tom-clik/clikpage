@@ -113,29 +113,72 @@ component accessors="true" extends="utils.baseutils" {
 		// Load all separate (ie reusable) content sections
 		loadContent( site=local.site, directory=local.root );
 
-
-		// process styling from layouts
+		// local site layouts from layouts
 		loadSiteLayouts(local.site);
 
 		// list of all containers used in site
-		local.site["containers"] = [=];
+		loadContainers( local.site );
 		
-		for (local.layout in local.site.layouts) {
-
-			local.layoutObj = this.layoutsObj.getLayout(local.layout);
-			// build complete struct of cs
-			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
-			// add to list of all containers used in site
-			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
-		}
-
+		
 		setContentStyles(content=local.site.content,styles=local.site.styles)
 
 		return local.site;
 
 	}
 
+	private void function loadContainers(required struct site ) {
 
+		arguments.site["containers"] = [=];
+		
+		for (local.layout in arguments.site.layouts) {
+
+			local.layoutObj = this.layoutsObj.getLayout(local.layout);
+			// build complete struct of cs
+			variables.utils.utils.deepStructAppend(arguments.site.content,local.layoutObj.content,false);
+			// add to list of all containers used in site
+			variables.utils.utils.deepStructAppend(arguments.site.containers,local.layoutObj.containers);
+		
+			// add styles from layouts to stylesheet
+			addLayoutStyles(layoutObj=local.layoutObj, styles=arguments.site.styles)
+
+		}
+
+	}
+
+	/* recursive function to add stlying from layouts to main styles 
+	See loadContainers()
+	*/
+	private void function addLayoutStyles(required struct layoutObj, required struct styles, struct written={} ) {
+
+		if ( StructKeyExists( arguments.written, arguments.layoutObj.id ) ) return;
+
+		arguments.written[arguments.layoutObj.id] = 1;
+
+		if (StructKeyExists(arguments.layoutObj, "extends" ) &&
+			NOT StructKeyExists( arguments.written, arguments.layoutObj.extends) ) {
+			local.extends = this.layoutsObj.getLayout(arguments.layoutObj.extends);
+			addLayoutStyles(layoutObj = local.extends, styles=arguments.styles, written=arguments.written );
+		}
+
+		if ( arguments.layoutObj.keyExists("style" ) ) {
+			variables.utils.utils.deepStructAppend( arguments.styles, arguments.layoutObj.style, true);
+		}
+		
+		// Add individual cs styling to the stylesheet
+		for ( local.code in arguments.layoutObj.content ) {
+			local.csObj = arguments.layoutObj.content[local.code];
+			if ( local.csObj.keyExists( "style" ) ) {
+				StructAppend( arguments.styles, { "#local.code#": local.csObj.style }, true);
+			}
+		}
+
+
+	}
+
+
+	/**
+	 * Calculate content section settings from defaults, schemes, and individual settings
+	 */
 	private void function setContentStyles(required struct content, required struct styles) {
 		for (id in content) {
 			this.contentObj.setStyle(content=arguments.content[id], styles=arguments.styles);
@@ -165,9 +208,9 @@ component accessors="true" extends="utils.baseutils" {
 
 
 	/** 
-	 * @hint Load content items from files
+	 * @hint Load content sections from files
 	 *
-	 * Content items can be defined in their own files. Import them and add
+	 * Content sections can be defined in their own files. Import them and add
 	 * them to the general struct.
 	 *
 	 * We first concatentate them if they are in separate files and then
@@ -1098,6 +1141,7 @@ component accessors="true" extends="utils.baseutils" {
 		if (arguments.debug) {
 			css &= this.settingsObj.CSSCommentHeader("Content styling");
 		}
+
 		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.styles,debug=arguments.debug);
 		
 		return css;

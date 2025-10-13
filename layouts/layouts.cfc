@@ -88,7 +88,7 @@ component name="layouts" {
 
 		local.layout = duplicate( loadLayout(arguments.id), true);
 		local.layout.layout = variables.cache.layouts[arguments.id].layout.clone();
-
+		
 		return local.layout;
 
 	}
@@ -367,9 +367,9 @@ component name="layouts" {
 			local.node = arguments.layoutObj.layout.select("###local.div#");
 			local.class = "inner";
 			if ( local.node.attr("grid") neq "" ) {
-				local.class &= " grid";
+				local.class &= " gridInner";
 				local.node.removeAttr("grid");
-				local.node.addClass("cs-grid");					
+				local.node.addClass("grid");					
 			}
 			local.node.html("<div class='#local.class#'>" & local.node.html() & "</div>");
 		}

@@ -47,7 +47,7 @@ body {
 	container-name:body;
 }
 
-div:not(.cs-grid):has( > .inner) {
+div:not(.grid):has( > .inner) {
 	container-name:hasInner;
 	--sticky: 0;
 }

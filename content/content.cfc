@@ -216,7 +216,7 @@ component extends="utils.baseutils" {  // TODO: put back in output=false
 		for (id in arguments.content_sections) {
 			cs_styles.append( css(media=arguments.styles.media,content=arguments.content_sections[id],debug=arguments.debug) );
 		}
-
+		
 		// concatenate generated styles with media queries in correct order
 		return this.settingsObj.contentCSS(css=cs_styles,media=arguments.styles.media);
 

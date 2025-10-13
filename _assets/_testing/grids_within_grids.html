@@ -19,7 +19,7 @@ This is a test to check that has been resolved
 		padding:20px;
 	}
 	
-	.cs-grid {
+	.grid {
 		--grid-gap:4px;
 	}
 
@@ -46,12 +46,13 @@ This is a test to check that has been resolved
 		--grid-template-rows: min-content auto 40px;
 	}
 
-	#testnamed > .grid > div {
+	#testnamed > .gridInner > div {
 		background-color: #9e9e9e;
 	}
 
+	/* will pick up default grid mode */
 	#test2 {
-		--grid-mode:fit;
+		
 	}
 
 	#test3 {
@@ -63,28 +64,31 @@ This is a test to check that has been resolved
 		background-color: #c3c3c3;
 	}
 	
-	/*@media screen and (max-width: 800px) {
-		#testfix  {
-			--grid-columns:5;
+	@media screen and (max-width: 800px) {
+		#testnamed  {
+			--grid-mode:none;
 		}
 	}
 
 	@media screen and (max-width: 600px) {
-		#testfix  {
+		#test3  {
 			--grid-mode:none;
 		}
-	}*/
+	}
+	g {
+		display: block;
+	}
 	</style>
 </head>
 <body>
 
 
-<div id="testnamed" class="cs-grid">
-	<div class='grid'>
+<div id="testnamed" class="grid">
+	<div class='gridInner'>
 		<div class="header">
 			
-			<div id="test2" class="cs-grid">
-				<div class='grid'>
+			<div id="test2" class="grid">
+				<div class='gridInner'>
 				<g>Lorem ipsum dolor sit amet, </g>
 				<g>consectetur adipisicing elit, sed do eiusmod</g>
 				<g>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</g>
@@ -100,8 +104,8 @@ This is a test to check that has been resolved
 		<div class="left">left</div>
 		<div class="right">right</div>
 		<div class="footer">
-			<div id="test3" class="cs-grid">
-				<div class='grid'>
+			<div id="test3" class="grid">
+				<div class='gridInner'>
 					<g>Lorem ipsum dolor sit amet, </g>
 					<g>consectetur adipisicing elit, sed do eiusmod</g>
 					<g>tempor incididunt ut labore et dolor,</g>

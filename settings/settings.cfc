@@ -562,13 +562,10 @@ component output=false {
 			local.mainCSS &= "#tab#--grid-mode:#arguments.settings["grid-mode"]#;#cr#";
 		}
 		
+		local.mainCSS &= grid(styles=arguments.settings,debug=arguments.debug);
+		
 		if ( local.mainCSS neq "") {
 			local.css &= "#arguments.selector# {#cr#" & local.mainCSS & "}#cr#";
-		}
-		
-		local.gridcss = grid(styles=arguments.settings,debug=arguments.debug);
-		if (local.gridcss != "") {
-			local.css &= "#arguments.selector# > .grid {#cr#" & local.gridcss & "}#cr#";
 		}
 
 		if (StructKeyExists(arguments.settings, "inner")) {
@@ -832,19 +829,16 @@ component output=false {
 	 */
 	public string function grid(required struct styles, boolean debug=true) {
 
-		
 		var css = [];
 		var tab = arguments.debug ? "	": "";
 
 		for (local.style in this.gridDefs) {
 			local.def = this.gridDefs[local.style];
 			
-			if (local.style != "grid-mode" && StructKeyExists(arguments.styles,local.style)) {
+			if ( StructKeyExists(arguments.styles,local.style) ) {
 				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
 			}
 		}
-
-		css.append("");
 
 		return css.toList(arguments.debug ? newLine() : "");
 

@@ -114,13 +114,10 @@ tests = [
 			--grid-mode:fit;
 			--item-gridgap:10px;
 			--image-width:60%;
-		}
-		
-		.bodytest-5 .list > .grid, .bodytest-5a .list > .grid {
 			--grid-gap:10px;
 			--grid-width: 420px;
 		}
-
+		
 		@media screen and (max-width: 660px) {
 			.bodytest-5 .list, .bodytest-5a  .list  {
 				--image-align:center;
@@ -144,11 +141,10 @@ tests = [
 			--grid-mode:fixed;
 			--item-gridgap:30px;
 			--image-width:60%;
-		}
-		.bodytest-4 .list > .grid, .bodytest-4a  .list > .grid {
 			--grid-gap:30px;
 			--grid-columns: 2;
 		}
+		
 		.bodytest-4 .item, .bodytest-4a  .item {
 			padding:0;
 			border-width: 0;
@@ -274,8 +270,8 @@ Item Testing Page
 
 </div>
 
-<div class="list cs-grid">
-	<div class="grid">
+<div class="list grid">
+	<div class="gridInner">
 		<div class="item">
 			<div class="itemInner">
 				<h3 class="title">Box title</h3>
@@ -311,7 +307,7 @@ Item Testing Page
 
 			// make the items - nothing to do with the styling.
 			var $item = $(".item");
-			var $list = $(".list > .grid");
+			var $list = $(".list > .gridInner");
 			for (i=1; i <= 6; i++) {
 				let $newItem = $item.clone();
 				if (i % 3 == 0) {

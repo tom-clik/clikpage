@@ -9,6 +9,14 @@ and then calls carousel or masonry if required.
 
       var plugin = this;
       var defaults = {
+        layout: "standard",
+        popup: false,
+        contain : false,
+        freeScroll : false,
+        wrapAround : false,
+        pageDots : false,
+        prevNextButtons : false,
+        "grid-gap": "10px",
         dataset: []
       };
 
@@ -17,12 +25,24 @@ and then calls carousel or masonry if required.
       
       var $element = $(element), 
           element = element, 
-          $inner = $element.find(".grid"),
+          $inner = $element.find(".gridInner"),
           id = $element.attr("id"),
           $grid,
           $carousel,
           $popup,
           layout='grid';
+
+      const settingTypes = {
+        "layout": "string",
+        "popup": "boolean",
+        "contain" : "boolean",
+        "freeScroll" : "boolean",
+        "wrapAround" : "boolean",
+        "pageDots" : "boolean",
+        "prevNextButtons" : "boolean",
+        "rowHeight": "string",
+        "grid-gap": "string"
+      };
 
       plugin.init = function(options) {
         
@@ -37,8 +57,15 @@ and then calls carousel or masonry if required.
       }
 
       plugin.reload = function() {
+
+
+        // the plugin's final properties are the merged default and
+        // user-provided options (if any)
+        let cssSettings = (typeof clik !== "undefined" && typeof clik.parseCssVars === "function") ? (clik.parseCssVars($element, settingTypes) ) : {}; 
         
-        plugin.settings = clik.getSettings($element, "imagegrid");
+        plugin.settings = $.extend({}, defaults, cssSettings , options);
+
+        console.log(plugin.settings);
         
         // remove any existing plug ins
         if (layout == "masonry") {
@@ -102,7 +129,7 @@ and then calls carousel or masonry if required.
           if ("grid-max-height" in plugin.settings) {
             jgSettings.rowHeight = plugin.settings["grid-max-height"];
           }
-           if ("grid-gap" in plugin.settings) {
+          if ("grid-gap" in plugin.settings) {
             jgSettings.margins = plugin.settings["grid-gap"];
           }
           

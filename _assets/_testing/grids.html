@@ -25,7 +25,7 @@
 		padding:4px;
 	}
 	
-	.cs-grid {
+	.grid {
 		--grid-gap:10px;
 	}
 
@@ -96,13 +96,13 @@
 	}
 
 	@media screen and (max-width: 800px) {
-		#testcolumns .grid {
+		#testcolumns {
 			--grid-template-columns: 120px auto 160px;
 		}
 	}
 
 	@media screen and (max-width: 600px) {
-		#testcolumns .grid {
+		#testcolumns {
 			--grid-template-columns: 120px auto;
 		}
 	}
@@ -153,38 +153,38 @@
 	
 	<div class="test">
 		<div class="test-header">Auto grid (fit)</div>
-		<div id="testfit" class="cs-grid" data-cols="8"></div>
+		<div id="testfit" class="grid" data-cols="8"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Auto grid (with fill - expand page to see difference) </div>
-		<div id="testfill" class="cs-grid" data-cols="5"></div>
+		<div id="testfill" class="grid" data-cols="5"></div>
 	</div>
 
 
 	<div class="test">
 		<div class="test-header">Grid with fixed width cols</div>
-		<div id="testfixedwidth" class="cs-grid"></div>
+		<div id="testfixedwidth" class="grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Grid with fixed number of columns</div>
-		<div id="testfix" class="cs-grid"></div>
+		<div id="testfix" class="grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Grid with set columns</div>
-		<div id="testcolumns" class="cs-grid"></div>
+		<div id="testcolumns" class="grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Grid with set rows</div>
-		<div id="testrows" class="cs-grid" data-cols="3"></div>
+		<div id="testrows" class="grid" data-cols="3"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Grid with named areas</div>
-		<div id="testnamed" class="cs-grid manual">
+		<div id="testnamed" class="grid manual">
 			<div class='grid'>
 				<g class="header">header</g>
 				<g class="left">left</g>
@@ -196,29 +196,29 @@
 
 	<div class="test">
 		<div class="test-header">Flex</div>
-		<div id="testflex" class="cs-grid" data-cols="5"></div>
+		<div id="testflex" class="grid" data-cols="5"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex - with a height to show what align-content actually does</div>
-		<div id="testflexheight" class="cs-grid"></div>
+		<div id="testflexheight" class="grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex No Wrap</div>
-		<div id="testflexnowrap" class="cs-grid"></div>
+		<div id="testflexnowrap" class="grid"></div>
 	</div>
 
 	<div class="test">
 		<div class="test-header">Flex Stretch - note text centering not part of grid system</div>
-		<div id="testflexstretch" class="cs-grid" data-cols="5"></div>
+		<div id="testflexstretch" class="grid" data-cols="5"></div>
 	</div>
 	
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$(".cs-grid").each( function() {
+			$(".grid").each( function() {
 				if (! $(this).hasClass("manual") ) {
 					const cols = $(this).data("cols") ? $(this).data("cols") : 12;
 					$(this).html(testgrid(cols));
@@ -229,7 +229,7 @@
 		lorem = ["Lorem","ipsum","dolor","sit","amet,","consectetur","adipisicing","elit,","sed","do","eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua."];
 
 		function testgrid(cols) {
-			var html = "<div class='grid'>";
+			var html = "<div class='gridInner'>";
 			text = "";
 			for (let i = 1 ; i <= cols; i++) {
 				text += lorem[i] + " ";

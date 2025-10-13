@@ -46,7 +46,7 @@
 			// the plugin's final properties are the merged default and
 			// user-provided options (if any)
 			let cssSettings = (typeof clik !== "undefined" && typeof clik.parseCssVars === "function") ? (clik.parseCssVars($element, settingTypes) ) : {}; 
-			console.log(cssSettings);
+			
 			plugin.settings = $.extend({}, defaults, cssSettings , options);
 			
 			switch(plugin.settings.animate) {

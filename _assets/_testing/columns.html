@@ -65,13 +65,13 @@ tests = [
 <body>
 <div id="bodyWrapper" class="container">
 
-<div id="ubercontainer" class="cs-grid">
+<div id="ubercontainer" class="grid">
 	
-	<div class="grid">
+	<div class="gridInner">
 		<!--- header is usually given a fixed height (see --header-height)
 			Much of the sticky/fixed functionality depends on this. ---> 
-		<div id="header" class="cs-grid">
-			<div class="grid">
+		<div id="header" class="grid">
+			<div class="gridInner">
 				<div id="title" class="spanning">
 					<div class="inner">
 						
@@ -83,11 +83,11 @@ tests = [
 				</div>
 
 				<!--- To remove this or place it above the title, adjust #header grid --->
-				<div id="nav" class="cs-grid spanning">
-					<div class="inner  grid">
+				<div id="nav" class="grid spanning">
+					<div class="gridInner inner">
 						
-						<div id="menubuttons" class="cs-grid">
-							<div class="grid">
+						<div id="menubuttons" class="grid">
+							<div class="gridInner">
 								<div id="menubutton" class="button auto navbutton state-open">
 									<a href="#menu.openclose" data-key="ctrl+m">
 										<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
@@ -125,8 +125,8 @@ tests = [
 			</div>
 		</div>
 
-		<div id="content" class="cs-grid">
-			<div class="grid">
+		<div id="content" class="grid">
+			<div class="gridInner">
 			
 				<!--- To remove this (also for content_bottom) either use the show=hide functionality 
 					(this is done in the "simpler" example)	or delete it and adjust the #content grid
@@ -138,9 +138,9 @@ tests = [
 					</div>
 				</div>
 
-				<div id="content_main" class="container spanning cs-grid">
+				<div id="content_main" class="container spanning grid">
 					
-					<div class="inner grid">
+					<div class="inner gridInner">
 						
 						<div id="menu">
 							<div class="inner">
@@ -156,13 +156,13 @@ tests = [
 							</div>
 						</div>
 
-						<div id="content_wrap" class="cs-grid">
+						<div id="content_wrap" class="grid">
 							
-							<div class="grid">
+							<div class="gridInner">
 
-								<div id="maincol" class="cs-grid">
+								<div id="maincol" class="grid">
 
-									<div class="inner grid">
+									<div class="gridInner inner">
 
 										<div id="maincol_top">
 											<h2>Main col top XXX</h2>
@@ -227,9 +227,9 @@ tests = [
 
 		</div>
 
-		<div id="footer" class="cs-grid">
+		<div id="footer" class="grid">
 			
-			<div class="grid">
+			<div class="gridInner">
 
 				<!--- To remove this or place it below the footer, adjust #footer grid --->
 
@@ -239,16 +239,18 @@ tests = [
 					</div>
 				</div>
 
-				<div id="footer_main" class="cs-grid spanning">
+				<div id="footer_main" class="grid spanning">
 					<div class="inner grid">
-						<div id="footer_left">
-							<div class="cs-text">This is the footer_left</div>
-						</div>
-						<div id="footer_middle">
-							<div class="cs-text">This is the footer_middle</div>
-						</div>
-						<div id="footer_right">
-							<div class="cs-text">This is the footer_right</div>
+						<div class="gridInner">
+							<div id="footer_left">
+								<div class="cs-text">This is the footer_left</div>
+							</div>
+							<div id="footer_middle">
+								<div class="cs-text">This is the footer_middle</div>
+							</div>
+							<div id="footer_right">
+								<div class="cs-text">This is the footer_right</div>
+							</div>
 						</div>
 					</div>
 				</div>
