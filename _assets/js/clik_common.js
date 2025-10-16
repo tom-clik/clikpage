@@ -70,7 +70,7 @@ clik = {
 	},
 	autoopen: function() {
 		if(jQuery().autoopen) {
-			$('.container,.autoopen').autoopen();
+			$('.autoopen').autoopen();
 		}
 	},
 	heightFix: function() {

@@ -35,7 +35,7 @@ ith e.g. a rotate function for state-open
 
 Typically apply to all relevant elements by a standardised class, e.g.
 
-$(".button").button();
+$(".button.auto").button();
 
 Typical actions are open, close (or the special case openclose which can be applied to a single button).
 

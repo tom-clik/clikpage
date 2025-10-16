@@ -47,8 +47,6 @@
 
 			plugin.settings = $.extend(true, {}, defaults, clik.parseCssVars($element, settingTypes), options);
 
-			console.log(plugin.settings);
-
 			plugin.settings.scroll = jQuery().mCustomScrollbar && plugin.settings.scroll;
 
 			const zBase = 1000 + $(".modal.open").length * 2;
@@ -56,7 +54,7 @@
 
 			// Unique backdrop per modal
 			if (plugin.settings.modal) {
-			$backdrop = $("<div class='modal-backdrop'></div>").appendTo("body")
+				$backdrop = $("<div class='modal-backdrop'></div>").appendTo("body")
 				.css('z-index', zBase)
 				.hide();
 			}
@@ -89,17 +87,17 @@
 
 			// Draggable setup
 			if (plugin.settings.draggable) {
-			$element.on("mousedown", plugin.settings.dragTarget, function(e) {
-				dragMouseDown(e);
-			});
+				$element.on("mousedown", plugin.settings.dragTarget, function(e) {
+					dragMouseDown(e);
+				});
 			}
 
 			// Events
 			$element
-			.on("open.modal", plugin.open)
-			.on("close.modal", plugin.close)
-			.on("ok.modal", plugin.ok)
-			.on("cancel.modal", plugin.cancel);
+			.on("open", plugin.open)
+			.on("close", plugin.close)
+			.on("ok", plugin.ok)
+			.on("cancel", plugin.cancel);
 		};
 
 		// ---------------------------------------------------------
@@ -107,7 +105,7 @@
 		// ---------------------------------------------------------
 
 		plugin.open = function() {
-
+			console.log("running open method on " + id);
 			let titleheight = $title !== undefined ? $title.height() : 0;
 
 			if (!plugin.settings.pulldown) {
@@ -118,7 +116,7 @@
 
 				let $parent = $('#' + parent);
 				
-				$element.css({visibility: "hidden"}).addClass("open");
+				$element.addClass("open").css({visibility: "hidden"});
 
 				if ($parent.length) {
 					if (plugin.settings.width == "parent") {
@@ -127,7 +125,6 @@
 					// content assumed to be a vertical menu in flex mode
 					else if (plugin.settings.width == "auto") {
 						let $li = $element.find("li").first();
-						console.log($li.outerWidth());
 						$element.width($li.outerWidth());
 					}
 					$element.css({ top: 0, left: 0 }).position({
@@ -137,17 +134,18 @@
 					});
 				}
 
-				$element.css({visibility: "visible"})
-			
+				$element.css({visibility: "visible"});
+				
 			}
-
-			
 
 			// --- Handle pulldown animation ---
 			if (plugin.settings.pulldown) {
-				$element.animateAuto("height", plugin.settings.animationTime, function() {
-					$element.css({"height": "auto"});
-				});
+				// Animation has been found to cuase issues when called on multiple
+				// pulldowns. We need a solution to this
+				// $element.animateAuto("height", plugin.settings.animationTime, function() {
+				// 	$element.css({"height": "auto"});
+				// });
+				
 			}
 
 			// --- Handle backdrop + modal behavior ---
@@ -174,7 +172,6 @@
 						e.stopPropagation();
 						plugin.close();
 					});
-
 				
 			}
 
@@ -201,16 +198,21 @@
 
 		plugin.close = function() {
 
+			console.log("Running close method " + id);
+
 			if (plugin.settings.modal) {
 				$backdrop.hide();
 				$backdrop.off("click.modal");
 			}
 
 			if (plugin.settings.pulldown) {
-				$element.animate({"height": 0}, plugin.settings.animationTime, function() {
-					$element.removeClass("open");
-					$element.css({"height": "auto"});
-				});
+				$element.removeClass("open");
+				// Animation has been found to cuase issues when called on multiple
+				// pulldowns. We need a solution to this
+				// $element.animate({"height": 0}, plugin.settings.animationTime, function() {
+				// 	$element.removeClass("open");
+				// 	$element.css({"height": "auto"});
+				// });
 			} else {
 				$element.removeClass("open");
 			}
@@ -219,7 +221,8 @@
 			$element.off("click.modal");
 
 			if (parent) {
-				$(parent).trigger("close");
+				console.log("Triggering close on " + parent);
+				$("#" + parent).trigger("close");
 			}
 			
 			plugin.settings.onClose($element);
