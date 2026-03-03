@@ -38,7 +38,6 @@ component extends="grid" {
 			"layout": {
 				"name":"Layout type","description":"","type":"list","options":[
 					{"name":"Standard","description":"Standard grid","value":"standard"},
-					{"name":"Masonry","description":"Arrange images in a best fit alignment according to their height","value":"masonry"},
 					{"name":"Carousel","description":"A horizontal scrolling panel","value":"carousel"},
 					{"name":"Justified Gallery","description":"Justify images horizontally","value":"justifiedGallery"}
 				],
@@ -171,25 +170,7 @@ component extends="grid" {
 		required struct pageContent,
 		required struct data) {
 
-		if (arguments.content.settings.main.layout eq "masonry") {
-			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').isotope({\n";
-			js &= "\t/* options*/\n";
-			// js &= "\titemSelector: 'figure',\n";
-			js &= "layoutMode: 'masonry',\n";
-			js &= "itemSelector: '.frame',\n";
-			js &= "masonry: {\n";
-			js &= "	columnWidth: '###arguments.content.id# .frame'";
-			if (StructKeyExists(arguments.content.settings.main,"grid-gap")) {
-				js &= ",\n\tgutter: " & Val(arguments.content.settings.main["grid-gap"]);
-			}
-			js &= "\n\t},\n";
-			js &= "});\n";
-			js &= "/* layout Masonry after images loaded */\n";
-			js &= "$#arguments.content.id#Grid.imagesLoaded( function() {\n";
-			js &= "\t$#arguments.content.id#Grid.isotope();\n";
-			js &= "});\n";
-		}
-		else if (arguments.content.settings.main.layout eq "carousel") {
+		if (arguments.content.settings.main.layout eq "carousel") {
 			local.elem = "$carousel_#arguments.content.id#";
 			js &= "#local.elem# = $('###arguments.content.id#');\n";
 			js &= "#local.elem#.flickity({\n";

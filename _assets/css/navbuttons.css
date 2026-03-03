@@ -73,6 +73,10 @@ The buttons are inline-blocks, so always style the surrounding div with grid or 
 	fill:var(--link-color);
 }
 
+.button label {
+	cursor: inherit;
+}
+
 .button input {
 	width: 100%;
 }

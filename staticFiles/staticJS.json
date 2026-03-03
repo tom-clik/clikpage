@@ -134,18 +134,19 @@
       "requires": "jquery"
     },
     {
-      "debug": "/_assets/js/isotope.pkgd.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js",
-      "name": "masonry",
-      "description" : "Gallery layout script",
-      "packageExclude": 1,
-      "requires": "imagesloaded,jquery"
+      "min": "/_assets/js/masonryGrid.js",
+      "name": "masonryGrid",
+      "description" : "Grid Masonry script",
+      "requires": "masonry,jquery,imagesloaded"
     },
+    
     {
-      "min": "/_assets/js/masonry-horizontal.js",
-      "name": "masonry-horizontal",
-      "description" : "Horizontal mode for masonry",
-      "requires": "masonry"
+      "debug": "/_assets/js/masonry.pkgd.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+      "name": "masonry",
+      "description" : "Masonry.js library - always call using masonryGrid",
+      "packageExclude": 1,
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/flickity.pkgd.min.js",
@@ -270,7 +271,7 @@
       "min":"/_assets/js/photogrid.js",
       "description": "Clik wrapper for all photogrid functions. ",
       "name": "photogrid",
-      "requires": "jquery,clik_common,justifiedGallery,masonry"
+      "requires": "jquery,clik_common,justifiedGallery,masonryGrid"
     },
     {
       "min":"/_assets/js/jquery.justifiedGallery.js",

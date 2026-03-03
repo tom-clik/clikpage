@@ -52,14 +52,33 @@ component extends="contentSection" {
 		if (! StructKeyExists(arguments.content, "data") ) {
 			throw("data not defined for cs form");
 		}
+		var html = [];
+		html.append("<form action=''>");
+		loop collection=arguments.content.data key="local.q" value="local.val" {
+			html.append("<div class='fieldrow'>");
+			html.append("	<div class='fieldLabel'>");
+			html.append("	<label>");
+			html.append("		#local.val.label#");
+			html.append("	</label>");
+			html.append("	<div class='button'><a><i class='icon-help'></i></a></div>");
+			html.append("	</div>");
+			html.append("	<div class='field'>");
+			html.append("		<input type='text' name='#local.q#'>");
+			html.append("	</div>");
+			html.append("</div>");
+		}
 
-		var html = this.recordsObj.form(
-			record=arguments.content.data,
-			data={},
-			errors={}
-		);
+		html.append("<div class='fieldButtons'>");
+		html.append("	<div class='fieldSpace'><label>&nbsp;</label></div>");
+		html.append("	<div>");
+		html.append("		<div class='button'>");
+		html.append("			<input type='submit' value='Submit'>");
+		html.append("		</div>");
+		html.append("	</div>");
+		html.append("</div>");
+		html.append("</form>");
 		
-		return html;
+		return html.toList("");
 
 	}
 
@@ -68,44 +87,46 @@ component extends="contentSection" {
 	}
 
 	public struct function parseForm(required formdata) {
-		return this.recordsObj.record(arguments.formdata);
+		local.form = [=];
+		for ( local.val in arguments.formdata ) {
+			StructAppend(local.val, {"type"="textarea","required"=false,"label"=local.val.name}, false);
+			if ( local.val.required ) {
+				if ( ! 
+						( local.val.keyExists("message") ) OR
+						( local.val.keyExists("messages") 
+							&& local.val.messages.keyExists("required")
+						)
+				    ) {
+					 local.val.message = "Please enter a value for #local.val.label#";
+
+				}
+			}
+			local.form["#local.val.name#"] = local.val;
+		}
+		
+		return local.form;
+
 	}
 
 
 	public string function onready(required struct content) {
-		var js = "$(""###arguments.content.id#"").clikForm({
-			debug:false,
-			rules : {
-				field1: {
-			    	required: true,
-			    	minlength: 20
-			    },
-			    email: {
-			    	required: true,
-			    	email: true
-			    },
-			    field2: {
-			    	required: true,
-			    	rangelength: [2, 3]
-			    },
-			    field3: {
-			    	required: true			    	
-			    },
-			    field4: {
-			    	required: true		
-			    }
-			},
-			messages: {
-		        field1: {
-		            required: 'Email address is required',
-		            email: 'Please enter a valid email address'
-		        },
-		        field2: 'Please select 2 or 3 items',
-		        field3: 'select some values',
-		        field6: 'Please tick you agree to our terms and conditions'
-		    }
+		
+		var data = {
+			"debug":false,
+			"rules" : {},
+			"messages" : {}
+		};
 
-		});";
+		loop collection=arguments.content.data key="local.q" value="local.val" {
+			if ( local.val.required ) {
+				data.rules["#local.q#"]["required"] = true;
+			}
+			if ( local.val.keyExists("message" ) ){
+				data.messages["#local.q#"] = local.val.message;
+			}
+		}
+
+		var js = "$(""###arguments.content.id#"").clikForm(#serializeJSON(data)#);";
 
 		return js;
 	}

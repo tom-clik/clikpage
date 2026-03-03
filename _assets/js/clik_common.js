@@ -50,7 +50,10 @@ clik = {
 		clik.modals();
 		clik.tabs();
 		clik.autoopen();
+		clik.grids();
 	},
+	/* Legacy function applies name of media to body as class. 
+	Shouldn't be need now we are fully containered up */
 	getMedia: function() {
 		var media = clik.parseCssVar(clik.$body, "media");
 		clik.$body.removeClass(function (index, className) {
@@ -80,6 +83,19 @@ clik = {
 					resize: clik.resize,
 				}
 			);
+		}
+	},
+	grids: function() {
+		if(jQuery().masonry && jQuery().masonryGrid) {
+			
+			
+			$(".grid").masonryGrid({
+				resize: clik.resize,
+			});
+
+		}
+		else {
+			console.log("Masonry not defined");
 		}
 	},
 	tabs: function() {

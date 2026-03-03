@@ -102,16 +102,16 @@ div.fieldrow.error {
 	text-align: left;	
 }
 
-.field:not(.field_boolean) input, .field textarea, .field select
+/** Don't understand this.
+ *  Possible vestigial.  
+ */
+.field:not(.field_boolean) input, .field select
  {
- 	background-color: transparent;
  	width: 100%;
- 	border: none;
- 	outline: none;
 }
 
 .fieldrow input:not([type='checkbox']):not([type='radio']):not([type='search']), 
-.fieldrow textarea,
+.fieldrow textarea, .field textarea,
 .select2-container--default .select2-selection--single,
 .select2-container--default .select2-selection--multiple   {
 	padding:var(--field-padding);

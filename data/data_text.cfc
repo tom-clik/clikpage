@@ -11,9 +11,9 @@ component implements="clikpage.data.i_data" {
 		StructAppend(arguments.params, {"markdown"=true,"json"=true,"xml"=true, "reload"=1, "imageRoot"=""}, false);
 
 		if ( arguments.params.markdown ) {
-			variables.markdown = new markdown.flexmark(attributes=1);
+			variables.markdown = new markdown.flexmark(attributes=1,jsoupjar=server.system.environment.javalib & "\jsoup-1.20.1.jar");
 		}
-
+		
 		variables.xmlObj = new utils.xml();
 
 		// Monitor files for updates and reload when changed

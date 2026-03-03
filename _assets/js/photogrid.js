@@ -13,9 +13,10 @@ and then calls carousel or masonry if required.
         popup: false,
         contain : false,
         freeScroll : false,
-        wrapAround : false,
+        wrapAround : true,
         pageDots : false,
         prevNextButtons : false,
+        cellAlign: 'center',
         "grid-gap": "10px",
         dataset: []
       };
@@ -41,7 +42,8 @@ and then calls carousel or masonry if required.
         "pageDots" : "boolean",
         "prevNextButtons" : "boolean",
         "rowHeight": "string",
-        "grid-gap": "string"
+        "grid-gap": "string",
+        "cellAlign": "string"
       };
 
       plugin.init = function(options) {

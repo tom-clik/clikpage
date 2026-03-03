@@ -20,6 +20,7 @@ siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live",
 
 site = siteObj.loadSite(config.siteDef);
 
+
 outfile = ExpandPath("output/test_settings.css");
 
 siteObj.contentObj.debug = true;

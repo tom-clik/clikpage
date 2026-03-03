@@ -137,44 +137,42 @@ component accessors="true" extends="utils.baseutils" {
 			variables.utils.utils.deepStructAppend(arguments.site.content,local.layoutObj.content,false);
 			// add to list of all containers used in site
 			variables.utils.utils.deepStructAppend(arguments.site.containers,local.layoutObj.containers);
-		
+			
 			// add styles from layouts to stylesheet
 			addLayoutStyles(layoutObj=local.layoutObj, styles=arguments.site.styles)
 
 		}
+		
+		for ( local.container in arguments.site.containers ) {
+			if ( arguments.site.containers[local.container].keyExists("class") ) {
+				for (local.class in listToArray(arguments.site.containers[local.container].class," ") ) {
+					if ( arguments.site.styles.keyExists(local.class) ) {
+						
+					}
+				}
+
+			}
+		}
 
 	}
 
-	/* recursive function to add stlying from layouts to main styles 
+	/* help function to add styling from layouts to main styles 
 	See loadContainers()
 	*/
-	private void function addLayoutStyles(required struct layoutObj, required struct styles, struct written={} ) {
+	private void function addLayoutStyles(required struct layoutObj, required struct styles ) {
 
-		if ( StructKeyExists( arguments.written, arguments.layoutObj.id ) ) return;
-
-		arguments.written[arguments.layoutObj.id] = 1;
-
-		if (StructKeyExists(arguments.layoutObj, "extends" ) &&
-			NOT StructKeyExists( arguments.written, arguments.layoutObj.extends) ) {
-			local.extends = this.layoutsObj.getLayout(arguments.layoutObj.extends);
-			addLayoutStyles(layoutObj = local.extends, styles=arguments.styles, written=arguments.written );
-		}
-
-		if ( arguments.layoutObj.keyExists("style" ) ) {
-			variables.utils.utils.deepStructAppend( arguments.styles, arguments.layoutObj.style, true);
-		}
-		
 		// Add individual cs styling to the stylesheet
 		for ( local.code in arguments.layoutObj.content ) {
 			local.csObj = arguments.layoutObj.content[local.code];
+
 			if ( local.csObj.keyExists( "style" ) ) {
 				StructAppend( arguments.styles, { "#local.code#": local.csObj.style }, true);
 			}
 		}
 
 
-	}
 
+	}
 
 	/**
 	 * Calculate content section settings from defaults, schemes, and individual settings
@@ -1066,10 +1064,13 @@ component accessors="true" extends="utils.baseutils" {
 	 * It will create a array
 	 *
 	 * ['articlelist',{"action":"view","value":"articledetail"}]
+	 *
+	 * Loop over this and just get all the names
 	 * 
 	 */
 	private void function loadSiteLayouts(required struct site) {
 		
+		// Use "set" - values not used
 		local.layouts = [=];
 		
 		// site has a default layout
@@ -1148,7 +1149,12 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 
-	/** Get CSS for individual layout 
+	/** 
+	 * @hint Get CSS for individual layout 
+	 *
+	 * NB will write out any layout styles that this style inherits from and tracks that in written
+	 * I'm not sure about this pattern. Might be better to keep this function simpler and create an array
+	 * in the correct order.
 	 * 
 	 * @layoutName    Name of layout
 	 * @site          Site struct
@@ -1166,23 +1172,10 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.styles = local.layoutObj.style ? : {};
-		variables.utils.utils.deepStructAppend(local.styles, arguments.site.styles,false);
-
+		
 		if ( arguments.debug ) {
 			local.css &= "/* Layout #arguments.layoutName# */" & newLine();
 		}
-
-		// Add individual cs styling to the stylesheet
-		for ( local.code in local.layoutObj.content ) {
-			local.csObj = local.layoutObj.content[local.code];
-			if ( local.csObj.keyExists( "style" ) ) {
-				StructAppend( arguments.site.styles, { "#local.code#": local.csObj.style }, true);
-			}
-		}
-
-		// writeDump(local.layoutObj.containers);
-		// writeDump(local.styles);
-		// cfabort();
 
 		local.css &= this.settingsObj.layoutCss(
 			containers=local.layoutObj.containers, 

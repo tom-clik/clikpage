@@ -53,7 +53,7 @@ component name="layouts" {
 
 		variables.parser = new clikpage.settings.cssParser();
 
-		variables.markdown = new markdown.flexmark(attributes=1);
+		variables.markdown = new markdown.flexmark(attributes=1,coldsoupObj=this.coldsoup);
 
 		variables.layoutBase = arguments.layoutBase;
 		// remove trailing slash

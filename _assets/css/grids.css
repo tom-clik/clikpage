@@ -6,39 +6,22 @@ Static CSS for grid and flex styling
 
 See /_notes/grids.md
 
-## Notes
+## Quick Ref
 
-IMPORTANT because grids can be within grids, we have an issue with CSS properties inheriting. 
+HTML
 
-To stop this, you will need to define every property (except `grid-mode`) for any nested grid where any parent defines a property.
-
-The most commonly used are:
-
-```
---grid-width: 180px;
---grid-template-rows: auto;
---grid-template-columns: auto;
---flex-direction: row;
-```
-
-Others:
-
-```
---justify-content: normal;
---align-content: normal;
---align-items: normal;
---flex-wrap: wrap;
---grid-max-height: 1fr;
-```
-
-`--flex-stretch` is a special case. See the code. It's rare you'd ever need to nest this.
+<div class='grid'>
+	<div class='gridInner'>
+		any elements
+	</div>
+</div>
 
 
 */
 
-/* If you don't already know, you want fit, columns, or flex */
+/* If you don't already know, you want fit, columns, or flex. NB masonry required JS */
 @property --grid-mode {
-	syntax: 'none | fit | fill | fixed | fixedwidth | columns | rows | named | flex';
+	syntax: 'none | fit | fill | fixed | fixedwidth | columns | rows | named | flex | masonry';
 	inherits: false;
 	initial-value: fit;
 }
@@ -147,7 +130,7 @@ Others:
 }
 
 /* Note the inheritance from the container. This is all to cope with
-grids within grids. We don't want the properties to inherit,
+grids within grids. We don't want the properties to cascade,
 but we need them to apply to the "inner" div */
 .gridInner {
 	--grid-gap: inherit;
@@ -184,10 +167,38 @@ but we need them to apply to the "inner" div */
 	}
 }
 
+@container grid ( style(--grid-mode:masonry) ) {
+	.gridInner {
+		display: block;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 160ms;
+	}
+
+	.gridInner.is-laidout {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.gridInner > * {
+		--grid-width: inherit;
+		--grid-gap: inherit;
+		width: var(--grid-width);
+		padding-right: var(--grid-gap);
+		margin-bottom: var(--grid-gap);
+	}
+
+	.gridInner > .wide {
+		width: calc( var(--grid-width) * 2 );
+	}
+
+}
+
 @container grid ( style(--grid-mode:fit) ) {
 	.gridInner {
 		grid-template-columns: repeat(auto-fit, minmax(var(--grid-width),1fr));
 	}
+
 }
 
 @container grid ( style(--grid-mode:fill) ) {
@@ -199,16 +210,8 @@ but we need them to apply to the "inner" div */
 @container grid ( style(--grid-mode:flex) ) {
 	.gridInner {
 		display: flex;
-/*		--flex-stretch: 0; doesn't work, can't override */
 		flex-direction: var(--flex-direction);
 		flex-wrap: var(--flex-wrap);
-	}
-}
-
-/* set a default for template columns in columns mode - just something to make it obvious what's happening */
-@container grid ( style(--grid-mode:columns) ) {
-	.gridInner {
-/*		--grid-template-columns: 36% 64%; doesn't work, can't override */
 	}
 }
 

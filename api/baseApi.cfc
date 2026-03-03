@@ -1,5 +1,5 @@
 component {
-
+	
 	request.isAjaxRequest = 1;
 	request.prc.isAjaxRequest = 1;
 	// VIRTUAL
@@ -18,6 +18,18 @@ component {
 		if (structKeyExists(arguments.returnData, "statustext" )) {
 			cfheader( statustext="#arguments.returnData.statustext#" );
 		}
+
+	}
+
+	/**
+	 * call set status and return  data. Use in prefecne to setStatus
+	 * when returning from a function
+	 */
+	private struct function returnStatus(required struct returnData) {
+		
+		setStatus( arguments.returnData );
+		
+		return arguments.returnData;
 
 	}
 

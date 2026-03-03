@@ -2,8 +2,6 @@
 
 We think of grids as having a "mode". This is set by a var `--grid-mode` and determines the behaviour. 
 
-NB because grids can be within grids, we have a problem with values inheriting. Often you have to redefine a value when you only want it to be the default. See the CSS for code examples.
-
 ## Modes
 
 The grid mode is applied with `--grid-mode`. To turn off a grid use `none`. 
