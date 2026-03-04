@@ -10,40 +10,54 @@
 		body {
 			padding:20px;
 			--title-font:font-family: 'Open Sans';
+			--border-color: teal;
+			--panelbg:#ff00ff;
+			--paneltext:#00ffff;
+		}
+
+		table {
+			--table-cell-padding:2px;
 		}
 		
-		table {
+		table.demo {
 			--table-cell-padding:8px;
+			--text-font: "Courier New";
+		}
+
+		table.demo th {
+			font-family: "Courier New";
+		}
+
+		table.demo2 {
+			--table-border-width: 1px;
+		}
+
+		table.demo2 th {
+			background-color:black;
+			color:white;
 		}
 
 		table.info {
-			--table-border-color: #303030;
-			--table-border-width:1px;
 			--table-stripe-bg: #c3c3c3;
 		}
-		table.info th, table.info td {
-			--table-border-color: #c3c3c3;
+		
+		table.info tr td:nth-of-type(2) {
+			text-align:center;	
 		}
 
-		table.info th {
-			--table-bg: black;
-			--table-text: white;
+		table.info tr td:first-of-type {
+			font-weight:bold;	
 		}
 
-		table.info td, table.info th {
-			--table-border-color: #c3c3c3;
-		}
-
-		table.info tr td:nth-of-type(3) {
-			--table-font-weight:bold;
-			--table-text-align:right;	
+		table.info tr td:last-of-type {
+			text-align:right;	
 		}
 
 		
 	</style>
 </head>
 <body>
-<table class="">
+<table class="demo">
 	<thead>
 		<tr>
 			<th>COl 1</th>
@@ -62,7 +76,7 @@
 
 </table>
 
-<table class="info">
+<table class="demo2">
 	<thead>
 		<tr>
 			<th>COl 1</th>
@@ -71,6 +85,67 @@
 		</tr>
 	</thead>
 	<tbody>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<!-- <tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr> -->
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+	</tbody>
+
+</table>
+
+<table class="info sticky">
+	<thead>
+		<tr>
+			<th>COl 1</th>
+			<th>COl 2</th>
+			<th>COl 3</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
+		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
+		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
+		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>
+		<tr><td>consequat. Duis aute irur</td><td>e dolor in reprehenderit i</td><td>n voluptate velit esse</td></tr>
+		<tr><td>cillum dolore eu fugiat n</td><td>ulla pariatur. Excepteur s</td><td>int occaecat cupidatat non</td></tr>
+		<tr><td>proident, sunt in culpa q</td><td>ui officia deserunt mollit</td><td> anim id est laborum.</td></tr>
 		<tr><td>Lorem ipsum dolor sit ame</td><td>t, consectetur adipisicing</td><td> elit, sed do eiusmod</td></tr>
 		<tr><td>tempor incididunt ut labo</td><td>re et dolore magna aliqua.</td><td> Ut enim ad minim veniam,</td></tr>
 		<tr><td>quis nostrud exercitation</td><td> ullamco laboris nisi ut </td><td>liquip ex ea commodo</td></tr>

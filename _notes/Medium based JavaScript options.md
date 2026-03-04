@@ -20,7 +20,7 @@ The CSS mechanism can be used to store custom vars according to media. On loadin
 
 These are read easily with e.g. 
 
-```javascriptXXX
+```javascript
 $("#slideshow").css("--transition-time");
 ```
 

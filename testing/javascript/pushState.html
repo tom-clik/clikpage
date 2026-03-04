@@ -88,6 +88,7 @@ $(window).on('popstate', function(e) {
 
 	$(document).ready(function() {
 		$(window).on('popstate', function(e) {
+			console.log(e.originalEvent);
 			if (e.originalEvent.state && "page" in e.originalEvent.state   ) {
 				page = e.originalEvent.state.page;
 			}
@@ -120,7 +121,7 @@ $(window).on('popstate', function(e) {
 		$menu.html(showMenu(sections));
 
 		displayPage(defaultPage);
-
+		
 		function displayPage(page) {
 			section = getSection(page);
 			$menu.find("li").removeClass("hi");
@@ -141,7 +142,7 @@ $(window).on('popstate', function(e) {
 			var html = "<ul>";
 			
 			for (let item of data) {
-				html += "<li class='m_" + item.id + "''><a href='#' data-code='" + item.id + "'>" + item.name + "</a></li>";			}
+				html += "<li class='m_" + item.id + "''><a href='#" + item.id + "' data-code='" + item.id + "'>" + item.name + "</a></li>";			}
 			html += "</ul>";
 			return html;
 		}

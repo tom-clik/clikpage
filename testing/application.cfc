@@ -4,7 +4,7 @@ component {
 	this.debug = true;
 	this.baseDir = ExpandPath("..\..\..");
 	this.componentPaths=[this.baseDir];
-
+	
 	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
 	this.mappings = [
 		"/_assets" = this.baseDir & "\clikpage\_assets",
@@ -23,9 +23,30 @@ component {
 		StructAppend(request.rc,form,true);
 		request.prc = {};
 		onApplicationStart();
+		param name="request.rc.reload" type="boolean" default="0";
+		if (request.rc.reload) {
+			server.utils = StructNew();
+		}
 	}
 
-	
+	function onError(e,method) {
+		
+		// remember to add path for logs !!! this.mappings["/logs/"]=[outside your web root!];
+		local.args = {
+			e=e,
+			debug=1,
+			ajax=request.prc.isAjaxRequest ? : 0,
+			pageTemplate=application.errorTemplate ? : "",
+			logger= application.errorLogger ? : new cferrorHandler.textLogger( ExpandPath( "/logs/errors" ) )
+		};
+
+		try {
+			new cferrorHandler.ErrorHandler(argumentcollection=local.args);
+		}
+		catch (any n) {
+			throw(object=e);
+		}
+	}
 
 }
 

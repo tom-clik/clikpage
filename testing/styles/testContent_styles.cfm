@@ -2,37 +2,36 @@
 
 Scratch pad for testing individual cs styling
 
+test = settingsObj.inheritSettings(styles=styles.testfill, media=styles.media, settings);
+
+writeDump(test);
+
 --->
 
 <cfscript>
 settingsObj = CreateObject("component", "clikpage.settings.settings").init(debug=1);
 contentObj = CreateObject("component", "clikpage.content.content").init(settingsObj=settingsObj);
 
-contentObj.debug = true;
+styles = {};
+settingsObj.loadStyleSheet(expandPath("../css/_styles/test_settings.scss"), styles);
+//settingsObj.loadStyleSheet(expandPath("../css/_styles/grid_test.css"), styles);
+settingsObj.loadStyleSheet(expandPath("../css/_styles/articleList_test.scss"), styles);
+id = "articlelist";
 
-styles = settingsObj.loadStyleSheet(ExpandPath("./testStyles.xml"));
+// menu = contentObj.new(id="topmenu",title="Menu",type="menu");
+// cs = contentObj.new(id="testcolumns",title="Grid",type="grid");
+cs = contentObj.new(id=id,title="List",type="articleList",class="scheme-articlelist_title");
 
-menu = contentObj.new(id="topmenu",title="Menu",type="menu");
+debugcontent = {};
 
-contentObj.settings(content=menu,styles=styles.content,media=styles.media);
+css = contentObj.css(content=cs, styles=styles,debug = true, debugcontent=debugcontent);
+writeDump(styles[id]);
 
-writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu),styles.media,contentObj.debug) & "</pre>");
+for (medium in css) {
 
-styles.content.topmenu.main.flex = "true";
+	writeOutput("<h2>#medium#</h2>");
+	writeOutput("<pre>" & htmlCodeFormat(css[medium]) & "</pre>");
 
-contentObj.settings(content=menu,styles=styles.content,media=styles.media);
-
-writeOutput("<pre>" & settingsObj.outputFormat(contentObj.css(menu),styles.media,contentObj.debug) & "</pre>");
-
-styles.content.topmenu.mobile.orientation = "vertical";
-styles.content.topmenu.main["menugap"] = "12px";
-styles.content.topmenu.main["menucolor"] = "##ff00ff";
-styles.content.topmenu.main["menuhicolor"] = "##ffff00";
-
-styles.content.topmenu.mobile["menugap"] = "12px";
-
-contentObj.settings(content=menu,styles=styles.content,media=styles.media);
-
-writeOutput("<pre>" & settingsObj.outputFormat(css=contentObj.css(menu),media=styles.media,debug=contentObj.debug) & "</pre>");
+}
 
 </cfscript>

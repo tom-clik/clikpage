@@ -4,9 +4,7 @@
  *
  * ## Usage
  *
- * Uses the site dedinition in ./preview/config.json
- *
- * For a quick preview of another site, just change this filename e.g config_main.json
+ * Uses the site definition in ./preview/config.json
  * 
  */
 
@@ -14,7 +12,10 @@ path = ExpandPath("./preview/config.json");
 fileData = fileRead(path );
 config = deserializeJSON(fileData);
 
-siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
+dataObj = new clikpage.data.data_text(config);
+siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live",dataObj=dataObj);
+
+siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
 
 start = getTickCount();
 site = siteObj.loadSite(config.siteDef);
@@ -22,7 +23,11 @@ runtime = getTickCount() -start;
 
 writeDump(site);
 
-writeOutput("<p>Ran in <strong>#runtime#ms</strong></p>");
+writeOutput("<p>Loaded site in <strong>#runtime#ms</strong></p>");
+
+sections = siteObj.sectionList(site,"mainmenu");
+menu = siteObj.menuData(site,sections);
+writeDump(menu);
 
 
 </cfscript>

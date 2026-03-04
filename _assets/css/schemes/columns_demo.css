@@ -1,0 +1,80 @@
+/* Styling for the columns testing page */
+
+select {
+	border:1px solid;
+	padding:2px;
+}
+
+/*#header, #footer, #topnav, #bottomnav, #content_top, #content_bottom, #columns > div {
+	padding:4px;
+}*/
+
+#title, #footer_main {
+	background-color: #c3c3c3;
+}
+
+#nav, #bottomnav {
+	background-color: #a0a0a0;
+}
+
+#menubuttons {
+	--grid-mode: flex;
+} 
+#menubuttons .grid {
+	--flex-wrap: nowrap;
+	--grid-gap:4px;
+	--justify-content: start;
+}
+
+#navtext {
+	flex-grow: 1;
+}
+
+#content_top, #content_bottom {
+	background-color: #efefef;
+}
+
+/*#content_top > .inner, #content_bottom > .inner {
+	background-color: #d4d4d4;
+}
+*/
+#menu, #xcol {
+	background-color: #b5b5b5;
+}
+
+#samplebuttons {
+	position: absolute;
+	top:4px;
+	right:4px;
+}
+
+#menu > .inner , 
+#xcol > .inner, 
+#maincol > .inner, 
+#content_top > .inner, 
+#content_bottom >.inner {
+	padding:4px;
+}
+
+
+.navbutton {
+	--icon-width:32px;
+	--icon-height:32px;
+	font-size: 32px;
+}
+
+body[class*=-fixfooter] {
+	--menu-width :260px;
+}
+
+.menu.test-vert {
+	padding:20px;
+	--menu-orientation:vertical;
+	--menu-gap:12px;
+	--menu-item-padding:12px 0;
+	--menu-borders:dividers;
+	--menu-item-border:1px;
+	--menu-align:left;
+	--menu-icon-stretch: 1;
+	--menu-submenualign: top-right;
+}

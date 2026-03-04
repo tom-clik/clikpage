@@ -1,0 +1,153 @@
+/** Markdown style admonitions
+ * 
+ *  This is a var'd up version of the standard  ones from Flexmark. Needs some work
+ *   
+ **/
+
+:root {
+     --admon-icon-color: #448AFF;
+    --admon-border-color: #e0edff;
+    --admon-bg-color: #EDF4FF;
+}
+
+.adm-note {
+    --admon-icon-color: #448AFF;
+    --admon-border-color: #e0edff;
+    --admon-bg-color: #EDF4FF;
+}
+
+.adm-abstract {
+    --admon-icon-color: #48C4FF;
+    --admon-border-color: #dbf3ff;
+    --admon-bg-color: #E8F7FF;
+}
+
+.adm-bug {
+    --admon-bg-color: #FEE7EE;
+   --admon-icon-color: #F50057;
+    --admon-border-color: #fcd9e4;
+}
+
+.adm-danger {
+    --admon-bg-color: #FFE9ED;
+    --admon-icon-color: #FE1744;
+    --admon-border-color: #ffd9e0;
+}
+
+.adm-example {
+    --admon-bg-color: #EFEBFF;
+    --admon-icon-color: #7940ff;
+    --admon-border-color: #e0d9ff;
+}
+
+.adm-fail {
+    --admon-bg-color: #FFEEEE;
+    --admon-icon-color: #Fe5e5e;
+    --admon-border-color: #ffe3e3;
+}
+
+.adm-faq {
+    --admon-bg-color: #EEFAE8;
+    --admon-icon-color: #5ED116;
+    --admon-border-color: #e6fadc;
+}
+
+.adm-info {
+    --admon-bg-color: #E8F7FA;
+    --admon-icon-color: #00B8D4;
+    --admon-border-color: #dcf5fa;
+}
+
+.adm-note {
+    --admon-bg-color: #EDF4FF;
+    --admon-icon-color: #448AFF;
+    --admon-border-color: #e0edff;
+}
+
+.adm-quote {
+    --admon-bg-color: #F4F4F4;
+    --admon-icon-color: #9E9E9E;
+    --admon-border-color: #e8e8e8;
+}
+
+.adm-success {
+    --admon-bg-color: #E9F8EE;
+    --admon-icon-color: #1DCD63;
+    --admon-border-color: #dcf7e5;
+}
+
+.adm-tip {
+    --admon-bg-color: #E9F9F6;
+    --admon-icon-color: #01BFA5;
+    --admon-border-color: #dcf7f2;
+}
+
+.adm-warning {
+    --admon-bg-color: #FEF3E8;
+    --admon-icon-color: #FF9001;
+    --admon-border-color: #Fef3e8;
+}
+
+
+
+
+
+
+.adm-hidden {
+    display: none;
+}
+
+.adm-block {
+   
+    display: block;
+    width: 99%;
+    border-radius: 6px;
+    padding-left: 10px;
+    margin-bottom: 1em;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #bfbfbf;
+    border-left-color: var(--admon-icon-color);
+    border-left-width: 4px;
+    box-shadow: 2px 2px 6px #cdcdcd;
+}
+
+.adm-heading {
+    color: var(--admon-icon-color);
+    border-bottom-color: var(--admon-border-color);
+    background: var(--admon-bg-color);
+    display: block;
+    font-weight: bold;
+    font-size: 0.9em;
+    height: 1.8em;
+    padding-top: 0.3em;
+    padding-bottom: 2em;
+    border-bottom: solid 1px;
+    padding-left: 10px;
+    margin-left: -10px;
+}
+
+.adm-icon {
+    height: 1.6em;
+    width: 1.6em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.25em;
+    margin-left: -0.25em;
+}
+
+.adm-heading > span {
+    color: initial;
+}
+
+.adm-body {
+    display: block;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
+
+
+/*
+
+*/

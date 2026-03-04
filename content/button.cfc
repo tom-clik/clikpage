@@ -125,7 +125,7 @@ component extends="contentSection" {
 	public string function displayShape(required string id) {
 		
 		if (! StructKeyExists(variables.shapes, arguments.id)) {
-			throw(message="Shape #arguments.id# not found",detail="To reference a shape by name it must first be defined in the component via addShape or addShapes");
+			return "<!-- shape #arguments.id# not defined -->";
 		}
 
 		local.shape = variables.shapes[arguments.id];
@@ -143,10 +143,13 @@ component extends="contentSection" {
 		var linkEnd = "</a>";
 		var cshtml = linkStart;
 
-		// TO DO: check this is handle by the settings and remove
-		local.shape = StructKeyExists(arguments.content.settings.main,"shape") ? arguments.content.settings.main.shape : "left_arrow";
+		local.settings = arguments.content.keyExists("style") ? Duplicate( arguments.content.style) : {};
+
+		server.utils.utils.deepStructAppend( local.settings , {"main"={"shape":"none"}}, false );
 		
-		cshtml &= displayShape(local.shape);
+		if ( local.settings.main["shape"] != "none" ) {
+			cshtml &= displayShape(local.settings.main.shape);
+		}
 
 		if (StructKeyExists( arguments.content,"content") AND  arguments.content.content !="") {
 			cshtml &= "<label>#arguments.content.content#</label>";
@@ -159,10 +162,15 @@ component extends="contentSection" {
 	}
 
 	public string function getClasses(required struct content) {
+		
 		var classList = this.classes;
-		if (arguments.content.settings.main.auto) {
+		
+		local.auto = arguments.content.auto ? : false;
+		
+		if (local.auto) {
 			classList = listAppend(classList, "auto"," ");
 		}
+		
 		return classList;
 	}
 

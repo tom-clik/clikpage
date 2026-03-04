@@ -105,10 +105,10 @@ a {
 }
 
 #maincol {
-	padding-top: var(--headerheight);
 	min-height: 100%;
 	display: grid;
 	grid-template-rows: auto 50px;
+	padding:0 12px;
 }
 
 .pageBody h1 a:before, .pageBody h2 a:before , .pageBody h3 a:before  {
@@ -194,6 +194,14 @@ div.spanning {
 #mainmenu, #pagemenu {
 	position: sticky;
 	top: calc(var(--headerheight) + var(--contentpadding));
+}
+
+#mainmenu li a:hover, #pagemenu  li a:hover{
+
+}
+
+#mainmenu li.hi a , #pagemenu  li.hi a {
+	font-weight: bold;
 }
 
 
@@ -362,6 +370,12 @@ a.xref:hover {
 
 /** menus  */
 
+.cs-menu.scheme-vertical {
+	--menu-display: grid;
+	--menu-item-justify:start;
+	--menu-text-align:left;
+}
+
 .level3 {
 	padding-left:1.6em;
 }
@@ -380,9 +394,6 @@ a.xref:hover {
 	border-left: 1px solid var(--menubordercolor);
 	font-size:86%;
 	padding-bottom: 12px;
-}
-
-#pagemenu {
 	display: block;
 }
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<p><a href='unload.html'>Go away</a></p>
+
+	<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	$(document).ready(function() {
+		// Check form changes before leaving the page and warn user if needed
+		$(window).bind('beforeunload', function(e) {
+		  var message = "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+		  e.returnValue = message; // Cross-browser compatibility (src: MDN)
+		  return message;
+		  
+		});
+});
+</script>
+</body>
+</html>

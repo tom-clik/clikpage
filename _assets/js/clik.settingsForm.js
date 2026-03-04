@@ -83,18 +83,18 @@ Collection of state definitions, e.g. "hover", "hi", or "disable". Each panel ca
 			$('#settingsForm').submit(function() { 
 			    // submit the form 
 			    var data = $(this).serializeData();
-			    console.log(data); 
 
 			    $.ajax({
 			    	url:`${plugin.settings.api}?method=css`,
 			    	data: {'cs_id':data.cs_id, 'settings': JSON.stringify(data)},
 			    	method: 'post'
 			    }).done(function(e) {
-			    	console.log(e);
 			    	if (e.statuscode == 200) {
 				    	$('#css').html(e.css);
 				    	// TODO: generic reference to this -- if they need it
 				    	//$cs.data('photoGrid').reload();
+				    	// trying this method for above:
+				    	$(window).trigger("clik.reload");
 			    	}
 			    	else {
 			    		messageHandler.error(e.statustext);

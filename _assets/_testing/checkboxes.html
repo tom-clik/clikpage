@@ -1,0 +1,43 @@
+<html>
+<head>
+	<title>Styling checkboxes with CSS</title>
+	<meta name="author" content="Tom Peer">
+	<meta name="date" content="2017-02-01">
+	<meta name="description" content="Using pseudo selectors we can now style checkboxes without javascript">
+
+	<link rel="stylesheet" href="../css/forms.css">
+
+	<style>
+	/* all three of these need turning on to replace the buttons */
+	#checkform {
+		--checkbox-display: none;/* turn on uniform replace with 'none' */
+		--checkbox-replace-display: inline-block;/* turn on uniform replace with 'inline-block' */
+		--checkbox-label-display: flex;
+	}
+	</style>
+</head>
+<body>
+
+	<h1>Uniform.js replacement with CSS</h1>
+	<p>Using pseudo selectors we can now style checkboxes without javascript</p>
+	<p>The trick is to use the labels for selecting the options and the :checked selector
+		to change the style</p>
+
+
+<div id="checkform">
+
+	<div><input type="checkbox" id="ic1" name="icc" /><label for="ic1">Check Box 1</label></div>
+	<div><input type="checkbox" id="ic2" name="icc" /><label for="ic2">Check Box 2</label></div>
+	<div><input type="checkbox" id="ic3" name="icc" /><label for="ic3">Check Box 3</label></div>
+	<div><input type="checkbox" id="ic4" name="icc" /><label for="ic4">Check Box 4</label></div>
+
+	<div><input type="radio" id="ir1" name="irc" /><label for="ir1">Radio 1</label></div>
+	<div><input type="radio" id="ir2" name="irc" /><label for="ir2">Radio 2</label></div>
+	<div><input type="radio" id="ir3" name="irc" /><label for="ir3">Radio 3</label></div>
+	<div><input type="radio" id="ir4" name="irc" /><label for="ir4">Radio 4</label></div>
+
+</div>
+
+
+</body>
+</html>

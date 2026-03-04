@@ -1,29 +1,45 @@
-# CSS Grids
+# Grid Layouts
 
-Clik offers five flavours of grid.
+We think of grids as having a "mode". This is set by a var `--grid-mode` and determines the behaviour. 
 
-## 1. Plain
+## Modes
 
-Minimum width applied to items and the grid will fill as many as it can, balancing the rows. Ideal for photos. Usually done with an `auto-fill`, but this can be changed to `auto-fit`. Needs a minimum column width.
+The grid mode is applied with `--grid-mode`. To turn off a grid use `none`. 
 
-## 2. Flexible
+### Content fit (fit)
 
-Flexbox with either stretch=0 or 1 to allow the items to expand. The items will take as much space as they need for their content. Good choice for hoirzontal menus.
+This is default and the mode you want if you don't already know. With a minimum width set for the content items, this will add as many items as possible per row and stretch any items to ensure no gap is left.
 
-## 3. Fixed Columns
+The only setting you usually need is `--grid-width` which is the minimum width. Note that for fit and fill the `--grid-max-width` rarely does what you want it to do. It only really works when left to its default value of 1fr.
 
-Specified number of columns divided equally. Usually for containers.
+NB The mode can be omitted as it's the default for `.cs-grid`.
 
-You can also specify the widths (e.g. 25% auto 25%) which overrides the number setting.
+### Content fill (fill)
 
-### 3.5 Auto columns
+Sort of like fit but will create empty cells to fill up the space if the grid is on one line. Use if you don't want the cells stretched to crazy lengths.
 
-Fixed columns but calculated from the number of children. Only supposed to be used for menus to be put into one line. Sometimes you see this for galleries. Col number "auto". It is much better to use an auto grid to do this.
+### Fixed columns (fixed)
 
-## 4. Fixed Width
+The number of columns in the grid is fixed. The columns are all equal. Set the number of columns with `--grid-columns`.
 
-Each column is a set width and as many will be shown as possible. Legacy behaviour suitable for smaller thumbnails were you want to show them at the max size always. Far better now to use bigger thumbnails and allow the browser to size them down.
+### Set column widths (columns)
 
-## 5. Named positions
+Explicitly set the grid template columns in `--grid-template-columns`. Useful for having one column stretch. YOu can also set `grid-template-rows` if you like. 
 
-`grid-template-areas` is set with the names of the containers and then `grid-template-columns` and/or `grid-template-rows` are set to specify the widths.
+### Set column rows (rows)
+
+A shortcut to having just one column, essentially functions like columns.
+
+### Named positions (named)
+
+Supply template positions in  `--grid-template-areas`. Column and row sizes can be set in `--grid-template-columns` and 
+`--grid-template-rows`.
+
+### Fixed width (fixedwidth)
+
+Little used setting where the cells have a fixed width and as many as possible fit the grid. Use `fill` or `fit` in preference. Set the width with `--grid-width`.
+
+### Flex Layouts (flex)
+
+Uses flex box in preference to grid modes. Set direction with `--flex-direction` (` 'row | row-reverse | column | column-reverse'`) and whether to expand with  `--flex-stretch`. Alignment uses the normal flex properties which need not a little explanation.
+

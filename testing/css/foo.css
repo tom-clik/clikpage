@@ -1,0 +1,528 @@
+body {
+				background-color: #f3f3f3;
+				padding:20px;
+			}
+			g {
+		display: inline-block;
+		background-color: #cecece;
+		padding:2px;
+	}
+	.test-header {
+		font-weight: bold;
+	}
+	.test {
+		margin:10px 0;
+	}
+	/* See named areas test */
+	.header {
+		grid-area: header;
+	}
+	.left {
+		grid-area: left;
+	}
+	.right {
+		grid-area: right;
+	}
+	.footer {
+		grid-area: footer;
+	}
+
+
+@media only screen and (max-width: 600px){
+/* mobile Settings not defined for cs testfit */
+
+/* mobile Settings not defined for cs testfill */
+
+/* mobile Settings not defined for cs testfixedwidth */
+
+/* writing styles for state main */
+#testfix {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	/* no style for grid-gap */
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testfix {
+	display: block;
+}
+#testfix > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testcolumns {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	/* no style for grid-gap */
+	--grid-template-columns: 120px auto;
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+/* mobile Settings not defined for cs testrows */
+
+/* mobile Settings not defined for cs testnamed */
+
+/* mobile Settings not defined for cs testflex */
+
+/* mobile Settings not defined for cs testflexnowrap */
+
+/* mobile Settings not defined for cs testflexstretch */
+
+/* mobile Settings not defined for cs testflexcenter */
+
+}
+/* writing styles for state main */
+#testfit {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testfit {
+	display: grid;
+	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
+}
+#testfit > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testfill {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testfill {
+	--grid-fit: auto-fill;
+	display: grid;
+	grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
+}
+#testfill > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testfixedwidth {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testfixedwidth {
+	display: grid;
+	grid-template-columns:  repeat(auto-fit, var(--grid-width));
+}
+#testfixedwidth > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testfix {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	--grid-columns: 3;
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testfix {
+	display: grid;
+	grid-template-columns: repeat(var(--grid-columns), 1fr);
+}
+#testfix > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testcolumns {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	--grid-template-columns: 220px auto 260px;
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testcolumns {
+	display: grid;
+	grid-template-columns: var(--grid-template-columns);
+	grid-template-rows: var(--grid-template-rows);
+}
+#testcolumns > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testrows {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	--grid-template-rows: 40px auto 40px;
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+	height:400px;
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testrows {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: var(--grid-template-rows);
+}
+#testrows > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testnamed {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	--grid-template-columns: 200px auto;
+	--grid-template-rows: 40px auto 40px;
+	--grid-template-areas: "header header" "left right" "footer footer";
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+	height:400px;
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testnamed {
+	display: grid;
+	grid-template-areas: var(--grid-template-areas);
+	grid-template-columns: var(--grid-template-columns);
+	grid-template-rows: var(--grid-template-rows);
+}
+/* writing styles for state main */
+#testflex {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	--justify-content: flex-end;
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testflex {
+	display: flex;
+}
+#testflex > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testflexnowrap {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	--align-items: center;
+	/* no style for flex-stretch */
+	--flex-wrap: nowrap;
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testflexnowrap {
+	display: flex;
+}
+#testflexnowrap > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testflexstretch {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	--flex-direction: row-reverse;
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	--flex-stretch: 1;
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testflexstretch {
+	display: flex;
+}
+#testflexstretch > * {
+	grid-area: unset !important;
+}
+/* writing styles for state main */
+#testflexcenter {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	--grid-gap: 10px;
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	--justify-content: center;
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+#testflexcenter {
+	display: flex;
+}
+#testflexcenter > * {
+	grid-area: unset !important;
+}
+@media only screen and (max-width: 800px){
+/* mid Settings not defined for cs testfit */
+
+/* mid Settings not defined for cs testfill */
+
+/* mid Settings not defined for cs testfixedwidth */
+
+/* writing styles for state main */
+#testfix {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	--grid-columns: 2;
+	/* no style for grid-gap */
+	/* no style for grid-template-columns */
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+/* writing styles for state main */
+#testcolumns {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	/* no style for grid-gap */
+	--grid-template-columns: 120px auto 160px;
+	/* no style for grid-template-rows */
+	/* no style for grid-template-areas */
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+/* mid Settings not defined for cs testrows */
+
+/* writing styles for state main */
+#testnamed {
+	/* no style for grid-width */
+	/* no style for grid-max-width */
+	/* no style for grid-max-height */
+	/* no style for grid-columns */
+	/* no style for grid-gap */
+	--grid-template-columns: 200px auto;
+	--grid-template-rows: 20px auto 40px;
+	--grid-template-areas: "header header" "right right" "left footer";
+	/* no style for flex-direction */
+	/* no style for justify-content */
+	/* no style for align-content */
+	/* no style for align-items */
+	/* no style for flex-stretch */
+	/* no style for flex-wrap */
+	/* Font */
+	/* Dimensions */
+	height:280px;
+
+}
+/* No settings for panel item */
+/* No settings for panel caption */
+/* mid Settings not defined for cs testflex */
+
+/* mid Settings not defined for cs testflexnowrap */
+
+/* mid Settings not defined for cs testflexstretch */
+
+/* mid Settings not defined for cs testflexcenter */
+
+}
+@media only screen and (min-width: 1200px){
+/* max Settings not defined for cs testfit */
+
+/* max Settings not defined for cs testfill */
+
+/* max Settings not defined for cs testfixedwidth */
+
+/* max Settings not defined for cs testfix */
+
+/* max Settings not defined for cs testcolumns */
+
+/* max Settings not defined for cs testrows */
+
+/* max Settings not defined for cs testnamed */
+
+/* max Settings not defined for cs testflex */
+
+/* max Settings not defined for cs testflexnowrap */
+
+/* max Settings not defined for cs testflexstretch */
+
+/* max Settings not defined for cs testflexcenter */
+
+}

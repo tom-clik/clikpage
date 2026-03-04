@@ -36,10 +36,10 @@ component extends="clikpage.clikpageApplication" { //
 
 		application.config = deserializeJSON(local.fileData);
 
+		application.dataObj = new clikpage.data.data_text(application.config);
+
 		return true;
 
 	}
-
-	
 
 }

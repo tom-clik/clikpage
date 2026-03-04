@@ -18,43 +18,74 @@ component {
 		variables.contentObj = arguments.contentObj;
 		variables.api = arguments.api;
 
-		this.settingsOptions = {};
-		this.settingsOptions["displayblock"] = [
-			{"value":"none","name":"Hide","description":""},
-			{"value":"block","name":"Show","description":""}
-		];
-		this.settingsOptions["halign"] = [
-			{"value":"left","name":"Left","description":""},
-			{"value":"center","name":"Centre","description":""},
-			{"value":"right","name":"Right","description":""}
-		];
-		this.settingsOptions["valign"] = [
+		this.settingsTypes = {};
+		/* Show or hide an item using this value as is with { display: var(--show)}. We used this a lot when starting this project, but its use gets problematic as so
+		many items now have different display values */
+		this.settingsTypes["displayblock"] = {
+			"options"= [
+				{"value":"none","name":"Hide","description":""},
+				{"value":"block","name":"Show","description":""}
+			]
+		};
+		this.settingsTypes["halign"] = {
+			"options"= [
+				{"value":"left","name":"Left","description":""},
+				{"value":"center","name":"Centre","description":""},
+				{"value":"right","name":"Right","description":""}
+			]
+		};
+		this.settingsTypes["valign"] = {
+			"options"= [
 			{"value":"top","name":"Top","description":""},
 			{"value":"middle","name":"Middle","description":""},
 			{"value":"bottom","name":"Bottom","description":""}
-		];
-		this.settingsOptions["flexgrow"] = [
-			{"value":"1","name":"Yes","description":"Item will expand to fit width (if set)"},
-			{"value":"0","name":"No","description":"Item will not expand."}
-		];
-		this.settingsOptions["overflow"] = [
+			]
+		};
+		this.settingsTypes["flexgrow"] = {
+			"options"= [
+			{"value":"1","name":"Yes","description":"Expand"},
+			{"value":"0","name":"No","description":"Don't expand."}
+			]
+		};
+		this.settingsTypes["overflow"] = {
+			"options"= [
 			{"value":"hidden","name":"Hidden","description":""},
 			{"value":"show","name":"show","description":""}
-		];
-		this.settingsOptions["float"] = [
+			]
+		};
+		this.settingsTypes["float"] = {
+			"options"= [
 			{"value":"none","name":"None","description":""},
 			{"value":"left","name":"Left","description":""},
 			{"value":"right","name":"Right","description":""}
-		];
-		this.settingsOptions["position"] = [
+			]
+		};
+		this.settingsTypes["position"] = {
+			"options"= [
 			{"value":"static","name":"Normal","description":""},
 			{"value":"fixed","name":"Fixed to screen","description":""},
 			{"value":"absolute","name":"Relative to container","description":""},
 			{"value":"sticky","name":"Sticky","description":""},
 			{"value":"relative","name":"Normal with adjustment","description":""}
-		];
+			]
+		};
 
-		this.styleDefs = [
+		this.settings = [
+			"font": {
+				"name": "Font",
+				"type": "font",
+				"description": "Font of main text"
+			},
+			"title-font": {
+				"name": "Title Font",
+				"type": "font",
+				"description": "Font for title of the content section"
+			},
+			"heading-font": {
+				"name": "Title Font",
+				"type": "font",
+				"description": "Font for title of the content section"
+			},
 			"padding": {
 				"name": "Padding",
 				"type": "dimensionlist",
@@ -123,12 +154,12 @@ component {
 				"description":""
 			},
 			"min-height": {
-				"name":"Min height",
+				"name":"Minimum height",
 				"type":"dimension",
 				"description":""
 			},
 			"max-height": {
-				"name":"Max height",
+				"name":"Maximum height",
 				"type":"dimension",
 				"description":""
 			},
@@ -182,174 +213,6 @@ component {
 		return this;
 	}
 
-	private string function radioSelected(required boolean on) {
-		return on ? " selected" : "";
-	}
-
-	string function settingsForm(
-		required struct contentsection, 
-		required string media="main",
-		         string type="imagegrid"
-		) {
-		var retval = "
-		<div id='settings_panel' class='settings_panel modal'>
-			
-			<div id='settings_panel_close' class='button auto'><a href='##settings_panel.close'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 357 357' preserveAspectRatio='none'><use href='/_assets/images/close47.svg##close'></use></svg><label>Close</label></a></div>			
-			<form id='settingsForm'>	
-				<div class='formInner'>
-				
-				<input type='hidden' name='cs_id' value='#arguments.contentsection.id#'>
-					<div class='formBody'>
-						<div class='cs-tabs'>
-							<div class='tab state_open' id='#arguments.contentsection.id#_tab_settings'>
-								<div class='title'>
-									Settings
-								</div>
-								<div class='item wrap'>";
-					
-		local.settings = arguments.contentsection.settings[arguments.media];
-
-		retval &= "<fieldset>";
-		
-		retval &= settingsFormFields(
-			styleDefs = variables.contentObj.contentSections[arguments.type].styleDefs,
-			id = arguments.contentsection.id,
-			type = arguments.type
-		);
-
-		retval &= "
-								</fieldset>
-							</div>
-						</div>
-						<div class='tab' id='#arguments.contentsection.id#_tab_styles'>
-							<div class='title'>
-								Styles
-							</div>
-							<div class='item wrap'>
-								<fieldset>	";
-
-		retval &= settingsFormFields(
-			styleDefs = this.styleDefs,
-			id = arguments.contentsection.id,
-			type = arguments.type
-		);
-
-			retval &= "
-									</fieldset>
-								</div>
-							</div>	
-						</div>
-					</div>
-				
-					<div class='submit'>
-						<label></label>				
-						<div class='button'><input type='submit' value='Update'></div>
-					</div>
-				</div>
-			</form>
-			
-		</div>";
-
-		return retval;
-	}
-
-	private string function settingsFormFields(
-		required struct styleDefs, 
-		required string id,
-		required string type
-		) {
-		var retVal = "";
-		for (local.setting in arguments.styleDefs) {
-			local.settingDef = arguments.styleDefs[local.setting];
-			local.description = local.settingDef.description? : "No description";
-			local.name = local.settingDef.name? : local.setting;
-			retval &= "<label title='#encodeForHTMLAttribute(local.description)#'>#local.name#</label>";
-
-			local.value = local.settings[local.setting] ? : "";
-			
-			switch(local.settingDef.type) {
-				
-				case "boolean":
-					local.selected = isBoolean(local.value) AND local.value;
-					local.onOff = {1: " selected", 0: ""};
-					local.id_root = "#arguments.id#_#local.setting#";
-					retval &= "<div class='field'><input id='#local.id_root#_on' type='radio' name='#local.setting#'#radioSelected(local.selected)# value='1'><label for='#local.id_root#_on'>Yes</label>
-						<input type='radio' id='#local.id_root#_off'  name='#local.setting#'#radioSelected(!local.selected)# value='0'><label for='#local.id_root#_off'>No</label>
-					</div>";
-					break;
-				case "list":
-					local.options = variables.contentObj.options(arguments.type,local.setting);
-					retval &= displayOptions(
-						options = local.options,
-						setting = local.setting, 
-						value   = local.value
-					);
-					break;
-				case "shape":	
-					retval &= displayOptions(
-						options = variables.contentObj.shapeOptions(),
-						setting = local.setting, 
-						value   = local.value
-					);
-					break;
-				case "displayblock":
-				case "halign": 
-				case "valign":
-				case "float":
-				case "overflow":
-				case "flexgrow": 
-				case "position":
-					retval &= displayOptions(
-						options = this.settingsOptions[local.settingDef.type],
-						setting = local.setting, 
-						value   = local.value
-					);
-					break;
-				default:
-					retval &= "<input name='#local.setting#' value='#local.value#'>";
-					break;	
-			}
-			
-		}
-
-		return retval;
-	}
-
-	/**
-	 * @hint Display the on ready JS for the settings form
-	 *
-	 * Surely could be a plug in?
-	 */
-	string function settingsFormJS(required string id) {
-			return "
-			// attach handler to form's submit event 
-			$('##settingsForm').submit(function() { 
-			    // submit the form 
-			    var data = $(this).serializeData();
-			    console.log(data); 
-
-			    $.ajax({
-			    	url:'api/#variables.api#?method=css',
-			    	data: {'cs_id':data.cs_id, 'settings': JSON.stringify(data)},
-			    	method: 'post'
-			    }).done(function(e) {
-			    	if (e.statuscode == 200) {
-				    	$('##css').html(e.css);
-				    	$#arguments.id#.data('photoGrid').reload();
-			    	}
-			    	else {
-			    		messageHandler.error(e.statustext);
-			    	}
-			    }).fail(function (request, status, error) {
-			    	messageHandler.error(error);
-				});
-
-			    return false; 
-
-			});
-			";
-	}
-
 	/**
 	 * Update settings for a content section using a set of supplied values
 	 * 
@@ -376,30 +239,6 @@ component {
 		variables.contentObj.settings(content=arguments.cs,styles=arguments.styles.style,media=arguments.styles.media);
 	}
 
-	private string function displayOptions(required array options, required string setting, value="", boolean optional=1) {
-		var retval = "<select name='#arguments.setting#'>";
-		if (arguments.optional) {
-			local.selected = arguments.value eq "" ? " selected": "";
-			retval &= "<option value=''#local.selected#></option>";
-		}
-		for (local.mode in arguments.options) {
-			try {
-				local.selected = local.mode.value eq arguments.value ? " selected": "";
-				local.optionDescription = local.mode.description ? : "";
-				local.optionName = local.mode.name ? : local.mode.value;
-				retval &= "<option value='#local.mode.value#' #local.selected# title='#encodeForHTMLAttribute(local.optionDescription)#'>#encodeForHTML(local.optionName)#</option>";
-			}
-			catch (any e) {
-				local.extendedinfo = {"tagcontext"=e.tagcontext,mode=local.mode,setting=arguments.setting};
-				throw(
-					extendedinfo = SerializeJSON(local.extendedinfo),
-					message      = "Error in options list:" & e.message, 
-					detail       = e.detail
-				);
-			}
-		}
-		retval &= "</select>";
-		return retVal;
-	}
+	
 
 }

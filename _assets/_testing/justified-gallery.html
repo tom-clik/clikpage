@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="../css/justifiedGallery.css" />
+    <style>
+        html { overflow-y: scroll; } /* To always show the scrollbar and avoid the flickering problem. */
+    </style>
+</head>
+
+<body>
+    <h1>Layout test</h1>
+    <div id="simpletest">
+       
+       <!--  <a href="../photos/6798453217_72dea2d06e_b.jpg" title="My first clothespin">
+            <img src="../photos/6798453217_72dea2d06e_m.jpg" />
+        </a> -->
+    </div>
+    
+    <script src="../js/jquery-3.4.1.js"></script>
+    <script src="../js/jquery.justifiedGallery.js"></script>
+    <!-- endbower -->
+    <script>
+        $(document).ready(function(){
+            $elem = $("#simpletest");
+            $.ajax({
+                    url : 'https://api.flickr.com/services/rest/?jsoncallback=?',
+                    method: 'get',
+                    data : {
+                        method : 'flickr.photos.search',
+                        api_key : '2b76793b6787a09c14929811d2cef67e',
+                        text : 'potrait',
+                        sort : 'interestingness-desc',
+                        format : 'json',
+                        extras : 'url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l',
+                        per_page : $('#numPhotos').val()
+                    },
+                    dataType: 'json',
+                    success : function(data){
+                        showPhotos(data.photos.photo,$elem);
+                    }
+            })
+        });
+        var showPhotos = function(photos, $elem){
+            console.log(photos);
+            var html = "";
+            for (let photo of photos) {
+                html += `<a href="${photo.url_l}">
+                        <img src="${photo.url_n}" />
+                        <div class='jg-caption'>${photo.title}</div>
+                        </a>`;
+            }
+            $elem.html(html).justifiedGallery({
+                rowHeight: 240,
+                sizeRangeSuffixes:
+
+                    {'lt100':'_t',
+                    'lt240':'_m',
+                    'lt320':'_n',
+                    'lt500':'',
+                    'lt640':'_z',
+                    'lt1024':'_b'}
+            });
+        }
+    </script>
+</body>
+
+</html>

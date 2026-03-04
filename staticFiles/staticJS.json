@@ -3,6 +3,7 @@
     {
       "scripts": [
         "jquery",
+        "clik_common",
         "autoButton",
         "animateAuto",
         "popup",
@@ -13,28 +14,47 @@
         "clik_onready",
         "tabs",
         "getSettings",
+        "photogrid",
+        "justifiedGallery",
         "serializeData",
-        "throttledresize"
+        "throttledresize",
+        "heightFix",
+        "varClass",
+        "autoopen",
+        "fadeInOnScroll"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.2.min.js",
+      "min": "/_assets/js/_min/clikpage.0.14.min.js",
     },
     {
       "scripts": [
-        "fuzzy",
-        "search",
+        "fuzzySearch",
         "menuScroll",
-        "menus"
+        "menus",
+        "throttledresize",
+        "animateAuto",
+        "fuzzy",
+        "clik_common"
       ],
-      "min": "/_assets/js/_min/coldlightpackage.0.2.min.js",
+      "min": "/_assets/js/_min/coldlightpackage.0.10.min.js",
       "name": "coldlight"
+    },
+    {
+      "scripts_foobar": [
+        "clik_settings","messageHandler","settingsForm"
+      ],
+      "scripts": [
+        "clikForm"
+      ],
+      "min": "/_assets/js/_min/clikForm.0.1.min.js",
+      "name": "forms"
     },
     {
       "scripts": [
         "clik_settings","messageHandler","settingsForm"
       ],
       "description": "Clik editing tools",
-      "min": "/_assets/js/_min/clikutils.0.2.min.js",
+      "min": "/_assets/js/_min/clikutils.0.3.min.js",
       "name": "clikutils"
     }
   ],
@@ -45,6 +65,12 @@
       "name": "jquery",
       "packageExclude": 1,
       "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
+    },
+    {
+      "min": "/_assets/js/clik_common.js",
+      "name": "clik_common",
+      "description": "",
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/jquery-ui.min.js",
@@ -70,10 +96,15 @@
       "requires": "jquery"
     },
     {
-      "min": "/_assets/js/search.js",
-      "name": "search",
-      "description": "search symbol definitions with fuzzy logic",
+      "min": "/_assets/js/fuzzySearch.js",
+      "name": "fuzzySearch",
+      "description": "Search of symbol definitions with fuzzy logic",
       "requires": "fuzzy"
+    },
+    {
+      "min": "/_assets/js/fts_fuzzy_match.js",
+      "name": "fuzzy",
+      "description": "Fuzzy match library"
     },
     {
       "debug": "/_assets/js/select2.min.js",
@@ -104,18 +135,19 @@
       "requires": "jquery"
     },
     {
-      "debug": "/_assets/js/isotope.pkgd.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js",
-      "name": "masonry",
-      "description" : "Gallery layout script",
-      "packageExclude": 1,
-      "requires": "imagesloaded,jquery"
+      "min": "/_assets/js/masonryGrid.js",
+      "name": "masonryGrid",
+      "description" : "Grid Masonry script",
+      "requires": "masonry,jquery,imagesloaded"
     },
+    
     {
-      "min": "/_assets/js/masonry-horizontal.js",
-      "name": "masonry-horizontal",
-      "description" : "Horizontal mode for masonry",
-      "requires": "masonry"
+      "debug": "/_assets/js/masonry.pkgd.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+      "name": "masonry",
+      "description" : "Masonry.js library - always call using masonryGrid",
+      "packageExclude": 1,
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/flickity.pkgd.min.js",
@@ -156,7 +188,7 @@
       "min": "/_assets/js/jquery.clikForm.js",
       "description": "Combines forms and validate in one plug-in to submit a form and display a returned|supplied message",
       "name": "clikForm",
-      "requires": "jquery,forms,elastic,select2,validate,clikutils"
+      "requires": "jquery,elastic,select2,validate,serializeData"
     },
     {
       "min": "/_assets/js/jquery.autoButton.js",
@@ -208,7 +240,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,clik_settings"
+      "requires": "jquery,modal,clik_common"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -223,6 +255,12 @@
       "requires": "jquery"
     },
     {
+      "min":"/_assets/js/varClass.js",
+      "description": "Get value of css variables and apply them as a class {varname}-{varvalue}",
+      "name": "varClass",
+      "requires": "jquery,removeClassByPrefix"
+    },
+    {
       "debug":"/_assets/js/tooltipster.main.js",
       "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/js/tooltipster.main.js",
       "description": "Tooltip library",
@@ -232,9 +270,15 @@
     },
     {
       "min":"/_assets/js/photogrid.js",
-      "description": "Proper serialization of form data to submit via Ajax",
+      "description": "Clik wrapper for all photogrid functions. ",
       "name": "photogrid",
-      "requires": "jquery,getSettings"
+      "requires": "jquery,clik_common,justifiedGallery,masonryGrid"
+    },
+    {
+      "min":"/_assets/js/jquery.justifiedGallery.js",
+      "description": "Proper serialization of form data to submit via Ajax",
+      "name": "justifiedGallery",
+      "requires": "jquery"
     },
     {
       "min":"/_assets/js/jquery.serializeData.js",
@@ -243,15 +287,17 @@
       "requires": "jquery"
     },
     {
-      "min":"/_assets/js/clik_settings.js",
+      "min":"/_assets/js/clik_settings_live.js",
+      "debug":"/_assets/js/clik_settings.js",
       "description": "Auto generated data file of style definitions for editing",
-      "name": "clik_settings"
+      "name": "clik_settings",
+      "requires": "jquery,throttledresize"
     },
     {
+      "name":"getSettings",
       "min":"/_assets/js/getSettings.js",
       "description": "Get content item settings from css custom vars",
-      "name": "getSettings",
-      "requires": "jquery"
+      "requires": "jquery,clik_settings"
     },
     {
       "min":"/_assets/js/jquery.tabs.js",
@@ -266,11 +312,28 @@
       "requires": "jquery,clik_settings,messageHandler"
     },
     {
+      "min":"/_assets/js/jquery.autoopen.js",
+      "description": "Add open close methods to containers",
+      "name": "autoopen",
+      "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/removeClassByPrefix.js",
+      "description": "Utility for removing classes by prefix",
+      "name": "removeClassByPrefix",
+      "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/fadeInOnScroll.js",
+      "description": "Fade in content on scroll",
+      "name": "fadeInOnScroll",
+      "requires": "jquery"
+    },
+    {
       "min":"/_assets/js/clik.editing.js",
       "description": "General Editing functions",
       "name": "clikEditing",
       "requires": "jquery,clik_settings,messageHandler"
     }
-    
   ]
 }

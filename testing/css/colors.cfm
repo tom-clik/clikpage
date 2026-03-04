@@ -14,6 +14,12 @@ Really wants to be a JavaScript plugin anyway.
 
 2022-03-18  THP   rough start
 
+## TODO:
+
+1. Build color viewer component to take data and render boxes. Don't do this server side
+2. Integrate color picker to allow editing of color.
+3. Come up with UI to allow colors to inherit from other colors.
+
 --->
 
 <cfscript>
@@ -64,7 +70,7 @@ colors = [
 
 	<div id="ubercontainer">
 		
-		<div class="colorbox scheme-grid">
+		<div class="colorbox cs-grid mode-fit" style="--grid-gap:4px">
 
 			<cfloop index="color" array="#colors#">
 				<cfoutput>

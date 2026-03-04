@@ -1,0 +1,124 @@
+scheme-spanning {
+	
+	inner {
+		max-width:var(--sitewidth);
+		align:center;
+		padding:var(--sitepadding);
+	}
+	@mobile {
+		inner {
+			max-width:auto;
+			padding:var(--sitepaddingmobile);
+		}
+	}
+}
+
+scheme-popupbutton {
+	position:fixed;
+	top:4px;
+}
+
+scheme-title {
+	color:accent;
+	font-family:bodyfont;
+	font-size:2.4em;
+	font-weight:300;
+}
+
+scheme-articletitle {
+	font-size:1.8em;
+	color:textcolor;
+}
+
+scheme-intros {
+	font-weight:bold;
+	font-style:italic;
+	margin:0 0 1em 0;
+}
+
+scheme-navbuttons {
+	grid-mode: fixedcols;
+	grid-columns:2;
+}
+
+scheme-navbutton {
+	button-align: flex-start;
+}
+
+scheme-button {
+	icon-width:32;
+	hover {
+		link-color:accent;
+	}
+	shape:left_arrow;
+}
+
+scheme-navnext {
+	label-align: right;
+	button-direction:row-reverse;
+	shape:right_arrow;
+}
+
+scheme-listings {
+	image-align:left;
+	item {
+		margin:12 0;
+		padding:12;
+		border {
+			width:1px;
+			color:bordercolor;
+		}
+	}
+	title {
+		padding:0;
+	}
+	text {
+		padding:0;
+	}
+	mobile {
+		image-align:center;
+	}
+	
+}
+
+scheme-carousel {
+	htop:1;
+	image-align:left;
+	layout: carousel;
+}
+
+.scheme-forms {
+	@mobile {
+		form-display:block;
+	}
+}
+
+
+scheme-bodycopy {
+	/*	 Won't do anything yet, just testing it parses*/
+	h1 {
+		heading-font-size:24px;
+		heading-margin: 0 0 1em 0;
+		heading-font-align: center;
+	}
+
+	table {
+		table-cell-padding:4px;
+	}
+
+	table.info {
+		th {
+			font-weight: normal;
+		}
+	}
+
+	list.whatever {
+		font-weight: bold;
+	}
+
+	class.asyoulikeit {
+		font-weight: bold;
+	}
+}
+
+

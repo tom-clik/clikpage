@@ -58,7 +58,7 @@ component {
 				variables.scriptCache[local.script.name] = local.script;
 
 				if (local.script.packageExclude && !StructKeyExists(local.script,"min")) {
-					throw("No min (the src) defined for script in json definition");
+					throw("No min (the src) defined for script #local.script.name# in json definition");
 				}
 				else if (!local.script.packageExclude && !StructKeyExists(local.script,"min") && !StructKeyExists(local.script,"debug")) {
 					throw("No min or debug defined for script in json definition");
@@ -78,7 +78,7 @@ component {
 			}
 		} 
 		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext,};
+			local.extendedinfo = {"error"=e};
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
 				message      = "Error:" & e.message, 
@@ -96,7 +96,7 @@ component {
 	}
 
 	public string function getLinks(required struct scripts, boolean debug=false) {
-
+		
 		local.packagesIncluded = {};
 		local.scriptsInPackage = {};
 		local.ret = "";
@@ -204,7 +204,7 @@ component {
 	 *              pack=false or all scripts are excluded from packages], 	
 	 *              result.filename, result.files)
 	 */
-	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=]) {
+	public array function compressPackage(type="css",boolean overwrite=false, struct mappings=[=], boolean minify=true) {
 		
 		local.results = [];
 		
@@ -243,19 +243,37 @@ component {
 				if (local.out != "") {
 					
 					local.out =	variables.debugpattern.matcher(local.out).replaceAll("");
-					if (arguments.type == "css") {
-						local.compressed = minifiyCSS(local.out);
+					
+					if (arguments.minify) {
+						try {
+							if (arguments.type == "css") {
+								local.compressed = minifiyCSS(local.out);
+							}
+							else {
+								local.compressed = minifiyJS(local.out);
+							}
+						}
+						catch (any e) {
+							local.extendedinfo = e.keyExists("extendedinfo") ? deserializeJSON(e.extendedinfo) : {};
+							StructAppend(local.extendedinfo, {"tagcontext"=e.tagcontext}, false);
+							
+							throw(
+								extendedinfo = SerializeJSON(local.extendedinfo),
+								message      = "Unable to minify file #local.outputFile#:" & e.message, 
+								detail       = e.detail,
+								errorcode    = "compressPackage.2"		
+							);
+						}
 					}
 					else {
-						local.compressed = minifiyJS(local.out);
+						local.compressed =local.out;
 					}
+
 					try {
 						FileWrite(local.outputFile, local.compressed, "utf-8");
 					}
 					catch (any e) {
-						local.extendedinfo = {"tagcontext"=e.tagcontext};
 						throw(
-							extendedinfo = SerializeJSON(local.extendedinfo),
 							message      = "Unable to save file #local.outputFile#:" & e.message, 
 							detail       = e.detail,
 							errorcode    = "compressPackage.1"		
@@ -301,10 +319,36 @@ component {
 		}
 
 		if ((! (StructKeyExists(local.result,"text") && local.result.text)) OR !StructKeyExists(local.result,"filecontent") OR NOT local.result.status_code eq 200)  {
-			StructAppend(local.result,{"errordetail":"Unknown error"},false);
-			throw(message="Compression API return an error",detail=local.result.errordetail);
-		}
 
+			StructAppend(local.result,{"errordetail":"Unknown error"},false);
+
+			try {
+				local.result.filecontent = deserializeJSON(local.result.filecontent);
+			}
+			catch (any f) {
+				//ignore
+			}
+
+			local.extendedinfo = {"result"=local.result, "input"=arguments.input};
+
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Compression API return an error:" & local.result.errordetail, 
+				errorcode    = ""		
+			);
+		}
+		try{
+			
+		} 
+		catch (any e) {
+			
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error:" & e.message, 
+				detail       = e.detail,
+				errorcode    = ""		
+			);
+		}
 				
 
 		return local.result.filecontent;
@@ -316,7 +360,7 @@ component {
 	 * @src    src of script -- be default this will be expanded
 	 * @mappings  Specified full paths to match agains the src
 	 */
-	private string function filePath(required string src, required struct mappings) {
+	public string function filePath(required string src, required struct mappings) {
 		
 		var ret = arguments.src;
 		for (var mapping in arguments.mappings) {

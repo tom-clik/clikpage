@@ -8,9 +8,8 @@
 		var $form = $(this);
 		$form.find(":input").filter("[name]").each(function() {
 			$field = $(this);
-			let type = $field.attr('type');
+			let type = $field.attr('type') || $field.prop("tagName").toLowerCase();
 			let name = $field.attr("name");
-			console.log("Field ", name, type);
 			// have weird bug where multiple submissions
 			// create hidden field with no name and value of submit button
 			if (name == "") {

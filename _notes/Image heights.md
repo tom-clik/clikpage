@@ -6,7 +6,11 @@ This needs the container to have a fixed height of some sort, or the images will
 
 You can, if every element from the body down has a height of 100%, get the image to fit using pure CSS and grid row sizing.  You can't use a `min-height:100%` on the ubercontainer to do this, which makes things very difficult.
 
-Without the image, use can use grids with an expandable ubercontainer to create a cell of the correct size. We can then use JavaScript to fix the height of the image container and then show the image.
+Instead, we use use JavaScript to fix the height of the image container and only then show the image.
+
+## Status
+
+It works well enough but we're getting FOUCs that need fixing.
 
 ## Examples
 
@@ -30,7 +34,15 @@ A grid layout has fixed height header and footer and variable content. The conte
 
 ## Solution
 
-We define a property "fixheight" on the image. This will enable the following:
+### Fixed height of CS
+
+The easiest solution is to apply a fixed height to the content section. This will automatically fit the image according to the object fit property.
+
+The problem is we don't always know the height and usually want it to be whatever the height of the container is according to the page size.
+
+### "heightfix" property
+
+We define a property "heightfix" on the image. This will enable the following:
 
 1. Set position to absolute and visibility to none
 2. Work out size of parent
@@ -38,4 +50,7 @@ We define a property "fixheight" on the image. This will enable the following:
 4. Set height of image container
 5. Set position to static and visibility to visible
 
-We will need to add a resize method to the page's on throttled resize handler.
+
+### Implementation
+
+See `heightfix.js`. This is applied to all image cs in `clik_onready`. If the `--heightfix` property is true, it applies the logic above. It does the calcs and applies a class to the cs to apply height:100%, width:100% to the frame.

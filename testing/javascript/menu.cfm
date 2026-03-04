@@ -3,18 +3,35 @@
 # Jquery Menu Test
 
 -->
+<cfscript>
 
-<!DOCTYPE html>
-<html>
+pageObj = new clikpage.page(debug=1);
+content = pageObj.getContent();
+pageObj.addJs(content,"menus");
+pageObj.addCss(content,"menus");
+pageObj.addCss(content,"navbuttons");
+pageObj.addCss(content,"/clikpage/_assets/css/schemes/menus-schemes.css");
+pageObj.addJs(content,"modal");
+pageObj.addJs(content,"autoButton");
+content.title = "Menu test page";
+</cfscript>
 
-<head>
-	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/navbuttons.css">
-	<link rel="stylesheet" type="text/css" href="/_assets/css/menus.css">
-	<link rel="stylesheet" type="text/css" href="../content/_out/colors.css">
-	<link rel="stylesheet" type="text/css" href="../content/_out/menu.css">
-	<style>
+<cfsavecontent variable="content.css">
+	:root {	
+		/*****************************************************************
+		*                              Colors                            *
+		******************************************************************/
+		--textcolor: #333333; /* Main text color */
+		--myfavcolor: #ff0000; /* My favourite colour */
+		--panel-bg: #01798a; /* Darker panel bg */
+		--accent: #38bbcd; /* Accent colour */
+		--panel-text: #ffffff; /* Panel text */
+		--panel-overlay: rgba(33,33,33,0.4); /* Semi transparent overlay */
+		--light-panel-bg: #eaeaea; /* Light panel packground */
+		--linkcolor: #38bbcd; /* Link color */
+		--overlaybg: rgba(0,0,0,0.2); /* Overlay background */
+	}
+
 	body {
 		padding:20px;
 		background-color: #ccc;
@@ -73,18 +90,22 @@
 	.backdrop {
 		background-color: rgba(0,0,0,0.3);
 	}
+	.cs-menu {
+		--icon-width:1em;
+		--icon-height:1em;
+	}
 
 
-	</style>
-</head>
+</cfsavecontent>
 
-<body>
+
+<cfsavecontent variable="content.body">
 
 	<div id="ubercontainer">
 		<div class="button auto" id="menu_container_button">
 			<a href="#menu_container.open">
 				<div class="icon">
-					<svg   viewBox="0 0 448 512"><use xlink:href="/_assets/images/bars.svg#bars"></svg>
+					<i class='icon-menu'></i>
 				</div>
 			</a>
 		</div>
@@ -94,50 +115,46 @@
 				<div class="button auto" id="menu_container_close_button">
 					<a href="#menu_container.close">
 						<div class="icon">
-							<svg   viewBox="0 0 357 357"><use xlink:href="/_assets/images/close47.svg#close"></svg>
+							<i class='icon-close'></i>
 						</div>
 					</a>
 				</div>
-				<div id='mainmenu' class='cs-menu'>
-<ul class='menu'><li><a href='?section=index'  class='menu_index'><b></b><span>Home page</span></a></li>
-<li><a href='?section=gallery'  class='menu_gallery'><b></b><span>Gallery</span></a></li>
-<li><a href='?section=gallery2'  class='menu_gallery2'><b></b><span>Gallery 2</span></a></li>
-<li><a href='?section=about'  class='menu_about'><b></b><span>About</span></a></li>
-<li><a href='?section=news'  class='menu_news'><b></b><span>News</span></a><ul class='submenu'><li><a href='{link.news.view.1}'  class='menu_submenu_news_1'><b></b><span>Article test 1</span></a></li>
-<li><a href='{link.news.view.2}'  class='menu_submenu_news_2'><b></b><span>Article test 2</span></a></li>
-<li><a href='{link.news.view.3}'  class='menu_submenu_news_3'><b></b><span>Article test 3</span></a></li>
-<li><a href='{link.news.view.4}'  class='menu_submenu_news_4'><b></b><span>Article test 4</span></a></li>
+				<div id='mainmenu' class='cs-menu scheme-vertical'>
+<ul class='menu'><li><a href='?section=index'  class='menu_index'><span>Home page</span></a></li>
+<li><a href='?section=gallery'  class='menu_gallery'><span>Gallery</span></a></li>
+<li><a href='?section=gallery2'  class='menu_gallery2'><span>Gallery 2</span></a></li>
+<li><a href='?section=about'  class='menu_about'><span>About</span></a></li>
+<li><a href='?section=news'  class='menu_news'><span>News</span></a><ul class='submenu'><li><a href='{link.news.view.1}'  class='menu_submenu_news_1'><span>Article test 1</span></a></li>
+<li><a href='{link.news.view.2}'  class='menu_submenu_news_2'><span>Article test 2</span></a></li>
+<li><a href='{link.news.view.3}'  class='menu_submenu_news_3'><span>Article test 3</span></a></li>
+<li><a href='{link.news.view.4}'  class='menu_submenu_news_4'><span>Article test 4</span></a></li>
 </ul></li>
-<li><a href='?section=newscarousel'  class='menu_newscarousel'><b></b><span>News carousel</span></a><ul class='submenu'><li><a href='{link.newscarousel.view.1}'  class='menu_submenu_newscarousel_1'><b></b><span>Article test 1</span></a></li>
-<li><a href='{link.newscarousel.view.2}'  class='menu_submenu_newscarousel_2'><b></b><span>Article test 2</span></a></li>
-<li><a href='{link.newscarousel.view.3}'  class='menu_submenu_newscarousel_3'><b></b><span>Article test 3</span></a></li>
-<li><a href='{link.newscarousel.view.4}'  class='menu_submenu_newscarousel_4'><b></b><span>Article test 4</span></a></li>
+<li><a href='?section=newscarousel'  class='menu_newscarousel'><span>News carousel</span></a><ul class='submenu'><li><a href='{link.newscarousel.view.1}'  class='menu_submenu_newscarousel_1'><span>Article test 1</span></a></li>
+<li><a href='{link.newscarousel.view.2}'  class='menu_submenu_newscarousel_2'><span>Article test 2</span></a></li>
+<li><a href='{link.newscarousel.view.3}'  class='menu_submenu_newscarousel_3'><span>Article test 3</span></a></li>
+<li><a href='{link.newscarousel.view.4}'  class='menu_submenu_newscarousel_4'><span>Article test 4</span></a></li>
 </ul></li>
-<li><a href='?section=images'  class='menu_images'><b></b><span>Images</span></a></li>
-<li><a href='?section=singlearticle'  class='menu_singlearticle'><b></b><span>Single article</span></a></li>
+<li><a href='?section=images'  class='menu_images'><span>Images</span></a></li>
+<li><a href='?section=singlearticle'  class='menu_singlearticle'><span>Single article</span></a></li>
 </ul></div>
 			</div>
 		</div>	
 
 	</div>
 
-</body>
+</cfsavecontent>
 
-<script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_assets/js/jquery.autoButton.js"></script>
-<script src="/_assets/js/jquery.modal.js"></script>
-<script src="/_assets/js/jquery.menu.js"></script>
 
-<script>
-$(document).ready(function() {
+<cfsavecontent variable="onready">
+
 	$(".button.auto").button();
 	$plug = $('#menu_container');
 	$plug.modal();
-	$("#mainmenu").menu({
-		arrow:"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 223.413 223.413\" preserveAspectRatio=\"none\"><use href=\"/_assets/images/right_arrow.svg#right_arrow\"></use></svg>"
-	});
-});
-</script>
+	$("#mainmenu").menu({animate:"height"});
 
-</html>
+</cfsavecontent>
+
+<cfscript>
+pageObj.addJs(content,onready);
+writeOutput( pageObj.buildPage(content) );
+</cfscript>

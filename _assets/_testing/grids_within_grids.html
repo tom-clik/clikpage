@@ -1,0 +1,124 @@
+<!---
+
+In initial testing, nested grids weren't working well, they were inheriting everything.
+
+This is a test to check that has been resolved 
+
+--->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CSS Grid Test</title>
+	<link rel="stylesheet" href="/_assets/css/reset.css">
+	<link rel="stylesheet" href="/_assets/css/grids.css">
+	
+	<meta charset="UTF-8">
+	<style>
+	body {
+		padding:20px;
+	}
+	
+	.grid {
+		--grid-gap:4px;
+	}
+
+	/* See named areas test */
+	.header {
+		grid-area: header;
+	}
+	.left {
+		grid-area: left;
+	}
+	.right {
+		grid-area: right;
+	}
+	.footer {
+		grid-area: footer;
+	}
+
+	#testnamed {
+		height: 100%;
+		--grid-gap:40px;
+		--grid-mode: named;
+		--grid-template-areas: "header header" "left right" "footer footer";
+		--grid-template-columns: 200px auto;
+		--grid-template-rows: min-content auto 40px;
+	}
+
+	#testnamed > .gridInner > div {
+		background-color: #9e9e9e;
+	}
+
+	/* will pick up default grid mode */
+	#test2 {
+		
+	}
+
+	#test3 {
+		--grid-mode:flex;
+		--flex-stretch: 0;
+	}
+
+	g {
+		background-color: #c3c3c3;
+	}
+	
+	@media screen and (max-width: 800px) {
+		#testnamed  {
+			--grid-mode:none;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		#test3  {
+			--grid-mode:none;
+		}
+	}
+	g {
+		display: block;
+	}
+	</style>
+</head>
+<body>
+
+
+<div id="testnamed" class="grid">
+	<div class='gridInner'>
+		<div class="header">
+			
+			<div id="test2" class="grid">
+				<div class='gridInner'>
+				<g>Lorem ipsum dolor sit amet, </g>
+				<g>consectetur adipisicing elit, sed do eiusmod</g>
+				<g>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</g>
+				<g>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</g>
+				<g>consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse</g>
+				<g>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</g>
+				<g>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</g>
+				<g>consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse</g>
+				</div>
+			</div> 
+			
+		</div>
+		<div class="left">left</div>
+		<div class="right">right</div>
+		<div class="footer">
+			<div id="test3" class="grid">
+				<div class='gridInner'>
+					<g>Lorem ipsum dolor sit amet, </g>
+					<g>consectetur adipisicing elit, sed do eiusmod</g>
+					<g>tempor incididunt ut labore et dolor,</g>
+					<g>quis nostrud exercitation ul</g>
+					<g>consequat.</g>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	
+
+</body>
+</html>

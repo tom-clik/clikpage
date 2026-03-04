@@ -26,6 +26,7 @@ Testing scroll fix
 			padding:0px;
 			--scrollbar-width:6px
 			background-color:moccasin;
+			--topnav-height:40px;
 		}
 
 		#ubercontainer {
@@ -43,20 +44,30 @@ Testing scroll fix
 		#topnav {
 			padding:40px;
 			background-color: turquoise;
+			
 		}
 
 		body.scroll #topnav {
 			position:fixed;
+			height:var(--topnav-height);
 			padding:20px;
 			top:0;
 			font-style: italic;
+			background-color:gray;
 		}
 
 		.content {
 			background-color: white;
 			margin:0 auto;
 		}
-		
+		.sticky {
+			position: sticky;
+			top:var(--topnav-height);
+			padding:12px 0;
+			background-color: white;
+			font:  bold 24px "Arial";
+
+		}
 
 	</style>
 </head>
@@ -70,6 +81,7 @@ Testing scroll fix
 		<p>This should stay in place</p>
 	</div>
 	<div id="content">
+		<h2 class="sticky">Title sticky</h2>
 		<cfloop index="i" from="1" to="20">
 		<p>
 		<cfoutput><strong>#i#</strong></cfoutput> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -91,19 +103,16 @@ Testing scroll fix
 <script type="text/javascript">
 $(document).ready(function() {
 	$elem = $('#topnav');
-	color = $elem.css("background-color");
 	$elem .scrollFix({
 		resize: "throttledresize",
 		onFix: function() {
-			$elem.css({"background-color":"gray"});
 			console.log("fix")
 		},
 		onUnfix: function() {
-			console.log("unfix")
 			$elem.css({"background-color":color});
 		}
 	});
-	// $("body").on("throttledresize",function() {console.log("throttledresize")});
+	
 });
 </script>
 

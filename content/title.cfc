@@ -17,14 +17,12 @@ component extends="contentSection" {
 		variables.static_js = {};
 
 		this.styleDefs = {
-			"tag": {"type":"list","name":"Tag","description":"HTML tag to enclose text in","options":[
+			"tag": {"type":"list","name":"Tag","default":"h2", "description":"HTML tag to enclose text in","options":[
 				{"value":"h1"},{"value":"h2"},{"value":"h3"},{"value":"h4"},{"value":"h5"},{"value":"h6"}
 			]},
 		};
 
-		this.defaultStyles = {
-			"tag": "h2"
-		};
+		updateDefaults();
 
 		return this;
 	}
@@ -34,7 +32,8 @@ component extends="contentSection" {
 
 		var linkStart = (local.hasLink) ? "<a href='#arguments.content.link#'>" : "";
 		var linkEnd = (local.hasLink) ? "</a>" : "";
-		return "<#arguments.content.settings.main.tag#>#linkStart#" & arguments.content.content & "#linkEnd#</#arguments.content.settings.main.tag#>";
+		var tag = arguments.content.tag ? : this.styleDefs.tag.default;
+		return "<#tag#>#linkStart#" & arguments.content.content & "#linkEnd#</#tag#>";
 	}
 
 	

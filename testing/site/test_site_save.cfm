@@ -1,25 +1,25 @@
 <cfscript>
 /*
- * Load a site definition and dump it
+ * Load a site definition and save it
  *
  * ## Usage
  *
- * Uses the site dedinition in ./preview/config.json
+ * Uses the site definition in ./preview/config.json
  *
- * For a quick preview of another site, just change this filename e.g config_main.json
- * 
  */
 
-path = ExpandPath("./preview/config.json");
-fileData = fileRead(path );
-config = deserializeJSON(fileData);
+savecontent variable="nully" {
+    cfinclude( template="test_site.cfm" );
+}
 
-siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live");
-siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+outputDir=ExpandPath("_out");
+pages = directoryList(outputDir,true,"path","*.js|*.html|*.css");
+for (page in pages) {
+    fileDelete(page);
+}
 
-site = siteObj.loadSite(config.siteDef);
 start = getTickCount();
-files = siteObj.save(site=site,outputDir=ExpandPath("_out"),debug=1);
+files = siteObj.save(site=site,outputDir=outputDir,debug=1);
 runtime = getTickCount() -start;
 writeDump(files);
 

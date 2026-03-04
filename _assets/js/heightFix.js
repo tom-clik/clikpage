@@ -1,53 +1,76 @@
+/* 
 
+Fix the height of container to its parents height
+
+## Notes 
+
+See notes on [](Image Heights.md) and [](Grid Bust out.md)
+
+## Usage
+
+```
+$(".cs-image").heightFix(
+	{
+		resize: resizeMethod,
+	}
+);
+```
+
+NB this is done for all cs-image containers in clik_onready. No reason it can't be done for other containers where you want a similar effect. 
+
+*/
 (function($) {
 
 	$.heightFix = function(element, options) {
 
-	var defaults = {
+		var defaults = {
 
-		resize: 'resize'		
+			resize: 'resize'		
 
-	}
+		}
 
-	var plugin = this;
+		var plugin = this;
 
-	plugin.settings = {}
+		plugin.settings = {}
 
-	var $element = $(element), 
-		element = element,
-		$container,
-		$image,
-		paddings; 
+		var $element = $(element), 
+			element = element,
+			$container,
+			$image,
+			paddings; 
 
-	plugin.init = function() {
+		plugin.init = function() {
 
-		plugin.settings = $.extend({}, defaults, options);
-		$container = $element.parent();
-		$image = $element.find("img");
-		paddings = $element.outerHeight(true) - $element.height();
-		resize();
-
-		$(window).on(plugin.settings.resize,function() {
+			plugin.settings = $.extend({}, defaults, options);
+			$container = $element.parent();
+			$image = $element.find("img");
+			paddings = $element.outerHeight(true) - $element.height();
 			resize();
-		});
-	}
 
-	var resize = function() {
-		let resize =  clik.trueFalse( $image.css("--heightfix") ) || false;
-		if (resize) {
-			$element.css("height","auto");
-			$image.css({"display":"none"});
-			let h = $container.height();
-			$element.css("height",(h-paddings) + "px");
+			$(window).on(plugin.settings.resize,function() {
+				resize();
+			});
 		}
-		else {
-			$image.removeAttr("style");
-		}
-		
-		$image.css({"display":"block"});
-	}
 
-	plugin.init();
+		var resize = function() {
+			let resize =  clik.trueFalse( $image.css("--heightfix") ) || false;
+			if (resize) {
+				$element.addClass("fixedheight");
+				$element.css("height","auto");
+				$image.css({"display":"none"});
+				let h = $container.height();
+				$element.css("height",(h-paddings) + "px");
+			}
+			else {
+				$element.removeClass("fixedheight");
+				$element.css("height","auto");
+				$image.removeAttr("style");
+			}
+			
+			$image.css({"display":"block"});
+		}
+
+		plugin.init();
 
 	}
 

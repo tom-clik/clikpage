@@ -1,0 +1,151 @@
+/* "modal" mode, shows backdrop, overlays other content  */
+@property --modal {
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 0;
+}
+
+/* Animate opening - only useful for pulldowns */
+@property --animate {
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 0;
+}
+
+/* Time of animation */
+@property --animationTime {
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 600;
+}
+
+/* Popup is draggable */
+@property --draggable {
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 0;
+}
+
+/* Allow scrolling of content in popup */
+@property --scroll {
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 1;
+}
+
+/* Popup is pulldown menu relative to data-parent */
+@property --pulldown {
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 0;
+}
+
+/* "my" Position of pulldown */
+@property --positionMy {
+	syntax: '*'; 
+	inherits: false;
+	initial-value: right top+1
+}
+
+/* "at" Position of pulldown */
+@property --positionAt {
+	syntax: '*';
+	inherits: false;
+	initial-value: right bottom;
+}
+
+/** Width of pull down menus: auto or parent  */
+@property --width {
+	syntax: '*';
+	inherits: false;
+	initial-value: parent;
+}
+
+
+
+:root {
+	--panel-bg: black;
+	--panel-text: white;
+	--border-color: black;
+}
+
+.modal {
+	border:1px solid var(--border-color); 
+	display: none;
+	position: fixed;
+	background-color: white;
+}
+
+.modal:not(.pulldown) {
+	top:50%;
+	left:50%;
+	transform:translate(-50%, -50%);
+	width:660px;
+	height: 400px;
+	max-width: 100vw;
+}
+
+.modal.pulldown {
+	overflow: hidden;
+	--pulldown: 1;
+	top:0;
+	right:0;
+}
+
+.modal  .wrapper {
+	overflow: hidden;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.modal  .content {
+	padding:4px;
+	flex-grow: 1;
+	overflow: clip;
+}
+
+.modal .closebutton {
+	padding:2px;
+	--icon-height:24px;
+	--icon-width:24px;
+	--label-display:0;
+	position: absolute;
+	top:2px;
+	right:2px;
+}
+
+.modal .hasTitle .closebutton {
+
+}
+
+.modal.open {
+	display: block;
+}
+
+.modal-backdrop {
+	display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100vw;
+	height:100vh;
+    background: rgba(0, 0, 0, 0.3); /* semi-transparent black */
+    z-index: 999; /* should be below modal’s z-index (your modal uses 1000) */
+    cursor: pointer; /* optional - makes it clear it’s clickable */
+}
+
+.modal .title {
+	padding:4px;
+	background-color: var(--panel-bg);
+	color: var(--panel-text);
+	font-weight:bold;
+	font-size:1.2em;
+}
+
+.modal.hasTitle .closebutton {
+	color: var(--panel-text);
+}

@@ -1,15 +1,37 @@
+.scheme-grid, .cs-grid.grid  {
+	--grid-mode: fit;
+	--grid-gap: 4px;
+}
+
+.scheme-flex, .cs-grid.flex {
+	--grid-mode: flex;
+	--grid-gap: 4px;
+	--flex-stretch: 0;
+
+}
+
 /*Set number of columns */
-.scheme-grid-fixedcols {
+.scheme-grid-fixedcols, .cs-grid[class*="columns"] {
 	grid-template-columns: repeat(var(--grid-columns), 1fr);
 }
 
+.cs-grid.columns2 {
+	--grid-columns: 2;
+}
+
+.cs-grid.columns3 {
+	--grid-columns: 3;
+}
+
+.cs-grid.columns4 {
+	--grid-columns: 4;
+}
 /*Fixed width */
-.scheme-grid-fixed {
+.scheme-grid-fixed.cs-grid.fixed {
 	grid-template-columns:  repeat(auto-fit, var(--grid-width));
 }
 
-
-.scheme-stretch > * {
+.scheme-stretch, .cs-grid.stretch {
 	--flex-stretch: 1;
 }
 

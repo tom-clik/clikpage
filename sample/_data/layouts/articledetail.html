@@ -6,11 +6,11 @@
 	<meta name="author" content="Tom peer">
 	<style>
 	#contentwrap {
-		grid {
-			grid-mode:fixedcols;
-			grid-gap:10px;
-			grid-template-columns:minmax(0, 1fr) 33%;
-		}
+		
+		grid-mode:fixedcols;
+		grid-gap:10px;
+		grid-template-columns:minmax(0, 1fr) 33%;
+		
 		@mobile {
 			grid {
 				grid-mode:none;
@@ -25,19 +25,10 @@
 
 <body data-extends="double">
 	
-	<div id="contentheader">
-		<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-			<title>Section title</title>
-			<content>
-			{{section.title}}
-			</content>
-		</content>			
-	</div>
 	
 	<div id="xcol">
 
 		<content id="articleimage" />
-		
 		
 	</div>
 	
@@ -55,14 +46,14 @@
 			<content id="articleintro" class="scheme-intro" type="text">
 				<title>Article intro</title>
 				<content>
-				{{record.intro}}
+				{{record.description}}
 				</content>
 			</content>
 
 			<content id="articlecopy" type="text" data-notes="Notes here">
 				<title>Article copy</title>
 				<content>
-				{{record.detail}}
+				{{record.body}}
 				</content>
 			</content>
 			
