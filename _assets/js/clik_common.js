@@ -51,6 +51,9 @@ clik = {
 		clik.tabs();
 		clik.autoopen();
 		clik.grids();
+		
+		$('.item').fadeInOnScroll();
+		
 	},
 	/* Legacy function applies name of media to body as class. 
 	Shouldn't be need now we are fully containered up */
@@ -270,4 +273,6 @@ clik = {
 			
 		return clik.parseCssVars($elem, settings);
 	}
+
+    
 };

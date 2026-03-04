@@ -20,7 +20,8 @@
         "throttledresize",
         "heightFix",
         "varClass",
-        "autoopen"
+        "autoopen",
+        "fadeInOnScroll"
       ],
       "name": "main",
       "min": "/_assets/js/_min/clikpage.0.14.min.js",
@@ -321,6 +322,12 @@
       "description": "Utility for removing classes by prefix",
       "name": "removeClassByPrefix",
       "requires": "jquery"
-    }    
+    },
+    {
+      "min":"/_assets/js/fadeInOnScroll.js",
+      "description": "Fade in content on scroll",
+      "name": "fadeInOnScroll",
+      "requires": "jquery"
+    }
   ]
 }

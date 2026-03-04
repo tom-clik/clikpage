@@ -21,7 +21,8 @@
                 "text",
                 "title",
                 "select2",
-                "modal"
+                "modal",
+                "fadeInOnScroll"
             ],
             "name":"content",
             "min":"/_assets/css/_min/clikpage.0.15.min.css"
@@ -182,6 +183,12 @@
           "min":"/_assets/css/modal.css",
           "description": "Modal",
           "name": "modal"
-        }
+        },
+        {
+          "min":"/_assets/css/fadeInOnScroll.css",
+          "description": "Show content when visible",
+          "name": "fadeInOnScroll",
+          "requires": "jquery"
+        }  
     ]
 }
