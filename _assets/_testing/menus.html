@@ -2,9 +2,15 @@
 
 # test CSS menus
 
-Only top level menus as most sub menu functionality require JS
+Simple test page for menu CSS
 
-##
+## Usage
+
+Add a test to the array of tests. 
+
+Add the styling in a class .test-id where `id` is the id of your test.
+
+You can also inherit the styles of other tests using the `inherit` property
 
 --->
 
@@ -27,7 +33,7 @@ tests = [
 ];
 </script>
 
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html>
 <head>
 	<title>Menu test</title>
@@ -230,8 +236,7 @@ Menu Testing
 
 	<script src="/_assets/js/jquery-3.4.1.js"></script>
 	<script src="/_assets/js/jquery.throttledresize.js"></script>
-	<script src="/_assets/js/varClass.js"></script>
-	<script src="/_assets/js/getSettings.js"></script>
+	<script src="/_assets/js/clik_common.js"></script>
 	<script src="/_assets/js/removeClassByPrefix.js"></script>
 	<script src="/_assets/js/jquery.animateAuto.js"></script>
 	<script src="/_assets/js/jquery.menu.js"></script>

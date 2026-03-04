@@ -65,17 +65,20 @@ component {
 		this.defaultStyles = {};
 
 		/*
-		 Keys of this struct are treated as special cases requiring logic to produce CSS
-		 
-		 They are not added directly to the CSS. Note the values of the struct are the default.
+		 Keys of this struct are used by the javaScript to adjust behaviour.
 
-		 NB see note above. Possibly we should create this automatically.
+		 They are populated by adding setting:1 to the styleDef options 
+
+		 This struct helps the JavaScript fetch the settings it needs. The defaults
+		 are still added to the CSS
 		 
+		 NOTE: MUSTDO: this hasn't been done yet. There is a hardwired set to settings defs
+		 the JS uses. Want to update all this.
+
 		 e.g.	
 			this.settings = [
-				"orientation": "horizontal",
-				"popup":"false",
-				"padding-adjust": true
+				"popup":"boolean",
+				"padding-adjust": "boolean"
 			];
 		*/
 			
@@ -101,24 +104,26 @@ component {
 		this.varClasses = [];
 		// Value of defaults for easy lookup
 		this.defaultStyles = {};
-
+		
 		try {
 			for (local.setting_code in this.styleDefs){
 				local.setting  = this.styleDefs[local.setting_code];
 				StructAppend(local.setting,{"setting":false}, false);// use as JavaScript config param
+				if ( local.setting.setting ) {
+					this.settings["#local.setting_code#"] = local.setting.type;
+				}
 				if (StructKeyExists(local.setting,"default")) {
 					this.defaultStyles["#local.setting_code#"] = local.setting.default;
 				}
 			}
 		}
 		catch (any e) {
-			local.extendedinfo = {"tagcontext"=e.tagcontext, "setting_code"=local.setting_code};
+			local.extendedinfo = {"error"=e, "setting_code"=local.setting_code, "styleDefs"=this.styleDefs};
 
 			throw(
 				extendedinfo = SerializeJSON(local.extendedinfo),
 				message      = "Error updating defaults:" & e.message, 
-				detail       = e.detail,
-				errorcode    = ""		
+				detail       = e.detail
 			);
 		}
 
@@ -142,7 +147,7 @@ component {
 				 struct style={}
 				 ) {
 
-		var cs = {"id"=arguments.id, "type"=variables.type, "settings":{}};
+		var cs = { "id"=arguments.id, "type"=variables.type };
 		
 		variables.contentObj.deepStructAppend(cs,arguments,true);
 		variables.contentObj.deepStructAppend(cs,variables.defaults,false);
@@ -209,26 +214,33 @@ component {
 			
 			for (local.style in this.styleDefs) {
 				local.def = this.styleDefs[local.style];
-				
-				if (StructKeyExists(local.state_styles,local.style)) {
+
+				if (StructKeyExists(local.state_styles,local.style) && ! StructKeyExists(variables.contentObj.settingsObj.gridDefs, local.style )) {
 					if (isStruct(local.state_styles[local.style])) {
 						throw("incorrect value for #local.style#");
 					}
 					else {
-
 						local.val = variables.contentObj.settingsObj.displaySetting(local.state_styles[local.style], local.def.type);
-
-						// css &= this.settingsObj.CSSCommentHeader("Content styling");
 						css.append("#tab#--#local.style#: " & local.val & ";");
 					}
 				}
 				// else if (arguments.debug ) {
 				// 	css.append("#tab#/* no style for #local.style# */")	;
-				// }
-				
+				// }				
+			}
+
+			local.gridcss = "";
+			if ( local.state_styles.keyExists("grid-mode") ) {
+				css.append("#tab#--grid-mode: " & local.state_styles["grid-mode"] & ";");
 			}
 
 			css.append(variables.contentObj.settingsObj.css(local.state_styles, arguments.debug));
+			
+			local.gridcss = variables.contentObj.settingsObj.grid(styles=local.state_styles,debug=arguments.debug);;
+			
+			if (local.gridcss != "") {
+				css.append(local.gridcss);
+			}
 
 			css.append("}");
 
@@ -279,8 +291,42 @@ component {
 					css.append("/* No settings for panel #local.panel.panel# */");
 				}
 			}
+			
 			css.append("");
+		 	/** Text styling etc. Can be h1-6, list, table, or arbitrary class prefixed by . */
+		 	// NOTE: dont' understand if this wasn't done or if it could be reworked.
+		 	// TODO: work out what's happened here
+			for (local.class in local.state_styles) {
+				
+				local.type = listFirst(local.class,".");
+				
+				local.css_temp = "";
+				switch (local.type)  {
+					case "h1":case "h2":case "h3":case "h4":case "h5":case "h6":
+						local.css_temp = "/* heading definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						break;
+					case "table":
+						local.css_temp = "/* table definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						break;
+					case "list":
+						local.css_temp = "/* list definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						break;
+					case "class":
+						local.css_temp = "/* arbitrary class definitions */";
+						local.css_temp &= variables.contentObj.settingsObj.css(local.state_styles[local.class]);
+						local.class = "." & ListRest(local.class,".");
+						
+						break;
+				}
+				if (local.css_temp neq "") {
+					css.append( arguments.selector & local.state.selector & " " & local.class & " {" & local.css_temp & "}" ) ;
+				}
+			}
 
+			
 		}
 
 		return css.toList(arguments.debug ? newLine() : "");
@@ -317,31 +363,31 @@ component {
 	 * @settings content section settings struct
 	 * @selector Css selector for main item (usually #id)
 	 *
-	 * Think derpecated.
+	 * Think deprecated.
 	 */
-	public string function panelCss(required struct settings, required string selector) {
-		var css = "";
+	// public string function panelCss(required struct settings, required string selector) {
+	// 	var css = "";
 		
-		for (local.panel in this.panels) {
+	// 	for (local.panel in this.panels) {
 			
-			if (StructKeyExists(arguments.settings,local.panel.name)) {
-				css &= arguments.selector & local.panel.selector & "{\n";
-				css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name]);
-				css &= "}\n";
+	// 		if (StructKeyExists(arguments.settings,local.panel.name)) {
+	// 			css &= arguments.selector & local.panel.selector & "{\n";
+	// 			css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name]);
+	// 			css &= "}\n";
 				
-				for (local.subpanel in variables.subpanels) {
-					if (StructKeyExists(arguments.settings[local.panel.name], local.subpanel.name)) {
-						css &= arguments.selector & local.panel.selector & local.subpanel.selector & "{\n";
-						css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name][local.subpanel.name]);
-						css &= "}\n";
-					}
-				}			
-			}
+	// 			for (local.subpanel in variables.subpanels) {
+	// 				if (StructKeyExists(arguments.settings[local.panel.name], local.subpanel.name)) {
+	// 					css &= arguments.selector & local.panel.selector & local.subpanel.selector & "{\n";
+	// 					css &= variables.contentObj.settingsObj.css(arguments.settings[local.panel.name][local.subpanel.name]);
+	// 					css &= "}\n";
+	// 				}
+	// 			}			
+	// 		}
 
-		}
+	// 	}
 
-		return css;
-	}
+	// 	return css;
+	// }
 
 	/**
 	 *  return a struct of blank strings with one key for each selector

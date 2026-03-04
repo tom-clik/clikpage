@@ -11,20 +11,20 @@ Load a site and call  siteCSS
 
 <cfscript>
 
-abort("needs redoing for new settings Object");
+path = ExpandPath("../site/preview/config.json");
+fileData = fileRead(path );
+config = deserializeJSON(fileData);
 
-layoutsFolder = expandPath("../../sample/_data/layouts");
-siteFile = expandPath("../../sample/_data/sampleSite.xml");
+dataObj = new clikpage.data.data_text(config);
+siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live",dataObj=dataObj);
 
-siteObj = new clikpage.site.site(layoutsFolder=layoutsFolder,mode="live");
-site = siteObj.loadSite(siteFile);
+site = siteObj.loadSite(config.siteDef);
 
-styleSettings = siteObj.settingsObj.loadStyleSettings(ExpandPath("../../sample/_data/styles/sample_stylesettings.xml"));
 
 outfile = ExpandPath("output/test_settings.css");
 
 siteObj.contentObj.debug = true;
-css = siteObj.siteCSS(site=site,debug=false);
+css = siteObj.siteCSS(site=site);
 
 fileWrite(outfile, css);
 

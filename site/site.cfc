@@ -14,12 +14,24 @@ component accessors="true" extends="utils.baseutils" {
 		this.layoutsObj = new clikpage.layouts.layouts(arguments.layoutsFolder);
 
 		this.pageObj = new clikpage.page(debug=getdebug());
+
+		this.pageObj.content.static_css["fonts"] = 1;
+		this.pageObj.content.static_css["content"] = 1;
+		this.pageObj.content.static_css["google_icons"] = 1;
+		this.pageObj.content.static_js["main"] = 1;
+		this.pageObj.addCss( this.pageObj.content, "styles/styles.css");
+
+
 		this.dataObj = arguments.dataObj;
 		
 		super.utils();
 
+		// variables pattern
 		variables.pattern = variables.utils.patternObj.compile("\{\{[\w\.]+?\}\}" ,variables.utils.patternObj.MULTILINE + variables.utils.patternObj.CASE_INSENSITIVE);
 
+		// Remove whitespace between HTML tags
+		variables.pattern_whitespace =variables.utils.patternObj.compile("\s+{2,}",variables.utils.patternObj.MULTILINE);
+		
 		return this;
 	}
 
@@ -52,8 +64,9 @@ component accessors="true" extends="utils.baseutils" {
 		local.root = GetDirectoryFromPath(arguments.filename);
 
 		local.xmlData = variables.utils.utils.fnReadXML(arguments.filename,"utf-8");
+
 		local.site = variables.utils.XML.xml2data(local.xmlData);
-		
+
 		local.site["mode"] = "preview";
 
 		if (NOT StructKeyExists(local.site,"layout")) {
@@ -84,7 +97,7 @@ component accessors="true" extends="utils.baseutils" {
 
 		}
 		else {
-			throw("No styles defined");
+			throw(message="No styles defined",detail="");
 		}
 		
 		// load sections
@@ -100,25 +113,75 @@ component accessors="true" extends="utils.baseutils" {
 		// Load all separate (ie reusable) content sections
 		loadContent( site=local.site, directory=local.root );
 
-		// process styling from layouts
+		// local site layouts from layouts
 		loadSiteLayouts(local.site);
 
 		// list of all containers used in site
-		local.site["containers"] = [=];
+		loadContainers( local.site );
 		
-		for (local.layout in local.site.layouts) {
-
-			local.layoutObj = this.layoutsObj.getLayout(local.layout);
-			// build complete struct of cs
-			variables.utils.utils.deepStructAppend(local.site.content,local.layoutObj.content,false);
-			// add to list of all containers used in site
-			variables.utils.utils.deepStructAppend(local.site.containers,local.layoutObj.containers);
-		}
+		
+		setContentStyles(content=local.site.content,styles=local.site.styles)
 
 		return local.site;
 
 	}
 
+	private void function loadContainers(required struct site ) {
+
+		arguments.site["containers"] = [=];
+		
+		for (local.layout in arguments.site.layouts) {
+
+			local.layoutObj = this.layoutsObj.getLayout(local.layout);
+			// build complete struct of cs
+			variables.utils.utils.deepStructAppend(arguments.site.content,local.layoutObj.content,false);
+			// add to list of all containers used in site
+			variables.utils.utils.deepStructAppend(arguments.site.containers,local.layoutObj.containers);
+			
+			// add styles from layouts to stylesheet
+			addLayoutStyles(layoutObj=local.layoutObj, styles=arguments.site.styles)
+
+		}
+		
+		for ( local.container in arguments.site.containers ) {
+			if ( arguments.site.containers[local.container].keyExists("class") ) {
+				for (local.class in listToArray(arguments.site.containers[local.container].class," ") ) {
+					if ( arguments.site.styles.keyExists(local.class) ) {
+						
+					}
+				}
+
+			}
+		}
+
+	}
+
+	/* help function to add styling from layouts to main styles 
+	See loadContainers()
+	*/
+	private void function addLayoutStyles(required struct layoutObj, required struct styles ) {
+
+		// Add individual cs styling to the stylesheet
+		for ( local.code in arguments.layoutObj.content ) {
+			local.csObj = arguments.layoutObj.content[local.code];
+
+			if ( local.csObj.keyExists( "style" ) ) {
+				StructAppend( arguments.styles, { "#local.code#": local.csObj.style }, true);
+			}
+		}
+
+
+
+	}
+
+	/**
+	 * Calculate content section settings from defaults, schemes, and individual settings
+	 */
+	private void function setContentStyles(required struct content, required struct styles) {
+		for (id in content) {
+			this.contentObj.setStyle(content=arguments.content[id], styles=arguments.styles);
+		}
+	}
 	
 
 	/**
@@ -143,9 +206,9 @@ component accessors="true" extends="utils.baseutils" {
 
 
 	/** 
-	 * @hint Load content items from files
+	 * @hint Load content sections from files
 	 *
-	 * Content items can be defined in their own files. Import them and add
+	 * Content sections can be defined in their own files. Import them and add
 	 * them to the general struct.
 	 *
 	 * We first concatentate them if they are in separate files and then
@@ -178,6 +241,7 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.html = this.layoutsObj.replaceFieldNames(local.csData);
+		
 		local.layout = {"id"="importCSS"};
 		local.layout["layout"] = this.layoutsObj.coldsoup.parse(local.html);
 		this.layoutsObj.parseContentSections(local.layout);
@@ -312,7 +376,7 @@ component accessors="true" extends="utils.baseutils" {
 				variables.utils.utils.deepStructAppend( arguments.site.sections[section], sectionData[section], false );
 			}
 		}
-
+				
 	}
 
 	/**
@@ -353,12 +417,22 @@ component accessors="true" extends="utils.baseutils" {
 			
 			local.section = arguments.site.sections[local.sectioncode];
 			
-			local.item = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
-			
 			if (local.section.keyExists("children")) {
 				local.item["submenu"] = menuData(site=arguments.site, sections=local.section.children );
 			}
 
+			try{
+				local.item = {"link"="{{link.#local.sectioncode#}}","id"="#local.sectioncode#","title"=local.section.title};
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e,"sections"=arguments.sections};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Unable to add section #local.sectioncode# to menu :" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 			ArrayAppend(local.menuDataArr, local.item);
 		
 		}
@@ -551,13 +625,22 @@ component accessors="true" extends="utils.baseutils" {
 
 	}
 
-	private string function getDataValue(data,field) {
+	private string function getDataValue(required struct data, required string field) {
 		local.val = "<!-- field #arguments.field# not found -->";
 		
 		if (ListLen(arguments.field,".") gt 1) {
 			local.subscope = ListFirst(arguments.field,".");
 			local.subfield = ListRest(arguments.field,".");
 			if (StructKeyExists(arguments.data, local.subscope)) {
+				if (! isStruct(arguments.data[local.subscope]) ) {
+					local.extendedinfo = {"data"=arguments.data, "subscope" = local.subscope};
+					throw(
+						extendedinfo = SerializeJSON(local.extendedinfo),
+						message      = "Data is not struct"
+					);
+				
+					
+				}
 				local.val = getDataValue(arguments.data[local.subscope],local.subfield);
 			}
 		}
@@ -718,6 +801,9 @@ component accessors="true" extends="utils.baseutils" {
 	public struct function page(required struct pageRequest, required struct site) {
 
 		var pageContent = this.pageObj.getContent();
+		
+		// writeDump(var=pageContent,abort=1);
+
 		addJSData(pageContent);
 
 		local.rc = {};
@@ -727,7 +813,7 @@ component accessors="true" extends="utils.baseutils" {
 		arguments.site.sections[arguments.pageRequest.section].location = sectionLocation(site=arguments.site,section=arguments.pageRequest.section);
 
 		pageContent.layoutname = getLayoutName(section=local.rc.sectionObj,action=arguments.pageRequest.action,site=arguments.site);
-
+		
 		local.rc.layout = this.layoutsObj.getLayout(pageContent.layoutname);
 
 		pageContent.bodyClass =  local.rc.layout.bodyClass;
@@ -752,16 +838,26 @@ component accessors="true" extends="utils.baseutils" {
 		
 		loadSectionData(site=arguments.site, section=local.rc.sectionObj);
 
-		if (ArrayLen (local.rc.sectionObj.data) ) {
-			
-			local.type = getDataType(local.rc.sectionObj);
+		local.type = getDataType(local.rc.sectionObj);
+
+		if (ArrayLen ( local.rc.sectionObj.data)  && local.type != "sections") {
 
 			// always gets record -- maybe do something about this
 			if (arguments.pageRequest.id eq "") {
 				arguments.pageRequest.id = local.rc.sectionObj["data"][1];
 			}
-
-			local.rc.record = Duplicate( this.dataObj.getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
+			try{
+				local.rc.record = Duplicate( this.dataObj.getRecord(site=arguments.site,id=arguments.pageRequest.id, type=local.type ));
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e,"section"=local.rc.sectionObj};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Error getting data for section:" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 
 			addPageLinks(record=local.rc.record, dataset=local.rc.sectionObj.data, site=arguments.site,section=arguments.pageRequest.section,action="view",type=local.type);
 		}
@@ -887,6 +983,8 @@ component accessors="true" extends="utils.baseutils" {
 		pageContent.body = dataReplace(site=arguments.site, html=pageContent.body, sectioncode=arguments.pageRequest.section, record=local.rc.record);
 		
 		pageContent.body &= local.errorsHtml;
+		// MUSTDO: TODO: parameterise title template
+		pageContent.title = dataReplace(site=arguments.site, html="{{site.title}}: {{section.title}}", sectioncode=arguments.pageRequest.section, record=local.rc.record);
 
 		// WILLDO: remove this. Leave for now as it's useful sometimes
 		// savecontent variable="local.temp" {
@@ -966,10 +1064,13 @@ component accessors="true" extends="utils.baseutils" {
 	 * It will create a array
 	 *
 	 * ['articlelist',{"action":"view","value":"articledetail"}]
+	 *
+	 * Loop over this and just get all the names
 	 * 
 	 */
 	private void function loadSiteLayouts(required struct site) {
 		
+		// Use "set" - values not used
 		local.layouts = [=];
 		
 		// site has a default layout
@@ -1013,8 +1114,10 @@ component accessors="true" extends="utils.baseutils" {
 		css &= this.settingsObj.fontVariablesCSS(arguments.site.styles,arguments.debug);
 		css &= this.settingsObj.variablesCSS(arguments.site.styles,arguments.debug);
 		css &=  "#cr#}#cr#";
-		css &= this.settingsObj.CSSCommentHeader("Layouts");
-		
+		if (arguments.debug) {
+			css &= this.settingsObj.CSSCommentHeader("Layouts");
+		}
+
 		local.written = {};
 		for (local.layout in arguments.site.layouts) {
 
@@ -1036,15 +1139,22 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		// Main content section styling
-		css &= this.settingsObj.CSSCommentHeader("Content styling");
-		
+		if (arguments.debug) {
+			css &= this.settingsObj.CSSCommentHeader("Content styling");
+		}
+
 		css &= this.contentObj.contentCSS(content_sections=arguments.site.content,styles=arguments.site.styles,debug=arguments.debug);
 		
 		return css;
 
 	}
 
-	/** Get CSS for individual layout 
+	/** 
+	 * @hint Get CSS for individual layout 
+	 *
+	 * NB will write out any layout styles that this style inherits from and tracks that in written
+	 * I'm not sure about this pattern. Might be better to keep this function simpler and create an array
+	 * in the correct order.
 	 * 
 	 * @layoutName    Name of layout
 	 * @site          Site struct
@@ -1062,18 +1172,9 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.styles = local.layoutObj.style ? : {};
-		variables.utils.utils.deepStructAppend(local.styles, arguments.site.styles,false);
-
+		
 		if ( arguments.debug ) {
 			local.css &= "/* Layout #arguments.layoutName# */" & newLine();
-		}
-
-		// Add individual cs styling to the stylesheet
-		for ( local.code in local.layoutObj.content ) {
-			local.csObj = local.layoutObj.content[local.code];
-			if ( local.csObj.keyExists( "style" ) ) {
-				StructAppend( arguments.site.styles, { "#local.code#": local.csObj.style }, true);
-			}
 		}
 
 		local.css &= this.settingsObj.layoutCss(
@@ -1104,27 +1205,62 @@ component accessors="true" extends="utils.baseutils" {
 		checkoutputDirectories(arguments.outputDir)
 		
 		local.outfile = arguments.outputDir & "/styles/styles.css";
-		local.css = siteCSS(site=arguments.site,debug=arguments.debug);
-		FileWrite(local.outfile, local.css);
-
+		
+		try{
+			local.css = siteCSS(site=arguments.site,debug=arguments.debug);
+			FileWrite(local.outfile, local.css);
+		} 
+		catch (any e) {
+			local.extendedinfo = {"error"=e};
+			throw(
+				extendedinfo = SerializeJSON(local.extendedinfo),
+				message      = "Error saving stylesheet:" & e.message, 
+				detail       = e.detail
+			);
+		}
+		
 		saveData(site=arguments.site,outputDir=arguments.outputDir & "/scripts");
 
 		for (local.section in arguments.site.sections) {
+			
 			local.sectionObj = getSection(site=arguments.site,section=local.section);
-			loadSectionData(site=arguments.site, section=local.sectionObj);
-
-			local.pageRequest = {"section":local.section,"action":"index","id":""};
-			local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+				
+			try{
+				loadSectionData(site=arguments.site, section=local.sectionObj);
+				local.pageRequest = {"section":local.section,"action":"index","id":""};
+				local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+			} 
+			catch (any e) {
+				local.extendedinfo = {"error"=e, section=local.sectionObj, pageRequest=local.pageRequest};
+				throw(
+					extendedinfo = SerializeJSON(local.extendedinfo),
+					message      = "Error saving section #local.section#:" & e.message, 
+					detail       = e.detail
+				);
+			}
+			
 			ret.pages[local.page] = 1;
 
 			// TODO: better definitions of whether we have sub pages or not
 			// Need to think about galleries and sections with single items.
-			// 
-			if ( StructKeyExists( local.sectionObj, "dataset") AND  local.sectionObj.dataset.type NEQ "sections"
-				AND arrayLen(local.sectionObj.data) GT 1) {
+			
+			local.datatype = getDataType(local.sectionObj);
+			if ( StructKeyExists( local.sectionObj, "dataset") AND	local.datatype != "sections" AND arrayLen(local.sectionObj.data) GT 1) {
 				for (local.id in local.sectionObj.data) {
 					local.pageRequest = {"section":local.section,"action":"view","id":local.id};
-					local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+					try{
+						local.page = saveStaticPage(site=arguments.site, pageRequest=local.pageRequest,outputDir=arguments.outputDir,debug=arguments.debug);
+					} 
+					catch (any e) {
+						local.extendedinfo = {"error"=e, section=local.sectionObj, pageRequest=local.pageRequest};
+						throw(
+							extendedinfo = SerializeJSON(local.extendedinfo),
+							message      = "Error saving detail page:" & e.message, 
+							detail       = e.detail
+						);
+					}
+
+					
 					ret.pages[local.page] = 1;
 				}
 			}
@@ -1165,10 +1301,10 @@ component accessors="true" extends="utils.baseutils" {
 
 	// See save()
 	private string function saveStaticPage(
-		required struct site,
-		required struct pageRequest,
-		required string outputDir,
-		         boolean debug=0
+		required struct  site,
+		required struct  pageRequest,
+		required string  outputDir,
+		         boolean debug=variables.debug
 		) {
 		
 		local.filename = pageLink(
@@ -1180,14 +1316,12 @@ component accessors="true" extends="utils.baseutils" {
 		
 		local.content = page(arguments.pageRequest, arguments.site);
 
-		if (arguments.debug) {
+		// writeDump(local.content);
+		// abort;
+
+		if (! arguments.debug) {
 			local.content.onready = this.pageObj.jsStaticFiles.removeJsComments(local.content.onready);
 		}
-
-		local.content.static_js["main"] = 1;
-		local.content.static_css["content"] = 1;
-
-		this.pageObj.addCss(local.content,"styles/styles.css");
 
 		if (StructKeyExists(arguments.site,"links")) {
 			for (local.link in arguments.site.links) {
@@ -1196,6 +1330,11 @@ component accessors="true" extends="utils.baseutils" {
 		}
 
 		local.html = this.pageObj.buildPage(content=local.content,debug=arguments.debug);
+
+		if (! arguments.debug) {
+			// local.html  = variables.pattern_whitespace.matcher(local.html).replaceAll(" ");
+		}
+
 		FileWrite(arguments.outputDir & "/" & local.filename, local.html);
 
 		return local.filename;

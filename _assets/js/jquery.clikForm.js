@@ -1,12 +1,11 @@
 
 /**
- * @fileOverview Marries jQuery Form and jQuery Validate to provide validation and AJAX submission, with
- * some default error message positioning
+ * @fileOverview Use jQuery Validate to provide validation and AJAX submission for form handling
  * 
  * @author Tom Peer
  *
  * @module  clikForm
-   @version 1.0
+ * @version 1.0
  */
 
 /**
@@ -60,7 +59,7 @@ $.validator.addMethod("code",function(value,element){
 	 * Validates a form and submits it through AJAX.
 	 *
 	 * If the AJAX response is `true` the submission is deemed to have been successfull, and a success message is displayed. 
-	 * Else, the AJAX response is deemed to be an object where the keys are the `name`s of the failed form fields, and 
+	 * Else, the AJAX response is deemed to be an object where the keys are the names of the failed form fields, and 
 	 * the values are error messages.
 	 *
 	 * @memberOf module:clikForm

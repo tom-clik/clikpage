@@ -26,6 +26,13 @@
 			onClose: function() {}
 		}
 
+		const settingTypes = {
+			hilight: "string",
+			arrow: "string",
+			animate: "string",
+			menuAnimationTime: "string"
+		};
+
 		var plugin = this;
 
 		plugin.settings = {}
@@ -38,13 +45,10 @@
 
 			// the plugin's final properties are the merged default and
 			// user-provided options (if any)
+			let cssSettings = (typeof clik !== "undefined" && typeof clik.parseCssVars === "function") ? (clik.parseCssVars($element, settingTypes) ) : {}; 
 			
-			let temp = $.extend({}, defaults, options);
-			let cssVars = getCssSettings($element,"hilight,arrow,animate,menuAnimationTime");
-			plugin.settings = $.extend({}, temp, cssVars);
-
-			console.log(plugin.settings);
-
+			plugin.settings = $.extend({}, defaults, cssSettings , options);
+			
 			switch(plugin.settings.animate) {
 				case "height":
 					props.height = 0;
@@ -75,7 +79,7 @@
 
 			$element.on("click",".hasmenu .openicon",function(e) {
 				
-				$item = $(this);
+				let $item = $(this);
 				e.preventDefault();
 				e.stopPropagation(); 
 				
@@ -123,7 +127,7 @@
 		}
 
 		plugin.init();
-
+		
 	}
 
 	$.fn.menu = function(options) {

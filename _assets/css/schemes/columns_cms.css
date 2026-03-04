@@ -34,6 +34,8 @@ Blue grey sort of thing
 	--site-align:left;
 	--header-height:60px;
 	--footer-height:38px;
+	--footer-fixed: 1;
+	--header-fixed: 1;
 }
 
 
@@ -47,11 +49,12 @@ Blue grey sort of thing
 	body {
 		--menu: close;
 		--menupos:slidedown;
+		--header-height: 110px;
 	}
 	#header {
-		--grid-mode: flex;
+		--grid-mode: none;
 		--flex-direction: column;
-		height: auto;
+		
 	}
 	#hamburger {
 		display: block;
@@ -69,18 +72,12 @@ Blue grey sort of thing
 
 #nav {
  	border-bottom: 1px solid var(--border-color);
-	--grid-mode:flex; 
-	--flex-direction: row;
 }
 
 #section-title {
 	flex-grow: 1;
 	--title-font-size: 180%;
 	font-weight: normal;
-}
-
-#content {
-	--grid-template-rows: auto min-content;
 }
 
 #menu {
@@ -123,7 +120,7 @@ Blue grey sort of thing
 }
 
 #content {
-	grid-template-rows: 1fr;
+	--grid-template-rows: 1fr;
 }
 
 #footer {

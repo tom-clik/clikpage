@@ -34,8 +34,12 @@ component name="layouts" {
 
 		variables.charset = arguments.charset
 
+		if (! IsDefined("server.system.environment.javalib") ) {
+			throw("You must define server.system.environment.javalib before using this component and ensure jsoup-1.20.1.jar is present. Jsoup is now used by multiple Java libs and we don't have a good solution for determining which one to load.");
+		}
+
 		try {
-			this.coldsoup = new coldsoup.coldSoup();
+			this.coldsoup = new coldsoup.coldSoup(server.system.environment.javalib & "\jsoup-1.20.1.jar");
 		}
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext};
@@ -48,6 +52,8 @@ component name="layouts" {
 		}
 
 		variables.parser = new clikpage.settings.cssParser();
+
+		variables.markdown = new markdown.flexmark(attributes=1,coldsoupObj=this.coldsoup);
 
 		variables.layoutBase = arguments.layoutBase;
 		// remove trailing slash
@@ -82,7 +88,7 @@ component name="layouts" {
 
 		local.layout = duplicate( loadLayout(arguments.id), true);
 		local.layout.layout = variables.cache.layouts[arguments.id].layout.clone();
-
+		
 		return local.layout;
 
 	}
@@ -112,6 +118,8 @@ component name="layouts" {
 			local.layoutObj = {"id"=arguments.id};
 
 			local.layoutObj["layout"] = this.coldsoup.parse(local.html);
+			
+			this.coldsoup.removeComments(local.layoutObj["layout"]);
 			
 			local.title = local.layoutObj["layout"].select("title").first().text();
 			
@@ -210,8 +218,10 @@ component name="layouts" {
 		
 		for (local.div in local.test) {
 			local.div.tagName("div");
-			// local.div.html("");
 		}
+
+		arguments.layoutObj.layout.outputSettings().outline(false);
+		arguments.layoutObj.layout.outputSettings().prettyPrint(false);
 
 		return arguments.layoutObj.layout.body().html();
 
@@ -317,6 +327,12 @@ component name="layouts" {
 						local.cs["type"] = "text";
 					}
 				}
+
+				if ( local.cs["type"] eq "item" ) {
+					if ( local.cs.keyExists("content") ) {
+						local.cs.content = variables.markdown.toHtml(  local.cs.content, {} );
+					}
+				}
 				
 				if (StructKeyExists(local.cs,"style")) {
 					local.cs.style = variables.parser.parse(local.cs.style);
@@ -351,9 +367,9 @@ component name="layouts" {
 			local.node = arguments.layoutObj.layout.select("###local.div#");
 			local.class = "inner";
 			if ( local.node.attr("grid") neq "" ) {
-				local.class &= " grid";
+				local.class &= " gridInner";
 				local.node.removeAttr("grid");
-				local.node.addClass("cs-grid");					
+				local.node.addClass("grid");					
 			}
 			local.node.html("<div class='#local.class#'>" & local.node.html() & "</div>");
 		}

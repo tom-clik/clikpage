@@ -1,0 +1,25 @@
+/* Some styles to for test viewing */
+
+.mobile, .max  {
+	display: none;
+}
+.mid {
+	display: block;
+}
+
+@media (max-width:800px) {
+	.mobile {
+		display: block;
+	}
+	.mid {
+		display: none;
+	}
+}
+@media (min-width:1200px) {
+	.max {
+		display: block;
+	}
+	.mid {
+		display: none;
+	}
+}

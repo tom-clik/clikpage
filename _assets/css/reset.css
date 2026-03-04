@@ -33,19 +33,6 @@ button, input[type=submit], input[type=button] {
   background-color: transparent;
 }
 
-/*
-tried this to stop margin collapse between inner and outer.
-
-div {
-  overflow:hidden;
-}
-
-div.outer {
-  overflow:visible; 
-}*/
-
-
-
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -92,17 +79,29 @@ img {
 	display:block;
 }
 
-.container {
-  position:relative;
+/* Use inner divs to stop a host of issues like margin expanding etc. Also needed in grid layouts
+to expand content to fit. Apply .container div around the normal div.
+ */
+div.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-.contentsection:after, .container:after, .clear:after, .clearfix:after {
-  content: " ";
-  display: block;
+div.container > * {
+  position: relative;
+  flex-grow: 1;
+  height:100%;
+  width:100%;
+}
+
+.clear:after, .clearfix:after {
+  content: "";
+  line-height:0px;
+  font-size:0px;
+  display: table;
   height: 0;
   clear: both;
-  visibility: hidden;
-  overflow: hidden;
 }
 
 /* common elements */
@@ -171,11 +170,3 @@ a:hover {
 	color: inherit;
 }
 
-/* Use inner divs to stop a host of issues like margin expanding etc */
-div.container {
-  display: flex;
-}
-div.inner {
-  position: relative;
-  flex-grow: 1;
-}

@@ -6,14 +6,13 @@ Style a standard layout with some pre-defined options
 
 ## Synopsis
 
-
-
 */
 
 :root {
 	--header-fixed: 0;
 	--footer-fixed: 0;
-	--menupos : static;/* static|fixed|slide   */
+	--headerpos: top; /* top|side */
+	--menupos: static;/* static|fixed|slide|none   */
 	--menu: open; /* open | close */
 	--xcol: open; /* open | close */
 	--framed: 0;
@@ -48,17 +47,9 @@ body {
 	container-name:body;
 }
 
-div:not(.cs-grid):has( > .inner) {
+div:not(.grid):has( > .inner) {
 	container-name:hasInner;
 	--sticky: 0;
-}
-
-.container {
-	display: flex;
-}
-
-.container > * {
-	flex: 1;
 }
 
 #header {
@@ -76,6 +67,8 @@ div:not(.cs-grid):has( > .inner) {
 #ubercontainer {
 	min-height:100%;
 	--grid-mode: rows;
+}
+#ubercontainer {
 	--grid-template-rows: min-content auto min-content;
 }
 
@@ -93,9 +86,41 @@ div:not(.cs-grid):has( > .inner) {
 	#ubercontainer {
 		padding-top: calc( var(--header-height) + var(--site-top-padding) );
 		--grid-mode: rows;
-		--grid-template-rows: auto min-content;
 		min-height:100%;
 	}
+	#ubercontainer {
+		--grid-template-rows: auto min-content;
+	}
+}
+
+@container body ( style(--headerpos:side) ) {
+	
+	#header {
+		position: fixed;
+		width:var(--menu-width);
+		left: 0;
+		z-index: 100;
+		height: 100vh;
+	}
+	
+	#ubercontainer {
+		--grid-mode: rows;
+		min-height:100%;
+	}
+
+	#ubercontainer {
+		--grid-template-rows: auto min-content;
+	}
+
+	#menu {
+		display: none;
+	}
+
+	#nav {
+		display: none;
+	}
+
+
 }
 
 @container body ( style(--footer-fixed:1) ) {
@@ -118,19 +143,23 @@ div:not(.cs-grid):has( > .inner) {
 	@container body ( style(--header-fixed:0) ) {
 		#ubercontainer {
 			--grid-mode: rows;
+		}
+		#ubercontainer {
 			--grid-template-rows: min-content auto ;
 		}
 	}
 	@container body ( style(--header-fixed:1) ) {
 		#ubercontainer {
 			--grid-mode: rows;
+		}
+		#ubercontainer {
 			--grid-template-rows:  auto ;
 		}
 	}
 
 }
 
-@container body ( style( --menupos:slide) ) {
+@container body ( style( --menupos:slide) or style( --headerpos:side) ) {
 	#bodyWrapper {
 		padding-left: calc( var(--menu-width) + var(--site-left-padding) );
 		/* This triggers on page load !!! See JS, we add it after load */
@@ -142,6 +171,7 @@ div:not(.cs-grid):has( > .inner) {
 .spanning > .inner {
 	margin: 0 auto;
 	max-width: var(--site-width);
+	width: 100%;
 }
 
 @container body ( style( --site-align:left) ) {
@@ -158,7 +188,7 @@ div:not(.cs-grid):has( > .inner) {
 
 @container body ( style( --framed:1) ) {
 	.spanning > .inner  {
-		width: auto;
+		width: 100%;
 	}
 	#ubercontainer {
 		max-width:calc( var(--site-width) - var(--site-left-padding) - var(--site-right-padding) );
@@ -275,11 +305,6 @@ div:not(.cs-grid):has( > .inner) {
 
 }
 
-.inner {
-	--grid-mode: none;
-	position: relative;
-}
-
 .show-hide {
 	height:0 !important;
 	visibility: hidden !important;
@@ -292,9 +317,19 @@ div:not(.cs-grid):has( > .inner) {
 
 #content_main {
 	--grid-mode: named;
+}
+#content_main {
 	--grid-template-areas: "menu content_wrap";
 	--grid-template-columns: var(--menu-width) auto;
 	--grid-template-rows: auto;
+}
+
+@container body ( style(--headerpos:side) ) {
+	
+	#content_main {
+		--grid-mode:none;
+	}
+
 }
 
 #content {
@@ -304,6 +339,8 @@ div:not(.cs-grid):has( > .inner) {
 
 #content_wrap {
 	--grid-mode: named;
+}
+#content_wrap {
 	--grid-template-areas: "maincol xcol";
 	--grid-template-columns: auto var(--xcol-width) ;
 	--grid-template-rows: auto;
@@ -312,15 +349,15 @@ div:not(.cs-grid):has( > .inner) {
 
 
 @container body ( style( --xcol:close ) ) {
+	
 	#xcol {
 		display:none;
 	}
 	
 	#content_wrap {
 		--grid-mode: flex;
-		--flex-direction: column;
-		height: auto;
 	}
+	
 }
 
 
@@ -330,6 +367,8 @@ div:not(.cs-grid):has( > .inner) {
 
 #maincol {
 	--grid-mode: named;
+}
+#maincol {
 	--grid-template-areas: "maincol_top maincol_top" "maincol_left maincol_right" "maincol_bottom maincol_bottom";
 	--grid-template-rows: min-content auto min-content;
 	--grid-template-columns:  1fr 1fr ;
@@ -338,8 +377,11 @@ div:not(.cs-grid):has( > .inner) {
 #footer {
 	height: var(--footer-height);
 	--grid-mode: rows;
+}
+#footer {
 	--grid-template-rows: min-content auto;
 }
+
 
 #footer_left {
 	justify-self: start;
@@ -356,17 +398,22 @@ div:not(.cs-grid):has( > .inner) {
 
 #header {
 	--grid-mode: rows;
+}
+#header {	
 	--grid-template-rows:auto  min-content ;
 }
 
 #nav {
-	--grid-mode: flex;
-	--align-items: center;
-	--grid-gap: 8px;
+	--grid-mode: columns;
+	--grid-template-columns: min-content 1fr min-content;
+	--grid-gap: 0 8px ;
+/*	--align-items: center;*/
 }
 
 #footer_main {
 	--grid-mode: fixed;
+}
+#footer_main {
 	--grid-columns: 3;
 }
 
@@ -375,9 +422,8 @@ div:not(.cs-grid):has( > .inner) {
 	#content_wrap {
 		--grid-mode: flex;
 		--flex-direction: column;
-		height: auto;
 	}
-
+	
 	#maincol {
 		height:auto;
 	}
@@ -401,14 +447,13 @@ div:not(.cs-grid):has( > .inner) {
 
 	#maincol {
 		height:auto;
-	}
-
-	#maincol {
 		--grid-mode: none;
 	}
 
 	#footer_main {
 		--grid-mode: flex;
+	}
+	#footer_main {
 		--flex-direction: column-reverse;
 		--justify-content:start;
 	}
@@ -417,6 +462,8 @@ div:not(.cs-grid):has( > .inner) {
 		#footer {
 			height: auto;
 			--grid-mode: flex;
+		}
+		#footer {
 			--flex-direction: column;
 			--justify-content:start;
 		}
@@ -468,6 +515,13 @@ div:not(.cs-grid):has( > .inner) {
 		display: block;
 	}
 
+	#menuclose {
+		position: absolute;
+		top:12px;
+		right:12px;
+		z-index: 500;
+	}
+
 	body.menu-open #menu {
 		transform: translateX( calc( ( var(--menu-width)) + 10px) );
 	}
@@ -477,6 +531,9 @@ div:not(.cs-grid):has( > .inner) {
 @container body ( style( --menupos:none ) ) { 
 	#menu {
 		display: none;
+	}
+	#content_main {
+		--grid-mode: none;
 	}
 }
 

@@ -1,30 +1,62 @@
 /* 
 
-Static CSS for new var style grid styling of "items"
+Style "items" - DIVS with a title, an image and a text element
+
+## Options
 
 htop
 : 1*|0 Place heading above image. When aligning left or right setting htop=0 puts the into the text column
 
-align
+texttop
+: 1|0* Place text in its own column when aligning left and right. Has no affect with align center.
+
+image-align
 : center*|left|right Use a separate column for the image or wrap the text to the side (center leaves 1 column)
 
 wrap
 : 1|0* float the image and wrap text around it (align must be left or right). Note to use htop=0 for this you need an additional duplicate tag for the title in the textWrap - see the sample HTML
 
-title
+show-title
 : 1*|0 show title 
 
-image
+show-image
 : 1*|0 show image 
 
 imagespace
 : Leave space for the image even when there is none. Useful when you have multiple items in a list and some may or may not have images.
 : Note for imagespace to work a class "noimage" has to be added to any items without images. Some tag must be left in even if there is no image. Easiest is just to leave the .imageWrap tag.
 
+## List or classes
+
+Note that the settings will inherit from a parent. You can apply the settings to a wrapping div element. Alternatively stick to giving each one a class.
+
+## HTML
+
+<div class="item">
+	<div class="itemInner">
+		<h3 class="title">Box title</h3>
+
+		<div class="imageWrap">
+			<!--- can just use img here --->
+			<figure> 
+				<img src="//d2033d905cppg6.cloudfront.net/tompeer/images/Graphic_111.jpg">
+				<figcaption>An elephant at sunset</figcaption>
+			</figure>
+		</div>
+				
+		<div class="textWrap">
+			<!-- Wrap title is an additional duplicate title placed into the textWrap if you need htop=0 with wrapping. It can be omitted -->
+			<h3 class="title wraptitle">Box title</h3>
+			<p>....</p>
+	</div>
+	</div>	
+</div>
+
 */
 
 :root {
 	--htop:1;
+	--texttop:0;
 	--imagespace:0;
 	--image-align:center;
 	--wrap:0;
@@ -95,15 +127,35 @@ imagespace
 	}
 }
 
+@container item ( style(--htop:0 ) and ( style(--image-align:left ) or style(--image-align:right ) ) ) {
+	.itemInner {
+		grid-template-rows: min-content 1fr;
+	}
+}
+
 @container item ( style(--image-align:left ) ) {
 	.itemInner {
 		grid-template-columns:  var(--image-width) auto;
-		grid-template-areas:  "title title" "imageWrap  textWrap";
 	}
-	@container item ( style(--htop:0 ) ) {
+
+	@container item ( style(--texttop:0 ) ) {
 		.itemInner {
-			grid-template-areas:  "imageWrap title" "imageWrap textWrap";
-			grid-template-rows: min-content 1fr;
+			grid-template-areas:  "title title" "imageWrap  textWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "imageWrap title" "imageWrap textWrap";
+			}
+		}
+	}
+	@container item ( style(--texttop:1 ) ) {
+		.itemInner {
+			grid-template-areas:  "title textWrap" "imageWrap  textWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "imageWrap textWrap" "title  textWrap";
+			}
 		}
 	}
 	@container item ( style(--show-title:0 ) ) {
@@ -116,12 +168,25 @@ imagespace
 @container item ( style(--image-align:right ) ) {
 	.itemInner {
 		grid-template-columns: auto var(--image-width);
-		grid-template-areas:  "title title" "textWrap imageWrap";
 	}
-	@container item ( style(--htop:0 ) ) {
+	@container item ( style(--texttop:0 ) ) {
 		.itemInner {
-			grid-template-areas:  "title imageWrap" "textWrap imageWrap";
-			grid-template-rows: min-content 1fr;
+			grid-template-areas:  "title title" "textWrap imageWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "title imageWrap" "textWrap imageWrap";
+			}
+		}
+	}
+	@container item ( style(--texttop:1 ) ) {
+		.itemInner {
+			grid-template-areas:  "textWrap title" "textWrap imageWrap";
+		}
+		@container item ( style(--htop:0 ) ) {
+			.itemInner {
+				grid-template-areas:  "textWrap imageWrap" "textWrap title";
+			}
 		}
 	}
 	@container item ( style(--show-title:0 ) ) {

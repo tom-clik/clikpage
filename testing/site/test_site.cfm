@@ -15,11 +15,13 @@ config = deserializeJSON(fileData);
 dataObj = new clikpage.data.data_text(config);
 siteObj = new clikpage.site.site(layoutsFolder=config.layoutsFolder,mode="live",dataObj=dataObj);
 
+siteObj.contentObj.loadButtonDefFile(ExpandPath("/_assets/images/buttons.xml"));
+
 start = getTickCount();
 site = siteObj.loadSite(config.siteDef);
 runtime = getTickCount() -start;
 
-writeDump(site.content);
+writeDump(site);
 
 writeOutput("<p>Loaded site in <strong>#runtime#ms</strong></p>");
 

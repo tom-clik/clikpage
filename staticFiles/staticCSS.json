@@ -20,34 +20,12 @@
                 "tabs",
                 "text",
                 "title",
-                "modal"            ],
-            "name":"content",
-            "min":"/_assets/css/_min/mainpackage.0.14.min.css"
-        },
-        {
-            "scripts": [
-                "reset",
-                "breadcrumb",
-                "definitions",
-                "admonitions",
-                "footnotes",
-                "columns",
-                "grids",
-                "icons",
-                "images",
-                "menus",
-                "items",
-                "navbuttons",
-                "tables",
-                "tabs",
-                "text",
-                "title",
+                "select2",
                 "modal",
-                "jqueryui",
-                "select2"
+                "fadeInOnScroll"
             ],
-            "name":"cms",
-            "min":"/_assets/css/_min/cms.0.13.min.css"
+            "name":"content",
+            "min":"/_assets/css/_min/clikpage.0.15.min.css"
         }
     ],
     "scripts": [
@@ -91,6 +69,12 @@
             "requires": "icons"
         },
         {
+            "min": "/_assets/css/fonts/google_icons.css",
+            "debug": "/_assets/css/fonts/google_icons_local.css",
+            "name": "google_icons",
+            "requires": "icons"
+        },
+        {
             "min": "/_assets/css/images.css",
             "name": "images"
         },
@@ -101,6 +85,10 @@
         {
             "min": "/_assets/css/admonitions.css",
             "name": "admonitions"
+        },
+        {
+            "min": "/_assets/css/select2.min.css",
+            "name": "select2"
         },
         {
             "min": "/_assets/css/tables.css",
@@ -115,13 +103,12 @@
             "name": "title"
         },
         {
-            "min": "/_assets/css/tabs.css",
-            "name": "tabs"
+            "min": "/_assets/css/tables.css",
+            "name": "tables"
         },
         {
-        	"debug": "/_assets/css/select2_clik.css",
-            "min": "/_assets/css/min/select2_clik.min.css",
-            "name": "select2"
+            "min": "/_assets/css/tabs.css",
+            "name": "tabs"
         },
         {
         	"debug": "/_assets/css/jquery-ui.css",
@@ -196,6 +183,12 @@
           "min":"/_assets/css/modal.css",
           "description": "Modal",
           "name": "modal"
-        }
+        },
+        {
+          "min":"/_assets/css/fadeInOnScroll.css",
+          "description": "Show content when visible",
+          "name": "fadeInOnScroll",
+          "requires": "jquery"
+        }  
     ]
 }

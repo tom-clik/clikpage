@@ -6,66 +6,44 @@
 	<meta name="author" content="Tom peer">
 </head>
 
-<body data-extends="main">
+<body data-extends="section">
 		
-	<div id="maincol">
-
-		<div id="maincol_top">
-
-			<content id="sectiontitle" type="title" data-notes="Notes here" class="scheme-title">
-				<title>Section title</title>
-				<content>
-				{{section.title}}
-				</content>
-			</content>
-
-			<content id="sectionintro" class="scheme-intro" type="text" data-notes="Notes here">
-				<title>Section intro</title>
-				<content>
-				{{section.intro}}
-				</content>
-			</content>
-			
-		</div>	
-
-		<div id="maincol_bottom">
-			<content id="articlelist" class="scheme-listings" type="articlelist" data-notes="Notes here">
-				<title>Article list</title>
-				<style>
-				item {
-					title {
-						text-transform:uppercase;
-					}
-					image {
-						padding:4px;
-						hover {
-							padding:2px;
-							border {
-								width:2px;
-								color:panel-text;
-							}
-						}
-					}
-					padding:12px;
-					background {
-						color:light-panel-bg;
-					}
-					align:left;
-					imagewidth:33%;
-					margin:0 0 12px 0;
+	<div id="maincol_bottom">
+		<content id="articlelist" class="scheme-listings" type="articlelist" data-notes="Notes here">
+			<title>Article list</title>
+			<style>
+			item {
+				title {
+					text-transform:uppercase;
+				}
+				image {
+					padding:4px;
 					hover {
-						color:panel-text;
-						background {
-							color:panel-bg;
+						padding:2px;
+						border {
+							width:2px;
+							color:panel-text;
 						}
 					}
 				}
-				</style>
-			</content>			
-		</div>	
-
-	</div>
-
+				padding:12px;
+				background {
+					color:light-panel-bg;
+				}
+				align:left;
+				imagewidth:33%;
+				margin:0 0 12px 0;
+				hover {
+					color:panel-text;
+					background {
+						color:panel-bg;
+					}
+				}
+			}
+			height:440px;
+			</style>
+		</content>			
+	</div>	
 
 </body>
 </html>

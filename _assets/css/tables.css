@@ -28,7 +28,12 @@ Use standard CSS properties applied to tr, th, or td.
 
 The default for th is bold, centered.
 
-## Notes 
+# Backgrounds 
+
+--table-background: transparent
+--table-stripe-bg: var(--table-background)
+
+## Notes
 
 We can't use border collapse to do any sort of sensible table styling
 
@@ -77,12 +82,17 @@ You can also use `tr:nth-child(odd|even)`
 	--table-border-style:solid;
 	--table-border-color:initial;
 	--table-cell-padding:0;
-	--table-stripe-bg: transparent;
+	--table-text-align:inherit;
+	--table-vertical-align: top;
+	--table-background: transparent;
+	--table-stripe-bg: var(--table-background);
+	--table-sticky: block;/* sticky || block */
+	--table-sticky-top:0;
 }
 
 th {
-	font-weight: bold;
-	text-align:center;
+	font-weight:bold;
+	--table-text-align:center;
 }
 
 table {
@@ -98,24 +108,45 @@ th, td  {
 	border-width: var(--table-border-width);
 	border-style: var(--table-border-style);
 	border-color: var(--table-border-color);
+	text-align: var(--table-text-align);
 	padding: var(--table-cell-padding);
+	vertical-align:var(--table-vertical-align);
 }
 
-table tbody tr:nth-of-type(2n) {
+/* legacy styling needed for markdown tables */
+th[align="center"], td[align="center"] {
+	--table-text-align:center;
+}
+
+th[align="right"], td[align="right"] {
+	--table-text-align:right;
+}
+
+tbody tr {
+	background-color: var(--table-background);
+}
+
+tbody tr:nth-of-type(2n) {
 	background-color: var(--table-stripe-bg);
 }
 
+thead {
+	z-index: 990;
+}
 
-/* Plcae th in tfoot tags to apply border */
-body thead tr th {
+tbody {
+	z-index: 100;
+}
+
+thead tr th {
 	border-top-width: 0;
 }
 
-body tfoot  th {
+tfoot  th {
 	border-bottom-width: 0;
 }
 /* tables have to have body for effective styling */
-body tbody  tr {
+tbody  tr {
 	border-top-width: 0;
 }
 
@@ -131,7 +162,7 @@ tr td:last-of-type, tr th:last-of-type {
 	border-right-width:0;
 }
 
-body tbody  tr:last-of-type td {
+tbody  tr:last-of-type td {
 	border-bottom-width: 0;
 }
 /* NB recordlist, am_table deprecated */
@@ -142,8 +173,19 @@ table:where(.info,.reverse,.recordlist,.am_table) {
 	--table-cell-padding:2px;
 }
 
-table:where(.info,.reverse,.recordlist,.am_table) th {
-	background-color: var(--panelbg, black);
+table.info {
+	--table-border-width: 1px;
+	--table-cell-padding: 2px;
+	--table-margin:0 0 1em 0;
+	--table-sticky:sticky;
+}
+
+table.stripy {
+	--table-stripe-bg: #d3d3d3;
+}
+
+table.reverse th {
+	background-color: var(--panelbg, black);	
 	color: var(--paneltext, white);
 }
 
@@ -154,6 +196,15 @@ table.sticky {
 table.sticky th {
   position: sticky;
   top: 0;
+}
+
+table {
+  position:relative;
+}
+
+thead {
+  position: var(--table-sticky);
+  top: var(--table-sticky-top);
 }
 
 table.nohead thead {

@@ -25,7 +25,7 @@ Color schemes will just append to the main stylesheet. In this case the titles c
 
 ## Font Familes
 
-Like, colors, fonts are abstracted and given a name. Fonts can only be applied in the system via this name.
+Like colors, fonts are abstracted and given a name. Fonts can only be applied in the system via this name.
 
 The font faces themselves need defining in the static CSS files. The font variables then reference the defined font families.
 
@@ -41,7 +41,7 @@ Like colors, it's permissible to define fonts that derive from other fonts.
 
 ### Editing options
 
-Lists of availble options for weight, style, variant, and stretch can be supplied. You should only define these if they are specifically available in the font and you have defined them in the font-face definition. If you don't know what this means don't use them.
+Lists of available options for weight, style, variant, and stretch can be supplied. You should only define these if they are specifically available in the font and you have defined them in the font-face definition. If you don't know what this means don't use them.
 
 ```
 styles=normal,italic,oblique

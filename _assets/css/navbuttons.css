@@ -1,5 +1,21 @@
 /*
 
+# Usage
+
+Styling should be applied to `.button` with hover state `.button:hover`
+
+The label itself can also be styled with a selector of `.button label`.
+
+E.g.
+
+```
+.scheme-button.button 
+.scheme-button.button label
+.scheme-button.button:hover label
+```
+
+## Notes
+
 Buttons get complicated through the problem of <a> tags and inputs.
 
 Both of these get styled through the browser defaults and reset.
@@ -22,27 +38,13 @@ Button text</div>
 <div class="button"><svg class="icon" viewBox="0 0 24 24"><use xlink:href="../images/combined.svg#cart" /><label>Button text</label></svg></div>
 ```
 
-# Notes
+### Sizing 
 
 There is no "width" for a whole button, only the icon. In common with much modern styling, widths
 should be assigned by the containing div through grid or flexbox.
 
 The buttons are inline-blocks, so always style the surrounding div with grid or flexbox to control
  the whitespace between them.
-
-# Usage
-
-Styling should be applied to `.button` with hover state `.button:hover`
-
-The label itself can also be styled with a selector of `.button label`.
-
-E.g.
-
-```
-.scheme-button.button 
-.scheme-button.button label
-.scheme-button.button:hover label
-```
 
 */
 
@@ -58,6 +60,7 @@ E.g.
 	--label-align:left;
 	--stretch:0;/* expand text label */
 	--popout: 0;
+	--button-padding: 0px; /* single value padding MUST be used if adding padding to pop outs */
 }
 
 .button {
@@ -70,11 +73,16 @@ E.g.
 	fill:var(--link-color);
 }
 
+.button label {
+	cursor: inherit;
+}
+
 .button input {
 	width: 100%;
 }
 
 .button a, .button input {
+	padding: var(--button-padding);
 	display:flex;
 	align-items: var(--button-valign);
   	flex-direction: row;
@@ -102,17 +110,18 @@ E.g.
 }
 
 @container button ( style(--icon-display:0) ) {
-	icon {
-		display: none;
+	[class*="icon"] {
+		display: none !important;
 	}
-
 }
 
-.button label {
-	display: block;
-	line-height: var(--icon-height);
-	text-align: var(--label-align);
-	flex-grow: var(--stretch);
+@container button {
+	label {
+		display: block;
+		line-height: var(--icon-height);
+		text-align: var(--label-align);
+		flex-grow: var(--stretch);
+	}
 }
 
 @container button ( style(--label-display:0) ) {
@@ -148,15 +157,18 @@ E.g.
 		display: block;
 		position: relative;
 		width: var(--icon-width);
+		--popoutwidth: 200px;
 	}
 
 	label {
-		line-height: var(--icon-height);
+		line-height: calc( var(--icon-height) + var(--button-padding) * 2 );
 		visibility: hidden;
 		position: absolute;
 		width: 0;
+		padding: 0 12px 0 0;
 		overflow: hidden;
-		top: calc(-1 * var(--button-padding));
+		top: 0;
+		height:  calc( var(--icon-height) + var(--button-padding) * 2 );
 		left:calc(var(--icon-width) + var(--button-padding));
 		transition: width 0.3s ease-in-out;
 		white-space: nowrap;
@@ -164,7 +176,7 @@ E.g.
 
 	a:hover label {
 		visibility: visible;
-		width:200px;
+		width:var(--popoutwidth);/* can't be auto. doesn't animate */
 	}
 
 	@container button ( style(--button-align:right) ) {
@@ -174,17 +186,18 @@ E.g.
 			right:0;
 		}
 
-		
-
 	}
 
 }
 
+.button a .icon {
+	transition: transform 0.5s ease-in;
+}
 
-.button.scheme-rotate.state-open a .icon {
+.button.rotate.state-open a .icon {
 	transform: rotate(90deg);
 }
 
-.button.scheme-flip.state-open a .icon {
+.button.flip.state-open a .icon {
 	transform: rotate(180deg);
 }

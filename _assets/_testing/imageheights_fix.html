@@ -5,9 +5,11 @@
 See notes about image sizing. We want to be able to contain images even when an uber containers
 has a flexible height.
 
-## Synopsis
+It works by hiding the image, getting the height of the container, fixing that height and then showing the image again.
 
+## Test
 
+> 1200 no fix <1200 >800 fixed height <800 height set to 300px in css, no fix.
 
 -->
 
@@ -17,6 +19,7 @@ has a flexible height.
 <head>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="/_assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/testing.css">
 	<style>
 	body {
 		padding:20px;
@@ -40,6 +43,7 @@ has a flexible height.
 		display: grid;
 		grid-template-rows: minmax(0,1fr) min-content;
 		--heightfix:1;
+		min-height:120px;
 	}
 
 	a {
@@ -53,17 +57,23 @@ has a flexible height.
 		width: 100%;
 		height: 100%;
 	}
-	img {
+	.image img {
 		width: 100%;
 		height: 100%;
 		object-fit: scale-down;
 		display: none;
 		object-position: 0 0;
 	}
+
 	@media (max-width:800px) {
 		#test {
 			--heightfix:0;
 			max-height: 300px;
+		}
+	}
+	@media (min-width:1200px) {
+		#test {
+			--heightfix:0;
 		}
 	}
 
@@ -73,16 +83,19 @@ has a flexible height.
 <body>
 
 	<div id="ubercontainer">
-			
-		<div id="test" class="cs-image">
-			<div class="image">
-				<img src="../images/earthly-beauties-V3W8Lknvhq8-unsplash.jpg"> 
-			</div>
-			<div class='caption'>
-			Lorem iposum
+		<div class="inner">
+			<div class="max">No Fixed height</div>
+			<div class="mid">Dynamic Fixed height applied by script</div>
+			<div class="mobile">Container has fixed height applied by CSS</div>
+			<div id="test" class="cs-image">
+				<div class="image">
+					<img src="images/earthly-beauties-V3W8Lknvhq8-unsplash.jpg"> 
+				</div>
+				<div class='caption'>
+				Lorem iposum
+				</div>
 			</div>
 		</div>
-		
 	</div>
 
 </body>
@@ -92,6 +105,7 @@ has a flexible height.
 <script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/swipeDetector.js"></script>
 <script src="/_assets/js/heightFix.js"></script>
+<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/clik_onready.js"></script>
 <script>
 $(document).ready(function() {

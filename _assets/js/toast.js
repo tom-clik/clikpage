@@ -28,7 +28,9 @@
         }
 
         $element = $('<div class="toast-item-wrapper ' + type + ' ' + $options.position_class + '"></div>');
-        $('<p class="toast-title">' + title + '</p>').appendTo($element);
+        if (title !== "") {
+            $('<p class="toast-title">' + title + '</p>').appendTo($element);
+        }
         $('<p class="toast-message">' + message + '</p>').appendTo($element);
 
         if($options.fullscreen){

@@ -2,11 +2,8 @@
 
 # Columns demo
 
-
-
-
-
 --->
+
 <script>
 tests = [
 	{"id": "static-sticky-mobilefixed", "description":"Basic"},
@@ -16,6 +13,8 @@ tests = [
 	{"id": "frame-fixheader-sticky", "description":"Framed Fixed header"},
 	{"id": "frame-fixheader-fixfooter-sticky", "description":"Framed, Fixed header and footer"},
 	{"id": "simpler", "description":"Simpler"},
+	{"id": "nomenu", "description":"No menu"},
+	{"id": "sideheader-sticky", "description":"Side header"},
 	{"id": "slide-sticky", "description":"slide menu"},
 	{"id": "slide-fixheader-sticky", "description":"slide menu and fixed header"},
 	{"id": "slide-fixheader-fixfooter-sticky", "description":"slide header, fixed and footer"},
@@ -36,6 +35,7 @@ tests = [
 	<link rel="stylesheet" href="/_assets/css/navbuttons.css">
 	<link rel="stylesheet" href="../css/columns.css">
 	<link rel="stylesheet" href="../css/grids.css">
+	<link rel="stylesheet" href="../css/menus.css">
 	<link rel="stylesheet" href="../css/fonts/google_icons_local.css">
 	<link rel="stylesheet" href="../css/icons.css">
 	<link rel="stylesheet" href="../css/modal.css">
@@ -62,15 +62,16 @@ tests = [
 </head>
 
 <!-- <body class="layout-fixed-fixheader-fixfooter-sticky"> -->
-<body><div id="bodyWrapper" class="container">
+<body>
+<div id="bodyWrapper" class="container">
 
-<div id="ubercontainer" class="cs-grid">
+<div id="ubercontainer" class="grid">
 	
-	<div class="grid">
+	<div class="gridInner">
 		<!--- header is usually given a fixed height (see --header-height)
 			Much of the sticky/fixed functionality depends on this. ---> 
-		<div id="header" class="cs-grid">
-			<div class="grid">
+		<div id="header" class="grid">
+			<div class="gridInner">
 				<div id="title" class="spanning">
 					<div class="inner">
 						
@@ -82,11 +83,11 @@ tests = [
 				</div>
 
 				<!--- To remove this or place it above the title, adjust #header grid --->
-				<div id="nav" class="cs-grid spanning">
-					<div class="inner  grid">
+				<div id="nav" class="grid spanning">
+					<div class="gridInner inner">
 						
-						<div id="menubuttons">
-							<div class="grid">
+						<div id="menubuttons" class="grid">
+							<div class="gridInner">
 								<div id="menubutton" class="button auto navbutton state-open">
 									<a href="#menu.openclose" data-key="ctrl+m">
 										<svg  class="icon"  viewBox="0 0 16 16"><use xlink:href="/_assets/images/chevron-right.svg#chevron-right" /></svg>
@@ -124,8 +125,8 @@ tests = [
 			</div>
 		</div>
 
-		<div id="content" class="cs-grid">
-			<div class="grid">
+		<div id="content" class="grid">
+			<div class="gridInner">
 			
 				<!--- To remove this (also for content_bottom) either use the show=hide functionality 
 					(this is done in the "simpler" example)	or delete it and adjust the #content grid
@@ -137,9 +138,9 @@ tests = [
 					</div>
 				</div>
 
-				<div id="content_main" class="container spanning cs-grid">
+				<div id="content_main" class="container spanning grid">
 					
-					<div class="inner grid">
+					<div class="inner gridInner">
 						
 						<div id="menu">
 							<div class="inner">
@@ -150,21 +151,18 @@ tests = [
 									</a>					
 								</div>
 
-								<h1>Menu col</h1>
+								<div id="menu" class="menu test-vert"><ul><li><a href="{{link.index}}" id="menu_index"><i class="icon-close"></i><span>Home page</span></a></li><li><a href="{{link.gallery}}" id="menu_gallery" class="hasmenu"><i class="icon-menu"></i><span>Gallery</span><i class="icon-next openicon"></i></a><div class="menu submenu"><ul><li><a href="{{link.gallery.view.1}}" id="menu_submenu_gallery_1"><i></i><span>Gallery test 1</span></a></li><li><a href="{{link.gallery.view.2}}" id="menu_submenu_gallery_2"><i></i><span>Gallery test 2</span></a></li><li><a href="{{link.gallery.view.3}}" id="menu_submenu_gallery_3"><i></i><span>Gallery test 3</span></a></li><li><a href="{{link.gallery.view.4}}" id="menu_submenu_gallery_4"><i></i><span>Gallery test 4</span></a></li></ul></div></li><li><a id="menu_gallery2" class="hasmenu"><i class="icon-previous"></i><span>Gallery 2</span><i class="icon-next openicon"></i></a><div class="menu submenu"><ul><li><a href="{{link.gallery2.view.1}}" id="menu_submenu_gallery2_1"><i></i><span>Gallery2 test 1</span></a></li><li><a href="{{link.gallery2.view.2}}" id="menu_submenu_gallery2_2"><i></i><span>Gallery2 test 2</span></a></li><li><a href="{{link.gallery2.view.3}}" id="menu_submenu_gallery2_3"><i></i><span>Gallery2 test 3</span></a></li><li><a href="{{link.gallery2.view.4}}" id="menu_submenu_gallery2_4"><i></i><span>Gallery2 test 4</span></a></li></ul></div></li><li><a href="{{link.about}}" id="menu_about"><i class="icon-next"></i><span>About</span></a></li><li><a href="{{link.news}}" id="menu_news" class="hasmenu"><i class="icon-first_page"></i><span>News</span><i class="icon-next openicon"></i></a><div class="menu submenu"><ul><li><a href="{{link.news.view.1}}" id="menu_submenu_news_1"><i></i><span>Article test 1</span></a></li><li><a href="{{link.news.view.2}}" id="menu_submenu_news_2"><i></i><span>Article test 2</span></a></li><li><a href="{{link.news.view.3}}" id="menu_submenu_news_3"><i></i><span>Article test 3</span></a></li><li><a href="{{link.news.view.4}}" id="menu_submenu_news_4"><i></i><span>Article test 4</span></a></li></ul></div></li><li><a href="{{link.images}}" id="menu_images"><i class="icon-squares"></i><span>Images</span></a></li><li><a href="{{link.singlearticle}}" id="menu_singlearticle"><i class="icon-fullscreen_exit"></i><span>Single article</span></a></li></ul></div>
 
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-								<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 							</div>
 						</div>
 
-						<div id="content_wrap" class="cs-grid">
+						<div id="content_wrap" class="grid">
 							
-							<div class="grid">
+							<div class="gridInner">
 
-								<div id="maincol" class="cs-grid">
+								<div id="maincol" class="grid">
 
-									<div class="inner grid">
+									<div class="gridInner inner">
 
 										<div id="maincol_top">
 											<h2>Main col top XXX</h2>
@@ -172,7 +170,7 @@ tests = [
 											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
 											<p>Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. Loads of random text. </p>
-											<!--<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
+											<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
@@ -180,7 +178,7 @@ tests = [
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
-										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>-->
+										<p>Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. Some random text. </p>
 
 
 										</div>
@@ -229,9 +227,9 @@ tests = [
 
 		</div>
 
-		<div id="footer" class="cs-grid">
+		<div id="footer" class="grid">
 			
-			<div class="grid">
+			<div class="gridInner">
 
 				<!--- To remove this or place it below the footer, adjust #footer grid --->
 
@@ -241,16 +239,18 @@ tests = [
 					</div>
 				</div>
 
-				<div id="footer_main" class="cs-grid spanning">
+				<div id="footer_main" class="grid spanning">
 					<div class="inner grid">
-						<div id="footer_left">
-							<div class="cs-text">This is the footer_left</div>
-						</div>
-						<div id="footer_middle">
-							<div class="cs-text">This is the footer_middle</div>
-						</div>
-						<div id="footer_right">
-							<div class="cs-text">This is the footer_right</div>
+						<div class="gridInner">
+							<div id="footer_left">
+								<div class="cs-text">This is the footer_left</div>
+							</div>
+							<div id="footer_middle">
+								<div class="cs-text">This is the footer_middle</div>
+							</div>
+							<div id="footer_right">
+								<div class="cs-text">This is the footer_right</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -263,22 +263,33 @@ tests = [
 
 </div>
 
+</div>
+
 <div id="popup" class="modal" title="Popup Examples">
 	poup content goes in here
 </div>
 
 <script src="/_assets/js/jquery-3.4.1.js"></script>
 <script src="/_assets/js/jquery.throttledresize.js"></script>
-<script src="/_assets/js/varClass.js"></script>
-<script src="/_assets/js/getSettings.js"></script>
-<script src="/_assets/js/removeClassByPrefix.js"></script>
+<script src="/_assets/js/clik_common.js"></script>
 <script src="/_assets/js/jquery.animateAuto.js"></script>
 <script src="/_assets/js/jquery.autoButton.js"></script>
 <script src="/_assets/js/jquery.modal.js"></script>
+<!--- test menu functionality --->
+<script src="/_assets/js/removeClassByPrefix.js"></script>
 <script src="test_menu.js"></script>
 
 <script type="text/javascript">
 
+	// NB in main framework there should be functionality to get settings
+	// for each "type"
+	function getColumnSettings() {
+		let settings =  {};
+		for (let setting of ["menu-anim-time","height"]) {
+			settings[setting] = clik.parseCssVar($this, setting);
+		}
+		return settings;
+	}
 	
 	$(document).ready(function() {
 		
@@ -309,7 +320,8 @@ tests = [
 		$("#menu,#xcol").on("open", function() {
 			$this = $(this);
 			const id = $this.attr("id");
-			let settings = getCssSettings($this,"menu-anim-time,height");
+			let settings =  getColumnSettings();
+			
 			if (settings.height == "auto") {
 				$this.animateAuto("height", settings["menu-anim-time"], function() {
 					console.log("callback test")
@@ -324,7 +336,8 @@ tests = [
 		}).on("close",function() {
 			$this = $(this);
 			const id = $this.attr("id");
-			let settings = getCssSettings($this,"menu-anim-time,height");
+			let settings =  getColumnSettings();
+
 			if (settings.height == "auto") {
 				$this.animate({"height":0}, settings["menu-anim-time"], function() { $this.css({"height":""}) });
 			}
@@ -348,8 +361,6 @@ tests = [
 	 * For body padding, you can apply it to body and this will take care of it.
 	 * 
 	 * For these properties you can either use this function or specify them directly
-	 *
-	 * 
 	 * 
 	 */
 	function setBodyPadding() {
@@ -386,5 +397,5 @@ tests = [
 </script>
 
 
-</div></body>
+</body>
 </html>

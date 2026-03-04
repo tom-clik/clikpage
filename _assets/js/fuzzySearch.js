@@ -32,7 +32,7 @@ $("#fuzzySearch").fuzzySearch({symbols:symbols, results: "#searchResults"})
 	$.fuzzySearch = function(element, options) {
 
 		var defaults = {
-			cache : true
+			preview : false
 		};
 
 		var plugin = this;
@@ -46,6 +46,7 @@ $("#fuzzySearch").fuzzySearch({symbols:symbols, results: "#searchResults"})
 		plugin.init = function() {
 
 			plugin.settings = $.extend({}, defaults, options);
+			console.log(plugin.settings);
 
 			if ("results" in options) {
 				$searchResults = $(options.results);
@@ -116,7 +117,7 @@ $("#fuzzySearch").fuzzySearch({symbols:symbols, results: "#searchResults"})
 			for (let res of results) {
 				var symbol = plugin.settings.symbols[res.pos];
 				var anchor = symbol.id !== symbol.section ? '#' + symbol.id : '';
-				var link = plugin.settings.cache ? symbol.section + ".html" : "index.cfm?code=" + symbol.section;
+				var link = plugin.settings.preview ? "?section=" + symbol.section : symbol.section + ".html";
 				link +=  anchor;
 				if (plugin.settings.auto) {
 					window.location.href = link;

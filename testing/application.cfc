@@ -35,7 +35,7 @@ component {
 		local.args = {
 			e=e,
 			debug=1,
-			isAjaxRequest=request.prc.isAjaxRequest ? : 0,
+			ajax=request.prc.isAjaxRequest ? : 0,
 			pageTemplate=application.errorTemplate ? : "",
 			logger= application.errorLogger ? : new cferrorHandler.textLogger( ExpandPath( "/logs/errors" ) )
 		};

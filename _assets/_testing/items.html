@@ -17,6 +17,10 @@ tests = [
 	{"id": "10", "description":"Wrap right"},
 	{"id": "11", "description":"Heading Under Wrap left"},
 	{"id": "12", "description":"Heading Under Wrap right"},
+	{"id": "13", "description":"Text top left"},
+	{"id": "14", "description":"Text top right"},
+	{"id": "15", "description":"Text top left heading under"},
+	{"id": "16", "description":"Text top right heading under"}
 ];
 </script>
 
@@ -108,12 +112,12 @@ tests = [
 			padding:20px;
 			width: 100%;
 			--grid-mode:fit;
-			--grid-gap:10px;
 			--item-gridgap:10px;
-			--grid-width: 420px;
 			--image-width:60%;
+			--grid-gap:10px;
+			--grid-width: 420px;
 		}
-
+		
 		@media screen and (max-width: 660px) {
 			.bodytest-5 .list, .bodytest-5a  .list  {
 				--image-align:center;
@@ -135,11 +139,12 @@ tests = [
 			padding:20px;
 			width: 100%;
 			--grid-mode:fixed;
-			--grid-gap:30px;
 			--item-gridgap:30px;
-			--grid-columns: 2;
 			--image-width:60%;
+			--grid-gap:30px;
+			--grid-columns: 2;
 		}
+		
 		.bodytest-4 .item, .bodytest-4a  .item {
 			padding:0;
 			border-width: 0;
@@ -218,6 +223,26 @@ tests = [
 			--image-align:right;
 		}
 
+		.test-13{
+			--texttop:1;
+			--image-align:left;
+		}
+		.test-14{
+			--texttop:1;
+			--image-align:right;
+		}
+		.test-15{
+			--texttop:1;
+			--htop: 0;
+			--image-align:left;
+		}
+		.test-16{
+			--texttop:1;
+			--htop: 0;
+			--image-align:right;
+		}
+
+
 		/*
 
 		.item.scheme-box:hover {
@@ -245,8 +270,8 @@ Item Testing Page
 
 </div>
 
-<div class="list cs-grid">
-	<div class="grid">
+<div class="list grid">
+	<div class="gridInner">
 		<div class="item">
 			<div class="itemInner">
 				<h3 class="title">Box title</h3>
@@ -282,7 +307,7 @@ Item Testing Page
 
 			// make the items - nothing to do with the styling.
 			var $item = $(".item");
-			var $list = $(".list > .grid");
+			var $list = $(".list > .gridInner");
 			for (i=1; i <= 6; i++) {
 				let $newItem = $item.clone();
 				if (i % 3 == 0) {

@@ -29,7 +29,7 @@ component output=false {
 		variables.systemSettings = {"media"=1,"vars"=1,"colors"=1,"fonts"=1};
 
 		this.gridDefs = [
-			"grid-mode":{"name"="Grid mode","type"="list","default"="none","setting":1,"options":[
+			"grid-mode":{"name"="Grid mode","type"="list","default"="none","options":[
 					{"name"="None","value"="none","description"="Don't use a grid. Use this setting to turn off a grid in smaller screen sizes."},
 					{"name"="Auto fit","value"="fit","description"="Fit as many items as possible into the grid according to the minimum column size."},
 					{"name"="Auto fill","value"="fill","description"="Fit as many items as possible into the grid according to the minimum column size but don't stretch as much."},
@@ -47,7 +47,7 @@ component output=false {
 			"grid-max-width":{"name":"max width","type"="dimension","default"="1fr","note"="Not sure this should be exposed","hidden":1,"description":"","hidden":1},
 			"grid-max-height":{"name":"Max item height","type"="dimension","default"="auto","description":"Maximum height of items in grid"},
 			"grid-columns":{"name"="Columns","type"="integer","default"="2","description"="Number of columns for a fixed column grid":"grid-mode","dependvalue":"fixed"},
-			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items","setting":1},
+			"grid-gap":{"type"="dimension","name":"Gap","default":0,"description":"Gap between grid items","setting":true},
 			"grid-template-columns":{"name":"Template columns","type"="text","description":"Column sizes when using fixed columns or named template areas","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
 			"grid-template-rows":{"name":"Template rows","description":"Row sizes when using set rows or named items mode","type"="dimensionlist","dependson":"grid-mode","dependvalue":["named","rows"],"default":"auto"},
 			"grid-template-areas":{"name"="Template areas","type"="text","dependson":"grid-mode","dependvalue":"templateareas","description":"","default":""},
@@ -93,7 +93,7 @@ component output=false {
 		this.columnDefs = [
 			"header-fixed":{ "type"="boolean", "title"="Fixed header","default"=" 0"},
 			"footer-fixed":{ "type"="boolean", "title"="Fixed footer","default"=" 0"},
-			"menupos ":{ "type"="list", "title"="Menu position","default"="static","options"=[{"value":"static"},{"value":"fixed"},{"value":"slide"}]},
+			"menupos":{ "type"="list", "title"="Menu position","default"="static","options"=[{"value":"static"},{"value":"none"},{"value":"fixed"},{"value":"slide"}]},
 			"menu":{ "type"="list", "title"="Show menu column","default"="open","options"=[{"value":"open"},{"value":"close"}]},
 			"xcol":{ "type"="list", "title"="Show extra column","default"="open","options"=[{"value":"open"},{"value":"close"}]}, 
 			"framed":{ "type"="boolean", "title"="Frame site","default"="0"},
@@ -270,9 +270,18 @@ component output=false {
 
 		for ( medium in getMediaOrder( arguments.media ) ) {
 
+			if (! arguments.media.keyExists(medium) ) continue;
+
 			var media = arguments.media[medium];
 			var section_css = "";
-			
+
+			// Column layout short hand
+			if ( StructKeyExists(arguments.styles, "body") AND
+				StructKeyExists(arguments.styles.body, medium)) {
+
+				section_css &= arguments.selector & "{ " & cr & backgroundCSS(arguments.styles.body[medium].background ? : {}, arguments.debug) & columns(arguments.styles.body[medium],arguments.debug) & cr & "}" & cr;
+			}
+
 			for ( var id in arguments.containers ) {
 				
 				local.cs = arguments.containers[id];
@@ -298,7 +307,7 @@ component output=false {
 				if ( NOT structIsEmpty(local.styles) ) {
 					local.select = ListAppend(arguments.selector, "###id#", " ");
 					try {
-						section_css &= containerCss(settings=local.styles,selector=local.select);
+						section_css &= containerCss(settings=local.styles,selector=local.select,debug=arguments.debug);
 					}
 					catch (any e) {
 						local.extendedinfo = {"tagcontext"=e.tagcontext,id=id,settings=local.styles};
@@ -313,7 +322,7 @@ component output=false {
 
 			if (section_css NEQ "") {
 				if (medium NEQ "main") {
-					css &= mediaQuery( arguments.media[medium] ) & "{#cr#" & indent(section_css,1) & "#cr#}#cr#";
+					css &= mediaQuery( arguments.media[medium] ) & "{#cr#" & section_css & "#cr#}#cr#";
 				}
 				else {
 					css &= section_css & cr;
@@ -352,29 +361,30 @@ component output=false {
 	 */
 	public string function variablesCSS(required struct settings, boolean debug=this.debug) {
 
-		local.css = arguments.debug ? CSSCommentHeader("Vars") : "";
+		local.css = arguments.debug ? [CSSCommentHeader("Vars")] : [];
+
+		var tab = arguments.debug ? chr(9) : "";
 
 		if (StructKeyExists(arguments.settings,"vars")) {
 			for (local.varname in arguments.settings.vars) {
 				local.var = arguments.settings.vars[local.varname];
 				if ( arguments.debug  && ! StructKeyExists(local.var,"value") ) {
-					local.css &= "/* No value specified for var #local.varname# */" & newLine();
+					local.css.append("/* No value specified for var #local.varname# */");
 				}
 				else {
 					// A var can have a value of another var
 					local.varvalue = Left(local.var.value,2) eq "--" ? "var(#local.var.value#)" : local.var.value; 
-					local.css &= "--#local.varname#: #local.varvalue#;";
+					local.css.append("#tab#--#local.varname#: #local.varvalue#;");
 					if ( arguments.debug ) {
 						if ( StructKeyExists(local.var,"title") ) {
-							local.css &= " /* #local.var.title# */";
+							local.css.append(" /* #local.var.title# */");
 						}
-						local.css &= newLine();
 					}
 				}	
 			}
 		}
 		
-		return indent(local.css);
+		return css.toList(arguments.debug ? newLine() : "");
 
 	}	
 
@@ -401,7 +411,8 @@ component output=false {
 
 		local.css = arguments.debug ? CSSCommentHeader("Fonts") : "";
 		var cr = arguments.debug ? newLine() : "";
-
+		var tab = arguments.debug ? chr(9) : "";
+		
 		if (StructKeyExists(arguments.settings,"fonts")) {
 			for (local.fontname in arguments.settings.fonts) {
 				local.font = arguments.settings.fonts[local.fontname];
@@ -410,7 +421,7 @@ component output=false {
 				}
 				else {
 					local.fontfamily = Left(local.font.family,2) eq "--" ? "var(#local.font.family#)" : local.font.family; 
-					local.css &= "--#local.fontname#: #local.fontfamily#;";
+					local.css &= "#tab#--#local.fontname#: #local.fontfamily#;";
 					if (arguments.debug && StructKeyExists(local.font,"title")) {
 						local.css &= " /* #local.font.title# */#cr#";
 					}
@@ -421,7 +432,7 @@ component output=false {
 			}
 		}
 		
-		return indent(local.css);
+		return local.css;
 
 	}
 
@@ -445,36 +456,46 @@ component output=false {
 	 */
 	public string function colorVariablesCSS(required struct styles, boolean debug=this.debug) {
 
-		local.css = arguments.debug ? CSSCommentHeader("Colors") : "";
+		var tab = arguments.debug ? "	": "";
+		var cr = arguments.debug ? newLine() : "";
+		var css = arguments.debug ? [CSSCommentHeader("Colors")] : [];
 		
 		if (StructKeyExists(arguments.styles,"colors")) {
+			
 			for (local.colorname in arguments.styles.colors) {
+			
 				local.color = arguments.styles.colors[local.colorname];
 				
 				if ( StructKeyExists(local.color,"value") ) {
 					
 					local.colorvalue = Left(local.color.value,2) eq "--" ? "var(#local.color.value#)" : local.color.value; 
-					local.css &= "--#local.colorname#: #local.colorvalue#;";
+					css.append("#tab#--#local.colorname#: #local.colorvalue#;");
 					
 					if (arguments.debug ) {
 						if ( StructKeyExists(local.color,"title") ) {
-							local.css &= " /* #local.color.title# */";
+							css.append(" /* #local.color.title# */");
 						}
-						local.css &= newLine() ;
 					}
 				}
 				else if ( arguments.debug ) {
-					local.css &= "/* No value specified for color #local.colorname# */" & newLine() ;
+					css.append("/* No value specified for color #local.colorname# */") ;
 				}	
 				
 			}
+
 		}
-		
-		return Indent(local.css);
+
+		return css.toList(arguments.debug ? newLine() : "") & cr;
 
 	}
 	/**
-	 * Concatenate an array of content section css data with media queries
+	 * @hint Concatenate an array of content section css data with media queries
+	 *
+	 * Not really specific to the content. Could be used by anything, it's just that
+	 * we use it for the content sections.
+	 *
+	 * Takes an array of structs keyed by medium and just joins them together in the right order 
+	 * 
 	 */
 	public string function contentCSS(required array css, required struct media) localmode=true {
 		
@@ -536,20 +557,26 @@ component output=false {
 		local.gridcss = "";
 		
 		local.mainCSS = dimensions(settings=arguments.settings,debug=arguments.debug);
+		
+		if (StructKeyExists(arguments.settings, "grid-mode") ) {
+			local.mainCSS &= "#tab#--grid-mode:#arguments.settings["grid-mode"]#;#cr#";
+		}
+		
 		local.mainCSS &= grid(styles=arguments.settings,debug=arguments.debug);
+		
 		if ( local.mainCSS neq "") {
 			local.css &= "#arguments.selector# {#cr#" & local.mainCSS & "}#cr#";
 		}
-		
+
 		if (StructKeyExists(arguments.settings, "inner")) {
-			local.innerCSS &= dimensions(arguments.settings.inner);
+			local.innerCSS &= dimensions(arguments.settings.inner,arguments.debug);
 			if ( local.innerCSS NEQ "" ) {
 				local.css &= "#arguments.selector# > .inner {#cr#" & local.innerCSS & "}#cr#";
 			}
 		}
 		
 		if (StructKeyExists(arguments.settings, "open")) {
-			local.openCss = dimensions(arguments.settings.open);
+			local.openCss = dimensions(arguments.settings.open,arguments.debug);
 			if ( local.openCss NEQ "") {
 				local.css &= "#arguments.selector#.open {#cr#";
 				local.css  &= local.openCss;
@@ -588,6 +615,18 @@ component output=false {
 		for (local.property in ['font-family','color']) {
 			if (StructKeyExists(arguments.settings,local.property)) {
 				local.css &= "#tab##local.property#:var(--#arguments.settings[local.property]#);" & cr;
+			}
+		}
+
+		for (local.property in ['heading-font','table-border-color','table-background','table-stripe-bg']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "#tab#--#local.property#:var(--#arguments.settings[local.property]#);\n";
+			}
+		}
+
+		for (local.property in ['table-border-width','table-border-style','table-cell-padding','table-text-align','table-vertical-align','table-sticky','table-sticky-top','heading-font-size','heading-margin','heading-font-align']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "#tab#--#local.property#:#arguments.settings[local.property]#;\n";
 			}
 		}
 
@@ -633,7 +672,7 @@ component output=false {
 
 
 		if (StructKeyExists(arguments.settings,"position")) {
-			local.css &= displayPosition(arguments.settings);
+			local.css &= displayPosition(arguments.settings,arguments.debug);
 		}
 
 		if ( structKeyExists( arguments.settings, "float") ) {
@@ -647,9 +686,9 @@ component output=false {
 		}
 
 		if (StructKeyExists(arguments.settings,"border")) {
-			local.settings = Duplicate(arguments.settings["border"]);
+			local.settings = arguments.settings["border"];
 			StructAppend(local.settings, {"style":"solid"}, false);
-			for (local.property in ['width','color','style']) {
+			for (local.property in ['width','color','style','radius']) {
 				if (StructKeyExists(local.settings,local.property)) {
 					local.css &= "#tab#border-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";#cr#";
 				}
@@ -657,12 +696,7 @@ component output=false {
 		}
 
 		if (StructKeyExists(arguments.settings,"background")) {
-			local.settings = Duplicate(arguments.settings["background"]);
-			for (local.property in ['color','image','repeat','position']) {
-				if (StructKeyExists(local.settings,local.property)) {
-					local.css &= "#tab#background-#local.property#:" & displayProperty(local.property,local.settings[local.property]) & ";#cr#";
-				}
-			}
+			local.css &= backgroundCSS(arguments.settings["background"],arguments.debug);
 		}
 
 		for (local.property in ['padding','margin','width','min-width','max-width','height','min-height','max-height']) {
@@ -683,6 +717,18 @@ component output=false {
 
 		return local.css;
 
+	}
+
+	public string function backgroundCSS(required struct settings, boolean debug=this.debug) {
+		var cr = arguments.debug ? newline() : "";
+		var tab = arguments.debug ? "	" : "";
+		local.css = arguments.debug ? "/* background css */" & cr : "";
+		for (local.property in ['color','image','repeat','position']) {
+			if (StructKeyExists(arguments.settings,local.property)) {
+				local.css &= "#tab#background-#local.property#:" & displayProperty(local.property,arguments.settings[local.property]) & ";#cr#";
+			}
+		}
+		return local.css;
 	}
 
 	private string function displayPosition(required struct settings, boolean debug=this.debug) {
@@ -783,19 +829,16 @@ component output=false {
 	 */
 	public string function grid(required struct styles, boolean debug=true) {
 
-		
 		var css = [];
 		var tab = arguments.debug ? "	": "";
 
 		for (local.style in this.gridDefs) {
 			local.def = this.gridDefs[local.style];
 			
-			if (StructKeyExists(arguments.styles,local.style)) {
+			if ( StructKeyExists(arguments.styles,local.style) ) {
 				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
 			}
 		}
-
-		css.append("");
 
 		return css.toList(arguments.debug ? newLine() : "");
 
@@ -805,7 +848,7 @@ component output=false {
 	 * @hint CSS styling for standard column layout
 	 * 
 	 */
-	public string function columns(required struct styles, boolean debug=true) {
+	public string function columns(required struct styles, boolean debug=this.debug) {
 
 		
 		var css = [];
@@ -815,11 +858,20 @@ component output=false {
 			local.def = this.columnDefs[local.style];
 			
 			if (StructKeyExists(arguments.styles,local.style)) {
-				css.append("#tab#--#local.style#: " & displaySetting(arguments.styles[local.style], local.def.type) & ";");
+				css.append("#tab#--#local.style#:" & displaySetting(arguments.styles[local.style], local.def.type) & ";");
+			}
+			else if (arguments.debug) {
+				css.append("/* No setting for #local.style# */");
 			}
 		}
 
-		css.append("");
+		if (StructKeyExists(arguments.styles,"padding")) {
+			var paddings = splitDimensionList(arguments.styles.padding);
+			
+			for (var pos in paddings) {
+				css.append("#tab#--site-#pos#-padding:" & paddings[pos] & ";");
+			}
+		}
 
 		return css.toList(arguments.debug ? newLine() : "");
 
@@ -900,6 +952,8 @@ component output=false {
 
 	/**
 	 * Indent string using tabs
+	 *
+	 * DEPRCECATED - DO NOT USE
 	 */
 	public string function indent(required string input, numeric num=1){
 		local.indent = repeatString("	", arguments.num);
@@ -1012,5 +1066,35 @@ component output=false {
 
 	}
 
+	/**
+	 * Take a string of 1 to 4 values separated by spaces and return a struct with keys top, left, bottom, and right 
+	 */
+	private struct function splitDimensionList(required string value) localmode=true {
+		dims = {};
+		vals = ListToArray( arguments.value," #chr(13)##chr(10)##chr(9)#");
+		dims["top"] = displayDimension( vals[1] );
+		
+		switch (vals.len()) {
+			case 1:
+				dims["left"] = dims["right"] = dims["bottom"] = dims["top"];
+				break;
+			case 2:
+				dims["left"] = dims["right"] = displayDimension( vals[2] );
+				dims["bottom"] = dims["top"];
+				break;
+			case 3:
+				dims["left"] = dims["right"] = displayDimension( vals[2] );
+				dims["bottom"] = displayDimension( vals[3] );
+				break;
+			case 4:
+				dims["right"] = displayDimension( vals[2] );
+				dims["bottom"] = displayDimension( vals[3] );
+				dims["left"] = displayDimension( vals[4] );
+				break;
+		}
+
+		return dims;
+
+	}
 
 }

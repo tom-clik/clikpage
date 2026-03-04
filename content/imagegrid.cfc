@@ -12,10 +12,10 @@ component extends="grid" {
 		
 		super.init(arguments.contentObj);
 		
-		this.classes = ListAppend(this.classes, "cs-grid", " ");	
+		this.classes = ListAppend(this.classes, "grid", " ");	
 
 		variables.static_css = {"images"=1,"flickity"=1,"grids"=1,"justifiedGallery"=1};
-		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1,"photogrid"=1,"getSettings"=1,"justifiedGallery"=1};
+		variables.static_js = {"masonry"=1,"popup"=1,"flickity"=1,"photogrid"=1,"justifiedGallery"=1};
 		
 		this.selectors = [
 			{"name"="main", "selector"=""},
@@ -38,7 +38,6 @@ component extends="grid" {
 			"layout": {
 				"name":"Layout type","description":"","type":"list","options":[
 					{"name":"Standard","description":"Standard grid","value":"standard"},
-					{"name":"Masonry","description":"Arrange images in a best fit alignment according to their height","value":"masonry"},
 					{"name":"Carousel","description":"A horizontal scrolling panel","value":"carousel"},
 					{"name":"Justified Gallery","description":"Justify images horizontally","value":"justifiedGallery"}
 				],
@@ -92,6 +91,7 @@ component extends="grid" {
 		updateDefaults();
 
 		return this;
+
 	}
 
 	public string function html(required struct content,required struct data) {
@@ -105,7 +105,7 @@ component extends="grid" {
 			);
 		}
 
-		local.html = "<div class='grid'>";
+		local.html = "<div class='gridInner'>";
 
 		for (local.id in arguments.content.data) {
 			local.image = arguments.data[local.id];
@@ -115,9 +115,12 @@ component extends="grid" {
 			// 2. Popups proper target for open
 			// 3. Link types: none, gallery etc
 			if ( StructKeyExists( arguments.content, "link" )) {
-				// TODO: link for section detail page 
-				// local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
-				local.link = " href='" & Replace(arguments.content.link, "{{data.id}}",local.id,"all") & "'" ;
+				if (arguments.content.link eq "view") {
+					local.link = " href='{{link.{{section.id}}.view.#local.id#}}'";
+				}
+				else {
+					local.link = " href='" & Replace(arguments.content.link, "{{data.id}}",local.id,"all") & "'" ;
+				}
 			}
 			else {
 				local.link = local.image.image;
@@ -151,7 +154,6 @@ component extends="grid" {
 		return local.html;
 		
 	}
-	/* TODO: remove once new plug in is working */
 	public string function onready(
 		required struct content, 
 		required struct pageContent,
@@ -168,25 +170,7 @@ component extends="grid" {
 		required struct pageContent,
 		required struct data) {
 
-		if (arguments.content.settings.main.layout eq "masonry") {
-			js &= "$#arguments.content.id#Grid = $('###arguments.content.id#').isotope({\n";
-			js &= "\t/* options*/\n";
-			// js &= "\titemSelector: 'figure',\n";
-			js &= "layoutMode: 'masonry',\n";
-			js &= "itemSelector: '.frame',\n";
-			js &= "masonry: {\n";
-			js &= "	columnWidth: '###arguments.content.id# .frame'";
-			if (StructKeyExists(arguments.content.settings.main,"grid-gap")) {
-				js &= ",\n\tgutter: " & Val(arguments.content.settings.main["grid-gap"]);
-			}
-			js &= "\n\t},\n";
-			js &= "});\n";
-			js &= "/* layout Masonry after images loaded */\n";
-			js &= "$#arguments.content.id#Grid.imagesLoaded( function() {\n";
-			js &= "\t$#arguments.content.id#Grid.isotope();\n";
-			js &= "});\n";
-		}
-		else if (arguments.content.settings.main.layout eq "carousel") {
+		if (arguments.content.settings.main.layout eq "carousel") {
 			local.elem = "$carousel_#arguments.content.id#";
 			js &= "#local.elem# = $('###arguments.content.id#');\n";
 			js &= "#local.elem#.flickity({\n";

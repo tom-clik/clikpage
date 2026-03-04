@@ -4,7 +4,9 @@ Save a formatted version of each layout to an html file (see outDir)
 */
 
 // inputDir = expandPath("testlayout1");
-inputDir = expandPath("../../sample/_data/layouts");
+// inputDir = expandPath("../../sample/_data/layouts");
+// 
+inputDir ="C:\git\dm\clikdesign\samples\hale\layouts";
 outDir = ExpandPath("_output/");
 
 layoutsObj = new clikpage.layouts.layouts(inputDir);

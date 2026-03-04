@@ -4,223 +4,243 @@
 
 Static CSS for grid and flex styling 
 
-## Notes
+See /_notes/grids.md
 
-See /notes/grids.md
+## Quick Ref
+
+HTML
+
+<div class='grid'>
+	<div class='gridInner'>
+		any elements
+	</div>
+</div>
+
 
 */
 
-/*
+/* If you don't already know, you want fit, columns, or flex. NB masonry required JS */
+@property --grid-mode {
+	syntax: 'none | fit | fill | fixed | fixedwidth | columns | rows | named | flex | masonry';
+	inherits: false;
+	initial-value: fit;
+}
+/* ALL OTHER PROPERTIES inherit and shuold be defined for every nested grid 
 
-None of this properties stuff seems to work. We get undefined values, values that inherit when they shouldn't, the syntax stuff is a nightmare and basically they're not worth it
-
+/* Gap between cells. One value or column gap, row gap */
 @property --grid-gap {
-	syntax: "<length> | <percentage>";
+	syntax: '*';
 	inherits: false;
-	initial-value: 0;
+	initial-value: 0px;
 }
 
-@property --grid-fit {
-	syntax: "auto-fit | auto-fill";
-	inherits: false;
-	initial-value: auto-fit;
-}
-
+/* Maximum width of cells when using fit|fill|fixedwidth */
 @property --grid-width {
-	syntax: "*"; 
+	syntax: '<length> | <percentage>';
 	inherits: false;
 	initial-value: 180px;
 }
 
-@property --grid-max-width {
-	syntax: "*"; 
-	inherits: false;
-	initial-value: 1fr;
-}
-
-@property --grid-max-height {
-	syntax: "*"; 
-	inherits: false;
-	initial-value: 1fr;
-}
-
+/*Number of columns when using mode=fixed. Actually what you want is mode=columns and set --grid-template-columns */
 @property --grid-columns {
-	syntax: "<integer>"; 
+	syntax: '<integer>'; 
 	inherits: false;
-	initial-value: 2;
+	initial-value: 3;
 }
 
+/* explicitly list heights of rows e.g. 120px auto 160px */
 @property --grid-template-rows {
+	syntax: '*';
 	initial-value: auto;
-	inherits: true;
+	inherits: false;
 }
 
+/* explicitly list widths of columns e.g. 120px auto 160px */
 @property --grid-template-columns {
+	syntax: '*';
 	inherits: false;
 	initial-value: auto;
 }
 
- e.g. "header header" "menu main" "footer footer" 
+/* e.g. "header header" "menu main" "footer footer" */
 @property --grid-template-areas {
+	syntax: '*';
 	inherits: false;
 	initial-value: none;
 }
 
 @property --flex-direction {
-	syntax: "row | row-reverse | column | column-reverse"; 
+	syntax: 'row | row-reverse | column | column-reverse'; 
 	inherits: false;
 	initial-value: row;
 }
 
+/* main axis alignment */
 @property --justify-content {
-	syntax: "normal | start | end | center | space-between | space-around |  space-evenly |  stretch"; 
+	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly'; 
 	inherits: false;
-	initial-value: row;
+	initial-value: normal;
 }
- alignment for multiple rows 
+/* alignment for multiple rows within their container (no, me neither: what you want is actually align-items) */
 @property --align-content {
-	syntax: "normal | start | end | center | space-between | space-around |  space-evenly |  stretch"; 
+	syntax: 'normal | start | end | center | space-between | space-around |  space-evenly |  stretch'; 
 	inherits: false;
 	initial-value: normal;
 }
 
- this the vertical alignment you want 
+/* this the vertical alignment you're after */
 @property --align-items {
-	syntax: "normal | stretch | start | end | center "; 
+	syntax: 'normal | stretch | start | end | center '; 
 	inherits: false;
 	initial-value: normal;
 }
 
+/* the default for this 0 for mode=flex. This is applied explicitly below in a property query NB this does inherit, be careful  */
 @property --flex-stretch {
-	syntax: "0 | 1 "; 
-	inherits: true;
-	initial-value: 0;
+	syntax: '<number>'; 
+	inherits: false;
+	initial-value: 1;
 }
 
 @property --flex-wrap {
-	syntax: "wrap | nowrap "; 
+	syntax: 'wrap | nowrap'; 
 	inherits: false;
 	initial-value: wrap;
 }
 
-@property --grid-mode {
-	syntax: "none | fit | fill | fixed | fixedwidth | columns | rows | named | flex";
+@property --grid-max-height {
+	syntax: '*'; 
 	inherits: false;
-	initial-value: fit;
-}*/
-
-:root {
-	--grid-mode: fit;
-	--grid-gap: 0;
-	--grid-fit: auto-fit;
-	--grid-width: 180px;
-	--grid-max-width: 1fr;
-	--grid-max-height: 1fr;
-	--grid-columns: 2;
-	--grid-template-rows: auto;
-	--grid-template-columns: auto;
-	--grid-template-areas: none;
-	--flex-direction: row;
-	--justify-content: normal;
-	--align-content: normal;
-	--align-items: normal;
-	--flex-stretch: 0;
-	--flex-wrap: wrap;
-}
-
-.cs-grid {
-	container-name:grid;
+	initial-value: 1fr;
 }
 
 .grid {
+	container-name:grid;
+	display: grid; /* need to get content to expand */
+}
+
+.grid.list {
+	--grid-mode: none;
+}
+
+.grid > .gridInner {
+	height:100%;
+	min-height: 100%;
+	align-self: stretch;
+}
+
+/* Note the inheritance from the container. This is all to cope with
+grids within grids. We don't want the properties to cascade,
+but we need them to apply to the "inner" div */
+.gridInner {
+	--grid-gap: inherit;
+	--grid-width: inherit;
+	--grid-columns: inherit;
+	--grid-template-rows: inherit;
+	--grid-template-columns: inherit;
+	--grid-template-areas: inherit;
+	--flex-direction: inherit;
+	--justify-content: inherit;
+	--align-content: inherit;
+	--align-items: inherit;
+	--flex-stretch: inherit;
+	--flex-wrap: inherit;
+	--grid-max-height: inherit;
 	display:grid;
 	grid-gap:var(--grid-gap);
-	flex-direction: var(--flex-direction);
 	align-content: var(--align-content);
 	align-items: var(--align-items);
 	justify-content: var(--justify-content);
-	flex-wrap: var(--flex-wrap);
+	grid-template-columns: var(--grid-template-columns);
+	grid-template-rows: var(--grid-template-rows);
 }
 
-.cs-grid > .grid {
-	height:100%;
-}
-
-.grid > * {
+.gridInner > * {
+	--flex-stretch: inherit;
 	height: var(--grid-max-height);
 	flex-grow: var(--flex-stretch);
 }
 
-.flex {
-	grid-gap:var(--grid-gap);
-	display: flex;
-	--flex-stretch:0;
-}
-
-.flex > * {
-	flex-grow: var(--flex-stretch);
-}
-
 @container grid ( style(--grid-mode:none) ) {
-	.grid {
+	.gridInner {
 		display: block;
 	}
 }
 
-@container grid ( style(--grid-mode:fill) ) {
-	.grid {
-		--grid-fit: auto-fill;
+@container grid ( style(--grid-mode:masonry) ) {
+	.gridInner {
+		display: block;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 160ms;
 	}
+
+	.gridInner.is-laidout {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.gridInner > * {
+		--grid-width: inherit;
+		--grid-gap: inherit;
+		width: var(--grid-width);
+		padding-right: var(--grid-gap);
+		margin-bottom: var(--grid-gap);
+	}
+
+	.gridInner > .wide {
+		width: calc( var(--grid-width) * 2 );
+	}
+
 }
 
-@container grid ( style(--grid-mode:fill) or style(--grid-mode:fit) ) {
-	.grid {
-		grid-template-columns: repeat(var(--grid-fit), minmax(var(--grid-width),var(--grid-max-width)));
+@container grid ( style(--grid-mode:fit) ) {
+	.gridInner {
+		grid-template-columns: repeat(auto-fit, minmax(var(--grid-width),1fr));
+	}
+
+}
+
+@container grid ( style(--grid-mode:fill) ) {
+	.gridInner {
+		grid-template-columns: repeat(auto-fill, minmax(var(--grid-width),1fr));
 	}
 }
 
 @container grid ( style(--grid-mode:flex) ) {
-	.grid {
+	.gridInner {
 		display: flex;
+		flex-direction: var(--flex-direction);
+		flex-wrap: var(--flex-wrap);
 	}
 }
 
 @container grid ( style(--grid-mode:fixed) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns: repeat(var(--grid-columns), 1fr);
 	}
 }
 
 @container grid ( style(--grid-mode:fixedwidth) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns:  repeat(auto-fit, var(--grid-width));
 	}
 }
-
-@container grid ( style(--grid-mode:columns) ) {
-	.grid {
-		grid-template-columns: var(--grid-template-columns);
-		grid-template-rows: var(--grid-template-rows);
-	}
-}
-
+/* See notes on mode=rows */
 @container grid ( style(--grid-mode:rows) ) {
-	.grid {
+	.gridInner {
 		grid-template-columns: 1fr;
-		grid-template-rows: var(--grid-template-rows);
 	}
 }
 
 @container grid ( style(--grid-mode:named) ) {
-	.grid {
+	.gridInner {
 		grid-template-areas: var(--grid-template-areas);
-		grid-template-columns: var(--grid-template-columns);
-		grid-template-rows: var(--grid-template-rows);
 	}
 }
-
+/* Setting a name seems to cause issues when in other modes*/
 @container grid ( not style(--grid-mode:named) ) {
-	.grid > * {
+	.gridInner > * {
 		grid-area: unset !important;
 	}
 }

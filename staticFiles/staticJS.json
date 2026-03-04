@@ -3,6 +3,7 @@
     {
       "scripts": [
         "jquery",
+        "clik_common",
         "autoButton",
         "animateAuto",
         "popup",
@@ -18,26 +19,37 @@
         "serializeData",
         "throttledresize",
         "heightFix",
-        "varClass"
+        "varClass",
+        "autoopen",
+        "fadeInOnScroll"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikmain.0.6.min.js",
+      "min": "/_assets/js/_min/clikpage.0.14.min.js",
     },
     {
       "scripts": [
         "fuzzySearch",
         "menuScroll",
         "menus",
-        "varClass",
-        "throttledresize"
+        "throttledresize",
+        "animateAuto",
+        "fuzzy",
+        "clik_common"
       ],
-      "min": "/_assets/js/_min/coldlightpackage.0.6.min.js",
+      "min": "/_assets/js/_min/coldlightpackage.0.10.min.js",
       "name": "coldlight"
     },
     {
       "scripts_foobar": [
         "clik_settings","messageHandler","settingsForm"
       ],
+      "scripts": [
+        "clikForm"
+      ],
+      "min": "/_assets/js/_min/clikForm.0.1.min.js",
+      "name": "forms"
+    },
+    {
       "scripts": [
         "clik_settings","messageHandler","settingsForm"
       ],
@@ -53,6 +65,12 @@
       "name": "jquery",
       "packageExclude": 1,
       "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
+    },
+    {
+      "min": "/_assets/js/clik_common.js",
+      "name": "clik_common",
+      "description": "",
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/jquery-ui.min.js",
@@ -117,18 +135,19 @@
       "requires": "jquery"
     },
     {
-      "debug": "/_assets/js/isotope.pkgd.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js",
-      "name": "masonry",
-      "description" : "Gallery layout script",
-      "packageExclude": 1,
-      "requires": "imagesloaded,jquery"
+      "min": "/_assets/js/masonryGrid.js",
+      "name": "masonryGrid",
+      "description" : "Grid Masonry script",
+      "requires": "masonry,jquery,imagesloaded"
     },
+    
     {
-      "min": "/_assets/js/masonry-horizontal.js",
-      "name": "masonry-horizontal",
-      "description" : "Horizontal mode for masonry",
-      "requires": "masonry"
+      "debug": "/_assets/js/masonry.pkgd.min.js",
+      "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+      "name": "masonry",
+      "description" : "Masonry.js library - always call using masonryGrid",
+      "packageExclude": 1,
+      "requires": "jquery"
     },
     {
       "debug": "/_assets/js/flickity.pkgd.min.js",
@@ -169,7 +188,7 @@
       "min": "/_assets/js/jquery.clikForm.js",
       "description": "Combines forms and validate in one plug-in to submit a form and display a returned|supplied message",
       "name": "clikForm",
-      "requires": "jquery,forms,elastic,select2,validate,clikutils"
+      "requires": "jquery,elastic,select2,validate,serializeData"
     },
     {
       "min": "/_assets/js/jquery.autoButton.js",
@@ -221,7 +240,7 @@
       "min":"/_assets/js/clik_onready.js",
       "description": "Standard clik functionality",
       "name": "clik_onready",
-      "requires": "jquery,modal,getSettings"
+      "requires": "jquery,modal,clik_common"
     },
     {
       "min":"/_assets/js/messageHandler.js",
@@ -253,7 +272,7 @@
       "min":"/_assets/js/photogrid.js",
       "description": "Clik wrapper for all photogrid functions. ",
       "name": "photogrid",
-      "requires": "jquery,getSettings,justifiedGallery,masonry"
+      "requires": "jquery,clik_common,justifiedGallery,masonryGrid"
     },
     {
       "min":"/_assets/js/jquery.justifiedGallery.js",
@@ -293,10 +312,22 @@
       "requires": "jquery,clik_settings,messageHandler"
     },
     {
+      "min":"/_assets/js/jquery.autoopen.js",
+      "description": "Add open close methods to containers",
+      "name": "autoopen",
+      "requires": "jquery"
+    },
+    {
       "min":"/_assets/js/removeClassByPrefix.js",
       "description": "Utility for removing classes by prefix",
       "name": "removeClassByPrefix",
       "requires": "jquery"
-    }    
+    },
+    {
+      "min":"/_assets/js/fadeInOnScroll.js",
+      "description": "Fade in content on scroll",
+      "name": "fadeInOnScroll",
+      "requires": "jquery"
+    }
   ]
 }

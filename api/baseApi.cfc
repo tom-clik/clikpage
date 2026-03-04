@@ -1,7 +1,7 @@
 component {
-
-	request.isAjaxRequest = 1;
 	
+	request.isAjaxRequest = 1;
+	request.prc.isAjaxRequest = 1;
 	// VIRTUAL
 	private boolean function isLoggedIn() {
 		throw("You need to create your own isLoggedIn() method.");
@@ -18,6 +18,18 @@ component {
 		if (structKeyExists(arguments.returnData, "statustext" )) {
 			cfheader( statustext="#arguments.returnData.statustext#" );
 		}
+
+	}
+
+	/**
+	 * call set status and return  data. Use in prefecne to setStatus
+	 * when returning from a function
+	 */
+	private struct function returnStatus(required struct returnData) {
+		
+		setStatus( arguments.returnData );
+		
+		return arguments.returnData;
 
 	}
 
@@ -46,7 +58,7 @@ component {
 				'statuscode': 401,
 				'statustext': 'login required'
 			};
-			rep ( local.return )
+			rep( local.return );
 		}
 
 		return local.return;
@@ -98,10 +110,19 @@ component {
 
 	}
 
+	/** Use to force a json return e.g. after login fail
+	 * Don't use this in general operation. See the sample function below
+	 **/
 	private string function rep(required struct return) {
 		setJSON();
 		setStatus(arguments.return);
 		writeOutput( serializeJSON( arguments.return ) );
+		abort;
+	}
+
+	private string function javascript(required string data) {
+		content type="text/javascript; charset=utf-8";
+		writeOutput( arguments.data );
 		abort;
 	}
 
@@ -111,7 +132,7 @@ component {
 	/**
 	remote function sampleFunction(
 			string action
-		)
+		) returnformat="json"
 		{
 		
 		local.return = _checkAuth();
@@ -123,8 +144,9 @@ component {
 			addError(local.return,"Action is required");
 		}
 		
-		
-		rep (local.return);
+		setStatus(local.return);
+
+		return local.return;
 	
 	}
 	*/

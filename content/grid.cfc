@@ -20,7 +20,7 @@ component extends="contentSection" {
 			{"name":"Caption","panel":"caption","selector":" .caption"}
 		];
 
-		this.styleDefs = arguments.contentObj.settingsObj.gridDefs;
+		this.styleDefs = duplicate( arguments.contentObj.settingsObj.gridDefs );
 
 		updateDefaults();
 

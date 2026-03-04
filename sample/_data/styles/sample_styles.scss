@@ -98,7 +98,22 @@ vars {
 	}
 	sitepaddingmobile {
 		title:Site padding (mobile);
-		description:Site padding in mobile value:4px;
+		description:Site padding in mobile;
+		value:4px;
+	}
+
+	header-fixed {
+		title:Fixed header;
+		description:;
+		value:0;
+	}
+	footer-fixed {
+		title:Fixed footer;
+		value:0;
+	}
+	menupos {
+		title:Menu position
+		value: static;/* static|fixed|slide|none   */
 	}
 }
 

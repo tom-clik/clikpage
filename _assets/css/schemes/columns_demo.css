@@ -19,7 +19,11 @@ select {
 
 #menubuttons {
 	--grid-mode: flex;
+} 
+#menubuttons .grid {
+	--flex-wrap: nowrap;
 	--grid-gap:4px;
+	--justify-content: start;
 }
 
 #navtext {
@@ -44,14 +48,14 @@ select {
 	right:4px;
 }
 
-#menu > .inner , #xcol > .inner, #maincol > .inner, #content_top > .inner, #content_bottom >.inner {
+#menu > .inner , 
+#xcol > .inner, 
+#maincol > .inner, 
+#content_top > .inner, 
+#content_bottom >.inner {
 	padding:4px;
 }
 
-/*  not part of columns */
-#nav > .cs-grid {
-	--grid-mode: flex;
-}
 
 .navbutton {
 	--icon-width:32px;
@@ -61,4 +65,16 @@ select {
 
 body[class*=-fixfooter] {
 	--menu-width :260px;
+}
+
+.menu.test-vert {
+	padding:20px;
+	--menu-orientation:vertical;
+	--menu-gap:12px;
+	--menu-item-padding:12px 0;
+	--menu-borders:dividers;
+	--menu-item-border:1px;
+	--menu-align:left;
+	--menu-icon-stretch: 1;
+	--menu-submenualign: top-right;
 }
