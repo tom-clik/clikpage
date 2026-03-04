@@ -92,7 +92,6 @@ component extends="contentSection" {
 		var classes = {};
 		
 		StructAppend(arguments.content, {"class"=""},false);	
-		arguments.content.class = ListAppend(arguments.content.class, "item"," ");
 		arguments.content.description = arguments.content.content;
 		local.link = arguments.content.link ? : "";
 		var cshtml = variables.contentObj.itemHtml(item=arguments.content, link=local.link, settings = arguments.content, classes=classes);
