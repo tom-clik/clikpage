@@ -7,7 +7,7 @@ component {
 	
 	this.rootDir = Replace(getDirectoryFromPath(getCurrentTemplatePath()),"\testing","");
 	this.mappings = [
-		"/_assets" = this.baseDir & "\clikpage\_assets",
+		"/_assets" = this.baseDir & "\clik\assets",
 	];
 
 	this.errorsFolder = this.rootDir & "\testing\_errors";
