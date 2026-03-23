@@ -3,8 +3,14 @@
  *
  * ## Layout definition
  *
- * Layouts are defined as html files. They can inherit from other files (tbc logic)
+ * Layouts are defined as html files. They can inherit from other files, and only the containers defined will be different
  *
+ * ### Syntax
+ *
+ * `<body data-extends="gallery">`
+ *
+ *  Any divs that are children of body will rpleace the div with the same ID in the nase layout. Note the divs don't necessarily have to be children of body when inheriting. *
+ * 
  * ## Layout struct
  * 
  * An actual layout has the following keys
@@ -35,11 +41,11 @@ component name="layouts" {
 		variables.charset = arguments.charset
 
 		if (! IsDefined("server.system.environment.javalib") ) {
-			throw("You must define server.system.environment.javalib before using this component and ensure jsoup-1.20.1.jar is present. Jsoup is now used by multiple Java libs and we don't have a good solution for determining which one to load.");
+			throw("You must define server.system.environment.javalib before using this component and ensure jsoup-1.22.1.jar is present. Jsoup is now used by multiple Java libs and we don't have a good solution for determining which one to load.");
 		}
 
 		try {
-			this.coldsoup = new coldsoup.coldSoup(server.system.environment.javalib & "\jsoup-1.20.1.jar");
+			this.coldsoup = new coldsoup.coldSoup(server.system.environment.javalib & "\jsoup-1.22.1.jar");
 		}
 		catch (any e) {
 			local.extendedinfo = {"tagcontext"=e.tagcontext};
@@ -53,7 +59,7 @@ component name="layouts" {
 
 		variables.parser = new clikpage.settings.cssParser();
 
-		variables.markdown = new markdown.flexmark(attributes=1,coldsoupObj=this.coldsoup);
+		variables.markdown = new markdown.flexmark(attributes=1,coldsoupObj=this.coldsoup,jarpath=server.system.environment.javalib & "\flexmark-all-0.64.0-lib.jar");
 
 		variables.layoutBase = arguments.layoutBase;
 		// remove trailing slash
@@ -87,10 +93,17 @@ component name="layouts" {
 	public struct function getLayout(required string id) {
 
 		local.layout = duplicate( loadLayout(arguments.id), true);
-		local.layout.layout = variables.cache.layouts[arguments.id].layout.clone();
+
+		//tmp = createObject( "java", "org.jsoup.Jsoup" ).parse( variables.cache.layouts[arguments.id].layout.outerHtml() );
+		// writeDump(tmp);abort;
+		local.layout.layout = cloneJsoup( variables.cache.layouts[arguments.id].layout );
 		
 		return local.layout;
 
+	}
+
+	private any function cloneJsoup(doc) {
+		return createObject( "java", "org.jsoup.Jsoup" ).parse( arguments.doc );
 	}
 
 	/**
@@ -233,7 +246,7 @@ component name="layouts" {
 		local.extends = getLayout(arguments.extends);
 		local.parentlayout = local.extends.layout;
 		// start by cloning the parent
-		local.newLayout = local.extends.layout.clone();
+		local.newLayout = cloneJsoup( local.extends.layout );
 
 		local.newLayout.title(arguments.layout.layout.title());
 

@@ -1,1 +1,0 @@
-/* see clik_common */

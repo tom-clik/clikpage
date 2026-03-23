@@ -11,7 +11,7 @@ component implements="clikpage.data.i_data" {
 		StructAppend(arguments.params, {"markdown"=true,"json"=true,"xml"=true, "reload"=1, "imageRoot"=""}, false);
 
 		if ( arguments.params.markdown ) {
-			variables.markdown = new markdown.flexmark(attributes=1,jsoupjar=server.system.environment.javalib & "\jsoup-1.20.1.jar");
+			variables.markdown = new markdown.flexmark(attributes=1,jarpath=server.system.environment.javalib & "\flexmark-all-0.64.0-lib.jar",jsoupjar=server.system.environment.javalib & "\jsoup-1.22.1.jar");
 		}
 		
 		variables.xmlObj = new utils.xml();

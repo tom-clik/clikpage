@@ -24,7 +24,7 @@
         "fadeInOnScroll"
       ],
       "name": "main",
-      "min": "/_assets/js/_min/clikpage.0.14.min.js",
+      "min": "/_assets/js/_min/clikpage.0.15.min.js",
     },
     {
       "scripts": [
