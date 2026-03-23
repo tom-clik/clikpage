@@ -3,8 +3,14 @@
  *
  * ## Layout definition
  *
- * Layouts are defined as html files. They can inherit from other files (tbc logic)
+ * Layouts are defined as html files. They can inherit from other files, and only the containers defined will be different
  *
+ * ### Syntax
+ *
+ * `<body data-extends="gallery">`
+ *
+ *  Any divs that are children of body will rpleace the div with the same ID in the nase layout. Note the divs don't necessarily have to be children of body when inheriting. *
+ * 
  * ## Layout struct
  * 
  * An actual layout has the following keys
