@@ -147,6 +147,10 @@ component {
 
 		
 		request.prc.pageContent = application.siteObj.page(site=application.site,pageRequest=request.rc);
+		// add editing here
+		if (this.debug) {
+			application.siteObj.addEditing(request.prc.pageContent);
+		}
 
 	}
 

@@ -328,6 +328,12 @@
       "description": "Fade in content on scroll",
       "name": "fadeInOnScroll",
       "requires": "jquery"
+    },
+    {
+      "min":"/_assets/js/clik.editing.js",
+      "description": "General Editing functions",
+      "name": "clikEditing",
+      "requires": "jquery,clik_settings,messageHandler"
     }
   ]
 }

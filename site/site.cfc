@@ -950,7 +950,7 @@ component accessors="true" extends="utils.baseutils" {
 			
 			local.tag=local.rc.layout.layout.select("###contentid#").first();
 			
-			// TO do: use display method
+			// TO DO: use display method
 			// and cache results
 			try {
 				local.html = this.contentObj.html(content=arguments.site.content[contentid],data=local.data);
@@ -964,8 +964,9 @@ component accessors="true" extends="utils.baseutils" {
 			}
 
 			local.tag.html(local.html);
-			
-			local.tag.attr("class",this.contentObj.getClassList(arguments.site.content[contentid]));
+			local.classes = "cs " & this.contentObj.getClassList(arguments.site.content[contentid]);
+
+			local.tag.attr("class",local.classes);
 			
 			this.contentObj.addPageContent(pageContent,this.contentObj.getPageContent(arguments.site.content[contentid],local.data));
 			
@@ -995,6 +996,13 @@ component accessors="true" extends="utils.baseutils" {
 		// pageContent.body &= local.temp;
 
 		return pageContent;
+	}
+
+	public void function addEditing(required struct pageContent) {
+
+		arguments.pageContent.static_js["clikEditing"] = 1;
+		arguments.pageContent.static_css["clikEditing"] = 1;
+
 	}
 
 	/**

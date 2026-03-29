@@ -180,6 +180,12 @@
           "packageExclude": 1
         },
         {
+          "min":"/_assets/css/clikEditing.css",
+          "description": "Styles for editing clik pages",
+          "name": "clikEditing",
+          "packageExclude": 1
+        },
+        {
           "min":"/_assets/css/modal.css",
           "description": "Modal",
           "name": "modal"
@@ -189,6 +195,6 @@
           "description": "Show content when visible",
           "name": "fadeInOnScroll",
           "requires": "jquery"
-        }  
+        } 
     ]
 }

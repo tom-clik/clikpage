@@ -670,7 +670,6 @@ component output=false {
 			}
 		}
 
-
 		if (StructKeyExists(arguments.settings,"position")) {
 			local.css &= displayPosition(arguments.settings,arguments.debug);
 		}
