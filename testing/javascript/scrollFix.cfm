@@ -98,12 +98,12 @@ Testing scroll fix
 
 <script src="/_assets/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_assets/js/jquery.throttledresize.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_assets/js/scroll-fix.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_assets/js/scrollFix.js" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
 	$elem = $('#topnav');
-	$elem .scrollFix({
+	$elem.scrollFix({
 		resize: "throttledresize",
 		onFix: function() {
 			console.log("fix")
