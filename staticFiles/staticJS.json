@@ -74,7 +74,7 @@
         },
         {
             "debug": "/clik/assets/js/jquery.clikForm.js",
-            "min": "/clik/assets/js/jquery.clikForm.js",
+            "min": "//assets.clik.com/js/_min/jquery.clikForm.min.1.js",
             "name": "clikForm",
             "description": "Form validation and AJAX submission through ApiHelper",
             "requires": "apiHelper,validate,select2,elastic,jquery",
@@ -90,7 +90,7 @@
             "exclude_from_packages": 1
         },
         {
-            "debug": "/assets/js/apiHelper.js",
+            "debug": "/clik/assets/js/apiHelper.js",
             "min": "//assets.clik.com/js/_min/apiHelper.min.1.js",
             "description": "Shared helper for API requests and AJAX form submission",
             "name": "apiHelper",

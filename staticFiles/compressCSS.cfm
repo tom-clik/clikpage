@@ -44,14 +44,14 @@ A build process would probably also push the files to the cloud or similar.
 
 <cfscript>
 mappings = [
-	"/_assets/" = ExpandPath("/_assets/"),
-	"/_assets/css/_min/" = ExpandPath("_output/"),
-	"/_assets/js/_min/" = ExpandPath("_output/")
+	"/clik/assets/" = ExpandPath("/clik/assets/"),
+	"//assets.clik.com/css/_min/" = ExpandPath("_output/"),
+	"//assets.clik.com/js/_min/" = ExpandPath("_output/")
 ];
 
 for (opts in ["CSS","JS"]) {
 	// defFile = ExpandPath("test_js.json");
-	defFile = ExpandPath("../../staticFiles/static#opts#.json");
+	defFile = ExpandPath("static#opts#.json");
 	tempData = FileRead(defFile);
 	try {
 		jsonData = deserializeJSON(tempData);
@@ -60,9 +60,9 @@ for (opts in ["CSS","JS"]) {
 		throw("Unable to parse static files definition file #arguments.defFile#");	
 	}
 
-	staticFilesObj = new clikpage.staticFiles.staticFiles(staticDef=jsonData);
+	staticFilesObj = new staticFiles.staticFiles(staticDef=jsonData);
 
-	packages = staticFilesObj.compressPackage(type=opts,overwrite=false,mappings=mappings,minify=true);
+	packages = staticFilesObj.compress(type=opts,overwrite=false,mappings=mappings,minify=true);
 
 	for (res in packages) {
 		writeDump(res);
