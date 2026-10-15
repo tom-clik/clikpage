@@ -43,7 +43,7 @@ component {
 			}
 			local.jsDef = loadDefFile(arguments.jsdef);
 			variables.hasStaticJS = true;
-			this.jsStaticFiles =  new clikpage.staticFiles.staticFiles(local.jsDef);
+			this.jsStaticFiles =  new staticFiles.staticFiles(local.jsDef);
 		}
 		else {
 			variables.hasStaticJS = false;
@@ -54,7 +54,7 @@ component {
 				arguments.cssdef = GetDirectoryFromPath(GetCurrentTemplatePath()) & "staticFiles\staticCSS.json";
 			}
 			local.cssDef = loadDefFile(arguments.cssdef);
-			this.cssStaticFiles =  new clikpage.staticFiles.staticFiles(local.cssDef);
+			this.cssStaticFiles =  new staticFiles.staticFiles(local.cssDef);
 			this.cssStaticFiles.setCss();
 			variables.hasStaticCSS = true;
 		}

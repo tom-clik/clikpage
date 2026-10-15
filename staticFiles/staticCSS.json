@@ -1,194 +1,47 @@
 {
-    "packages": [
+    "packages":
+    [
         {
-            "scripts": [
-                "reset",
-                "breadcrumb",
-                "definitions",
-                "admonitions",
-                "footnotes",
-                "columns",
-                "forms",
-                "grids",
-                "icons",
-                "images",
-                "menus",
-                "items",
-                "navbuttons",
-                "justifiedGallery",
-                "tables",
-                "tabs",
-                "text",
-                "title",
-                "select2",
-                "modal",
-                "fadeInOnScroll"
+            "scripts": "clik,select2,google_icons",
+            "pack": 0,
+            "name": "main"
+        },
+        {
+            "scripts":
+            [
+                "google_icons_donotuse_directly",
+                "google_icons_codes_donotuse_directly"
             ],
-            "name":"content",
-            "min":"/_assets/css/_min/clikpage.0.19.min.css"
+            "name": "google_icons",
+            "pack": 0
         }
     ],
-    "scripts": [
+    "scripts":
+    [
         {
-            "min": "/_assets/css/reset.css",
-            "name": "reset"
+            "debug": "/clik/assets/css/_min/clikpage.0.24.min.css",
+            "min": "//assets.clik.com/css/_min/clikpage.0.24.min.css",
+            "name": "clik",
+            "exclude_from_packages": 1
         },
         {
-            "min": "/_assets/css/columns.css",
-            "name": "columns",
-            "requires": "reset"
+            "debug": "/clik/assets/css/select2.min.css",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
+            "name": "select2",
+            "exclude_from_packages": 1
         },
         {
-            "min": "/_assets/css/items.css",
-            "name": "items",
-            "requires": "reset"
-        },
-        {
-            "min": "/_assets/css/breadcrumb.css",
-            "name": "breadcrumb"
-        },
-        {
-            "min": "/_assets/css/footnotes.css",
-            "name": "footnotes"
-        },
-        {
-            "min": "/_assets/css/menus.css",
-            "name": "menus"
-        },
-        {
-            "min": "/_assets/css/grids.css",
-            "name": "grids"
-        },
-        {
-            "min": "/_assets/css/icons.css",
-            "name": "icons"
-        },
-        {
-            "min": "/_assets/css/navbuttons.css",
-            "name": "navbuttons",
+            "debug": "/clik/assets/css/fonts/google_icons_local.css",
+            "min": "https://fonts.googleapis.com/icon?family=Material+Icons",
+            "name": "google_icons_donotuse_directly",
+            "notes": "Use package google_icons",
             "requires": "icons"
         },
         {
-            "min": "/_assets/css/fonts/google_icons.css",
-            "debug": "/_assets/css/fonts/google_icons_local.css",
-            "name": "google_icons",
-            "requires": "icons"
-        },
-        {
-            "min": "/_assets/css/images.css",
-            "name": "images"
-        },
-        {
-            "min": "/_assets/css/definitions.css",
-            "name": "definitions"
-        },
-        {
-            "min": "/_assets/css/admonitions.css",
-            "name": "admonitions"
-        },
-        {
-            "min": "/_assets/css/select2.min.css",
-            "name": "select2"
-        },
-        {
-            "min": "/_assets/css/tables.css",
-            "name": "tables"
-        },
-        {
-            "min": "/_assets/css/forms.css",
-            "name": "forms"
-        },
-        {
-            "min": "/_assets/css/title.css",
-            "name": "title"
-        },
-        {
-            "min": "/_assets/css/tables.css",
-            "name": "tables"
-        },
-        {
-            "min": "/_assets/css/tabs.css",
-            "name": "tabs"
-        },
-        {
-        	"debug": "/_assets/css/jquery-ui.css",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css",
-            "name": "jqueryui",
-            "packageExclude": 1
-        },
-        {
-            "debug": "/_assets/css/jquery.dataTables.min.css",
-            "min": "https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css",
-            "name": "datatables",
-            "packageExclude": 1
-        },
-        {
-        	"debug": "/_assets/css/fonts/fonts_local.css",
-            "min": "/_assets/css/fonts/fonts.css",
-            "name": "fonts"
-        },
-        {
-            "debug": "/_assets/css/jBox.all.css",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/jBox/1.3.3/jBox.all.min.css",
-            "name": "jBox",
-            "packageExclude": 1
-        },
-        {
-            "min": "/_assets/css/styles.css",
-            "name": "styles",
-            "requires": "content"
-        },
-        {
-        	"debug": "/_assets/css/fonts/font-awesome-local.css",
-        	"min": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css",
-            "name": "fontawesome",
-            "packageExclude": 1
-        },
-        {
-            "min": "/_assets/css/justifiedGallery.css",
-            "name": "justifiedGallery"
-        },
-        {
-            "debug": "/_assets/css/flickity.css",
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.min.css",
-            "description": "Carousel plug in",
-            "jsdoc": "https://flickity.metafizzy.co/",
-            "name": "Flickity",
-            "packageExclude": 1
-        },
-        {
-            "min": "/_assets/css/flickity-fade.css",
-            "description": "Carousel fade plug in",
-            "jsdoc": "https://flickity.metafizzy.co/",
-            "name": "flickity-fade",
-            "requires": "flickity"
-        },
-        {
-            "min": "https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css",
-            "debug": "/_assets/css/jquery.mCustomScrollbar.css",
-            "note": "Not we have customised the debug version ever so slightly just to get it to run locally",
-            "description": "Scroll bar plug in",
-            "jsdoc": "http://manos.malihu.gr/jquery-custom-content-scroller/",
-            "name": "scrollbar",
-            "requires": "jquery"
-        },
-        {
-          "debug":"/_assets/css/tooltipster.css",
-          "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/css/tooltipster.main.min.css",
-          "description": "Tooltip library",
-          "name": "tooltipster",
-          "packageExclude": 1
-        },
-        {
-          "min":"/_assets/css/modal.css",
-          "description": "Modal",
-          "name": "modal"
-        },
-        {
-          "min":"/_assets/css/fadeInOnScroll.css",
-          "description": "Show content when visible",
-          "name": "fadeInOnScroll",
-          "requires": "jquery"
-        }  
+            "debug": "/clik/assets/css/fonts/google_icons_codes.css",
+            "name": "google_icons_codes_donotuse_directly",
+            "requires": "google_icons_donotuse_directly",
+            "min": "https://assets.clik.com/css/_min/fonts/google_icons_codes.2.min.css"
+        }
     ]
 }

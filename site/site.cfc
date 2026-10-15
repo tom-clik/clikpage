@@ -15,9 +15,7 @@ component accessors="true" extends="utils.baseutils" {
 
 		this.pageObj = new clikpage.page(debug=getdebug());
 
-		this.pageObj.content.static_css["fonts"] = 1;
-		this.pageObj.content.static_css["content"] = 1;
-		this.pageObj.content.static_css["google_icons"] = 1;
+		this.pageObj.content.static_css["main"] = 1;
 		this.pageObj.content.static_js["main"] = 1;
 		this.pageObj.addCss( this.pageObj.content, "styles/styles.css");
 

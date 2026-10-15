@@ -1,333 +1,101 @@
 {
-  "packages": [
-    {
-      "scripts": [
-        "jquery",
-        "clik_common",
-        "autoButton",
-        "animateAuto",
-        "popup",
-        "menus",
-        "modal",
-        "swipeDetector",
-        "scrollfix",
-        "clik_onready",
-        "tabs",
-        "getSettings",
-        "photogrid",
-        "justifiedGallery",
-        "serializeData",
-        "throttledresize",
-        "heightFix",
-        "varClass",
-        "autoopen",
-        "fadeInOnScroll"
-      ],
-      "name": "main",
-      "min": "/_assets/js/_min/clikpage.0.15.min.js",
-    },
-    {
-      "scripts": [
-        "fuzzySearch",
-        "menuScroll",
-        "menus",
-        "throttledresize",
-        "animateAuto",
-        "fuzzy",
-        "clik_common"
-      ],
-      "min": "/_assets/js/_min/coldlightpackage.0.10.min.js",
-      "name": "coldlight"
-    },
-    {
-      "scripts_foobar": [
-        "clik_settings","messageHandler","settingsForm"
-      ],
-      "scripts": [
-        "clikForm"
-      ],
-      "min": "/_assets/js/_min/clikForm.0.1.min.js",
-      "name": "forms"
-    },
-    {
-      "scripts": [
-        "clik_settings","messageHandler","settingsForm"
-      ],
-      "description": "Clik editing tools",
-      "min": "/_assets/js/_min/clikutils.0.3.min.js",
-      "name": "clikutils"
-    }
-  ],
-  "scripts": [
-    {
-      "debug": "/_assets/js/jquery-3.4.1.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-      "name": "jquery",
-      "packageExclude": 1,
-      "hash": "sha512-bnIvzh6FU75ZKxp0GXLH9bewza/OIw6dLVh9ICg0gogclmYGguQJWl8U30WpbsGTqbIiAwxTsbe76DErLq5EDQ=="
-    },
-    {
-      "min": "/_assets/js/clik_common.js",
-      "name": "clik_common",
-      "description": "",
-      "requires": "jquery"
-    },
-    {
-      "debug": "/_assets/js/jquery-ui.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
-      "name": "jqueryui",
-      "packageExclude": 1,
-      "description": "We were using this just for the widget factory but should now be deprecated. See plugin bioiler plate for alternative",
-      "requires": "jquery",
-      "hash": "sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-    },
-    {
-      "debug": "/_assets/js/jquery.validate.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js",
-      "name": "validate",
-      "packageExclude": 1,
-      "requires": "jquery",
-      "hash": "sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
-    },
-    {
-      "min": "/_assets/js/jquery.throttledresize.js",
-      "name": "throttledresize",
-      "description": "Resize event with throtttling to stop it firing too many time",
-      "requires": "jquery"
-    },
-    {
-      "min": "/_assets/js/fuzzySearch.js",
-      "name": "fuzzySearch",
-      "description": "Search of symbol definitions with fuzzy logic",
-      "requires": "fuzzy"
-    },
-    {
-      "min": "/_assets/js/fts_fuzzy_match.js",
-      "name": "fuzzy",
-      "description": "Fuzzy match library"
-    },
-    {
-      "debug": "/_assets/js/select2.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js",
-      "name": "select2",
-      "packageExclude": 1,
-      "requires": "jquery",
-      "hash": "sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-    },
-    {
-      "min": "/_assets/js/menuScroll.js",
-      "name": "menuScroll",
-      "description": "Highlight location in side menu according to headings in text",
-      "requires": "jquery"
-    },
-    {
-      "min": "/_assets/js/jquery.menu.js",
-      "name": "menus",
-      "description": "Submenus and animations for menus",
-      "requires": "jquery,animateAuto"
-    },
-    {
-      "debug": "/_assets/js/imagesloaded.pkgd.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
-      "name": "imagesloaded",
-      "description": "Legacy lazy load function. Still used by flickity",
-      "packageExclude": 1,
-      "requires": "jquery"
-    },
-    {
-      "min": "/_assets/js/masonryGrid.js",
-      "name": "masonryGrid",
-      "description" : "Grid Masonry script",
-      "requires": "masonry,jquery,imagesloaded"
-    },
-    
-    {
-      "debug": "/_assets/js/masonry.pkgd.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
-      "name": "masonry",
-      "description" : "Masonry.js library - always call using masonryGrid",
-      "packageExclude": 1,
-      "requires": "jquery"
-    },
-    {
-      "debug": "/_assets/js/flickity.pkgd.min.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js",
-      "description": "Carousel plug in",
-      "jsdoc": "https://flickity.metafizzy.co/",
-      "name": "flickity",
-      "requires": "jquery",
-      "packageExclude": 1
-    },
-    {
-      "min": "/_assets/js/flickity-fade.js",
-      "description": "Flcikit fade extras plug in",
-      "jsdoc": "https://flickity.metafizzy.co/",
-      "name": "flickity-fade",
-      "requires": "flickity"
-    },
-    {
-      "debug": "/_assets/js/mustache.js",
-      "description": "Mustache implemnetation for JS",
-      "documentation": "https://github.com/janl/mustache.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js",
-      "name": "mustache"
-    },
-    {
-      "min": "/_assets/js/jquery.form.js",
-      "description": "Ajax form submission plug in. Showing its age now, probably neater ways of doing this",
-      "name": "forms",
-      "requires": "jquery"
-    },
-    {
-      "min": "/_assets/js/jquery.elastic.1.6.11.js",
-      "description": "Elastic text form control",
-      "name": "elastic",
-      "requires": "jquery"
-    },
-    {
-      "min": "/_assets/js/jquery.clikForm.js",
-      "description": "Combines forms and validate in one plug-in to submit a form and display a returned|supplied message",
-      "name": "clikForm",
-      "requires": "jquery,elastic,select2,validate,serializeData"
-    },
-    {
-      "min": "/_assets/js/jquery.autoButton.js",
-      "description": "Simple button mechanism for toggling and using an href of #target.action",
-      "name": "autoButton",
-      "requires": "jquery"
-    },
-    {
-      "min": "/_assets/js/jquery.animateAuto.js",
-      "description": "Simulates jquery animate but allows auto height",
-      "name": "animateAuto",
-      "requires": "jquery"
-    },
-    {
-      "debug":"/_assets/js/jquery.mousewheel.js",
-      "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js",
-      "description": "Jquery mouse wheel function",
-      "name": "mousewheel",
-      "requires": "jquery"
-    },
-    
-    {
-      "debug":"/_assets/js/jquery.mCustomScrollbar.js",
-      "min":"https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js",
-      "description": "Custom scroll bar library.",
-      "note": "Not we have customised the debug version ever so slightly just to get it to run locally",
-      "name": "scrollbar",
-      "requires": "jquery,mousewheel"
-    },
-    {
-      "min":"/_assets/js/scroll-fix.js",
-      "description": "Fix a div in place when the page is scrolled",
-      "name": "scrollfix",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/popup.js",
-      "description": "Basic image popup script",
-      "name": "popup",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/jquery.modal.js",
-      "description": "Show containers as modal overlays",
-      "name": "modal",
-      "requires": "jquery,animateAuto"
-    },
-    {
-      "min":"/_assets/js/clik_onready.js",
-      "description": "Standard clik functionality",
-      "name": "clik_onready",
-      "requires": "jquery,modal,clik_common"
-    },
-    {
-      "min":"/_assets/js/messageHandler.js",
-      "description": "Show messages and errors on the client side",
-      "name": "messageHandler",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/heightFix.js",
-      "description": "Fix heights of containers to scale down images",
-      "name": "heightFix",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/varClass.js",
-      "description": "Get value of css variables and apply them as a class {varname}-{varvalue}",
-      "name": "varClass",
-      "requires": "jquery,removeClassByPrefix"
-    },
-    {
-      "debug":"/_assets/js/tooltipster.main.js",
-      "min":"https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/js/tooltipster.main.js",
-      "description": "Tooltip library",
-      "name": "tooltipster",
-      "requires": "jquery",
-      "packageExclude": 1
-    },
-    {
-      "min":"/_assets/js/photogrid.js",
-      "description": "Clik wrapper for all photogrid functions. ",
-      "name": "photogrid",
-      "requires": "jquery,clik_common,justifiedGallery,masonryGrid"
-    },
-    {
-      "min":"/_assets/js/jquery.justifiedGallery.js",
-      "description": "Proper serialization of form data to submit via Ajax",
-      "name": "justifiedGallery",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/jquery.serializeData.js",
-      "description": "Proper serialization of form data to submit via Ajax",
-      "name": "serializeData",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/clik_settings_live.js",
-      "debug":"/_assets/js/clik_settings.js",
-      "description": "Auto generated data file of style definitions for editing",
-      "name": "clik_settings",
-      "requires": "jquery,throttledresize"
-    },
-    {
-      "name":"getSettings",
-      "min":"/_assets/js/getSettings.js",
-      "description": "Get content item settings from css custom vars",
-      "requires": "jquery,clik_settings"
-    },
-    {
-      "min":"/_assets/js/jquery.tabs.js",
-      "description": "Tabbed content",
-      "name": "tabs",
-      "requires": "jquery,throttledresize"
-    },
-    {
-      "min":"/_assets/js/clik.settingsForm.js",
-      "description": "Settings Editing form",
-      "name": "settingsForm",
-      "requires": "jquery,clik_settings,messageHandler"
-    },
-    {
-      "min":"/_assets/js/jquery.autoopen.js",
-      "description": "Add open close methods to containers",
-      "name": "autoopen",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/removeClassByPrefix.js",
-      "description": "Utility for removing classes by prefix",
-      "name": "removeClassByPrefix",
-      "requires": "jquery"
-    },
-    {
-      "min":"/_assets/js/fadeInOnScroll.js",
-      "description": "Fade in content on scroll",
-      "name": "fadeInOnScroll",
-      "requires": "jquery"
-    }
-  ]
+    "packages":
+    [
+        {
+            "scripts": "clik,clikForm,validate,select2",
+            "pack": 0,
+            "name": "main"
+        }
+    ],
+    "scripts":
+    [
+        {
+            "debug": "/clik/assets/js/jquery-3.4.1.js",
+            "min": "https://code.jquery.com/jquery-3.4.1.min.js",
+            "name": "jquery",
+            "exclude_from_packages": 1
+        },
+        {
+            "debug": "/clik/assets/js/jquery-ui.min.js",
+            "min": "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js",
+            "name": "jqueryui",
+            "exclude_from_packages": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/clik/assets/js/_min/clik.0.18.min.js",
+            "min": "//assets.clik.com/js/_min/clik.0.18.min.js",
+            "name": "clik",
+            "exclude_from_packages": 1
+        },
+        {
+            "debug": "/clik/assets/js/jquery.validate.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js",
+            "name": "validate",
+            "exclude_from_packages": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/clik/assets/js/select2.min.js",
+            "min": "https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js",
+            "name": "select2",
+            "exclude_from_packages": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/clik/assets/js/menuScroll.js",
+            "min": "//assets.clik.com/js/_min/menuScroll.min.1.js",
+            "name": "menuScroll",
+            "exclude_from_packages": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/clik/assets/js/imagesloaded.pkgd.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js",
+            "name": "imagesloaded",
+            "exclude_from_packages": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/clik/assets/js/masonry.pkgd.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js",
+            "name": "masonry",
+            "exclude_from_packages": 1,
+            "requires": "imagesloaded,jquery"
+        },
+        {
+            "debug": "/clik/assets/js/jquery.elastic.1.6.11.js",
+            "min": "//assets.clik.com/js/_min/jquery.elastic.1.6.11.min.js",
+            "description": "Elastic is jQuery plugin that grow and shrink your textareas automatically.",
+            "jsdoc": "module-elastic.html",
+            "name": "elastic",
+            "exclude_from_packages": 1,
+            "requires": "jquery"
+        },
+        {
+            "debug": "/clik/assets/js/jquery.clikForm.js",
+            "min": "//assets.clik.com/js/_min/jquery.clikForm.min.1.js",
+            "name": "clikForm",
+            "description": "Form validation and AJAX submission through ApiHelper",
+            "requires": "apiHelper,validate,select2,elastic,jquery",
+            "exclude_from_packages": 1
+        },
+        {
+            "debug": "/clik/assets/js/flickity.pkgd.min.js",
+            "min": "https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js",
+            "description": "Carousel plug in",
+            "jsdoc": "https://flickity.metafizzy.co/",
+            "name": "Flickity",
+            "requires": "jquery",
+            "exclude_from_packages": 1
+        },
+        {
+            "debug": "/clik/assets/js/apiHelper.js",
+            "min": "//assets.clik.com/js/_min/apiHelper.min.1.js",
+            "description": "Shared helper for API requests and AJAX form submission",
+            "name": "apiHelper",
+            "requires": "jquery",
+            "packageExclude": 1
+        }
+    ]
 }
