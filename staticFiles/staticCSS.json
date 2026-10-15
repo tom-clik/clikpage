@@ -19,26 +19,26 @@
     "scripts":
     [
         {
-            "debug": "/_clik/css/_min/clikpage.0.24.min.css",
-            "min": "https://assets.clik.com/css/_min/clikpage.0.24.min.css",
+            "debug": "/clik/assets/css/_min/clikpage.0.24.min.css",
+            "min": "//assets.clik.com/css/_min/clikpage.0.24.min.css",
             "name": "clik",
             "exclude_from_packages": 1
         },
         {
-            "debug": "/_clik/css/select2.min.css",
+            "debug": "/clik/assets/css/select2.min.css",
             "min": "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css",
             "name": "select2",
             "exclude_from_packages": 1
         },
         {
-            "debug": "/_clik/css/fonts/google_icons_local.css",
+            "debug": "/clik/assets/css/fonts/google_icons_local.css",
             "min": "https://fonts.googleapis.com/icon?family=Material+Icons",
             "name": "google_icons_donotuse_directly",
             "notes": "Use package google_icons",
             "requires": "icons"
         },
         {
-            "debug": "/_clik/css/fonts/google_icons_codes.css",
+            "debug": "/clik/assets/css/fonts/google_icons_codes.css",
             "name": "google_icons_codes_donotuse_directly",
             "requires": "google_icons_donotuse_directly",
             "min": "https://assets.clik.com/css/_min/fonts/google_icons_codes.2.min.css"

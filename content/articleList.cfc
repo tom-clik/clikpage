@@ -83,9 +83,12 @@ component extends="item" {
 	
 	}
 
-	public string function onready(required struct content) {
-		var js = "";
+	public string function onready(
+		required struct content, 
+		required struct pageContent,
+		required struct data) {
 
+		
 		// TODO: replace with ClikOnReady functionality
 		// 
 		// if (arguments.content.settings.main.carousel) {
@@ -98,16 +101,6 @@ component extends="item" {
 		// 	.append("});").toList(newLine());
 		// }
 
-		return js;
-	}
-
-	public string function onready(
-		required struct content, 
-		required struct pageContent,
-		required struct data) {
-
-		var js = "$#arguments.content.id# = $('###arguments.content.id#');\n";
-		js &= "$#arguments.content.id#.photoGrid({});\n";
 		return js;
 
 	}
